@@ -1,15 +1,3 @@
-# dynamic-dev
-
-## Team Members
-- [naeemcse](https://github.com/naeemcse "Team Leader") (Team Leader)
-- [abdurrashed](https://github.com/abdurrashed)
-- [IrfanMahmud1](https://github.com/IrfanMahmud1)
-
-## Mentor
-- [sohelatbs23](https://github.com/sohelatbs23)
-
-## Project Description
-
 
 
 # Easy Travel BD  
@@ -128,27 +116,3 @@ Easy Travel BD aims to revolutionize the travel experience in Bangladesh by offe
 We welcome contributions to enhance our platform. Feel free to fork the repository, make changes, and submit pull requests.
 
 ---
-
-
-
-
-
-
-
-
-
-## Getting Started
-1. Clone the repository
-2. Install dependencies
-3. Start development
-
-## Development Guidelines
-1. Create feature branches
-2. Make small, focused commits
-3. Write descriptive commit messages
-4. Create pull requests for review
-
-## Resources
-- [Project Documentation](docs/Features)
-- [Development Setup](docs/setup.md)
-- [Contributing Guidelines](CONTRIBUTING.md)
