@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Infrastructure.Repositories
 {
-    internal class BusRepository
+    public class BusRepository
     {
+
+
+
+
     }
 }
