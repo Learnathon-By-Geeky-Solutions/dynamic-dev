@@ -1,12 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Models
 {
-    internal class Bus
+    public class Bus
     {
+
+        [Key]
+        public int BusServiceId { get; set; }
+        public required string BusServiceName { get; set; }
+        public required string From { get; set; }
+        public required string To { get; set; }
+        public required decimal Rate { get; set; }
+        public required string ServicesDetails { get; set; }
+        public required string Stoppages { get; set; }
+        public required string BusContact { get; set; }
     }
 }
