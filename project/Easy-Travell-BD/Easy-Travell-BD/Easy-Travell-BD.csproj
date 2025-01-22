@@ -15,12 +15,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EasyTravel.Application\EasyTravel.Application.csproj" />
     <ProjectReference Include="..\EasyTravel.Domain\EasyTravel.Domain.csproj" />
     <ProjectReference Include="..\EasyTravel.Infrastructure\EasyTravel.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Bus\" />
   </ItemGroup>
 
 </Project>
