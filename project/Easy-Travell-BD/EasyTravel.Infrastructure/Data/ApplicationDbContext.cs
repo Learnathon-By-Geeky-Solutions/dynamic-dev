@@ -8,13 +8,24 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Infrastructure.Data
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext : DbContext
     {
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Bus> Buses { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Bus>()
+              .Property(b => b.Rate)
+              .HasColumnType("decimal(18,2)");
+
+        }
+
 
 
     }
