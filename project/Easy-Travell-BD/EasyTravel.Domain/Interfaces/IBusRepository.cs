@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Interfaces
 {
-     public interface IBusRepository
+    public interface IBusRepository
     {
         void Addbus(Bus bus);
         IEnumerable<Bus> GetAllBuses();
