@@ -35,7 +35,16 @@ namespace EasyTravel.Infrastructure.Repositories
 
         public User GetUserByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == email);
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+
+          
+                if (user == null)
+                {
+                    throw new KeyNotFoundException($"User with email {email} was not found.");
+                }
+            
+
+            return user;
         }
 
         public bool ValidateUser(string email, string password)
