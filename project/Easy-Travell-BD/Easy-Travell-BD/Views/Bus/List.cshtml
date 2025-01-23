@@ -1,0 +1,33 @@
+﻿@model IEnumerable<EasyTravel.Domain.Models.Bus>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h2>Bus List</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Bus Service Name</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Rate</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bus in Model)
+        {
+            <tr>
+                <td>@bus.BusServiceName</td>
+                <td>@bus.From</td>
+                <td>@bus.To</td>
+                <td>@bus.Rate</td>
+                <td>
+                    <a href="#">Edit</a> |
+                    <a href="#">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
