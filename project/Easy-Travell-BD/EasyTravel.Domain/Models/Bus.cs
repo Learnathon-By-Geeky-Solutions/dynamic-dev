@@ -11,7 +11,7 @@ namespace EasyTravel.Domain.Models
     {
 
         [Key]
-        public int BusServiceId { get; set; }
+        public Guid BusServiceId { get; set; }
         public required string BusServiceName { get; set; }
         public required string From { get; set; }
         public required string To { get; set; }

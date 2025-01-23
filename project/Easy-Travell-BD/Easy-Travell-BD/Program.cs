@@ -26,7 +26,23 @@ builder.Services.AddScoped<IBusRepository, BusRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBusService, BusService>();
 
+
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+    options.Cookie.HttpOnly = true;                // Make cookies accessible only through HTTP
+    options.Cookie.IsEssential = true;             // Essential for GDPR compliance
+});
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
+
+
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -38,6 +54,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 

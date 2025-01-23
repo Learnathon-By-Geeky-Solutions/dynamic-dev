@@ -28,12 +28,20 @@ namespace Easy_Travell_BD.Controllers
         public IActionResult Login(string email, string password)
         {
 
-            if (_userService.AuthenticateUser(email, password)){
+            if (_userService.AuthenticateUser(email, password))
+            {
                 var user = _userService.GetUserByEmail(email);
-                return user.Role == "Admin" ? RedirectToAction("Create", "Bus") : RedirectToAction("List", "Bus");
 
+                HttpContext.Session.SetString("UserLoggedIn", "true");
+                HttpContext.Session.SetString("UserRole", user.Role);
+                HttpContext.Session.SetString("UserName", user.Name);
+
+                return user.Role == "Admin"
+                    ? RedirectToAction("Create", "Bus")
+                    : RedirectToAction("List", "Bus");
             }
 
+            ViewBag.ErrorMessage = "Invalid email or password.";
             return View();
 
         }
@@ -48,15 +56,17 @@ namespace Easy_Travell_BD.Controllers
             return RedirectToAction("Login");
         }
 
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
 
 
 
 
 
 
-
-
-
-        
     }
 }
