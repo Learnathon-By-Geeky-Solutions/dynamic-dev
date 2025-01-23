@@ -24,8 +24,4 @@
     <ProjectReference Include="..\EasyTravel.Infrastructure\EasyTravel.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Bus\" />
-  </ItemGroup>
-
 </Project>
