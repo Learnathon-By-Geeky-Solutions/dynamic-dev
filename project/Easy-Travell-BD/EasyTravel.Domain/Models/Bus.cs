@@ -21,3 +21,5 @@ namespace EasyTravel.Domain.Models
         public required string BusContact { get; set; }
     }
 }
+
+
