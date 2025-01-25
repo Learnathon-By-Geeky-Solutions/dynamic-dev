@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EasyTravel.Application.Services.Interfaces;
+using EasyTravel.Domain.Interfaces;
+using EasyTravel.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +9,28 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
-    internal class UserService
+     public class UserService : IUserService
     {
+
+        private readonly IUserRepository _userRepository;
+
+        public UserService(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+        public bool AuthenticateUser(string email, string password)
+        {
+            return _userRepository.ValidateUser(email, password);
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return _userRepository.GetUserByEmail(email);
+        }
+
+        public void RegisterUser(User user)
+        {
+            _userRepository.AddUser(user);
+        }
     }
 }
