@@ -4,36 +4,48 @@
     <h2 class="card-title text-center">Register</h2>
     <form method="post">
         <div class="form-group">
-            <label >Name</label>
-            <input asp-for="Name" class="form-control" required />
+            <label>
+                Name
+                <input asp-for="Name" class="form-control" required />
+            </label>
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label >Email</label>
-            <input asp-for="Email" type="email" class="form-control" required />
+            <label>
+                Email
+                <input asp-for="Email" type="email" class="form-control" required />
+            </label>
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label>Password</label>
-            <input asp-for="Password" type="password" class="form-control" required />
+            <label>
+                Password
+                <input asp-for="Password" type="password" class="form-control" required />
+            </label>
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label>Phone Number</label>
-            <input asp-for="PhoneNumber" type="tel" class="form-control" required />
+            <label>
+                Phone Number
+                <input asp-for="PhoneNumber" type="tel" class="form-control" required />
+            </label>
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label>Profession (Optional)</label>
-            <input asp-for="Profession" class="form-control" />
+            <label>
+                Profession (Optional)
+                <input asp-for="Profession" class="form-control" />
+            </label>
             <span asp-validation-for="Profession" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label>Role</label>
-            <select asp-for="Role" class="form-control" required>
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
-            </select>
+            <label>
+                Role
+                <select asp-for="Role" class="form-control" required>
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </label>
             <span asp-validation-for="Role" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Register</button>
