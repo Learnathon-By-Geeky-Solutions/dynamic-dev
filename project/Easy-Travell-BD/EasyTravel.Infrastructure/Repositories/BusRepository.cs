@@ -23,8 +23,12 @@ namespace EasyTravel.Infrastructure.Repositories
 
         public void Addbus(Bus bus)
         {
+         
+
             _context.Buses.Add(bus);
             _context.SaveChanges();
+
+
         }
 
         public IEnumerable<Bus> GetAllBuses()
