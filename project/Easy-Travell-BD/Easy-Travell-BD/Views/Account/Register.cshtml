@@ -5,7 +5,7 @@
     <form method="post">
         <!-- Name Input -->
         <div class="form-group mb-3">
-            <label for="Name">
+            <label for="Name" style="width:100%" >
                 Name
                 <input asp-for="Name" id="Name" class="form-control" required aria-describedby="NameHelp" />
             </label>
@@ -14,7 +14,7 @@
 
         <!-- Email Input -->
         <div class="form-group mb-3">
-            <label for="Email">
+            <label for="Email" style="width:100%">
                 Email
                 <input asp-for="Email" type="email" id="Email" class="form-control" required aria-describedby="EmailHelp" />
             </label>
@@ -23,7 +23,7 @@
 
         <!-- Password Input -->
         <div class="form-group mb-3">
-            <label for="Password">
+            <label for="Password" style="width:100%">
                 Password
                 <input asp-for="Password" type="password" id="Password" class="form-control" required aria-describedby="PasswordHelp" />
             </label>
@@ -32,8 +32,8 @@
 
         <!-- Phone Number Input -->
         <div class="form-group mb-3">
-            <label for="PhoneNumber">
-                Phone Number
+            <label for="PhoneNumber" style="width:100%">
+                PhoneNumber
                 <input asp-for="PhoneNumber" type="tel" id="PhoneNumber" class="form-control" required aria-describedby="PhoneNumberHelp" />
             </label>
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
@@ -41,7 +41,7 @@
 
         <!-- Profession Input (Optional) -->
         <div class="form-group mb-3">
-            <label for="Profession">
+            <label for="Profession" style="width:100%">
                 Profession (Optional)
                 <input asp-for="Profession" id="Profession" class="form-control" aria-describedby="ProfessionHelp" />
             </label>
@@ -50,7 +50,7 @@
 
         <!-- Role Selection -->
         <div class="form-group mb-3">
-            <label for="Role">
+            <label for="Role" style="width:100%">
                 Role
                 <select asp-for="Role" id="Role" class="form-control" required>
                     <option value="User">User</option>
