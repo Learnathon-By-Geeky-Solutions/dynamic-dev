@@ -27,7 +27,7 @@ try
 {
 
 
-    Log.Information("Application Starting.... ");
+    Log.Information("Application Starting...... ");
 
     var builder = WebApplication.CreateBuilder(args);
 
