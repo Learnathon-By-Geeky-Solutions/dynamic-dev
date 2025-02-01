@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EasyTravel.Domain.Models.Bus>
+﻿@model IEnumerable<EasyTravel.Domain.Entites.Bus>
 
 @{
     ViewData["Title"] = "List";
@@ -12,13 +12,19 @@
             <div class="col-12 mb-3">
                 <div class="card shadow-sm p-3 d-flex flex-row align-items-center">
                     <div class="me-3">
-                        <img src="/path-to-operator-logo.jpg" alt="Operator Logo" style="width: 60px; height: 60px; object-fit: contain;">
+                        <img src="@bus.ImagePath" alt="@bus.OperatorName bus" class="bus-image img-fluid border rounded bg-light p-2" loading="lazy">
+
+                             style="width: 60px; height: 60px; object-fit: contain;">
+
                     </div>
                     <div class="flex-grow-1">
-                        <h5 class="card-title mb-1">@bus.BusServiceName</h5>
+                        <h5 class="card-title mb-1">@bus.OperatorName</h5>
                         <p class="mb-0">
                             <strong>Route:</strong> @bus.From to @bus.To<br />
-                            <strong>Rate:</strong> ৳@bus.Rate
+                            <strong>Bus Type:</strong> @bus.BusType<br />
+                            <strong>Departure:</strong> @bus.DepartureTime.ToString("yyyy-MM-dd HH:mm")<br />
+                            <strong>Arrival:</strong> @bus.ArrivalTime.ToString("yyyy-MM-dd HH:mm")<br />
+                            <strong>Rate:</strong> ৳@bus.Price
                         </p>
                     </div>
                     <div>
@@ -28,4 +34,4 @@
             </div>
         }
     </div>
-</div>
+
