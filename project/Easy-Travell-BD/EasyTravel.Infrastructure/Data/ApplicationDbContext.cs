@@ -1,17 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using EasyTravel.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EasyTravel.Domain.Entites;
 
 namespace EasyTravel.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+        private readonly string _connectionString;
+        private readonly string _migrationAssembly;
 
         public DbSet<User> Users { get; set; }
         public DbSet<Bus> Buses { get; set; }
@@ -21,10 +23,31 @@ namespace EasyTravel.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Bus>()
-              .Property(b => b.Rate)
+              .Property(b => b.Price)
               .HasColumnType("decimal(18,2)");
 
         }
+
+
+
+        public ApplicationDbContext(string connectionString, string migrationAssembly)
+        {
+            _connectionString = connectionString;
+            _migrationAssembly = migrationAssembly;
+
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(_connectionString, (x) => x.MigrationsAssembly(_migrationAssembly));
+            }
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
+       
 
 
 
