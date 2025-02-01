@@ -1,21 +1,23 @@
-﻿using EasyTravel.Domain.Interfaces;
-using EasyTravel.Domain.Models;
+﻿
+using EasyTravel.Domain.Entites;
 using EasyTravel.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EasyTravel.Domain.Repositories;
 
 namespace EasyTravel.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : Repository<User, Guid>,IUserRepository
     {
 
 
         private readonly ApplicationDbContext _context;
 
         public UserRepository(ApplicationDbContext context)
+            :base(context)
         {
 
             _context = context;

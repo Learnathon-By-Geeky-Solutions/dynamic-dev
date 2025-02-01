@@ -1,13 +1,13 @@
-﻿using EasyTravel.Domain.Models;
+﻿using EasyTravel.Domain.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyTravel.Domain.Interfaces
+namespace EasyTravel.Domain.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository:IRepository<User,Guid>
     {
         User GetUserByEmail(string email);
         void AddUser(User user);

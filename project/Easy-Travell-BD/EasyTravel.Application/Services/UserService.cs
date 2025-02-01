@@ -1,6 +1,7 @@
-﻿using EasyTravel.Application.Services.Interfaces;
-using EasyTravel.Domain.Interfaces;
-using EasyTravel.Domain.Models;
+﻿
+using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Repositories;
+using EasyTravel.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
