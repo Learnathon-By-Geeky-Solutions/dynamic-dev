@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyTravel.Domain.Models
+namespace EasyTravel.Domain.Entites
 {
-   
-        public class User
-        {
+    public class User :IEntity<Guid>
+    {
         [Key]
-        public Guid UserId { get; set; }
+        public Guid Id{ get; set; }
         [Required]
         [MaxLength(50)]
         [DisplayName("Name")]
@@ -36,7 +35,9 @@ namespace EasyTravel.Domain.Models
         public string? Profession { get; set; }
         [Required]
         [DisplayName("Role")]
-        public required string Role { get; set; } 
-        }
-    
+        public required string Role { get; set; }
+
+
+        
+    }
 }
