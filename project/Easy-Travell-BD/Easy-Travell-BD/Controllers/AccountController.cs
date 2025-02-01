@@ -1,5 +1,6 @@
-﻿using EasyTravel.Application.Services.Interfaces;
-using EasyTravel.Domain.Models;
+﻿
+using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 

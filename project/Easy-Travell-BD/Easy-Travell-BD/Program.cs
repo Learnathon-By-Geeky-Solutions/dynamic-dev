@@ -1,15 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 
 using EasyTravel.Infrastructure.Data;
-using EasyTravel.Application.Services.Interfaces;
 using EasyTravel.Application.Services;
-using EasyTravel.Domain.Interfaces;
 using EasyTravel.Infrastructure.Repositories;
 using Serilog;
 using Serilog.Events;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Easy_Travell_BD;
+using EasyTravel.Domain.Services;
+using EasyTravel.Domain.Repositories;
+using System.Reflection;
 
 
 var configuration = new ConfigurationBuilder()
@@ -39,17 +40,13 @@ try
 
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-
+    var migrationAssembly = Assembly.GetExecutingAssembly();
 
     #region autofac
     builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-    builder.Host.ConfigureContainer<ContainerBuilder>(ContainerBuilder =>
+    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
-
-        ContainerBuilder.RegisterModule( new WebModule());
-
-
-
+        containerBuilder.RegisterModule(new WebModule(connectionString, migrationAssembly?.FullName));
     });
     #endregion
 
@@ -66,14 +63,9 @@ try
     );
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(connectionString));
+        options.UseSqlServer(connectionString, (x) => x.MigrationsAssembly(migrationAssembly)));
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
-    builder.Services.AddScoped<IUserRepository, UserRepository>();
-    builder.Services.AddScoped<IBusRepository, BusRepository>();
-    builder.Services.AddScoped<IUserService, UserService>();
-    builder.Services.AddScoped<IBusService, BusService>();
 
 
 

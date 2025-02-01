@@ -1,18 +1,16 @@
-﻿using EasyTravel.Domain.Models;
+﻿using EasyTravel.Domain.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyTravel.Application.Services.Interfaces
+namespace EasyTravel.Domain.Services
 {
     public interface IBusService
     {
 
         void CreateBus(Bus bus);
         IEnumerable<Bus> GetAllBuses();
-
-
     }
 }
