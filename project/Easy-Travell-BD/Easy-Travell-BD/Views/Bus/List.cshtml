@@ -1,37 +1,62 @@
 ﻿@model IEnumerable<EasyTravel.Domain.Entites.Bus>
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "List";
 }
 
 <div class="container mt-4">
-    <h2 class="mb-4 text-center">Bus List</h2>
-    <div class="row">
-        @foreach (var bus in Model)
-        {
-            <div class="col-12 mb-3">
-                <div class="card shadow-sm p-3 d-flex flex-row align-items-center">
-                    <div class="me-3">
-                        <img src="@bus.ImagePath" alt="@bus.OperatorName bus" class="bus-image img-fluid border rounded bg-light p-2" loading="lazy">
+    <h2 class="text-center mb-4">Bus List</h2>
 
-                             style="width: 60px; height: 60px; object-fit: contain;">
+    @foreach (var bus in Model)
+    {
+        <div class="card shadow-sm border rounded mb-4">
+            <div class="card-body row align-items-center justify-content-between bg-gradient">
 
-                    </div>
-                    <div class="flex-grow-1">
-                        <h5 class="card-title mb-1">@bus.OperatorName</h5>
-                        <p class="mb-0">
-                            <strong>Route:</strong> @bus.From to @bus.To<br />
-                            <strong>Bus Type:</strong> @bus.BusType<br />
-                            <strong>Departure:</strong> @bus.DepartureTime.ToString("yyyy-MM-dd HH:mm")<br />
-                            <strong>Arrival:</strong> @bus.ArrivalTime.ToString("yyyy-MM-dd HH:mm")<br />
-                            <strong>Rate:</strong> ৳@bus.Price
-                        </p>
-                    </div>
-                    <div>
-                        <a href="#" class="btn btn-success btn-sm">Book Ticket</a>
-                    </div>
+                <!-- Bus Image -->
+                <div class="col-md-1 text-center">
+                    <img src="@bus.ImagePath" alt="@bus.OperatorName" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: contain;">
                 </div>
-            </div>
-        }
-    </div>
 
+                <!-- Bus Operator & Details -->
+                <div class="col-md-2">
+                    <h5 class="mb-1 text-dark">@bus.OperatorName</h5>
+                    <p class="mb-0 text-muted"><strong>Route:</strong> @bus.From - @bus.To</p>
+                    <p class="mb-0 text-muted"><strong>Type:</strong> @bus.BusType</p>
+                </div>
+
+                <!-- Departure Time -->
+                <div class="col-md-2">
+                    <p class="mb-0"><strong>Dep:</strong> <span class="text-success">@bus.DepartureTime.ToString("hh:mm tt")</span></p>
+                </div>
+
+                <div class="col-md-1">
+                    <hr class="border border-warning border-2">
+                </div>
+
+                <!-- Arrival Time -->
+                <div class="col-md-2">
+                    <p class="mb-0"><strong>Arr:</strong> <span class="text-success">@bus.ArrivalTime.ToString("hh:mm tt")</span></p>
+                </div>
+
+                <!-- Price & Book Button -->
+                <div class="col-md-2 text-center">
+                    <p class="price text-primary fw-bold fs-5">৳@bus.Price</p>
+                    <a href="#" class="btn btn-warning btn-sm fw-bold text-dark">BOOK</a>
+                </div>
+
+                <!-- Admin Controls: Edit & Delete Buttons -->
+                @if (HttpContextAccessor.HttpContext?.Session?.GetString("UserRole") == "Admin")
+                {
+                
+                    <div class="col-md-2 text-center mt-2">
+                        <a asp-action="Edit" asp-route-id="@bus.Id" class="btn btn-info btn-sm text-white">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@bus.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this bus?');">Delete</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
