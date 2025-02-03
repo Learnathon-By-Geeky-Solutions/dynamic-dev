@@ -7,7 +7,7 @@ using Serilog;
 using Serilog.Events;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
-using Easy_Travell_BD;
+using EasyTravel.Web;
 using EasyTravel.Domain.Services;
 using EasyTravel.Domain.Repositories;
 using System.Reflection;
