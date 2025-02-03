@@ -1,4 +1,5 @@
 ﻿
+using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
@@ -13,25 +14,28 @@ namespace EasyTravel.Application.Services
      public class UserService : IUserService
     {
 
-        private readonly IUserRepository _userRepository;
-
-        public UserService(IUserRepository userRepository)
+        private readonly IApplicationUnitOfWork _applicationUnitOfWork1;
+        public UserService(IApplicationUnitOfWork applicationUnitOfWork)
         {
-            _userRepository = userRepository;
+            _applicationUnitOfWork1 = applicationUnitOfWork;
+
         }
+
+    
         public bool AuthenticateUser(string email, string password)
         {
-            return _userRepository.ValidateUser(email, password);
+            return _applicationUnitOfWork1.UserRepository.ValidateUser(email, password);
         }
 
         public User GetUserByEmail(string email)
         {
-            return _userRepository.GetUserByEmail(email);
+            return _applicationUnitOfWork1.UserRepository.GetUserByEmail(email);
         }
 
         public void RegisterUser(User user)
         {
-            _userRepository.AddUser(user);
+            _applicationUnitOfWork1.UserRepository.AddUser(user);
+            _applicationUnitOfWork1.Save();
         }
     }
 }

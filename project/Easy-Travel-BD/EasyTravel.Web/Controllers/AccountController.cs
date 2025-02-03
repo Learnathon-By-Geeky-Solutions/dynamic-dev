@@ -53,8 +53,15 @@ namespace EasyTravel.Web.Controllers
         [HttpPost]
         public IActionResult Register(User user)
         {
-            _userService.RegisterUser(user);
-            return RedirectToAction("Login");
+            if (ModelState.IsValid)
+            {
+
+                _userService.RegisterUser(user);
+                return RedirectToAction("Login");
+            }
+
+            return View();
+           
         }
 
         [HttpPost]
