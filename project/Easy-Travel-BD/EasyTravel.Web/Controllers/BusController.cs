@@ -3,7 +3,7 @@ using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Easy_Travell_BD.Controllers
+namespace EasyTravel.Web.Controllers
 {
     public class BusController : Controller
     {

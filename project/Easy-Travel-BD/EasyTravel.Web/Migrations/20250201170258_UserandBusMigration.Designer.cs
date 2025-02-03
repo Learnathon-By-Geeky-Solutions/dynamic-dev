@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Easy_Travell_BD.Migrations
+namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250201170258_UserandBusMigration")]
