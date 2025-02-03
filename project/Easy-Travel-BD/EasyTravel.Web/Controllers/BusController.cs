@@ -33,8 +33,14 @@ namespace EasyTravel.Web.Controllers
                 return RedirectToAction("List");
             }
 
-            _busService.CreateBus(bus);
-            return RedirectToAction("List");
+            if (ModelState.IsValid)
+            {
+                _busService.CreateBus(bus);
+                return RedirectToAction("List");
+
+            }
+            return View();
+              
         }
         public IActionResult List()
         {
