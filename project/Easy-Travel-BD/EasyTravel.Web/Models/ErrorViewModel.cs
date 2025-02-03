@@ -1,4 +1,4 @@
-namespace Easy_Travell_BD.Models
+namespace EasyTravel.Web.Models
 {
     public class ErrorViewModel
     {

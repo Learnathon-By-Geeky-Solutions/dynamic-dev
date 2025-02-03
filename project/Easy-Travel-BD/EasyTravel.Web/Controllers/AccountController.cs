@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 
-namespace Easy_Travell_BD.Controllers
+namespace EasyTravel.Web.Controllers
 {
     public class AccountController : Controller
     {

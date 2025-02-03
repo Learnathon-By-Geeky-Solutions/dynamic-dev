@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Easy_Travell_BD.Migrations
+namespace EasyTravel.Web.Migrations
 {
     /// <inheritdoc />
     public partial class UserandBusMigration : Migration
