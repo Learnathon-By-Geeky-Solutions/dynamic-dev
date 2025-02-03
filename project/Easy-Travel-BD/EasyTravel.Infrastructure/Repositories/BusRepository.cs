@@ -33,5 +33,10 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             return _context.Buses.ToList();
         }
+<<<<<<< HEAD
+=======
+
+     
+>>>>>>> 8b0483b (created a partialbusfrom for bus create,update, delete)
     }
 }
