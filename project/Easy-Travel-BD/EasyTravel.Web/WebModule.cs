@@ -8,7 +8,7 @@ using EasyTravel.Infrastructure.Data;
 using EasyTravel.Infrastructure.Repositories;
 using System.ComponentModel;
 
-namespace Easy_Travell_BD
+namespace EasyTravel.Web
 {
     public class WebModule: Module
     {
