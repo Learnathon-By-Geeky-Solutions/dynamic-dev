@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using Easy_Travell_BD.Models;
+using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Easy_Travell_BD.Controllers
+namespace EasyTravel.Web.Controllers
 {
     public class HomeController : Controller
     {
