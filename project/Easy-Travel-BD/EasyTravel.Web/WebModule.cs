@@ -37,12 +37,14 @@ namespace EasyTravel.Web
              .InstancePerLifetimeScope();
             builder.RegisterType<BusRepository>().As<IBusRepository>()
             .InstancePerLifetimeScope();
+            builder.RegisterType<AgencyRepository>().As<IAgencyRepository>()
+            .InstancePerLifetimeScope();
             builder.RegisterType<BusService>().As<IBusService>()
             .InstancePerLifetimeScope();
             builder.RegisterType<UserService>().As<IUserService>()
             .InstancePerLifetimeScope();
-
-
+            builder.RegisterType<AgencyService>().As<IAgencyService>()
+            .InstancePerLifetimeScope();
 
             base.Load(builder);
         }
