@@ -38,8 +38,8 @@ namespace EasyTravel.Web.Controllers
                 HttpContext.Session.SetString("UserName", user.Name);
 
                 return user.Role == "Admin"
-                    ? RedirectToAction("Create", "Bus")
-                    : RedirectToAction("List", "Bus");
+                    ? RedirectToAction("Index", "AdminDashboard", new { area = "Admin" })
+                    : RedirectToAction("Index", "Home", new {area = string.Empty});
             }
             ViewBag.ErrorMessage = "Invalid email or password.";
             return View();
