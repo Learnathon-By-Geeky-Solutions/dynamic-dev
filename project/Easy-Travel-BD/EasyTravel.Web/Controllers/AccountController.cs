@@ -41,7 +41,6 @@ namespace EasyTravel.Web.Controllers
                     ? RedirectToAction("Create", "Bus")
                     : RedirectToAction("List", "Bus");
             }
-
             ViewBag.ErrorMessage = "Invalid email or password.";
             return View();
 
