@@ -11,16 +11,16 @@ namespace EasyTravel.Infrastructure
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public ApplicationUnitOfWork(ApplicationDbContext context,IUserRepository userRepository,IBusRepository busRepository) 
+        public ApplicationUnitOfWork(ApplicationDbContext context,IUserRepository userRepository,IBusRepository busRepository,IAgencyRepository agencyRepository) 
            : base(context)
         {
-
-
             UserRepository = userRepository;
             BusRepository = busRepository;
+            AgencyRepository = agencyRepository;
         }
 
         public IUserRepository UserRepository { get; private set; }
         public IBusRepository BusRepository { get; private set; }
+        public IAgencyRepository AgencyRepository { get; private set; }
     }
 }
