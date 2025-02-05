@@ -12,8 +12,5 @@ namespace EasyTravel.Domain.Repositories
         void Addbus(Bus bus);
         IEnumerable<Bus> GetAllBuses();
         Bus GetBusbyId(int busServiceId);
-
-
-
     }
 }

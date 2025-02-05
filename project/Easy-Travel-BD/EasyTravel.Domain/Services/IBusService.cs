@@ -9,7 +9,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IBusService
     {
-
         void CreateBus(Bus bus);
         IEnumerable<Bus> GetAllBuses();
     }

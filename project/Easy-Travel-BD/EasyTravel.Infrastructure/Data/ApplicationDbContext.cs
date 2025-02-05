@@ -27,9 +27,6 @@ namespace EasyTravel.Infrastructure.Data
               .HasColumnType("decimal(18,2)");
 
         }
-
-
-
         public ApplicationDbContext(string connectionString, string migrationAssembly)
         {
             _connectionString = connectionString;
@@ -46,10 +43,5 @@ namespace EasyTravel.Infrastructure.Data
 
             base.OnConfiguring(optionsBuilder);
         }
-
-       
-
-
-
     }
 }
