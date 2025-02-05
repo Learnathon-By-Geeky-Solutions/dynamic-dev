@@ -28,6 +28,13 @@ namespace EasyTravel.Application.Services
             return _applicationUnitOfWork.UserRepository.GetUserByEmail(email);
         }
 
+        public string GetUserController(string role)
+        {
+            return role == "Admin" 
+                ? "Dashboard" 
+                : "Home";
+        }
+
         public bool IsAdmin(string role)
         {
             return role == "Admin";
