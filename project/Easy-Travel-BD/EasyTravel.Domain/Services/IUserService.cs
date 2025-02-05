@@ -13,6 +13,7 @@ namespace EasyTravel.Domain.Services
         bool AuthenticateUser(string email, string password);
         User GetUserByEmail(string email);
         bool IsLoggedIn(string status);
+        string GetUserController(string role);
         bool IsAdmin(string role);
     }
 }
