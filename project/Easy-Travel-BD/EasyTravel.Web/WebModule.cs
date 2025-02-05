@@ -20,8 +20,6 @@ namespace EasyTravel.Web
         {
             _connectionString = connectionString;
             _migrationAssembly = migrationAssembly;
-
-
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -45,6 +43,8 @@ namespace EasyTravel.Web
             .InstancePerLifetimeScope();
             builder.RegisterType<AgencyService>().As<IAgencyService>()
             .InstancePerLifetimeScope();
+
+            builder.RegisterType<SessionService>().As<ISessionService>().InstancePerLifetimeScope();
 
             base.Load(builder);
         }
