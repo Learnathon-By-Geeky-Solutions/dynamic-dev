@@ -1,4 +1,6 @@
-﻿using EasyTravel.Web.Areas.Admin.Models;
+﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Services;
+using EasyTravel.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
@@ -6,6 +8,11 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class AgencyController : Controller
     {
+        private readonly IAgencyService _agencyService;
+        public AgencyController(IAgencyService agencyService)
+        {
+            _agencyService = agencyService;
+        }
         public IActionResult Index()
         {
             return View();
@@ -16,8 +23,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(AgencyModel model)
+        public IActionResult Create(Agency model)
         {
+            if (ModelState.IsValid)
+            {
+                _agencyService.AddAgency(model);
+            }
             return View();
         }
         [HttpGet]
