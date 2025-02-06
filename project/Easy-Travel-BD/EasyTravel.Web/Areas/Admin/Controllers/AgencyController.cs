@@ -37,8 +37,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Update(AgencyModel model)
+        public IActionResult Update(Agency model)
         {
+            if (ModelState.IsValid)
+            {
+                _agencyService.UpdateAgency(model);
+            }
             return View();
         }
         [HttpGet]
@@ -47,8 +51,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Delete(AgencyModel model)
+        public IActionResult Delete(int? id)
         {
+            if (ModelState.IsValid)
+            
+                _agencyService.DeleteAgency();
+            }
             return View();
         }
     }

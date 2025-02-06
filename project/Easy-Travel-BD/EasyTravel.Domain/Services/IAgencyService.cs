@@ -10,5 +10,7 @@ namespace EasyTravel.Domain.Services
     public interface IAgencyService
     {
         void AddAgency(Agency agency);
+        void UpdateAgency(Agency agency);
+        void DeleteAgency(Agency agency);
     }
 }
