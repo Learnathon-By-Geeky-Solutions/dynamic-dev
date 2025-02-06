@@ -1,18 +1,10 @@
-﻿<div class="list-group">
-<a asp-area="Admin" asp-controller="" asp-action="Index" class="list-group-item list-group-item-action list-group-item-primary">User</a>
-<br />
-    <a asp-area="Admin" asp-controller="" asp-action="Index" class="list-group-item list-group-item-action list-group-item-secondary">Passengers</a>
-<br />
-    <a asp-area="Admin" asp-controller="" asp-action="Index" class="list-group-item list-group-item-action list-group-item-success">Flight</a>
-<br />
-    <a asp-area="Admin" asp-controller="" asp-action="Index" class="list-group-item list-group-item-action list-group-item-warning">Offer</a>
-<br />
-    <a asp-area="Admin" asp-controller="" asp-action="Index" class="list-group-item list-group-item-action list-group-item-info">Hotel</a>
-<br />
-    <a asp-area="Admin" asp-controller="" asp-action="Index" class="list-group-item list-group-item-action list-group-item-danger">Aircraft</a>
-<br />
-    <a asp-area="Admin" asp-controller="" asp-action="Index" class="list-group-item list-group-item-action list-group-item-dark">Private Service</a>
-<br />
-    <a asp-area="Admin" asp-controller="" asp-action="Index" class="list-group-item list-group-item-action list-group-item-success">Transport</a>
-<br />
+﻿@{
+    var controllers = new List<string>();
+}
+<div class="list-group">
+    @for(int i = 0; i < 8; i++)
+    {
+        <a asp-area="Admin" asp-controller="" asp-action="Index" class="list-group-item list-group-item-action list-group-item-primary">User</a>
+        <br />
+    }
 </div>
