@@ -11,6 +11,8 @@ namespace EasyTravel.Domain.Services
     {
         void AddAgency(Agency agency);
         void UpdateAgency(Agency agency);
-        void DeleteAgency(Agency agency);
+        void DeleteAgency(Guid id);
+
+        Agency GetAgencyById(Guid id);
     }
 }
