@@ -21,5 +21,17 @@ namespace EasyTravel.Application.Services
             _applicationunitOfWork.AgencyRepository.Add(agency);
             _applicationunitOfWork.Save();
         }
+
+        public void DeleteAgency(Agency agency)
+        {
+            _applicationunitOfWork.AgencyRepository.Remove(agency);
+            _applicationunitOfWork.Save();
+        }
+
+        public void UpdateAgency(Agency agency)
+        {
+            _applicationunitOfWork.AgencyRepository.Edit(agency);
+            _applicationunitOfWork.Save();
+        }
     }
 }
