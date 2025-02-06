@@ -51,11 +51,11 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(Guid id)
         {
             if (ModelState.IsValid)
-            
-                _agencyService.DeleteAgency();
+            {
+                _agencyService.DeleteAgency(id);
             }
             return View();
         }
