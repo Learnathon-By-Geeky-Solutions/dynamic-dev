@@ -18,6 +18,7 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Bus> Buses { get; set; }
 
+        public DbSet<Agency> Agencies { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -26,6 +27,10 @@ namespace EasyTravel.Infrastructure.Data
               .Property(b => b.Price)
               .HasColumnType("decimal(18,2)");
 
+            modelBuilder.Entity<Agency>()
+                .Property(a => a.AddDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
         }
         public ApplicationDbContext(string connectionString, string migrationAssembly)
         {
