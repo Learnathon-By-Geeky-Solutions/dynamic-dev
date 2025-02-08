@@ -39,7 +39,17 @@
                 <input asp-for="Website" class="form-control" />
             </label>
             <span asp-validation-for="Website" class="text-danger"></span>
-        </div>
+        </div> 
+        @if((string?)action == "Update")
+        {
+            <div class="form-group">
+                <label for="AddDate" style="width:100%">
+                    AddDate
+                    <input asp-for="AddDate" class="form-control" type="datetime-local"/>
+                </label>
+                <span asp-validation-for="AddDate" class="text-danger"></span>
+            </div>
+        }
         <div class="form-group">
             <button type="submit" class="btn btn-primary me-2">@action</button>
             <a asp-area="Admin" asp-controller="Agency" asp-action="Index" class="btn btn-secondary">Back to List</a>
