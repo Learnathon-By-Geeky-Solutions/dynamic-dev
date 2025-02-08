@@ -17,7 +17,6 @@ namespace EasyTravel.Infrastructure.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Bus> Buses { get; set; }
-
         public DbSet<Agency> Agencies { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +30,21 @@ namespace EasyTravel.Infrastructure.Data
                 .Property(a => a.AddDate)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Agency>()
+                .Property(a => a.Id)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("NEWID()");
+
+            modelBuilder.Entity<Agency>().HasData(
+            new Agency
+            {
+                Id = new Guid("b8a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
+                Name = "Irfan",
+                Address = "Mirpur",
+                ContactNumber = "01723695124",
+                Website = "irfan.com",
+                LicenseNumber = "365981"
+            });
         }
         public ApplicationDbContext(string connectionString, string migrationAssembly)
         {
