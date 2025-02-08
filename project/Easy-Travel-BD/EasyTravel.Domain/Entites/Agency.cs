@@ -9,6 +9,7 @@ namespace EasyTravel.Domain.Entites
 {
     public class Agency : IEntity<Guid>
     {
+        [Key]
         public Guid Id { get; set; }
         
         public required string Name { get; set; }
