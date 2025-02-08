@@ -33,14 +33,16 @@ namespace EasyTravel.Domain.Entites
         [MaxLength(500)]
         public required string Bio { get; set; }
 
+        [DataType(DataType.Date)]
+        public required DateTime DateOfBirth { get; set; }
+
         [StringLength(500)]
+
         public required string LanguagesSpoken { get; set; }
 
         public required string Specialization { get; set; }
 
         public required int YearsOfExperience { get; set; }
-
-        public required string Certifications { get; set; }
 
         public required string LicenseNumber { get; set; }
 
@@ -55,7 +57,7 @@ namespace EasyTravel.Domain.Entites
         public DateTime UpdatedAt { get; set; }
 
 
-        public string Status { get; set; }
+        public string? Status { get; set; }
 
         public required Guid AgencyId { get; set; } // Foreign Key
 
