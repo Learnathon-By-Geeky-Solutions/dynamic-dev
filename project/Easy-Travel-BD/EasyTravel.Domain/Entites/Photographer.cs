@@ -12,42 +12,42 @@ namespace EasyTravel.Domain.Entites
         public Guid Id { get; set; }
 
         
-        public string FirstName { get; set; }
+        public required string FirstName { get; set; }
 
         
-        public string LastName { get; set; }
+        public required string LastName { get; set; }
 
         
         [EmailAddress]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [Phone]
-        public string PhoneNumber { get; set; }
+        public required string PhoneNumber { get; set; }
 
-        public string Address { get; set; }
+        public required string Address { get; set; }
 
-        public string ProfilePicture { get; set; }
+        public required string ProfilePicture { get; set; }
 
         [MaxLength(500)]
-        public string Bio { get; set; }
+        public required string Bio { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime DateOfBirth { get; set; }
+        public required DateTime DateOfBirth { get; set; }
 
         public DateTime HireDate { get; set; }
 
-        
-        public string Status { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public string Status { get; set; } = "Active";
 
-        public string SocialMediaLinks { get; set; }
+        public string? SocialMediaLinks { get; set; }
 
-        public string Skills { get; set; }
+        public required string Skills { get; set; }
 
         public decimal Rating { get; set; }
 
-        public string PortfolioUrl { get; set; }
+        public string? PortfolioUrl { get; set; }
 
-        public int AgencyId { get; set; } // Foreign Key
+        public required Guid AgencyId { get; set; } // Foreign Key
         public Agency Agency { get; set; } // Navigation 
     }
 }
