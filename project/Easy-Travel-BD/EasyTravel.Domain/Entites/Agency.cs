@@ -22,7 +22,7 @@ namespace EasyTravel.Domain.Entites
         
         public required string LicenseNumber { get; set; }
 
-        public required DateTime AddDate { get; set; }
+        public DateTime AddDate { get; set; }
 
         //public List<Photographer>? Photographers { get; set; }
         //public List<Photographer>? Guides { get; set; }
