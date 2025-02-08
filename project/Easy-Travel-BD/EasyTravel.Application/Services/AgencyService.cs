@@ -33,6 +33,11 @@ namespace EasyTravel.Application.Services
             return _applicationunitOfWork.AgencyRepository.GetById(id);
         }
 
+        public IEnumerable<Agency> GetAllAgencies()
+        {
+            return _applicationunitOfWork.AgencyRepository.GetAll();
+        }
+
         public void UpdateAgency(Agency agency)
         {
             _applicationunitOfWork.AgencyRepository.Edit(agency);
