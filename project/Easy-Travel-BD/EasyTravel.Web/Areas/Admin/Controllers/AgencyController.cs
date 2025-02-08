@@ -38,6 +38,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if(id == Guid.Empty)
             {
+                return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             var agency = _agencyService.GetAgencyById(id);
             return View(agency);
@@ -48,6 +49,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _agencyService.UpdateAgency(model);
+                return RedirectToAction("Index", "Agency", new { area = "Admin" });
             }
             return View();
         }
