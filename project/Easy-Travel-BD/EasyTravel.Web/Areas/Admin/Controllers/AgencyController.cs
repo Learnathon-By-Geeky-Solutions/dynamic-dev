@@ -29,6 +29,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _agencyService.AddAgency(model);
+                return RedirectToAction("Index", "Agency", new { area = "Admin" });
             }
             return View();
         }
