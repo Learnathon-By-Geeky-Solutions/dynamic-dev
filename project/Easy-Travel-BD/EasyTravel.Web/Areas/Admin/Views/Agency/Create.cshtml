@@ -7,39 +7,44 @@
     <h2 class="card-title text-center">Create Agency</h2>
     <form method="post" asp-action="Create">
         <div class="form-group">
-            <label asp-for="Name" style="width:100%">
+            <label for="Name" style="width:100%">
+                Name
                 <input asp-for="Name" class="form-control" required />
             </label>
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Address" style="width:100%">
+            <label for="Address" style="width:100%">
+                Address
                 <input asp-for="Address" class="form-control" required/>
             </label>
             <span asp-validation-for="Address" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="ContactNumber" style="width:100%">
+            <label for="ContactNumber" style="width:100%">
+                ContactNumber
                 <input asp-for="ContactNumber" class="form-control" required />
             </label>
             <span asp-validation-for="ContactNumber" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="LicenseNumber" style="width:100%">
+            <label for="LicenseNumber" style="width:100%">
+                LicenseNumber
                 <input asp-for="LicenseNumber" class="form-control" required />
             </label>
             <span asp-validation-for="LicenseNumber" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Website" style="width:100%">Optional
+            <label for="Website" style="width:100%">
+                Website (Optional)
                 <input asp-for="Website" class="form-control" type="datetime-local" required />
             </label>
             <span asp-validation-for="Website" class="text-danger"></span>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary me-2">Create</button>
-            <a asp-area="Admin" asp-controller="Agency" asp-action="Index">Back to List</a>
+            <a asp-area="Admin" asp-controller="Agency" asp-action="Index" class="btn btn-secondary">Back to List</a>
         </div>
     </form>
-</div>>
+</div>
 
