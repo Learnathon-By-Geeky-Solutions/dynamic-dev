@@ -54,18 +54,24 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Delete()
-        {
-            return View();
-        }
-        [HttpPost]
         public IActionResult Delete(Guid id)
         {
-            if (ModelState.IsValid)
+            if (id == Guid.Empty)
             {
-                _agencyService.DeleteAgency(id);
+                return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            return View();
+            var agency = _agencyService.GetAgencyById(id);
+            return View(agency);
+        }
+        [HttpPost]
+        public IActionResult Delete(Agency model)
+        {
+            if (model.Id == Guid.Empty)
+            {
+                return RedirectToAction("Error", "Home", new { area = "Admin" });
+            }
+            _agencyService.DeleteAgency(model.Id);
+            return RedirectToAction("Index", "Agency", new { area = "Admin" });
         }
     }
 }
