@@ -15,7 +15,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            var agencies = _agencyService.GetAllAgencies();
+            return View(agencies);
         }
         [HttpGet]
         public IActionResult Create()
@@ -32,9 +33,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Update()
+        public IActionResult Update(Guid id)
         {
-            return View();
+            if(id == Guid.Empty)
+            {
+            }
+            var agency = _agencyService.GetAgencyById(id);
+            return View(agency);
         }
         [HttpPost]
         public IActionResult Update(Agency model)
