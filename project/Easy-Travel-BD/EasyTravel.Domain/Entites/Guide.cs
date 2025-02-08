@@ -13,51 +13,51 @@ namespace EasyTravel.Domain.Entites
 
         
         [StringLength(100)]
-        public string FirstName { get; set; }
+        public required string FirstName { get; set; }
 
         
         [StringLength(100)]
-        public string LastName { get; set; }
+        public required string LastName { get; set; }
 
         
         [EmailAddress]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [Phone]
-        public string PhoneNumber { get; set; }
+        public required string ContactNumber { get; set; }
 
-        public string Address { get; set; }
+        public required string Address { get; set; }
 
-        public string ProfilePicture { get; set; }
+        public required string ProfilePicture { get; set; }
 
         [MaxLength(500)]
-        public string Bio { get; set; }
+        public required string Bio { get; set; }
 
         [StringLength(500)]
-        public string LanguagesSpoken { get; set; }
+        public required string LanguagesSpoken { get; set; }
 
-        public string Specialization { get; set; }
+        public required string Specialization { get; set; }
 
-        public int YearsOfExperience { get; set; }
+        public required int YearsOfExperience { get; set; }
 
-        public string Certifications { get; set; }
+        public required string Certifications { get; set; }
 
-        public string LicenseNumber { get; set; }
+        public required string LicenseNumber { get; set; }
 
-        public bool Availability { get; set; }
+        public required bool Availability { get; set; }
 
-        public decimal HourlyRate { get; set; }
+        public required decimal HourlyRate { get; set; }
 
         public decimal Rating { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime HireDate { get; set; }
 
         public DateTime UpdatedAt { get; set; }
 
-        
+
         public string Status { get; set; }
 
-        public int AgencyId { get; set; } // Foreign Key
+        public required Guid AgencyId { get; set; } // Foreign Key
 
         public Agency Agency { get; set; } // Navigation Property
 
