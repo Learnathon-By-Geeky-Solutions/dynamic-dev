@@ -35,6 +35,36 @@ namespace EasyTravel.Infrastructure.Data
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWID()");
 
+            modelBuilder.Entity<Photographer>()
+                .Property(a => a.HireDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Photographer>()
+                .Property(a => a.Id)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("NEWID()");
+            modelBuilder.Entity<Photographer>()
+              .Property(b => b.Rating)
+              .HasColumnType("decimal(3,2)");
+            modelBuilder.Entity<Photographer>()
+               .Property(a => a.Status)
+               .HasDefaultValue("Active");
+
+            modelBuilder.Entity<Guide>()
+           .Property(a => a.HireDate)
+           .ValueGeneratedOnAdd()
+           .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Guide>()
+                .Property(a => a.Id)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("NEWID()");
+            modelBuilder.Entity<Guide>()
+              .Property(b => b.Rating)
+              .HasColumnType("decimal(3,2)");
+            modelBuilder.Entity<Guide>()
+                .Property(a => a.Status)
+                .HasDefaultValue("Active");
+
             modelBuilder.Entity<Agency>().HasData(
             new Agency
             {
@@ -45,6 +75,49 @@ namespace EasyTravel.Infrastructure.Data
                 Website = "irfan.com",
                 LicenseNumber = "365981"
             });
+
+            modelBuilder.Entity<Photographer>().HasData(
+           new Photographer
+           {
+               Id = new Guid("2a3d2f79-4f8e-4f87-8a38-41c70f4284b6"),
+               FirstName = "John",
+               LastName = "Doe",
+               Email = "john.doe@example.com",
+               PhoneNumber = "123-456-7890",
+               Address = "123 Main St, Anytown, USA",
+               ProfilePicture = "profile.jpg",
+               Bio = "Experienced software developer with a passion for building scalable web applications.",
+               DateOfBirth = new DateTime(1985, 5, 15),
+               Status = "Active",
+               SocialMediaLinks = "https://twitter.com/johndoe",
+               Skills = "C#, ASP.NET Core, JavaScript, SQL",
+               Rating = 4.5m,
+               PortfolioUrl = "https://johndoeportfolio.com",
+               AgencyId = new Guid("b8a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b")
+           });
+
+            modelBuilder.Entity<Guide>().HasData(
+           new Guide
+           {
+               Id = new Guid("8a9c56d0-8be6-4d34-8e0f-8a7c0a7d9637"),
+               FirstName = "John",
+               LastName = "Doe",
+               Email = "john.doe@example.com",
+               ContactNumber = "+1234567890",
+               Address = "1234 Main St, City, Country",
+               ProfilePicture = "profile-pic.jpg",
+               Bio = "Experienced professional with a background in various fields.",
+               LanguagesSpoken = "English, Spanish",
+               Specialization = "Software Development",
+               YearsOfExperience = 5,
+               Certifications = "Certified .NET Developer",
+               LicenseNumber = "ABC123456",
+               Availability = true,
+               HourlyRate = 50.00m,
+               Rating = 4.5m,
+               Status = "Active",
+               AgencyId = new Guid("b8a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b")
+           });
         }
         public ApplicationDbContext(string connectionString, string migrationAssembly)
         {
