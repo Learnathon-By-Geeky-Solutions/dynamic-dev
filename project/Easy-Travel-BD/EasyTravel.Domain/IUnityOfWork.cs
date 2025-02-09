@@ -8,7 +8,6 @@ namespace EasyTravel.Domain
 {
     public interface IUnityOfWork
     {
-
         void Save();
     }
 }

@@ -10,14 +10,14 @@ namespace EasyTravel.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-
-
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
 
         public DbSet<User> Users { get; set; }
         public DbSet<Bus> Buses { get; set; }
         public DbSet<Agency> Agencies { get; set; }
+        public DbSet<Photographer> Photographers { get; set; }
+        public DbSet<Guide> Guides { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
