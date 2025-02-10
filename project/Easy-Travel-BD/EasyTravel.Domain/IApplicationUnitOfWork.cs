@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain
 {
-    public interface IApplicationUnitOfWork: IUnityOfWork
+    public interface IApplicationUnitOfWork: IUnitOfWork
     {
 
         public IUserRepository UserRepository { get; }
