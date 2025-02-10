@@ -1,5 +1,5 @@
 ﻿/* Container for the entire list */
-.agency-list {
+.entity-list {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -7,18 +7,18 @@
     padding: 20px;
 }
 
-    .agency-list h2 {
+    .entity-list h2 {
         text-align: center;
         margin-bottom:20px;
     }
 
 /* Each row (record) */
-.agency-row {
+.entity-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 15px;
+    gap: 20px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -27,20 +27,19 @@
     transition: transform 0.2s;
 }
 
-    .agency-row:hover {
+    .entity-row:hover {
         transform: scale(1.05);
     }
     /* Making sure all fields have enough spacing */
-    .agency-row span {
+    .entity-row span {
         flex: 1;
-        min-width: 120px;
+        width: auto;
         text-align: left;
     }
 
     /* Ensure the first column (Name) stands out */
-    .agency-row .name {
+    .entity-row .name {
         font-weight: bold;
-        min-width: 150px;
     }
 
 /* Button container (aligns buttons to the right) */
@@ -50,8 +49,8 @@
 }
 
     /* Common button styling */
-    .actions a, .agency-list a{
-        text-decoration:none;
+    .actions a, .entity-list a {
+        text-decoration: none;
         padding: 8px 12px;
         border: none;
         border-radius: 5px;
@@ -66,7 +65,8 @@ create-btn{
 }
 
 .create-btn a{
-    width:16%;
+    width:auto;
+    display:inline-block;
     background-color: forestgreen;
     color: white;
     font-weight: bold;
@@ -100,12 +100,12 @@ create-btn{
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .agency-row {
+    .entity-row {
         flex-direction: column;
         align-items: flex-start;
     }
 
-        .agency-row span {
+        .entity-row span {
             min-width: unset;
             width: 100%;
         }

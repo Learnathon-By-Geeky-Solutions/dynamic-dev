@@ -3,14 +3,14 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="agency-list">
+<div class="entity-list">
     <h2>Agency List</h2>
     <div class="create-btn">
         <a asp-area="Admin" asp-controller="Agency" asp-action="Create">Create Agency</a>
     </div>
     @foreach (var agency in Model)
     {
-        <div class="agency-row">
+        <div class="entity-row">
             <span class="name">@agency.Name</span>
             <span>@agency.Address</span>
             <span>@agency.ContactNumber</span>
