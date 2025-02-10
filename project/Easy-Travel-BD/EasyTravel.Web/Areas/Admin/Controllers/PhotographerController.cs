@@ -24,10 +24,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var model = _photographerService.CreatePhographerInstance();
+            var model = _photographerService.GetInstance();
             var agencyList = _agencyService.GetAllAgencies();
             model.Agencies = agencyList.ToList();
-            return View(agencyList);
+            return View(model);
         }
         [HttpPost]
         public IActionResult Create(Photographer model)
