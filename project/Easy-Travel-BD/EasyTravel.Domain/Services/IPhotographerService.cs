@@ -13,7 +13,8 @@ namespace EasyTravel.Domain.Services
         void UpdatePhotographer(Photographer Photographer);
         void DeletePhotographer(Guid id);
         Photographer GetPhotographerById(Guid id);
-
         IEnumerable<Photographer> GetAllPhotographers();
+
+        Photographer CreatePhographerInstance();
     }
 }

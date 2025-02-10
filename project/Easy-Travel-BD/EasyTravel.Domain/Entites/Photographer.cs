@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,6 +59,10 @@ namespace EasyTravel.Domain.Entites
 
         public required Guid AgencyId { get; set; } // Foreign Key
 
-        public Agency Agency { get; set; } // Navigation Property
+        public Agency? Agency { get; set; } // Navigation Property
+
+        [NotMapped]
+        public List<Agency>? Agencies { get; set; }
+
     }
 }

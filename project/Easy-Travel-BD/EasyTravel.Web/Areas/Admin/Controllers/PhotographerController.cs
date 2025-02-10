@@ -10,9 +10,11 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     public class PhotographerController : Controller
     {
         private readonly IPhotographerService _photographerService;
-        public PhotographerController(IPhotographerService photographerService)
+        private readonly IAgencyService _agencyService;
+        public PhotographerController(IPhotographerService photographerService, IAgencyService agencyService)
         {
             _photographerService = photographerService;
+            _agencyService = agencyService;
         }
         public IActionResult Index()
         {
@@ -22,7 +24,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var model = _photographerService.CreatePhographerInstance();
+            var agencyList = _agencyService.GetAllAgencies();
+            model.Agencies = agencyList.ToList();
+            return View(agencyList);
         }
         [HttpPost]
         public IActionResult Create(Photographer model)
