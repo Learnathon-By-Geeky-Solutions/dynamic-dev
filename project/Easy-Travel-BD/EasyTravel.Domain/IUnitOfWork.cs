@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain
 {
-    public interface IUnityOfWork
+    public interface IUnitOfWork
     {
         void Save();
     }
