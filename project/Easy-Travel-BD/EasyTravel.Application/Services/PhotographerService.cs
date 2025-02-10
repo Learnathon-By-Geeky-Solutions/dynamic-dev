@@ -23,7 +23,7 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork.Save();
         }
 
-        public Photographer CreatePhographerInstance()
+        public Photographer GetInstance()
         {
             var model = new Photographer()
             {
