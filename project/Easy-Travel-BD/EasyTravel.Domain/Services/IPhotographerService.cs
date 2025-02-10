@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IPhotographerService
+    public interface IPhotographerService : IService<Photographer>
     {
         void AddPhotographer(Photographer Photographer);
         void UpdatePhotographer(Photographer Photographer);
         void DeletePhotographer(Guid id);
         Photographer GetPhotographerById(Guid id);
         IEnumerable<Photographer> GetAllPhotographers();
-
-        Photographer CreatePhographerInstance();
     }
 }
