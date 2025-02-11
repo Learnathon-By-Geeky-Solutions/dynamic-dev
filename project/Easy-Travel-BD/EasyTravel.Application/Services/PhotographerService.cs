@@ -17,12 +17,6 @@ namespace EasyTravel.Application.Services
         {
             _applicationUnitOfWork = applicationUnitOfWork;
         }
-        public void AddPhotographer(Photographer Photographer)
-        {
-            _applicationUnitOfWork.PhotographerRepository.Add(Photographer);
-            _applicationUnitOfWork.Save();
-        }
-
         public Photographer GetInstance()
         {
             var model = new Photographer()
@@ -49,26 +43,32 @@ namespace EasyTravel.Application.Services
             return model;
         }
 
-        public void DeletePhotographer(Guid id)
+        public void Create(Photographer Photographer)
+        {
+            _applicationUnitOfWork.PhotographerRepository.Add(Photographer);
+            _applicationUnitOfWork.Save();
+        }
+
+        public void Update(Photographer Photographer)
+        {
+            _applicationUnitOfWork.PhotographerRepository.Edit(Photographer);
+            _applicationUnitOfWork.Save();
+        }
+
+        public void Delete(Guid id)
         {
             _applicationUnitOfWork.PhotographerRepository.Remove(id);
             _applicationUnitOfWork.Save();
         }
 
-        public IEnumerable<Photographer> GetAllPhotographers()
-        {
-            return _applicationUnitOfWork.PhotographerRepository.GetAll();
-        }
-
-        public Photographer GetPhotographerById(Guid id)
+        public Photographer Get(Guid id)
         {
             return _applicationUnitOfWork.PhotographerRepository.GetById(id);
         }
 
-        public void UpdatePhotographer(Photographer Photographer)
+        public IEnumerable<Photographer> GetAll()
         {
-            _applicationUnitOfWork.PhotographerRepository.Edit(Photographer);
-            _applicationUnitOfWork.Save();
+            return _applicationUnitOfWork.PhotographerRepository.GetAll();
         }
     }
 }

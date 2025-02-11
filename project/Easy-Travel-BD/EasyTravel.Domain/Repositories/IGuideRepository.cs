@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyTravel.Domain.Services
+namespace EasyTravel.Domain.Repositories
 {
-    public interface IPhotographerService : IService<Photographer>
+    public interface IGuideRepository : IRepository<Guide,Guid>
     {
-        
     }
 }

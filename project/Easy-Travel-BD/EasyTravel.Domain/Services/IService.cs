@@ -9,6 +9,11 @@ namespace EasyTravel.Domain.Services
 {
     public interface IService<TEntity>
     {
+        void Create(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(Guid id);
+        TEntity Get(Guid id);
+        IEnumerable<TEntity> GetAll();
         TEntity GetInstance();
     }
 }
