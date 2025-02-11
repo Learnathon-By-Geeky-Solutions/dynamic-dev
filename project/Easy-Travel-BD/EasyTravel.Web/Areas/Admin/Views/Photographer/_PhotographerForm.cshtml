@@ -146,26 +146,10 @@
             </label>
         </div>
 
-        @if ((string?)action == "Update")
-        {
-            <div class="form-group">
-                <label for="HireDate" style="width:100%">
-                    AddDate
-                    <input asp-for="HireDate" class="form-control" type="datetime-local" required="@(isDisabled ? null : "required")" />
-                </label>
-                <span asp-validation-for="HireDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="UpdatedAt" style="width:100%">
-                    Updated At
-                    <input asp-for="UpdatedAt" class="form-control" type="datetime-local" disabled="@(isDisabled ? "disabled" : null)" />
-                </label>
-            </div>
-        }
         <div class="form-group">
             <label for="Id" style="width:100%">
                 Select Agency
-                <select asp-for="Id" class="form-control" required="@(isDisabled ? null : "required")"
+                <select asp-for="AgencyId" class="form-control" required="@(isDisabled ? null : "required")"
                         disabled="@(isDisabled ? "disabled" : null)">
                     <option value="">-- Select ID --</option>
                     @foreach (var agency in Model.Agencies)
