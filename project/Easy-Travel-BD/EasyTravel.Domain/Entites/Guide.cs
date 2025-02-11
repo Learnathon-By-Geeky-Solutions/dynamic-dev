@@ -61,7 +61,7 @@ namespace EasyTravel.Domain.Entites
 
         public required Guid AgencyId { get; set; } // Foreign Key
 
-        public Agency Agency { get; set; } // Navigation Property
+        public Agency? Agency { get; set; } // Navigation Property
 
     }
 
