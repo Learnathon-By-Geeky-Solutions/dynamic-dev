@@ -15,7 +15,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            var agencies = _agencyService.GetAllAgencies();
+            var agencies = _agencyService.GetAll();
             return View(agencies);
         }
         [HttpGet]
@@ -28,7 +28,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _agencyService.AddAgency(model);
+                _agencyService.Create(model);
                 return RedirectToAction("Index", "Agency", new { area = "Admin" });
             }
             return View();
@@ -40,7 +40,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var agency = _agencyService.GetAgencyById(id);
+            var agency = _agencyService.Get(id);
             return View(agency);
         }
         [HttpPost]
@@ -48,7 +48,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _agencyService.UpdateAgency(model);
+                _agencyService.Update(model);
                 return RedirectToAction("Index", "Agency", new { area = "Admin" });
             }
             return View();
@@ -60,7 +60,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var agency = _agencyService.GetAgencyById(id);
+            var agency = _agencyService.Get(id);
             return View(agency);
         }
         [HttpPost]
@@ -70,7 +70,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            _agencyService.DeleteAgency(model.Id);
+            _agencyService.Delete(model.Id);
             return RedirectToAction("Index", "Agency", new { area = "Admin" });
         }
     }
