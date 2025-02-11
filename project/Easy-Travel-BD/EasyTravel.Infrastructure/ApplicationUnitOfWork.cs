@@ -23,7 +23,7 @@ namespace EasyTravel.Infrastructure
         public IUserRepository UserRepository { get; private set; }
         public IBusRepository BusRepository { get; private set; }
         public IAgencyRepository AgencyRepository { get; private set; }
-
         public IPhotographerRepository PhotographerRepository { get;private set; }
+        public IGuideRepository GuideRepository { get; private set; }
     }
 }

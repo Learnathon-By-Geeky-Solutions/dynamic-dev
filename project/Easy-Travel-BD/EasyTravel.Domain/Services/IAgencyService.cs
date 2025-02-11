@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IAgencyService
+    public interface IAgencyService : IService<Agency>
     {
-        void AddAgency(Agency agency);
-        void UpdateAgency(Agency agency);
-        void DeleteAgency(Guid id);
-        Agency GetAgencyById(Guid id);
-
-        IEnumerable<Agency> GetAllAgencies();
     }
 }
