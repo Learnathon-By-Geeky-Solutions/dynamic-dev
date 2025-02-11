@@ -16,29 +16,35 @@ namespace EasyTravel.Application.Services
         {
             _applicationunitOfWork = applicationunitOfWork;
         }
-        public void AddAgency(Agency agency)
+
+        public void Create(Agency agency)
         {
             _applicationunitOfWork.AgencyRepository.Add(agency);
             _applicationunitOfWork.Save();
         }
 
-        public void DeleteAgency(Guid id)
+        public void Delete(Guid id)
         {
             _applicationunitOfWork.AgencyRepository.Remove(id);
             _applicationunitOfWork.Save();
         }
 
-        public Agency GetAgencyById(Guid id)
+        public Agency Get(Guid id)
         {
             return _applicationunitOfWork.AgencyRepository.GetById(id);
         }
 
-        public IEnumerable<Agency> GetAllAgencies()
+        public IEnumerable<Agency> GetAll()
         {
             return _applicationunitOfWork.AgencyRepository.GetAll();
         }
 
-        public void UpdateAgency(Agency agency)
+        public Agency GetInstance()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Agency agency)
         {
             _applicationunitOfWork.AgencyRepository.Edit(agency);
             _applicationunitOfWork.Save();
