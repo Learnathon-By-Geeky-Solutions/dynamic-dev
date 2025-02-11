@@ -46,14 +46,17 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var Photographer = _photographerService.GetPhotographerById(id);
-            return View(Photographer);
+            var agencyList = _agencyService.GetAllAgencies();
+            var model = _photographerService.GetPhotographerById(id);
+            model.Agencies = agencyList.ToList();
+            return View(model);
         }
         [HttpPost]
         public IActionResult Update(Photographer model)
         {
             if (ModelState.IsValid)
             {
+                model.UpdatedAt = DateTime.Now;
                 _photographerService.UpdatePhotographer(model);
                 return RedirectToAction("Index", "Photographer", new { area = "Admin" });
             }
@@ -66,8 +69,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var Photographer = _photographerService.GetPhotographerById(id);
-            return View(Photographer);
+            var agencyList = _agencyService.GetAllAgencies();
+            var model = _photographerService.GetPhotographerById(id);
+            model.Agencies = agencyList.ToList();
+            return View(model);
         }
         [HttpPost]
         public IActionResult Delete(Photographer model)
