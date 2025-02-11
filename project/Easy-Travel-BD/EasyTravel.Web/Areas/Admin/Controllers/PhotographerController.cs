@@ -18,14 +18,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            var photographers = _photographerService.GetAllPhotographers();
+            var photographers = _photographerService.GetAll();
             return View(photographers);
         }
         [HttpGet]
         public IActionResult Create()
         {
             var model = _photographerService.GetInstance();
-            var agencyList = _agencyService.GetAllAgencies();
+            var agencyList = _agencyService.GetAll();
             model.Agencies = agencyList.ToList();
             return View(model);
         }
@@ -34,7 +34,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _photographerService.AddPhotographer(model);
+                _photographerService.Create(model);
                 return RedirectToAction("Index", "Photographer", new { area = "Admin" });
             }
             return View();
@@ -46,8 +46,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var agencyList = _agencyService.GetAllAgencies();
-            var model = _photographerService.GetPhotographerById(id);
+            var agencyList = _agencyService.GetAll();
+            var model = _photographerService.Get(id);
             model.Agencies = agencyList.ToList();
             return View(model);
         }
@@ -57,7 +57,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.UpdatedAt = DateTime.Now;
-                _photographerService.UpdatePhotographer(model);
+                _photographerService.Update(model);
                 return RedirectToAction("Index", "Photographer", new { area = "Admin" });
             }
             return View();
@@ -69,8 +69,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var agencyList = _agencyService.GetAllAgencies();
-            var model = _photographerService.GetPhotographerById(id);
+            var agencyList = _agencyService.GetAll();
+            var model = _photographerService.Get(id);
             model.Agencies = agencyList.ToList();
             return View(model);
         }
@@ -81,7 +81,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            _photographerService.DeletePhotographer(model.Id);
+            _photographerService.Delete(model.Id);
             return RedirectToAction("Index", "Photographer", new { area = "Admin" });
         }
     }
