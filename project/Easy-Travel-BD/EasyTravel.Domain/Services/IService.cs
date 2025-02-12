@@ -14,6 +14,5 @@ namespace EasyTravel.Domain.Services
         void Delete(Guid id);
         TEntity Get(Guid id);
         IEnumerable<TEntity> GetAll();
-        TEntity GetInstance();
     }
 }

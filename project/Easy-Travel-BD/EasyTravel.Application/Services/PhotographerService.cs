@@ -10,38 +10,38 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
-    public class PhotographerService : IPhotographerService
+    public class PhotographerService :  IPhotographerService
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
-        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork)
+        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork) 
         {
             _applicationUnitOfWork = applicationUnitOfWork;
         }
-        public Photographer GetInstance()
-        {
-            var model = new Photographer()
-            {
-                FirstName = string.Empty,
-                LastName = string.Empty,
-                Email = string.Empty,
-                ContactNumber = string.Empty,
-                Address = string.Empty,
-                ProfilePicture = string.Empty,
-                Bio = string.Empty,
-                DateOfBirth = DateTime.MinValue,
-                Skills = string.Empty,
-                PortfolioUrl = string.Empty,
-                Specialization = string.Empty,
-                YearsOfExperience = 0,
-                Availability = false,
-                HourlyRate = 0,
-                Rating = 0,
-                SocialMediaLinks = null,
-                Status = null,
-                AgencyId = default
-            };
-            return model;
-        }
+        //public Photographer GetInstance()
+        //{
+        //    var model = new Photographer()
+        //    {
+        //        FirstName = string.Empty,
+        //        LastName = string.Empty,
+        //        Email = string.Empty,
+        //        ContactNumber = string.Empty,
+        //        Address = string.Empty,
+        //        ProfilePicture = string.Empty,
+        //        Bio = string.Empty,
+        //        DateOfBirth = DateTime.MinValue,
+        //        Skills = string.Empty,
+        //        PortfolioUrl = string.Empty,
+        //        Specialization = string.Empty,
+        //        YearsOfExperience = 0,
+        //        Availability = false,
+        //        HourlyRate = 0,
+        //        Rating = 0,
+        //        SocialMediaLinks = null,
+        //        Status = null,
+        //        AgencyId = default
+        //    };
+        //    return model;
+        //}
 
         public void Create(Photographer Photographer)
         {

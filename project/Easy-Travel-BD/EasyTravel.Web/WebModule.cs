@@ -53,6 +53,8 @@ namespace EasyTravel.Web
             .InstancePerLifetimeScope();
             builder.RegisterType<SessionService>().As<ISessionService>().InstancePerLifetimeScope();
 
+
+
             base.Load(builder);
         }
 
