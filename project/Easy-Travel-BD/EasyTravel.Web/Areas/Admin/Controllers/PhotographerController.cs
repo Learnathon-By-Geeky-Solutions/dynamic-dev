@@ -1,5 +1,6 @@
 ﻿using EasyTravel.Application.Services;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Factories;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     public class PhotographerController : Controller
     {
         private readonly IPhotographerService _photographerService;
+        private readonly IEntityFactory<Photographer> _photographerFactory;
         private readonly IAgencyService _agencyService;
-        public PhotographerController(IPhotographerService photographerService, IAgencyService agencyService)
+        public PhotographerController(IPhotographerService photographerService, IAgencyService agencyService,IEntityFactory<Photographer> photographerFactory)
         {
             _photographerService = photographerService;
             _agencyService = agencyService;
+            _photographerFactory = photographerFactory;
         }
         public IActionResult Index()
         {
@@ -24,7 +27,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var model = _photographerService.GetInstance();
+            var model = _photographerFactory.CreateInstance();
             var agencyList = _agencyService.GetAll();
             model.Agencies = agencyList.ToList();
             return View(model);
