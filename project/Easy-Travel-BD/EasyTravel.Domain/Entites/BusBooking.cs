@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class BusBooking
+    public class BusBooking: IEntity<Guid>
     {
         [Key]
         public Guid Id { get; set; }

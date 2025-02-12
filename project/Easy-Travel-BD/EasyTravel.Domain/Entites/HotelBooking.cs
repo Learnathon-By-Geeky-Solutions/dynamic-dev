@@ -6,10 +6,10 @@ using System.Text.Json;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class HotelBooking
+    public class HotelBooking: IEntity<Guid>
     {
         [Key]
-        public Guid BookingId { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public Guid UserId { get; set; }

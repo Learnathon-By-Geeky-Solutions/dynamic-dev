@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250212124400_Hotel , Room and HotelBooking table is created")]
+    partial class HotelRoomandHotelBookingtableiscreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +73,7 @@ namespace EasyTravel.Web.Migrations
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Hotel", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("HotelId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -114,14 +117,14 @@ namespace EasyTravel.Web.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("HotelId");
 
                     b.ToTable("Hotel");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.HotelBooking", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("BookingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -147,7 +150,7 @@ namespace EasyTravel.Web.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("BookingId");
 
                     b.HasIndex("HotelId");
 
@@ -158,7 +161,7 @@ namespace EasyTravel.Web.Migrations
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("RoomId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -210,7 +213,7 @@ namespace EasyTravel.Web.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("RoomId");
 
                     b.HasIndex("HotelId");
 

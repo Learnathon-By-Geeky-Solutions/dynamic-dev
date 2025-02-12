@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class Room
+    public class Room:IEntity<Guid>
     {
 
         [Key]
-        public Guid RoomId { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(100)]

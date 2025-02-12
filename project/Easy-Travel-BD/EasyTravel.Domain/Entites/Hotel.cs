@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class Hotel
+    public class Hotel:IEntity<Guid>
     {
         [Key]
-        public Guid HotelId { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -41,6 +41,5 @@ namespace EasyTravel.Domain.Entites
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<Room> Rooms { get; set; } = new List<Room>();
-
     }
 }
