@@ -38,6 +38,7 @@ namespace EasyTravel.Web.Controllers
                 _busService.CreateBus(bus);
                 return RedirectToAction("List");
 
+
             }
             return View();
               

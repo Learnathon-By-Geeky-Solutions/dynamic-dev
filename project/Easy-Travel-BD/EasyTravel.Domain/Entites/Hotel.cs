@@ -33,7 +33,7 @@ namespace EasyTravel.Domain.Entites
         public string Email { get; set; }
 
         [Range(1, 5)]
-        public int Rating { get; set; }
+        public int Rating { get; set; } = 3;
 
         public string Image { get; set; }
 

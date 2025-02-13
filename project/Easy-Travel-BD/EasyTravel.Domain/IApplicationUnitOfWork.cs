@@ -14,6 +14,8 @@ namespace EasyTravel.Domain
         public IUserRepository UserRepository { get; }
         public IBusRepository BusRepository { get; }
 
+        public IHotelRepository HotelRepository { get; }
+
         
     }
 }

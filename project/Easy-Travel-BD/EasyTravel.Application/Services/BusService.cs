@@ -44,7 +44,6 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork1.BusRepository.Edit(bus);
             _applicationUnitOfWork1.Save();
 
-
         }
 
         public void DeleteBus(Bus bus)
