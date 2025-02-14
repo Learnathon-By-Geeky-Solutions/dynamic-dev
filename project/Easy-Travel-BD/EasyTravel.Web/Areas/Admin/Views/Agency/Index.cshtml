@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Agency>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="entity-list">
+    <h2>Agency List</h2>
+    <div class="create-btn">
+        <a asp-area="Admin" asp-controller="Agency" asp-action="Create">Create Agency</a>
+    </div>
+    @foreach (var agency in Model)
+    {
+        <div class="entity-row">
+            <span class="name">@agency.Name</span>
+            <span>@agency.Address</span>
+            <span>@agency.ContactNumber</span>
+            <span>@(string.IsNullOrEmpty(@agency.Website) ? "N/A" : @agency.Website)</span>
+            <span>@agency.LicenseNumber</span>
+            <span>@agency.AddDate.ToString("yyyy-MM-dd")</span>
+
+            <!-- Buttons Section -->
+            <div class="actions">
+                <a asp-area="Admin" asp-controller="Agency" asp-action="Update" asp-route-id="@agency.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="Agency" asp-action="Delete" asp-route-id="@agency.Id" class="delete-btn">Delete</a>
+            </div>
+        </div>
+    }
+</div>

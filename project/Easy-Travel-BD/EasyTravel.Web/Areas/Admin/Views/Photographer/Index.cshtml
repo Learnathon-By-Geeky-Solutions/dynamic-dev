@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Photographer>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="entity-list">
+    <h2>Photographer List</h2>
+    <div class="create-btn">
+        <a asp-area="Admin" asp-controller="Photographer" asp-action="Create">Create Photographer</a>
+    </div>
+    @foreach (var photographer in Model)
+    {
+        <div class="entity-row">
+            <span class="name">@photographer.FirstName</span>
+            <span>@photographer.Email</span>
+            <span>@photographer.ContactNumber</span>
+            <span>@photographer.DateOfBirth</span>
+            <span>@photographer.Address</span>
+            <span>@photographer.ProfilePicture</span>
+
+            <!-- Buttons Section -->
+            <div class="actions">
+                <a asp-area="Admin" asp-controller="Photographer" asp-action="Update" asp-route-id="@photographer.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="Photographer" asp-action="Delete" asp-route-id="@photographer.Id" class="delete-btn">Delete</a>
+            </div>
+        </div>
+    }
+</div>
