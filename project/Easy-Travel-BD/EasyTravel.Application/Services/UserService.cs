@@ -48,6 +48,7 @@ namespace EasyTravel.Application.Services
         public void RegisterUser(User user)
         {
             _applicationUnitOfWork.UserRepository.AddUser(user);
+            _applicationUnitOfWork.Save();
         }
     }
 }
