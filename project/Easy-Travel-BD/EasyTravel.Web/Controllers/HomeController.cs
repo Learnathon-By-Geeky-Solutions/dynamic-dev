@@ -20,7 +20,10 @@ namespace EasyTravel.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            HttpContext.Response.Headers["Cache-Control"]= "no-store, no-cache, must-revalidate";
+            var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
+            var controller = _userService.GetUserController(_sessionService.GetString("UserRole"));
+            return isLoggedIn == false ? View() : RedirectToAction("Index", controller, new {area = "Admin"});
         }
 
         public IActionResult Privacy()
