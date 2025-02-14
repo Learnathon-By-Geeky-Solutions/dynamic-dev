@@ -13,29 +13,41 @@ namespace EasyTravel.Application.Services
 {
      public class UserService : IUserService
     {
-
-        private readonly IApplicationUnitOfWork _applicationUnitOfWork1;
+        private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         public UserService(IApplicationUnitOfWork applicationUnitOfWork)
         {
-            _applicationUnitOfWork1 = applicationUnitOfWork;
-
+            _applicationUnitOfWork = applicationUnitOfWork;
         }
-
-
         public bool AuthenticateUser(string email, string password)
         {
-            return _applicationUnitOfWork1.UserRepository.ValidateUser(email, password);
+            return _applicationUnitOfWork.UserRepository.ValidateUser(email, password);
         }
 
         public User GetUserByEmail(string email)
         {
-            return _applicationUnitOfWork1.UserRepository.GetUserByEmail(email);
+            return _applicationUnitOfWork.UserRepository.GetUserByEmail(email);
+        }
+
+        public string GetUserController(string role)
+        {
+            return role == "Admin" 
+                ? "Dashboard" 
+                : "Home";
+        }
+
+        public bool IsAdmin(string role)
+        {
+            return role == "Admin";
+        }
+
+        public bool IsLoggedIn(string status)
+        {
+            return status == "true";
         }
 
         public void RegisterUser(User user)
         {
-            _applicationUnitOfWork1.UserRepository.AddUser(user);
-            _applicationUnitOfWork1.Save();
+            _applicationUnitOfWork.UserRepository.AddUser(user);
         }
     }
 }
