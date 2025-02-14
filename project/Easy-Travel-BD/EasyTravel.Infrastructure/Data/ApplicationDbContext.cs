@@ -80,9 +80,9 @@ namespace EasyTravel.Infrastructure.Data
            new Photographer
            {
                Id = new Guid("2a3d2f79-4f8e-4f87-8a38-41c70f4284b6"),
-               FirstName = "John",
-               LastName = "Doe",
-               Email = "john.doe@example.com",
+               FirstName = "Irfan",
+               LastName = "Mahmud",
+               Email = "irfan.mahmud@example.com",
                ContactNumber = "123-456-7890",
                Address = "123 Main St, Anytown, USA",
                ProfilePicture = "profile.jpg",
@@ -104,9 +104,9 @@ namespace EasyTravel.Infrastructure.Data
            new Guide
            {
                Id = new Guid("8a9c56d0-8be6-4d34-8e0f-8a7c0a7d9637"),
-               FirstName = "Max",
-               LastName = "Doe",
-               Email = "max.doe@example.com",
+               FirstName = "Irfan",
+               LastName = "Mahmud",
+               Email = "irfan.mahmud@example.com",
                ContactNumber = "+1234567890",
                Address = "1234 Main St, City, Country",
                ProfilePicture = "profile-pic.jpg",

@@ -33,7 +33,5 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             return _context.Buses.ToList();
         }
-
-
     }
 }
