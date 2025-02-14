@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250208174208_AddPhotographerAndGuideTable")]
+    partial class AddPhotographerAndGuideTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,7 +205,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Guides");
+                    b.ToTable("Guide");
 
                     b.HasData(
                         new
@@ -214,12 +217,12 @@ namespace EasyTravel.Web.Migrations
                             Bio = "Experienced professional with a background in various fields.",
                             ContactNumber = "+1234567890",
                             DateOfBirth = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "irfan.mahmud@example.com",
-                            FirstName = "Irfan",
+                            Email = "max.doe@example.com",
+                            FirstName = "Max",
                             HireDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HourlyRate = 50.00m,
                             LanguagesSpoken = "English, Spanish",
-                            LastName = "Mahmud",
+                            LastName = "Doe",
                             LicenseNumber = "ABC123456",
                             ProfilePicture = "profile-pic.jpg",
                             Rating = 4.5m,
@@ -318,7 +321,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Photographers");
+                    b.ToTable("Photographer");
 
                     b.HasData(
                         new
@@ -330,11 +333,11 @@ namespace EasyTravel.Web.Migrations
                             Bio = "Experienced photographer with a passion for Nature photography.",
                             ContactNumber = "123-456-7890",
                             DateOfBirth = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "irfan.mahmud@example.com",
-                            FirstName = "Irfan",
+                            Email = "john.doe@example.com",
+                            FirstName = "John",
                             HireDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HourlyRate = 50.00m,
-                            LastName = "Mahmud",
+                            LastName = "Doe",
                             PortfolioUrl = "https://johndoeportfolio.com",
                             ProfilePicture = "profile.jpg",
                             Rating = 4.5m,

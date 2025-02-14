@@ -1,0 +1,68 @@
+﻿@model Agency
+@{
+    var action = ViewData["Title"];
+    bool isDisabled = false;
+    if((string?)action == "Delete")
+    {
+        isDisabled = true;
+    }
+
+}
+<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
+    <h2 class="card-title text-center">@action Agency</h2>
+    <form method="post" asp-action="@action">
+        <div class="form-group">
+            <label for="Name" style="width:100%">
+                Name
+                <input asp-for="Name" class="form-control" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Address" style="width:100%">
+                Address
+                <input asp-for="Address" class="form-control" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="ContactNumber" style="width:100%">
+                ContactNumber
+                <input asp-for="ContactNumber" class="form-control" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="LicenseNumber" style="width:100%">
+                LicenseNumber
+                <input asp-for="LicenseNumber" class="form-control" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Website" style="width:100%">
+                Website (Optional)
+                <input asp-for="Website" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Website" class="text-danger"></span>
+        </div> 
+        @if((string?)action == "Update")
+        {
+            <div class="form-group">
+                <label for="AddDate" style="width:100%">
+                    AddDate
+                    <input asp-for="AddDate" class="form-control" type="datetime-local" required="@(isDisabled ? null : "required")" />
+                </label>
+                <span asp-validation-for="AddDate" class="text-danger"></span>
+            </div>
+        }
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary me-2">@action</button>
+            <a asp-area="Admin" asp-controller="Agency" asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+</div>

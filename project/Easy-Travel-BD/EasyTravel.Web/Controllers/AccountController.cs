@@ -10,17 +10,18 @@ namespace EasyTravel.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
-
-        public AccountController(IUserService userService)
+        private readonly ISessionService _sessionService;
+        public AccountController(IUserService userService, ISessionService sessionService)
         {
 
             _userService = userService;
+            _sessionService = sessionService;
         }
 
         public IActionResult Login()
         {
-
-            return View();
+            var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
+            return isLoggedIn == false ? View() : RedirectToAction("Error","Home",new { area = string.Empty});
         }
 
 
@@ -38,16 +39,19 @@ namespace EasyTravel.Web.Controllers
                 HttpContext.Session.SetString("UserName", user.Name);
 
                 return user.Role == "Admin"
-                    ? RedirectToAction("Create", "Bus")
-                    : RedirectToAction("List", "Bus");
+                    ? RedirectToAction("Index", "Dashboard", new { area = "Admin" })
+                    : RedirectToAction("Index", "Home", new {area = string.Empty});
             }
-
             ViewBag.ErrorMessage = "Invalid email or password.";
             return View();
 
         }
 
-        public IActionResult Register() => View();
+        public IActionResult Register()
+        {
+            var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
+            return isLoggedIn == false ? View() : RedirectToAction("Error", "Home", new { area = string.Empty });
+        }
 
 
         [HttpPost]
@@ -70,11 +74,5 @@ namespace EasyTravel.Web.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
-
-
-
-
-
-
     }
 }

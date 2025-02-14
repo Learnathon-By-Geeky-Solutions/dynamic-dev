@@ -1,0 +1,13 @@
+﻿@{
+    var controllers = new List<string>();
+    controllers.Add("Agency");
+    controllers.Add("Photographer");
+    var length = controllers.Count();
+}
+<div class="list-group">
+    @for(int i = 0; i < length; i++)
+    {
+        <a asp-area="Admin" asp-controller="@controllers[i]" asp-action="Index" class="list-group-item list-group-item-action list-group-item-primary">@controllers[i]</a>
+        <br />
+    }
+</div>

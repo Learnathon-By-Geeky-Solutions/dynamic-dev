@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Infrastructure
 {
-    public class UnitOfWork : IUnityOfWork
+    public class UnitOfWork : IUnitOfWork
     {
 
         private readonly ApplicationDbContext _dbContext;

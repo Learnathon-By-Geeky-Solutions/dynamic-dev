@@ -1,0 +1,118 @@
+﻿/* Container for the entire list */
+.entity-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
+
+    .entity-list h2 {
+        text-align: center;
+        margin-bottom:20px;
+    }
+
+/* Each row (record) */
+.entity-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+    .entity-row:hover {
+        transform: scale(1.05);
+    }
+    /* Making sure all fields have enough spacing */
+    .entity-row span {
+        flex: 1;
+        width: auto;
+        text-align: left;
+    }
+
+    /* Ensure the first column (Name) stands out */
+    .entity-row .name {
+        font-weight: bold;
+    }
+
+/* Button container (aligns buttons to the right) */
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+    /* Common button styling */
+    .actions a, .entity-list a {
+        text-decoration: none;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+create-btn{
+    display:flex;
+    justify-content:right
+}
+
+.create-btn a{
+    width:auto;
+    display:inline-block;
+    background-color: forestgreen;
+    color: white;
+    font-weight: bold;
+    float:right;
+    text-align:center;
+}
+
+/* Update button */
+.update-btn {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+    .update-btn:hover {
+        background-color: #0056b3;
+        font-weight: bolder;
+    }
+
+/* Delete button */
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    font-weight: bold;
+}
+
+    .delete-btn:hover {
+        background-color: #a71d2a;
+        font-weight: bolder;
+    }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .entity-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+        .entity-row span {
+            min-width: unset;
+            width: 100%;
+        }
+
+    .actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+

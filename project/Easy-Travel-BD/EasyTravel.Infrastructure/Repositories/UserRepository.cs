@@ -12,18 +12,12 @@ namespace EasyTravel.Infrastructure.Repositories
 {
     public class UserRepository : Repository<User, Guid>,IUserRepository
     {
-
-
         private readonly ApplicationDbContext _context;
-
         public UserRepository(ApplicationDbContext context)
             :base(context)
         {
-
             _context = context;
         }
-
-
         public void AddUser(User user)
         {
             _context.Users.Add(user);

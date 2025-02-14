@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyTravel.Domain
+namespace EasyTravel.Domain.Factories
 {
-    public interface IUnityOfWork
+    public interface IEntityFactory<TEntity>
     {
-
-        void Save();
+        TEntity CreateInstance();
     }
 }
