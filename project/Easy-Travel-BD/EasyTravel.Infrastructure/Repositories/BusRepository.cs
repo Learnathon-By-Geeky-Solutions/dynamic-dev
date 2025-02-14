@@ -34,14 +34,6 @@ namespace EasyTravel.Infrastructure.Repositories
             return _context.Buses.ToList();
         }
 
-        public Bus GetBusbyId(int busServiceId)
-        {
-            var bus = _context.Buses.Find(busServiceId);
-            if (bus == null)
-            {
-                throw new KeyNotFoundException($"Bus with ID {busServiceId} was not found.");
-            }
-            return bus;
-        }
+
     }
 }
