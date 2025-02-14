@@ -31,5 +31,28 @@ namespace EasyTravel.Application.Services
             return _applicationUnitOfWork1.BusRepository.GetAllBuses();
 
         }
+
+        public Bus GetBusById(Guid BusId)
+        {
+           var bus= _applicationUnitOfWork1.BusRepository.GetById(BusId);
+
+            return bus;
+        }
+
+        public void UpdateBus(Bus bus)
+        {
+            _applicationUnitOfWork1.BusRepository.Edit(bus);
+            _applicationUnitOfWork1.Save();
+
+
+        }
+
+        public void DeleteBus(Bus bus)
+        {
+            _applicationUnitOfWork1.BusRepository.Remove(bus);
+            _applicationUnitOfWork1.Save();
+
+        }
+
     }
 }
