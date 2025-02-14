@@ -12,7 +12,6 @@ namespace EasyTravel.Infrastructure.Repositories
 {
     public class BusRepository : Repository<Bus,Guid>, IBusRepository
     {
-
         private readonly ApplicationDbContext _context;
 
         public BusRepository(ApplicationDbContext context)
@@ -20,8 +19,6 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             _context = context;
         }
-
-
 
         public void Addbus(Bus bus)
         {
