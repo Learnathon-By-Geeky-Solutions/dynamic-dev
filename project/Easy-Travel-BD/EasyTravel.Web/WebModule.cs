@@ -1,6 +1,9 @@
 ﻿using Autofac;
+using EasyTravel.Application.Factories;
 using EasyTravel.Application.Services;
 using EasyTravel.Domain;
+using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Factories;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
 using EasyTravel.Infrastructure;
@@ -51,10 +54,10 @@ namespace EasyTravel.Web
             .InstancePerLifetimeScope();
             builder.RegisterType<GuideService>().As<IGuideService>()
             .InstancePerLifetimeScope();
-            builder.RegisterType<SessionService>().As<ISessionService>().InstancePerLifetimeScope();
-
-
-
+            builder.RegisterType<SessionService>().As<ISessionService>()
+            .InstancePerLifetimeScope();
+            builder.RegisterType<PhotographerFactory>().As<IEntityFactory<Photographer>>()
+            .InstancePerLifetimeScope();
             base.Load(builder);
         }
 
