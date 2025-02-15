@@ -1,0 +1,21 @@
+﻿@model EasyTravel.Domain.Entites.Bus
+
+@{
+    ViewData["Title"] = "Create Bus";
+}
+
+<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
+    <div class="card-header bg-primary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">@ViewData["Title"]</h2>
+            </div>
+        </div>
+    </div>
+    <form method="post" asp-controller="Bus" asp-area="Admin" asp-action="Create">
+        <partial name="_BusForm" />
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Create Bus</button>
+        </div>
+    </form>
+</div>
