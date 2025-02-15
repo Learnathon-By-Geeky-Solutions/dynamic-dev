@@ -1,0 +1,72 @@
+﻿@model IEnumerable<EasyTravel.Domain.Entites.Bus>
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Bus List";
+}
+
+<div class="container mt-4">
+    <div class="card-header bg-primary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">@ViewData["Title"]</h2>
+            </div>
+        </div>
+    </div>
+
+    @foreach (var bus in Model)
+    {
+        <div class="card shadow-sm border rounded mb-4">
+            <div class="card-body row align-items-center justify-content-between bg-gradient">
+
+                <!-- Bus Image -->
+                <div class="col-md-1 text-center">
+                    <img src="@bus.ImagePath" alt="@bus.OperatorName" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: contain;">
+                </div>
+
+                <!-- Bus Operator & Details -->
+                <div class="col-md-2">
+                    <h5 class="mb-1 text-dark">@bus.OperatorName</h5>
+                    <p class="mb-0 text-muted"><strong>Route:</strong> @bus.From - @bus.To</p>
+                    <p class="mb-0 text-muted"><strong>Type:</strong> @bus.BusType</p>
+                </div>
+
+                <!-- Departure Time -->
+                <div class="col-md-2">
+                    <p class="mb-0"><strong>Dep:</strong> <span class="text-success">@bus.DepartureTime.ToString("hh:mm tt")</span></p>
+                </div>
+
+                <div class="col-md-1">
+                    <hr class="border border-warning border-2">
+                </div>
+
+                <!-- Arrival Time -->
+                <div class="col-md-2">
+                    <p class="mb-0"><strong>Arr:</strong> <span class="text-success">@bus.ArrivalTime.ToString("hh:mm tt")</span></p>
+                </div>
+
+                <!-- Price & Book Button -->
+                <div class="col-md-2 text-center">
+                    <p class="price text-primary fw-bold fs-5">৳@bus.Price</p>
+                    <a href="#" class="btn btn-warning btn-sm fw-bold text-dark">BOOK</a>
+                </div>
+
+                <!-- Admin Controls: Edit & Delete Buttons -->
+                @if (HttpContextAccessor.HttpContext?.Session?.GetString("UserRole") == "Admin")
+                {
+                
+                    <div class="col-md-2 text-center mt-2">
+                        <a asp-controller="Bus" asp-action="Update" asp-route-BusId="@bus.Id"
+                           class="btn btn-success mx-2">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <a asp-controller="Bus" asp-action="Delete" asp-route-BusId="@bus.Id"
+                           class="btn btn-danger mx-2">
+                            <i class="bi bi-trash-fill"></i> Delete
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

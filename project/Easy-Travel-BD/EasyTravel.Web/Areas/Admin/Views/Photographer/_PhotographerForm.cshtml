@@ -1,0 +1,169 @@
+﻿@model Photographer
+@{
+    var action = ViewData["Title"];
+    bool isDisabled = false;
+
+    if ((string?)action == "Delete")
+    {
+        isDisabled = true;
+    }
+
+}
+<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
+    <h2 class="card-title text-center">@action Photographer</h2>
+    <form method="post" asp-action="@action">
+        <div class="form-group">
+            <label for="FirstName" style="width:100%">
+                First Name
+                <input asp-for="FirstName" class="form-control" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="LastName" style="width:100%">
+                Last Name
+                <input asp-for="LastName" class="form-control" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Email" style="width:100%">
+                Email
+                <input asp-for="Email" class="form-control" type="email" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="ContactNumber" style="width:100%">
+                ContactNumber
+                <input asp-for="ContactNumber" class="form-control" type="number" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Address" style="width:100%">
+                Address
+                <input asp-for="Address" class="form-control" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="ProfilePicture" style="width:100%">
+                Profile Picture
+                <input asp-for="ProfilePicture" class="form-control" type="text" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="Bio" style="width:100%">
+                Bio
+                <textarea asp-for="Bio" class="form-control" required="@(isDisabled ? null : "required")"
+                          disabled="@(isDisabled ? "disabled" : null)"></textarea>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="DateOfBirth" style="width:100%">
+                Date of Birth
+                <input asp-for="DateOfBirth" class="form-control" type="datetime-local" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="Skills" style="width:100%">
+                Skills
+                <input asp-for="Skills" class="form-control" type="text" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="PortfolioUrl" style="width:100%">
+                Portfolio URL
+                <input asp-for="PortfolioUrl" class="form-control" type="url" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="Specialization" style="width:100%">
+                Specialization
+                <input asp-for="Specialization" class="form-control" type="text" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="YearsOfExperience" style="width:100%">
+                Years of Experience
+                <input asp-for="YearsOfExperience" class="form-control" type="number" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="Availability" style="width:100%">
+                Availability
+                <input asp-for="Availability" class="form-check-input" type="checkbox" required="@(isDisabled ? null : "required")"
+                        disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="HourlyRate" style="width:100%">
+                Hourly Rate
+                <input asp-for="HourlyRate" class="form-control" type="number" step="0.01" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="Rating" style="width:100%">
+                Rating
+                <input asp-for="Rating" class="form-control" type="number" step="0.1" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="SocialMediaLinks" style="width:100%">
+                Social Media Links
+                <input asp-for="SocialMediaLinks" class="form-control" type="text" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="Status" style="width:100%">
+                Status
+                <input asp-for="Status" class="form-control" type="text" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="Id" style="width:100%">
+                Select Agency
+                <select asp-for="AgencyId" class="form-control" required="@(isDisabled ? null : "required")"
+                        disabled="@(isDisabled ? "disabled" : null)">
+                    <option value="">-- Select ID --</option>
+                    @foreach (var agency in Model.Agencies)
+                    {
+                        <option value="@agency.Id">@agency.Name</option>
+                    }
+                    <!-- Add more options dynamically if needed -->
+                </select>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary me-2">@action</button>
+            <a asp-area="Admin" asp-controller="Photographer" asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+</div>
