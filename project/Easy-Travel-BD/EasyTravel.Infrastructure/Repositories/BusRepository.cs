@@ -1,4 +1,4 @@
-﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Entites;
 using EasyTravel.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
