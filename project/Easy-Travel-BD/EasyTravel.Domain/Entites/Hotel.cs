@@ -42,5 +42,8 @@ namespace EasyTravel.Domain.Entites
 
         public ICollection<Room> Rooms { get; set; } = new List<Room>();
 
+        // Add this navigation property
+        public ICollection<HotelBooking> HotelBookings { get; set; } = new List<HotelBooking>();
+
     }
 }
