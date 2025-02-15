@@ -64,6 +64,32 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult Delete(Guid BusId)
+        {
+            var bus = _busService.GetBusById(BusId);
+            if (bus == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(bus);
+
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Bus bus)
+        {
+            if (ModelState.IsValid)
+            {
+                _busService.DeleteBus(bus);
+                return RedirectToAction("Index", "Bus", new { area = "Admin" });
+            }
+            return View();
+
+        }
+
     }
 }
 
