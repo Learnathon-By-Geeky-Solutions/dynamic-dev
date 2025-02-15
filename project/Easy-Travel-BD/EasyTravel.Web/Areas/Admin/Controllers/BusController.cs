@@ -1,11 +1,10 @@
-﻿
-using EasyTravel.Domain.Entites;
+﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
-namespace EasyTravel.Web.Controllers
+namespace EasyTravel.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class BusController : Controller
     {
         private readonly IBusService _busService;
@@ -15,41 +14,24 @@ namespace EasyTravel.Web.Controllers
             _busService = busService;
         }
 
-
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
-            {
-                return RedirectToAction("List");
-            }
-
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(Bus bus)
         {
-            if (HttpContext.Session.GetString("UserRole") != "Admin")
-            {
-                return RedirectToAction("List");
-            }
-
             if (ModelState.IsValid)
             {
                 _busService.CreateBus(bus);
-                return RedirectToAction("List");
+                return RedirectToAction("Index", "Bus", new { area = "Admin" });
 
             }
             return View();
-              
         }
-        public IActionResult List()
+        public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("UserLoggedIn") != "true")
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             var buses = _busService.GetAllBuses();
             return View(buses);
         }
@@ -59,7 +41,7 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult Update(Guid BusId)
         {
-            var bus= _busService.GetBusById(BusId);
+            var bus = _busService.GetBusById(BusId);
             if (bus == null)
             {
                 return NotFound();
@@ -77,7 +59,7 @@ namespace EasyTravel.Web.Controllers
             if (ModelState.IsValid)
             {
                 _busService.UpdateBus(bus);
-                return RedirectToAction("List");
+                return RedirectToAction("Index", "Bus", new { area = "Admin" });
             }
             return View();
 
@@ -104,7 +86,7 @@ namespace EasyTravel.Web.Controllers
             if (ModelState.IsValid)
             {
                 _busService.DeleteBus(bus);
-                return RedirectToAction("List");
+                return RedirectToAction("Index", "Bus", new { area = "Admin" });
             }
             return View();
 
@@ -113,3 +95,4 @@ namespace EasyTravel.Web.Controllers
 
     }
 }
+
