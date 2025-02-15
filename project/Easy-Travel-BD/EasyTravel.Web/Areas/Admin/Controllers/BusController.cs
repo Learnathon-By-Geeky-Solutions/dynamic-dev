@@ -37,6 +37,32 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View(buses);
         }
 
+        [HttpGet]
+        public IActionResult Update(Guid BusId)
+        {
+            var bus = _busService.GetBusById(BusId);
+            if (bus == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(bus);
+
+        }
+
+
+        [HttpPost]
+        public IActionResult Update(Bus bus)
+        {
+            if (ModelState.IsValid)
+            {
+                _busService.UpdateBus(bus);
+                return RedirectToAction("Index", "Bus", new { area = "Admin" });
+            }
+            return View();
+
+        }
 
     }
 }
