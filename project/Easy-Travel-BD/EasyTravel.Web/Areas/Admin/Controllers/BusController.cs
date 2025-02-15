@@ -31,6 +31,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
 
+        public IActionResult Index()
+        {
+            var buses = _busService.GetAllBuses();
+            return View(buses);
+        }
+
+
     }
 }
 
