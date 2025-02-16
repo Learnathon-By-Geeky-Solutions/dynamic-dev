@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Guide>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="entity-list">
+    <h2>Guide List</h2>
+    <div class="create-btn">
+        <a asp-area="Admin" asp-controller="Guide" asp-action="Create">Create Guide</a>
+    </div>
+    @foreach (var guide in Model)
+    {
+        <div class="entity-row">
+            <span class="name">@guide.FirstName</span>
+            <span>@guide.Email</span>
+            <span>@guide.ContactNumber</span>
+            <span>@guide.DateOfBirth</span>
+            <span>@guide.Address</span>
+            <span>@guide.ProfilePicture</span>
+
+            <!-- Buttons Section -->
+            <div class="actions">
+                <a asp-area="Admin" asp-controller="Guide" asp-action="Update" asp-route-id="@guide.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="Guide" asp-action="Delete" asp-route-id="@guide.Id" class="delete-btn">Delete</a>
+            </div>
+        </div>
+    }
+</div>
