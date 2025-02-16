@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Hotel>
+@{
+    ViewData["Title"] = "Hotel Manage Page";
+}
+
+<h1>List of all page </h1>
+<div class="entity-list">
+    <h2>Hotel List</h2>
+    <div class="create-btn">
+        <a asp-area="Admin" asp-controller="Hotel" asp-action="Create">Create Hotel</a>
+    </div>
+    @* @foreach (var hotel in Model) *@
+    @* { *@
+    @*     <div class="entity-row"> *@
+    @*         <span class="name">@hotel.Name</span> *@
+    @*             </div> *@
+    @* } *@
+    </div>
+

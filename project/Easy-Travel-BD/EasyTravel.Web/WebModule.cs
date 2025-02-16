@@ -57,8 +57,20 @@ namespace EasyTravel.Web
             builder.RegisterType<SessionService>().As<ISessionService>()
             .InstancePerLifetimeScope();
             builder.RegisterType<PhotographerFactory>().As<IEntityFactory<Photographer>>()
-            .InstancePerLifetimeScope();
-            base.Load(builder);
+            .InstancePerLifetimeScope(); 
+            builder.RegisterType<HotelRepository>().As<IHotelRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<HotelService>().As<IHotelService>()
+             .InstancePerLifetimeScope();
+            builder.RegisterType<RoomRepository>().As<IRoomRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<RoomService>().As<IRoomService>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<HotelBookingRepository>().As<IHotelBookingRepository>()
+                 .InstancePerLifetimeScope();
+            builder.RegisterType<HotelBookingService>().As<IHotelBookingService>()
+               .InstancePerLifetimeScope();
+
         }
 
     }
