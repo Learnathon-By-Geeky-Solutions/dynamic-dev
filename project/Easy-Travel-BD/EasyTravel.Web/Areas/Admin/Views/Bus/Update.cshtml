@@ -12,7 +12,8 @@
             </div>
         </div>
     </div>
-    <form method="post" asp-action="Update" asp-area="Admin" asp-controller="Bus">
+    <form method="post" asp-area="Admin" asp-controller="Bus" asp-action="Update">
+        <input type="hidden" asp-for="Id" />
         <partial name="_BusForm" />
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Update Bus</button>
