@@ -29,12 +29,13 @@ namespace EasyTravel.Application.Services
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            _applicationunitOfWork.HotelRepository.Remove(id);
+            _applicationunitOfWork.Save();
         }
 
         public Hotel Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _applicationunitOfWork.HotelRepository.GetById(id);
         }
 
         public IEnumerable<Hotel> GetAll()
@@ -44,7 +45,8 @@ namespace EasyTravel.Application.Services
 
         public void Update(Hotel entity)
         {
-            throw new NotImplementedException();
+            _applicationunitOfWork.HotelRepository.Edit(entity);
+            _applicationunitOfWork.Save();
         }
     }
 }

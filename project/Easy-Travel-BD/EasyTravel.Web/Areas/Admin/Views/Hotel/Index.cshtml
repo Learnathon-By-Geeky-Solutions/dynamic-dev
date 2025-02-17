@@ -9,11 +9,16 @@
     <div class="create-btn">
         <a asp-area="Admin" asp-controller="Hotel" asp-action="Create">Create Hotel</a>
     </div>
-    @* @foreach (var hotel in Model) *@
-    @* { *@
-    @*     <div class="entity-row"> *@
-    @*         <span class="name">@hotel.Name</span> *@
-    @*             </div> *@
-    @* } *@
-    </div>
+   @foreach (var hotel in Model) 
+    { 
+        <div class="entity-row"> 
+           <span class="name">@hotel.Name</span>
+            <!-- Buttons Section -->
+            <div class="actions">
+                <a asp-area="Admin" asp-controller="Hotel" asp-action="Update" asp-route-id="@hotel.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="Hotel" asp-action="Delete" asp-route-id="@hotel.Id" class="delete-btn">Delete</a>
+            </div>
+         </div> 
+     } 
+ </div>
 
