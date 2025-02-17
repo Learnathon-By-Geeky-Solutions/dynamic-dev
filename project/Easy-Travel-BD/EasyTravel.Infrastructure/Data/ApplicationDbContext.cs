@@ -265,36 +265,37 @@ namespace EasyTravel.Infrastructure.Data
 
             #endregion Hotel Booking
             // Seed data for Hotel
+
             modelBuilder.Entity<Hotel>().HasData(
-                new Hotel
-                {
-                    Id = new Guid("e2a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
-                    Name = "Grand Hotel",
-                    Address = "123 Main St, Anytown, USA",
-                    Description = "A luxurious hotel with all modern amenities.",
-                    City = "Anytown",
-                    Phone = "123-456-7890",
-                    Email = "info@grandhotel.com",
-                    Rating = 5,
-                    Image = "demohotel.jpg",
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                },
-                new Hotel
-                {
-                    Id = new Guid("f3a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
-                    Name = "Sunset Resort",
-                    Address = "456 Beach Rd, Seaside, USA",
-                    Description = "A beautiful resort with stunning sunset views.",
-                    City = "Seaside",
-                    Phone = "987-654-3210",
-                    Email = "info@sunsetresort.com",
-                    Rating = 4,
-                    Image = "demohotel.jpg",
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                }
-            );
+       new Hotel
+       {
+           Id = new Guid("e2a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
+           Name = "Grand Hotel",
+           Address = "123 Main St, Anytown, USA",
+           Description = "A luxurious hotel with all modern amenities.",
+           City = "Anytown",
+           Phone = "123-456-7890",
+           Email = "info@grandhotel.com",
+           Rating = 5,
+           Image = "grandhotel.jpg",
+           CreatedAt = new DateTime(2025, 2, 16, 19, 31, 26, DateTimeKind.Utc),
+           UpdatedAt = new DateTime(2025, 2, 16, 19, 31, 26, DateTimeKind.Utc)
+       },
+       new Hotel
+       {
+           Id = new Guid("f3a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
+           Name = "Sunset Resort",
+           Address = "456 Beach Rd, Seaside, USA",
+           Description = "A beautiful resort with stunning sunset views.",
+           City = "Seaside",
+           Phone = "987-654-3210",
+           Email = "info@sunsetresort.com",
+           Rating = 4,
+           Image = "sunsetresort.jpg",
+           CreatedAt = new DateTime(2025, 2, 16, 19, 31, 26, DateTimeKind.Utc),
+           UpdatedAt = new DateTime(2025, 2, 16, 19, 31, 26, DateTimeKind.Utc)
+       }
+   );
 
         }
         public ApplicationDbContext(string connectionString, string migrationAssembly)

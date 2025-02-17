@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250216193130_Hotel related tables are created")]
+    [Migration("20250216193936_Hotel related tables are created")]
     partial class Hotelrelatedtablesarecreated
     {
         /// <inheritdoc />
@@ -298,28 +298,28 @@ namespace EasyTravel.Web.Migrations
                             Id = new Guid("e2a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
                             Address = "123 Main St, Anytown, USA",
                             City = "Anytown",
-                            CreatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 925, DateTimeKind.Utc).AddTicks(5263),
+                            CreatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc),
                             Description = "A luxurious hotel with all modern amenities.",
                             Email = "info@grandhotel.com",
-                            Image = "demohotel.jpg",
+                            Image = "grandhotel.jpg",
                             Name = "Grand Hotel",
                             Phone = "123-456-7890",
                             Rating = 5,
-                            UpdatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 925, DateTimeKind.Utc).AddTicks(5525)
+                            UpdatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("f3a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
                             Address = "456 Beach Rd, Seaside, USA",
                             City = "Seaside",
-                            CreatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 925, DateTimeKind.Utc).AddTicks(5780),
+                            CreatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc),
                             Description = "A beautiful resort with stunning sunset views.",
                             Email = "info@sunsetresort.com",
-                            Image = "demohotel.jpg",
+                            Image = "sunsetresort.jpg",
                             Name = "Sunset Resort",
                             Phone = "987-654-3210",
                             Rating = 4,
-                            UpdatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 925, DateTimeKind.Utc).AddTicks(5781)
+                            UpdatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc)
                         });
                 });
 
