@@ -32,6 +32,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Bus" asp-action="List">Bus</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Hotel" asp-action="Index">DashBoard</a>
                         </li>
 
                         @if (HttpContextAccessor.HttpContext?.Session?.GetString("UserRole") == "Admin")
