@@ -99,8 +99,8 @@ namespace EasyTravel.Web.Migrations
                 columns: new[] { "Id", "Address", "City", "CreatedAt", "Description", "Email", "Image", "Name", "Phone", "Rating", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("e2a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"), "123 Main St, Anytown, USA", "Anytown", new DateTime(2025, 2, 16, 19, 31, 26, 925, DateTimeKind.Utc).AddTicks(5263), "A luxurious hotel with all modern amenities.", "info@grandhotel.com", "demohotel.jpg", "Grand Hotel", "123-456-7890", 5, new DateTime(2025, 2, 16, 19, 31, 26, 925, DateTimeKind.Utc).AddTicks(5525) },
-                    { new Guid("f3a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"), "456 Beach Rd, Seaside, USA", "Seaside", new DateTime(2025, 2, 16, 19, 31, 26, 925, DateTimeKind.Utc).AddTicks(5780), "A beautiful resort with stunning sunset views.", "info@sunsetresort.com", "demohotel.jpg", "Sunset Resort", "987-654-3210", 4, new DateTime(2025, 2, 16, 19, 31, 26, 925, DateTimeKind.Utc).AddTicks(5781) }
+                    { new Guid("e2a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"), "123 Main St, Anytown, USA", "Anytown", new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc), "A luxurious hotel with all modern amenities.", "info@grandhotel.com", "grandhotel.jpg", "Grand Hotel", "123-456-7890", 5, new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc) },
+                    { new Guid("f3a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"), "456 Beach Rd, Seaside, USA", "Seaside", new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc), "A beautiful resort with stunning sunset views.", "info@sunsetresort.com", "sunsetresort.jpg", "Sunset Resort", "987-654-3210", 4, new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc) }
                 });
 
             migrationBuilder.CreateIndex(
