@@ -28,5 +28,31 @@ namespace EasyTravel.Application.Services
         {
             return _applicationUnitOfWork1.CarRepository.GetAllCars();
         }
+        public Car GetCarById(Guid CarId)
+        {
+            var car = _applicationUnitOfWork1.CarRepository.GetById(CarId);
+
+            return car;
+        }
+
+        public void UpdateCar(Car car)
+        {
+            _applicationUnitOfWork1.CarRepository.Edit(car);
+            _applicationUnitOfWork1.Save();
+
+
+        }
+
+        public void DeleteBus(Car car)
+        {
+            _applicationUnitOfWork1.CarRepository.Remove(car);
+            _applicationUnitOfWork1.Save();
+
+        }
+
+
+
+
+
     }
 }
