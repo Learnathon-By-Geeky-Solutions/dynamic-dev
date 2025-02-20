@@ -11,10 +11,11 @@ namespace EasyTravel.Infrastructure
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public ApplicationUnitOfWork(ApplicationDbContext context,IUserRepository userRepository,IBusRepository busRepository,IAgencyRepository agencyRepository,IPhotographerRepository photographerRepository) 
+        public ApplicationUnitOfWork(ApplicationDbContext context,IUserRepository userRepository,IBusRepository busRepository,IAgencyRepository agencyRepository,IPhotographerRepository photographerRepository, ICarRepository carRepository) 
            : base(context)
         {
             UserRepository = userRepository;
+            CarRepository = carRepository;
             BusRepository = busRepository;
             AgencyRepository = agencyRepository;
             PhotographerRepository = photographerRepository;
@@ -22,6 +23,7 @@ namespace EasyTravel.Infrastructure
 
         public IUserRepository UserRepository { get; private set; }
         public IBusRepository BusRepository { get; private set; }
+        public ICarRepository CarRepository { get; private set; }
         public IAgencyRepository AgencyRepository { get; private set; }
         public IPhotographerRepository PhotographerRepository { get;private set; }
         public IGuideRepository GuideRepository { get; private set; }
