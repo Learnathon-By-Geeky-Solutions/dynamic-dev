@@ -30,13 +30,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             }
             return View();
         }
+
         public IActionResult Index()
         {
             var buses = _busService.GetAllBuses();
             return View(buses);
         }
-
-
 
         [HttpGet]
         public IActionResult Update(Guid BusId)
@@ -65,7 +64,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
 
         }
 
-
         [HttpGet]
         public IActionResult Delete(Guid BusId)
         {
@@ -91,7 +89,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
 
         }
-
 
     }
 }
