@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Car>
 
 @{
-    ViewData["Title"] = "Bus List";
+    ViewData["Title"] = "Car List";
 }
 
 <div class="entity-list">
@@ -36,8 +36,8 @@
                 </div>
 
             <div class="col-md-2 actions">
-                <a asp-area="Admin" asp-controller="Car" asp-action="Update" asp-route-BusId="@car.Id" class="update-btn">Update</a>
-                <a asp-area="Admin" asp-controller="Car" asp-action="Delete" asp-route-BusId="@car.Id" class="delete-btn">Delete</a>
+                <a asp-area="Admin" asp-controller="Car" asp-action="Update" asp-route-CarId="@car.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="Car" asp-action="Delete" asp-route-CarId="@car.Id" class="delete-btn">Delete</a>
             </div>
                 
        </div>
