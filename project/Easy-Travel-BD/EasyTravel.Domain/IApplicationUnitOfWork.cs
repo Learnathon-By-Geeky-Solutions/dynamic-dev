@@ -16,6 +16,7 @@ namespace EasyTravel.Domain
         public IAgencyRepository AgencyRepository { get; }
         public IPhotographerRepository PhotographerRepository { get; }
         public IGuideRepository GuideRepository { get; }
+        public ICarRepository CarRepository { get; }
         
     }
 }
