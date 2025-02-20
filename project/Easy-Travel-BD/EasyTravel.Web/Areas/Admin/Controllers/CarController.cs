@@ -30,6 +30,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
 
+        public IActionResult Index()
+        {
+            var cars = _carService.GetAllCars();
+            return View(cars);
+        }
+
 
 
 
