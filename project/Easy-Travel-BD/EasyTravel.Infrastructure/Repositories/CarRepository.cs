@@ -24,7 +24,7 @@ namespace EasyTravel.Infrastructure.Repositories
             _context.Cars.Add(car);
         }
 
-        public IEnumerable<Car> GetAllBuses()
+        public IEnumerable<Car> GetAllCars()
         {
            return  _context.Cars.ToList();
         }

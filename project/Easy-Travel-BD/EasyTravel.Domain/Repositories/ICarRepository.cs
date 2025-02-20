@@ -11,6 +11,6 @@ namespace EasyTravel.Domain.Repositories
     {
 
         void AddCar(Car bus);
-        IEnumerable<Car> GetAllBuses();
+        IEnumerable<Car> GetAllCars();
     }
 }
