@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CarController : Controller
     {
         private readonly ICarService _carService;
