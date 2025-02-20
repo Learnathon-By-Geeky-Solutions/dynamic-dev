@@ -1,6 +1,9 @@
-﻿
+﻿@model EasyTravel.Domain.Entites.Car
 
-@model EasyTravel.Domain.Entites.Bus
+@{
+    ViewData["Title"] = "_CarForm";
+}
+
 
 <div class="form-group">
     <label for="OperatorName" style="width:100%">
@@ -10,11 +13,11 @@
     <span asp-validation-for="OperatorName" class="text-danger"></span>
 </div>
 <div class="form-group">
-    <label for="BusType" style="width:100%">
-        Bus Type
-        <input asp-for="BusType" class="form-control" />
+    <label for="CarType" style="width:100%">
+        Car Type
+        <input asp-for="CarType" class="form-control" />
     </label>
-    <span asp-validation-for="BusType" class="text-danger"></span>
+    <span asp-validation-for="CarType" class="text-danger"></span>
 </div>
 <div class="form-group">
     <label for="From" style="width:100%">
@@ -52,16 +55,10 @@
     <span asp-validation-for="Price" class="text-danger"></span>
 </div>
 <div class="form-group">
-    <label for="TotalSeats" style="width:100%">
-        Total Seats
-        <input asp-for="TotalSeats" class="form-control" type="number" required />
-    </label>
-    <span asp-validation-for="TotalSeats" class="text-danger"></span>
-</div>
-<div class="form-group">
     <label for="ImagePath" style="width:100%">
-        Bus Image URL
+        Car Image URL
         <input asp-for="ImagePath" class="form-control" />
     </label>
     <span asp-validation-for="ImagePath" class="text-danger"></span>
 </div>
+
