@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class Car
+    public class Car: IEntity<Guid>
     {
         [Key]
         public Guid Id { get; set; }
