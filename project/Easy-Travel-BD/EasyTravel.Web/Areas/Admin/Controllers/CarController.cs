@@ -36,6 +36,59 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View(cars);
         }
 
+        [HttpGet]
+        public IActionResult Update(Guid CarId)
+        {
+            var bus = _carService.GetCarById(CarId);
+            if (bus == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(bus);
+
+        }
+
+
+        [HttpPost]
+        public IActionResult Update(Car car)
+        {
+            if (ModelState.IsValid)
+            {
+                _carService.UpdateCar(car);
+                return RedirectToAction("Index", "car", new { area = "Admin" });
+            }
+            return View();
+
+        }
+
+        [HttpGet]
+        public IActionResult Delete(Guid CarId)
+        {
+            var bus = _carService.GetCarById(CarId);
+            if (bus == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(bus);
+
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Car car)
+        {
+            if (ModelState.IsValid)
+            {
+                _carService.DeleteBus(car);
+                return RedirectToAction("Index", "car", new { area = "Admin" });
+            }
+            return View();
+
+        }
+
 
 
 

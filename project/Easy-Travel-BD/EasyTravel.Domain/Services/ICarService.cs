@@ -12,5 +12,8 @@ namespace EasyTravel.Domain.Services
 
         void CreateCar(Car car);
         IEnumerable<Car> GetAllCars();
+        Car GetCarById(Guid CarId);
+        void UpdateCar(Car car);
+        void DeleteBus(Car car);
     }
 }
