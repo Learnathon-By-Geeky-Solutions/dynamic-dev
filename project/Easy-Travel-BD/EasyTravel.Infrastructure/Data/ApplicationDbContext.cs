@@ -15,6 +15,7 @@ namespace EasyTravel.Infrastructure.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Bus> Buses { get; set; }
+        public DbSet<Car> Cars { get; set; }
         public DbSet<Agency> Agencies { get; set; }
         public DbSet<Photographer> Photographers { get; set; }
         public DbSet<Guide> Guides { get; set; }
