@@ -24,7 +24,7 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork1.Save();
         }
 
-        public IEnumerable<Car> GetAllBuses()
+        public IEnumerable<Car> GetAllCars()
         {
             return _applicationUnitOfWork1.CarRepository.GetAllCars();
         }
