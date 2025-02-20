@@ -1,7 +1,7 @@
-﻿@model EasyTravel.Domain.Entites.Bus
+﻿@model EasyTravel.Domain.Entites.Car
 
 @{
-    ViewData["Title"] = "Edit Bus";
+    ViewData["Title"] = "Create Car";
 }
 
 <div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
@@ -12,11 +12,10 @@
             </div>
         </div>
     </div>
-    <form method="post" asp-action="Update">
-        <partial name="_PartialBusForm" />
+    <form method="post" asp-controller="Car" asp-area="Admin" asp-action="Create">
+        <partial name="_CarForm" />
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Update Bus</button>
-            <a asp-controller="Bus" asp-action="List" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Create Car</button>
         </div>
     </form>
 </div>
