@@ -31,15 +31,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Bus" asp-action="List">Bus</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Bus" asp-action="List">Bus</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="List">Car</a>
                         </li>
 
-                        @if (HttpContextAccessor.HttpContext?.Session?.GetString("UserRole") == "Admin")
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Bus" asp-action="Create">Create Bus</a>
-                            </li>
-                        }
+                    
 
 
                       
