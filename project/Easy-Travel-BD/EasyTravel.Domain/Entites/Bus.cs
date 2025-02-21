@@ -46,7 +46,9 @@ namespace EasyTravel.Domain.Entites
         [Range(0, 28, ErrorMessage = "Total seats must be between 0 and 28.")]
         public required int TotalSeats { get; set; }
         public string? ImagePath { get; set; }
+        public List<Seat> Seats { get; set; } = new List<Seat>();
+        public List<BusBooking> BusBookings { get; set; } = new List<BusBooking>();
 
-        
+
     }
 }

@@ -38,6 +38,16 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public IActionResult SelectSeats(Guid busId)
+        {
+            var bus = _busService.GetBusById(busId);
+            if (bus == null)
+                return NotFound();
+
+            return View(bus);
+        }
+
+        [HttpGet]
         public IActionResult Update(Guid BusId)
         {
             var bus = _busService.GetBusById(BusId);

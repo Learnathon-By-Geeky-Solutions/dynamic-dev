@@ -14,6 +14,16 @@ namespace EasyTravel.Web.Controllers
         {
             _busService = busService;
         }
+
+
+
+
+
+
+
+
+
+
         public IActionResult List()
         {
       

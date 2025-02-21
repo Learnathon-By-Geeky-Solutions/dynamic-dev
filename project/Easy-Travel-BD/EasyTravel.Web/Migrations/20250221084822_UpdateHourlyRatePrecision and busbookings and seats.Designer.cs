@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250221084822_UpdateHourlyRatePrecision and busbookings and seats")]
+    partial class UpdateHourlyRatePrecisionandbusbookingsandseats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +58,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Agencies", (string)null);
+                    b.ToTable("Agencies");
 
                     b.HasData(
                         new
@@ -113,7 +116,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Buses", (string)null);
+                    b.ToTable("Buses");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
@@ -145,7 +148,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("BusId");
 
-                    b.ToTable("BusBooking", (string)null);
+                    b.ToTable("BusBooking");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Car", b =>
@@ -188,7 +191,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
@@ -277,7 +280,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Guides", (string)null);
+                    b.ToTable("Guides");
 
                     b.HasData(
                         new
@@ -393,7 +396,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Photographers", (string)null);
+                    b.ToTable("Photographers");
 
                     b.HasData(
                         new
@@ -448,7 +451,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("BusId");
 
-                    b.ToTable("Seat", (string)null);
+                    b.ToTable("Seat");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.User", b =>
@@ -487,7 +490,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
