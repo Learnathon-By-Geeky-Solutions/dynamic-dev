@@ -1,0 +1,98 @@
+﻿@model EasyTravel.Domain.Entites.Hotel
+@{
+    var action = ViewData["Title"];
+    bool isDisabled = false;
+    if ((string?)action == "Delete")
+    {
+        isDisabled = true;
+    }
+}
+<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
+    <div class="card-header bg-primary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">@ViewData["Title"]</h2>
+            </div>
+        </div>
+    </div>
+    <form method="post" asp-action="@action" asp-controller="Hotel">
+
+
+        <div class="form-group">
+            <label for="Name" style="width:100%">
+                Hotel Name
+                <input asp-for="Name" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Address" style="width:100%">
+                Write Address
+                <input asp-for="Address" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Description" style="width:100%">
+                Description
+                <input asp-for="Description" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="City" style="width:100%">
+                City
+                <input asp-for="City" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Phone" style="width:100%">
+                Phone
+                <input asp-for="Phone" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Email" style="width:100%">
+                Email
+                <input asp-for="Email" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" type="email" />
+            </label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        @* <div class="form-group"> *@
+        @*     <label for="Rating" style="width:100%"> *@
+        @*         Rating *@
+        @*         <input asp-for="Rating" class="form-control" type="number" disabled="@(isDisabled ? "disabled" : null)" min="1" max="5" /> *@
+        @*     </label> *@
+        @*     <span asp-validation-for="Rating" class="text-danger"></span> *@
+        @* </div> *@
+        <div class="form-group">
+            <label for="Image" style="width:100%">
+                Image URL
+                <input asp-for="Image" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+        @* <div class="form-group"> *@
+        @*     <label for="CreatedAt" style="width:100%"> *@
+        @*         Created At *@
+        @*         <input asp-for="CreatedAt" class="form-control" type="datetime-local" disabled="@(isDisabled ? "disabled" : null)" /> *@
+        @*     </label> *@
+        @*     <span asp-validation-for="CreatedAt" class="text-danger"></span> *@
+        @* </div> *@
+        @* <div class="form-group"> *@
+        @*     <label for="UpdatedAt" style="width:100%"> *@
+        @*         Updated At *@
+        @*         <input asp-for="UpdatedAt" class="form-control" type="datetime-local" disabled="@(isDisabled ? "disabled" : null)" /> *@
+        @*     </label> *@
+        @*     <span asp-validation-for="UpdatedAt" class="text-danger"></span> *@
+        @* </div> *@
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary"> @action Hotel</button>
+            <a asp-area="Admin" asp-controller="Hotel" asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+        </div>
+    </form>
+</div>

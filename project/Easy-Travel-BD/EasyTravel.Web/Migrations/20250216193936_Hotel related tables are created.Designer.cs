@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250216193936_Hotel related tables are created")]
+    partial class Hotelrelatedtablesarecreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +58,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Agencies", (string)null);
+                    b.ToTable("Agencies");
 
                     b.HasData(
                         new
@@ -113,82 +116,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Buses", (string)null);
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BusId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PassengerName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusId");
-
-                    b.ToTable("BusBooking", (string)null);
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Car", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CarType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("From")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OperatorName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("To")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Buses");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
@@ -277,7 +205,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Guides", (string)null);
+                    b.ToTable("Guides");
 
                     b.HasData(
                         new
@@ -524,7 +452,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Photographers", (string)null);
+                    b.ToTable("Photographers");
 
                     b.HasData(
                         new
@@ -553,11 +481,7 @@ namespace EasyTravel.Web.Migrations
                         });
                 });
 
-
             modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
-
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -622,29 +546,6 @@ namespace EasyTravel.Web.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("Rooms");
-=======
-                    b.Property<Guid?>("BusBookingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BusId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SeatNumber")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusBookingId");
-
-                    b.HasIndex("BusId");
-
-                    b.ToTable("Seat", (string)null);
-
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.User", b =>
@@ -683,18 +584,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
-                        .WithMany("BusBookings")
-                        .HasForeignKey("BusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bus");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
@@ -738,7 +628,6 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("Agency");
                 });
 
-
             modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
                 {
                     b.HasOne("EasyTravel.Domain.Entites.Hotel", "Hotel")
@@ -755,34 +644,8 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("HotelBookings");
 
                     b.Navigation("Rooms");
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.BusBooking", null)
-                        .WithMany("SelectedSeats")
-                        .HasForeignKey("BusBookingId");
-
-                    b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
-                        .WithMany("Seats")
-                        .HasForeignKey("BusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bus");
                 });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Bus", b =>
-                {
-                    b.Navigation("BusBookings");
-
-                    b.Navigation("Seats");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                {
-                    b.Navigation("SelectedSeats");
-                });
-
+#pragma warning restore 612, 618
         }
     }
 }

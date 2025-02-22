@@ -1,5 +1,6 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Repositories;
+using EasyTravel.Domain.Services;
 using EasyTravel.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace EasyTravel.Infrastructure
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
+        public ApplicationUnitOfWork(ApplicationDbContext context,IUserRepository userRepository,IBusRepository busRepository,IAgencyRepository agencyRepository,IPhotographerRepository photographerRepository ,IHotelRepository hotelRepository,IRoomRepository roomRepository,IHotelBookingRepository hotelBookingRepository ) 
+
         public ApplicationUnitOfWork(ApplicationDbContext context,IUserRepository userRepository,IBusRepository busRepository,IAgencyRepository agencyRepository,IPhotographerRepository photographerRepository, ICarRepository carRepository) 
            : base(context)
         {
@@ -19,6 +22,9 @@ namespace EasyTravel.Infrastructure
             BusRepository = busRepository;
             AgencyRepository = agencyRepository;
             PhotographerRepository = photographerRepository;
+            HotelRepository = hotelRepository;
+            RoomRepository = roomRepository;
+            HotelBookingRepository = hotelBookingRepository;
         }
 
         public IUserRepository UserRepository { get; private set; }
@@ -27,5 +33,8 @@ namespace EasyTravel.Infrastructure
         public IAgencyRepository AgencyRepository { get; private set; }
         public IPhotographerRepository PhotographerRepository { get;private set; }
         public IGuideRepository GuideRepository { get; private set; }
+        public IHotelRepository HotelRepository { get; private set; }
+        public IRoomRepository RoomRepository { get; private set; }
+        public IHotelBookingRepository HotelBookingRepository { get; private set; }
     }
 }
