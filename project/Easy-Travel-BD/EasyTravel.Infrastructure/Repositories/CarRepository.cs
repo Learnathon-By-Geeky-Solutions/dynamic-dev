@@ -1,32 +1,32 @@
+﻿
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Repositories;
 using EasyTravel.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EasyTravel.Domain.Repositories;
 
 namespace EasyTravel.Infrastructure.Repositories
 {
-    public class BusRepository : Repository<Bus, Guid>, IBusRepository
+    public class CarRepository : Repository<Car, Guid>, ICarRepository
     {
         private readonly ApplicationDbContext _context;
-
-        public BusRepository(ApplicationDbContext context)
-            : base(context)
+        public CarRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public void Addbus(Bus bus)
+        public void AddCar(Car car)
         {
-            _context.Buses.Add(bus);
+            _context.Cars.Add(car);
         }
 
-        public IEnumerable<Bus> GetAllBuses()
+        public IEnumerable<Car> GetAllCars()
         {
-            return _context.Buses.ToList();
+           return  _context.Cars.ToList();
         }
     }
 }
