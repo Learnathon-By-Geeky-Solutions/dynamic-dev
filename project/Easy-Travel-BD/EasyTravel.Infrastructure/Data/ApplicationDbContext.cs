@@ -15,6 +15,7 @@ namespace EasyTravel.Infrastructure.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Bus> Buses { get; set; }
+
         public DbSet<Car> Cars { get; set; }
         public DbSet<Agency> Agencies { get; set; }
         public DbSet<Photographer> Photographers { get; set; }
@@ -29,6 +30,18 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Bus>()
               .Property(b => b.Price)
               .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Bus>()
+       .HasMany(b => b.Seats)
+       .WithOne(s => s.Bus)
+       .HasForeignKey(s => s.BusId)
+       .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Bus>()
+                .HasMany(b => b.BusBookings)
+                .WithOne(bb => bb.Bus)
+                .HasForeignKey(bb => bb.BusId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Agency>()
                 .Property(a => a.AddDate)
@@ -53,6 +66,9 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Photographer>()
                .Property(a => a.Status)
                .HasDefaultValue("Active");
+            modelBuilder.Entity<Photographer>()
+              .Property(p => p.HourlyRate)
+              .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Guide>()
            .Property(a => a.HireDate)
@@ -68,6 +84,11 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Guide>()
                 .Property(a => a.Status)
                 .HasDefaultValue("Active");
+         
+
+            modelBuilder.Entity<Guide>()
+                .Property(g => g.HourlyRate)
+                .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Agency>().HasData(
             new Agency
