@@ -37,15 +37,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View(buses);
         }
 
-        [HttpGet]
-        public IActionResult SelectSeats(Guid busId)
-        {
-            var bus = _busService.GetBusById(busId);
-            if (bus == null)
-                return NotFound();
-
-            return View(bus);
-        }
+      
 
         [HttpGet]
         public IActionResult Update(Guid BusId)
@@ -99,6 +91,9 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
 
         }
+
+
+        
 
     }
 }
