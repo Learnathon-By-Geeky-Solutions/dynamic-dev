@@ -1,0 +1,223 @@
+﻿@model EasyTravel.Domain.Entites.Bus
+
+@{
+    ViewData["Title"] = "Select Seats";
+}
+
+<div class="container my-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Select Your Seats</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="seat-legend">
+                        <div class="d-flex align-items-center mb-2">
+                            <button class="seat legend-only" disabled>
+                                <span class="available-display"></span>
+                            </button>
+                            <span class="ms-2">Available</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <button class="seat legend-only" disabled>
+                                <span class="selected-display"></span>
+                            </button>
+                            <span class="ms-2">Selected</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button class="seat legend-only" disabled>
+                                <span class="booked-display"></span>
+                            </button>
+                            <span class="ms-2">Booked</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="seat-container text-center">
+                <div class="bus-front mb-4">
+                    <i class="fas fa-bus fa-2x"></i>
+                    <p class="mt-2">Front</p>
+                </div>
+
+                <div class="seats-grid">
+                    @for (char row = 'A'; row <= 'G'; row++)
+                    {
+                        <div class="seat-row">
+                            @for (int col = 1; col <= 4; col++)
+                            {
+                                var seatNumber = $"{row}{col}";
+                                <button class="seat available"
+                                        onclick="toggleSeat(this)"
+                                        data-seat-number="@seatNumber">
+                                    @seatNumber
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="text-end mt-6">
+                <h5>Selected Seats: <span id="selectedSeatsDisplay">None</span></h5>
+                <h5>Total Amount: $<span id="totalAmount">0</span></h5>
+                <a  asp-controller="Bus" asp-action="BusBooking" asp-route-BusId="@Model.Id" class="update-btn mt-2">Continue</a>
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .update-btn {
+        text-decoration: none; 
+        display: inline-block;
+        padding: 10px 20px; 
+        background-color: #007bff;
+        color: #fff; 
+        border-radius: 5px; 
+        transition: background-color 0.3s ease;
+    }
+
+    .update-btn:hover {
+        background-color: #0056b3; 
+        text-decoration: none; 
+    }
+
+    .seat-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .seats-grid {
+        display: inline-block;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .seat-row {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .seat {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: none;
+        padding: 0;
+    }
+
+    .legend-only {
+        cursor: default;
+        pointer-events: none;
+    }
+
+    .available-display {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        border-radius: 3px;
+    }
+
+    .selected-display {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: #28a745;
+        border-radius: 3px;
+    }
+
+    .booked-display {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: #dc3545;
+        border-radius: 3px;
+    }
+
+    .seat.available {
+        background-color: #fff;
+        color: #333;
+    }
+
+        .seat.available:hover {
+            background-color: #e9ecef;
+            border-color: #28a745;
+        }
+
+    .seat.selected {
+        background-color: #28a745;
+        color: white;
+        border-color: #28a745;
+    }
+
+    .seat.booked {
+        background-color: #dc3545;
+        color: white;
+        border-color: #dc3545;
+    }
+
+    .bus-front {
+        color: #666;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        let selectedSeats = new Set();
+        const maxSeats = 4;
+        const pricePerSeat = @Model.Price;
+
+        function toggleSeat(seatElement) {
+            // Only process elements with seat numbers
+            const seatNumber = seatElement.getAttribute('data-seat-number');
+            if (!seatNumber) {
+                return;
+            }
+
+            if (seatElement.classList.contains('selected')) {
+                seatElement.classList.remove('selected');
+                selectedSeats.delete(seatNumber);
+            } else {
+                if (selectedSeats.size < maxSeats) {
+                    seatElement.classList.add('selected');
+                    selectedSeats.add(seatNumber);
+                } else {
+                    alert('You can only select up to ' + maxSeats + ' seats.');
+                    return;
+                }
+            }
+
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const selectedSeatsDisplay = document.getElementById('selectedSeatsDisplay');
+            selectedSeatsDisplay.textContent = selectedSeats.size > 0
+                ? Array.from(selectedSeats).join(', ')
+                : 'None';
+
+            const totalAmount = document.getElementById('totalAmount');
+            totalAmount.textContent = (selectedSeats.size * pricePerSeat).toFixed(2);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDisplay();
+        });
+    </script>
+}
