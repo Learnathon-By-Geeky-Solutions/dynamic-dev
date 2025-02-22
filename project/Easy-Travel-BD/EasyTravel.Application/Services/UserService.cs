@@ -1,4 +1,3 @@
-﻿
 using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
@@ -11,13 +10,14 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
-     public class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         public UserService(IApplicationUnitOfWork applicationUnitOfWork)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
         }
+
         public bool AuthenticateUser(string email, string password)
         {
             return _applicationUnitOfWork.UserRepository.ValidateUser(email, password);
@@ -30,9 +30,7 @@ namespace EasyTravel.Application.Services
 
         public string GetUserController(string role)
         {
-            return role == "Admin" 
-                ? "Dashboard" 
-                : "Home";
+            return role == "Admin" ? "Dashboard" : "Home";
         }
 
         public bool IsAdmin(string role)

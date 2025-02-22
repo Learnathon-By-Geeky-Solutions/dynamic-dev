@@ -1,0 +1,23 @@
+﻿@model EasyTravel.Domain.Entites.Car
+
+@{
+    ViewData["Title"] = "Update Car";
+}
+
+<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
+    <div class="card-header bg-primary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">@ViewData["Title"]</h2>
+            </div>
+        </div>
+    </div>
+    <form method="post" asp-area="Admin" asp-controller="Car" asp-action="Update">
+        <input type="hidden" asp-for="Id" />
+        <partial name="_CarForm" />
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update Car</button>
+            <a asp-area="Admin" asp-controller="Car" asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

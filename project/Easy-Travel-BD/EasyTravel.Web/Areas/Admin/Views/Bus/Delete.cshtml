@@ -12,11 +12,12 @@
             </div>
         </div>
     </div>
-    <form method="post" asp-controller="Bus" asp-action="Delete">
-        <partial name="_PartialBusForm" /> <!-- Use <partial> tag helper here -->
+    <form method="post" asp-area="Admin" asp-controller="Bus"  asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <partial name="_BusForm" /> <!-- Use <partial> tag helper here -->
         <div class="form-group">
             <button type="submit" class="btn btn-danger">Delete Bus</button>
-            <a asp-controller="Bus" asp-action="List" class="btn btn-secondary">Cancel</a>
+            <a  asp-area="Admin" asp-controller="Bus" asp-action="Index" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 </div>
