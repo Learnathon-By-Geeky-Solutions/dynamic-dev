@@ -1,5 +1,6 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Factories;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
 using System;
@@ -10,38 +11,24 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
-    public class PhotographerService :  IPhotographerService
+    public class PhotographerService : IPhotographerService
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
-        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork) 
+        private readonly IAgencyService _agencyService;
+        private readonly IEntityFactory<Photographer> _photographerFactory;
+        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork, IAgencyService agencyService, IEntityFactory<Photographer> phototgrapherFactory)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
+            _agencyService = agencyService;
+            _photographerFactory = phototgrapherFactory;
         }
-        //public Photographer GetInstance()
-        //{
-        //    var model = new Photographer()
-        //    {
-        //        FirstName = string.Empty,
-        //        LastName = string.Empty,
-        //        Email = string.Empty,
-        //        ContactNumber = string.Empty,
-        //        Address = string.Empty,
-        //        ProfilePicture = string.Empty,
-        //        Bio = string.Empty,
-        //        DateOfBirth = DateTime.MinValue,
-        //        Skills = string.Empty,
-        //        PortfolioUrl = string.Empty,
-        //        Specialization = string.Empty,
-        //        YearsOfExperience = 0,
-        //        Availability = false,
-        //        HourlyRate = 0,
-        //        Rating = 0,
-        //        SocialMediaLinks = null,
-        //        Status = null,
-        //        AgencyId = default
-        //    };
-        //    return model;
-        //}
+        public Photographer GetPhotographerInstance()
+        {
+            var agencyList = _agencyService.GetAll();
+            var photographer = _photographerFactory.CreateInstance();
+            photographer.Agencies = agencyList.ToList();
+            return photographer;
+        }
 
         public void Create(Photographer Photographer)
         {
@@ -63,7 +50,10 @@ namespace EasyTravel.Application.Services
 
         public Photographer Get(Guid id)
         {
-            return _applicationUnitOfWork.PhotographerRepository.GetById(id);
+            var agencyList = _agencyService.GetAll();
+            var model = _applicationUnitOfWork.PhotographerRepository.GetById(id);
+            model.Agencies = agencyList.ToList();
+            return model;
         }
 
         public IEnumerable<Photographer> GetAll()

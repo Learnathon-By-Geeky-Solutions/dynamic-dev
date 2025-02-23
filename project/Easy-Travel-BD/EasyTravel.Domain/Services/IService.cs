@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IService<TEntity>
+    public interface IService<TEntity,Tkey>
     {
         void Create(TEntity entity);
         void Update(TEntity entity);
-        void Delete(Guid id);
-        TEntity Get(Guid id);
+        void Delete(Tkey id);
+        TEntity Get(Tkey id);
         IEnumerable<TEntity> GetAll();
     }
 }

@@ -11,13 +11,9 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     public class PhotographerController : Controller
     {
         private readonly IPhotographerService _photographerService;
-        private readonly IEntityFactory<Photographer> _photographerFactory;
-        private readonly IAgencyService _agencyService;
-        public PhotographerController(IPhotographerService photographerService, IAgencyService agencyService,IEntityFactory<Photographer> photographerFactory)
+        public PhotographerController(IPhotographerService photographerService)
         {
             _photographerService = photographerService;
-            _agencyService = agencyService;
-            _photographerFactory = photographerFactory;
         }
         public IActionResult Index()
         {
@@ -27,9 +23,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var model = _photographerFactory.CreateInstance();
-            var agencyList = _agencyService.GetAll();
-            model.Agencies = agencyList.ToList();
+            var model = _photographerService.GetPhotographerInstance();
             return View(model);
         }
         [HttpPost]
@@ -49,9 +43,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var agencyList = _agencyService.GetAll();
             var model = _photographerService.Get(id);
-            model.Agencies = agencyList.ToList();
             return View(model);
         }
         [HttpPost]
@@ -72,9 +64,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var agencyList = _agencyService.GetAll();
             var model = _photographerService.Get(id);
-            model.Agencies = agencyList.ToList();
             return View(model);
         }
         [HttpPost]
