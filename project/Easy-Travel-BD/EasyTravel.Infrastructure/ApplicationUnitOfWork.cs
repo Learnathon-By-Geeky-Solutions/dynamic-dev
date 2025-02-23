@@ -21,7 +21,7 @@ namespace EasyTravel.Infrastructure
             PhotographerRepository = photographerRepository;
         }
 
-        public IUserRepository UserRepository { get; private set; }
+        public IUserRepository UserRepository { get; private set; } 
         public IBusRepository BusRepository { get; private set; }
         public ICarRepository CarRepository { get; private set; }
         public IAgencyRepository AgencyRepository { get; private set; }
