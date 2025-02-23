@@ -48,7 +48,7 @@
                 <!-- Price & Book Button -->
                 <div class="col-md-2 text-center">
                     <p class="price text-primary fw-bold fs-5">৳@car.Price</p>
-                    <a href="#" class="btn btn-warning btn-sm fw-bold text-dark">BOOK</a>
+                    <a asp-controller="Car" asp-action="CarBooking" asp-route-CarId="@car.Id"class="btn btn-warning btn-sm fw-bold text-dark">BOOK</a>
                 </div>
 
                
