@@ -38,10 +38,10 @@ namespace EasyTravel.Web.Controllers
             var bus = _busService.GetBusById(busId);
             if (bus == null) return NotFound();
 
-            var viewModel = new BookingViewModel
+            var viewModel = new BusBookingViewModel
             {
                 Bus = bus,
-                BookingForm = new BusBookingForm()
+                BookingForm = new BookingForm()
             };
 
             return View(viewModel);
