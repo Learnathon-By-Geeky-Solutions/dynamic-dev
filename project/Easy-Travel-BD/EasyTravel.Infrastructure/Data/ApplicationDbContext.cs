@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EasyTravel.Domain.Entites;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace EasyTravel.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
