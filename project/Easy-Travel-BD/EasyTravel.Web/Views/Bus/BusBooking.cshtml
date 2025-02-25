@@ -49,18 +49,14 @@
                             <h5 class="mb-0">Select Seats</h5>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="seat-map">
-                            @foreach (var seat in Model.Bus.Seats)
+                    <div class="mb-3">
+                        <small class="text-muted">Selected Seats</small>
+                        <div id="selectedSeatsDisplay" class="selected-seats-tags">
+                            @foreach (var seat in Model.SelectedSeatNumbers)
                             {
-                                <div class="seat @(!seat.IsAvailable ? "occupied" : "")"
-                                     data-seat="@seat.SeatNumber"
-                                     data-available="@seat.IsAvailable.ToString().ToLower()">
-                                    @seat.SeatNumber
-                                </div>
+                                <span class="seat-tag">@seat</span>
                             }
                         </div>
-                        <input type="hidden" id="selectedSeats" name="SelectedSeatNumbers" />
                     </div>
                 </div>
 
@@ -93,7 +89,7 @@
                 </div>
 
                 <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" />
-                <button type="submit" class="btn btn-success w-100" id="submitButton" disabled>
+                <button type="submit" class="btn btn-success w-100" id="submitButton" >
                     PROCEED TO PAYMENT
                 </button>
             </form>
@@ -107,7 +103,12 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <small class="text-muted">Selected Seats</small>
-                        <div id="selectedSeatsDisplay" class="selected-seats-tags"></div>
+                        <div id="selectedSeatsDisplay" class="selected-seats-tags">
+                            @foreach (var seat in Model.SelectedSeatNumbers)
+                            {
+                                <span class="seat-tag">@seat</span>
+                            }
+                        </div>
                     </div>
                     <div class="mb-3">
                         <small class="text-muted">Price per Seat</small>
@@ -115,7 +116,7 @@
                     </div>
                     <div class="total-section">
                         <small class="text-muted">Total Amount</small>
-                        <h4 class="text-success">৳<span id="totalAmountDisplay">0</span></h4>
+                        <h4 class="text-success">৳<span id="totalAmountDisplay">@Model.TotalAmount</span></h4>
                     </div>
                 </div>
             </div>
@@ -167,42 +168,4 @@
     </style>
 }
 
-@section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            const pricePerSeat = @Model.Bus.Price;
-            let selectedSeats = [];
 
-            $('.seat').click(function() {
-                if ($(this).data('available') === false) return;
-
-                const seatNumber = $(this).data('seat');
-
-                if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                    selectedSeats = selectedSeats.filter(s => s !== seatNumber);
-                } else {
-                    $(this).addClass('selected');
-                    selectedSeats.push(seatNumber);
-                }
-
-                updateBookingSummary();
-            });
-
-            function updateBookingSummary() {
-                const totalAmount = selectedSeats.length * pricePerSeat;
-
-                $('#selectedSeatsDisplay').html(
-                    selectedSeats.map(seat => `<span class="seat-tag">${seat}</span>`).join('')
-                );
-                $('#totalAmountDisplay').text(totalAmount);
-                $('#totalAmount').val(totalAmount);
-                $('#selectedSeats').val(selectedSeats.join(','));
-
-                $('#submitButton').prop('disabled', selectedSeats.length === 0);
-            }
-        });
-    </script>
-}

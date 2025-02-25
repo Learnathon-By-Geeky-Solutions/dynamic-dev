@@ -11,6 +11,7 @@ using EasyTravel.Web;
 using EasyTravel.Domain.Services;
 using EasyTravel.Domain.Repositories;
 using System.Reflection;
+using EasyTravel.Web.Hubs;
 
 
 var configuration = new ConfigurationBuilder()
@@ -79,6 +80,7 @@ try
         options.Cookie.IsEssential = true;             // Essential for GDPR compliance
     });
     builder.Services.AddHttpContextAccessor();
+    builder.Services.AddSignalR();
 
     var app = builder.Build();
 
@@ -93,7 +95,7 @@ try
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
-
+    app.MapHub<SeatHub>("/seatHub");
     app.UseHttpsRedirection();
     app.UseRouting();
     app.UseSession();
