@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Room>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Room and Hotel </h1>
+
+@foreach(var item in Model) {
+    <p>
+        @item.RoomType
+    </p>
+}

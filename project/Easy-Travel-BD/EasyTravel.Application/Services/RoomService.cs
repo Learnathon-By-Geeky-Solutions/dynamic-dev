@@ -11,36 +11,39 @@ namespace EasyTravel.Application.Services
 {
     public class RoomService:IRoomService
     {
-        private readonly IApplicationUnitOfWork _applicationunitOfWork;
+        private readonly IApplicationUnitOfWork _applicationUnitOfWork;
 
         public RoomService(IApplicationUnitOfWork applicationUnitOfWork)
         {
-            _applicationunitOfWork = applicationUnitOfWork;
+            _applicationUnitOfWork = applicationUnitOfWork;
         }
 
         public void Create(Room entity)
         {
-            throw new NotImplementedException();
+            _applicationUnitOfWork.RoomRepository.Add(entity);
+            _applicationUnitOfWork.Save();
         }
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            _applicationUnitOfWork.RoomRepository.Remove(id);
+            _applicationUnitOfWork.Save();
         }
 
         public Room Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _applicationUnitOfWork.RoomRepository.GetById(id);
         }
 
         public IEnumerable<Room> GetAll()
         {
-            throw new NotImplementedException();
+            return _applicationUnitOfWork.RoomRepository.GetAll();
         }
 
         public void Update(Room entity)
         {
-            throw new NotImplementedException();
+            _applicationUnitOfWork.RoomRepository.Edit(entity);
+            _applicationUnitOfWork.Save();
         }
     }
 }
