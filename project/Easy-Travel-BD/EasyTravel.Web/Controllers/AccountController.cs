@@ -20,8 +20,9 @@ namespace EasyTravel.Web.Controllers
 
         public IActionResult Login()
         {
-            var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
-            return isLoggedIn == false ? View() : RedirectToAction("Error","Home",new { area = string.Empty});
+            return View();
+            //var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
+            //return isLoggedIn == false ? View() : RedirectToAction("Error","Home",new { area = string.Empty});
         }
 
 
@@ -49,8 +50,9 @@ namespace EasyTravel.Web.Controllers
 
         public IActionResult Register()
         {
-            var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
-            return isLoggedIn == false ? View() : RedirectToAction("Error", "Home", new { area = string.Empty });
+            return View();
+            //var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
+            //return isLoggedIn == false ? View() : RedirectToAction("Error", "Home", new { area = string.Empty });
         }
 
 

@@ -1,74 +1,80 @@
-﻿@* @model EasyTravel.Domain.Entites.User *@
-@* @{ *@
-@*     ViewData["Title"] = "Register"; *@
-@* } *@
-@* <div class="card shadow-sm" style="max-width: 500px; margin: 20px auto; padding: 20px; border-radius: 10px;"> *@
-@*     <div class="card-header bg-primary bg-gradient ml-0 py-3"> *@
-@*         <div class="row"> *@
-@*             <div class="col-12 text-center"> *@
-@*                 <h2 class="text-white py-2">@ViewData["Title"]</h2> *@
-@*             </div> *@
-@*         </div> *@
-@*     </div> *@
-@*     <form method="post"> *@
-@*         <!-- Name Input --> *@
-@*         <div class="form-group mb-3"> *@
-@*             <label for="Name" style="width:100%" > *@
-@*                 Name *@
-@*                 <input asp-for="Name" id="Name" class="form-control" required aria-describedby="NameHelp" /> *@
-@*             </label> *@
-@*             <span asp-validation-for="Name" class="text-danger"></span> *@
-@*         </div> *@
+﻿ @model RegisterViewModel
+ @{ 
+     ViewData["Title"] = "Register"; 
+ } 
+ <div class="card shadow-sm" style="max-width: 500px; margin: 20px auto; padding: 20px; border-radius: 10px;"> 
+     <div class="card-header bg-primary bg-gradient ml-0 py-3"> 
+         <div class="row"> 
+             <div class="col-12 text-center"> 
+                 <h2 class="text-white py-2">@ViewData["Title"]</h2> 
+             </div> 
+         </div> 
+     </div> 
+     <form method="post"> 
+         <!-- Name Input --> 
+         <div class="form-group mb-3"> 
+             <label for="FirstName" style="width:100%" > 
+                 First Name
+                <input asp-for="FirstName" id="FirstName" class="form-control" required aria-describedby="NameHelp" />
+            </label> 
+             <span asp-validation-for="FirstName" class="text-danger"></span> 
+         </div> 
+         <div class="form-group mb-3"> 
+             <label for="LastName" style="width:100%" > 
+                 Last Name
+                <input asp-for="LastName" id="LastName" class="form-control" required aria-describedby="NameHelp" />
+            </label> 
+             <span asp-validation-for="LastName" class="text-danger"></span> 
+         </div> 
 
-@*         <!-- Email Input --> *@
-@*         <div class="form-group mb-3"> *@
-@*             <label for="Email" style="width:100%"> *@
-@*                 Email *@
-@*                 <input asp-for="Email" type="email" id="Email" class="form-control" required aria-describedby="EmailHelp" /> *@
-@*             </label> *@
-@*             <span asp-validation-for="Email" class="text-danger"></span> *@
-@*         </div> *@
+         <!-- Email Input --> 
+         <div class="form-group mb-3"> 
+             <label for="Email" style="width:100%"> 
+                 Email 
+                 <input asp-for="Email" type="email" id="Email" class="form-control" required aria-describedby="EmailHelp" /> 
+             </label> 
+             <span asp-validation-for="Email" class="text-danger"></span> 
+         </div>
 
-@*         <!-- Password Input --> *@
-@*         <div class="form-group mb-3"> *@
-@*             <label for="Password" style="width:100%"> *@
-@*                 Password *@
-@*                 <input asp-for="Password" type="password" id="Password" class="form-control" required aria-describedby="PasswordHelp" /> *@
-@*             </label> *@
-@*             <span asp-validation-for="Password" class="text-danger"></span> *@
-@*         </div> *@
+        <!-- Date of birth Input -->
+        <div class="form-group mb-3">
+            <label for="DateOfBirth" style="width:100%">
+                PhoneNumber
+                <input asp-for="DateOfBirth" type="datetime-local" id="DateOfBirth" class="form-control" required aria-describedby="PhoneNumberHelp" />
+            </label>
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
 
-@*         <!-- Phone Number Input --> *@
-@*         <div class="form-group mb-3"> *@
-@*             <label for="PhoneNumber" style="width:100%"> *@
-@*                 PhoneNumber *@
-@*                 <input asp-for="PhoneNumber" type="tel" id="PhoneNumber" class="form-control" required aria-describedby="PhoneNumberHelp" /> *@
-@*             </label> *@
-@*             <span asp-validation-for="PhoneNumber" class="text-danger"></span> *@
-@*         </div> *@
+        <!-- Gender Input-->
+        <div class="form-group mb-3">
+            <label for="Gender" style="width:100%">
+                Gender<br />
+                <input asp-for="Gender" type="radio" value="male" checked id="Gender" class="form-check-input" required aria-describedby="ProfessionHelp" />male
+                <input asp-for="Gender" type="radio" value="female" id="Gender" class="form-check-input" required aria-describedby="ProfessionHelp" />female
+                <input asp-for="Gender" type="radio" value="others" id="Gender" class="form-check-input" required aria-describedby="ProfessionHelp" />others
+            </label>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
 
-@*         <!-- Profession Input (Optional) --> *@
-@*         <div class="form-group mb-3"> *@
-@*             <label for="Profession" style="width:100%"> *@
-@*                 Profession (Optional) *@
-@*                 <input asp-for="Profession" id="Profession" class="form-control" aria-describedby="ProfessionHelp" /> *@
-@*             </label> *@
-@*             <span asp-validation-for="Profession" class="text-danger"></span> *@
-@*         </div> *@
+        <!-- Password Input --> 
+         <div class="form-group mb-3"> 
+             <label for="Password" style="width:100%"> 
+                 Password 
+                 <input asp-for="Password" type="password" id="Password" class="form-control" required aria-describedby="PasswordHelp" /> 
+             </label> 
+             <span asp-validation-for="Password" class="text-danger"></span> 
+         </div>
+        <div class="form-group mb-3">
+            <label for="ConfirmPassword" style="width:100%">
+                Password
+                <input asp-for="ConfirmPassword" type="password" id="Password" class="form-control" required aria-describedby="PasswordHelp" />
+            </label>
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
 
-@*         <!-- Role Selection --> *@
-@*         <div class="form-group mb-3"> *@
-@*             <label for="Role" style="width:100%"> *@
-@*                 Role *@
-@*                 <select asp-for="Role" id="Role" class="form-control" required> *@
-@*                     <option value="User">User</option> *@
-@*                     <option value="Admin">Admin</option> *@
-@*                 </select> *@
-@*             </label> *@
-@*             <span asp-validation-for="Role" class="text-danger"></span> *@
-@*         </div> *@
+         <!-- Submit Button --> 
+         <button type="submit" class="btn btn-primary btn-block">Register</button> 
+     </form> 
+ </div>
+ 
 
-@*         <!-- Submit Button --> *@
-@*         <button type="submit" class="btn btn-primary btn-block">Register</button> *@
-@*     </form> *@
-@* </div> *@
