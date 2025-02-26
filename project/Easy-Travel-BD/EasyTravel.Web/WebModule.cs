@@ -34,8 +34,8 @@ namespace EasyTravel.Web
 
             builder.RegisterType<ApplicationUnitOfWork>().As<IApplicationUnitOfWork>()
                 .InstancePerLifetimeScope();
-            builder.RegisterType<UserRepository>().As<IUserRepository>()
-             .InstancePerLifetimeScope();
+            //builder.RegisterType<UserRepository>().As<IUserRepository>()
+            // .InstancePerLifetimeScope();
             builder.RegisterType<BusRepository>().As<IBusRepository>()
             .InstancePerLifetimeScope();
             builder.RegisterType<AgencyRepository>().As<IAgencyRepository>()

@@ -1,6 +1,4 @@
-﻿@inject IHttpContextAccessor HttpContextAccessor
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -34,23 +32,23 @@
                             <a class="nav-link text-dark" asp-controller="Bus" asp-action="List">Bus</a>
                         </li>
 
-                        @if (HttpContextAccessor.HttpContext?.Session?.GetString("UserRole") == "Admin")
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Bus" asp-action="Create">Create Bus</a>
-                            </li>
-                        }
+                        @* @if (HttpContextAccessor.HttpContext?.Session?.GetString("UserRole") == "Admin") *@
+                        @* { *@
+                        @*     <li class="nav-item"> *@
+                        @*         <a class="nav-link text-dark" asp-controller="Bus" asp-action="Create">Create Bus</a> *@
+                        @*     </li> *@
+                        @* } *@
 
 
                       
                     </ul>
 
                     <ul class="navbar-nav">
-                        @if (HttpContextAccessor.HttpContext?.Session?.GetString("UserLoggedIn") == "true")
+                        @if (User.Identity.IsAuthenticated)
                         {
                             
                             <li class="nav-item">
-                                <form method="post" asp-controller="Account" asp-action="Logout" class="form-inline">
+                                <form method="post" asp-area="Identity" asp-page="/Account/Logout" class="form-inline">
                                     <button type="submit" class="nav-link btn btn-link text-dark" style="padding: 0;">Logout</button>
                                 </form>
                             </li>
@@ -58,10 +56,10 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
                             </li>
                         }
                     </ul>
