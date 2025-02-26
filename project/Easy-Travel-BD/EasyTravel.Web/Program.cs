@@ -11,6 +11,8 @@ using EasyTravel.Web;
 using EasyTravel.Domain.Services;
 using EasyTravel.Domain.Repositories;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using EasyTravel.Domain.Entites;
 
 
 var configuration = new ConfigurationBuilder()
@@ -66,7 +68,14 @@ try
         options.UseSqlServer(connectionString, (x) => x.MigrationsAssembly(migrationAssembly)));
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
+    builder.Services.AddIdentity<User,IdentityRole<Guid>>(
+        options =>
+        {
+            options.SignIn.RequireConfirmedAccount = true;
+            options.Password.RequiredLength = 8;
+        }
+        )
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
     builder.Services.AddDistributedMemoryCache();
@@ -97,6 +106,7 @@ try
     app.UseRouting();
     app.UseSession();
 
+    app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapStaticAssets();
@@ -111,6 +121,8 @@ try
         pattern: "{controller=Home}/{action=Index}/{id?}")
         .WithStaticAssets();
 
+    app.MapRazorPages()
+        .WithStaticAssets();
 
     app.Run();
 

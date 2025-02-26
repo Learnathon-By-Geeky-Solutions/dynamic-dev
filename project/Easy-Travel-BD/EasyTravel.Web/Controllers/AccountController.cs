@@ -34,13 +34,13 @@ namespace EasyTravel.Web.Controllers
             {
                 var user = _userService.GetUserByEmail(email);
 
-                HttpContext.Session.SetString("UserLoggedIn", "true");
-                HttpContext.Session.SetString("UserRole", user.Role);
-                HttpContext.Session.SetString("UserName", user.Name);
+                //HttpContext.Session.SetString("UserLoggedIn", "true");
+                //HttpContext.Session.SetString("UserRole", user.Role);
+                //HttpContext.Session.SetString("UserName", user.Name);
 
-                return user.Role == "Admin"
-                    ? RedirectToAction("Index", "Dashboard", new { area = "Admin" })
-                    : RedirectToAction("Index", "Home", new {area = string.Empty});
+                //return user.Role == "Admin"
+                //    ? RedirectToAction("Index", "Dashboard", new { area = "Admin" })
+                //    : RedirectToAction("Index", "Home", new {area = string.Empty});
             }
             ViewBag.ErrorMessage = "Invalid email or password.";
             return View();
