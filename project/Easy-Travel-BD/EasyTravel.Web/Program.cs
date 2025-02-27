@@ -71,8 +71,16 @@ try
     builder.Services.AddIdentity<User,IdentityRole<Guid>>(
         options =>
         {
-            options.SignIn.RequireConfirmedAccount = true;
+            //options.SignIn.RequireConfirmedAccount = true;
             options.Password.RequiredLength = 8;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequiredUniqueChars = 0;
+            //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            //options.Lockout.MaxFailedAccessAttempts = 5;
+            //options.Lockout.AllowedForNewUsers = true;
         }
         )
     .AddEntityFrameworkStores<ApplicationDbContext>();
