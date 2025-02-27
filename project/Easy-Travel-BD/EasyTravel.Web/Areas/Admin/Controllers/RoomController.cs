@@ -49,5 +49,47 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View(model);
           //  return View();
         }
+
+        [HttpGet]
+        public IActionResult Update(Guid id)
+        {
+            if (id == Guid.Empty)
+                return RedirectToAction("Error", "Home", new { area = "Admin" });
+            var room = _roomService.Get(id);
+            ViewBag.Hotels = new SelectList(_hotelService.GetAll(), "Id", "Name");
+
+            return View(room);
+        }
+        [HttpPost]
+        public IActionResult Update(Room model)
+        {
+            if (ModelState.IsValid)
+            {
+                _roomService.Update(model);
+                return RedirectToAction("Index", "Room", new { area = "Admin" });
+            }
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Delete(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return RedirectToAction("Error", "Home", new { area = "Admin" });
+            }
+            var room = _roomService.Get(id);
+            return View(room);
+        }
+        [HttpPost]
+        public IActionResult Delete(Room model)
+        {
+            if (model.Id == Guid.Empty)
+            {
+                return RedirectToAction("Error", "Home", new { area = "Admin" });
+            }
+            _roomService.Delete(model.Id);
+            return RedirectToAction("Index", "Room", new { area = "Admin" });
+        }
+
     }
 }
