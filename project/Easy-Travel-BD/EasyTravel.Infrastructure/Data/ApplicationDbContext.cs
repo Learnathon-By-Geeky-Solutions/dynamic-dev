@@ -68,6 +68,10 @@ namespace EasyTravel.Infrastructure.Data
                 .Property(a => a.CreatedAt)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<IdentityUserRole<Guid>>()
+                .Property(a => a.RoleId)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValue(new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"));
 
 
             modelBuilder.Entity<IdentityRole<Guid>>()

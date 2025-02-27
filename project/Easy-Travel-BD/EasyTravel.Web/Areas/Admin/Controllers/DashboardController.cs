@@ -1,9 +1,10 @@
 ﻿using EasyTravel.Domain.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"),Authorize(Roles = "admin")]
     public class DashboardController : Controller
     {
         private readonly IUserService _userService;

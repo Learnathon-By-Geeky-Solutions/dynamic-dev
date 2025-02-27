@@ -23,29 +23,55 @@ namespace EasyTravel.Web.Controllers
             //_roleManager = roleManager;
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl = null)
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return Redirect(returnUrl ?? Url.Content("~/"));
+            }
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
+            returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
-            { 
-                var result = await _signInManager.PasswordSignInAsync(model.Email!,model.Password!, model.RememberMe,false);
-                if (result.Succeeded)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
                 {
-                    return RedirectToAction("Index", "Home", new { area = string.Empty });
+                    var result = await _signInManager.PasswordSignInAsync(model.Email!, model.Password!, model.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        var role = await _userManager.GetRolesAsync(user);
+                        if (role.Contains("admin"))
+                        {
+                            return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+                        }
+                        if (Url.IsLocalUrl(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        return RedirectToAction("Index", "Home", new { area = string.Empty });
+                    }
+                    ModelState.AddModelError(string.Empty, "Invalid Login attemp !");
                 }
-                ModelState.AddModelError(string.Empty, "Invalid Login attemp !");
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User not found! ");
+                }
             }
             return View(model);
 
         }
 
-        public IActionResult Register()
+        public IActionResult Register(string? returnUrl = null)
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return Redirect(returnUrl ?? Url.Content("~/"));
+            }
             return View();
         }
 
@@ -60,6 +86,7 @@ namespace EasyTravel.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "client");
                     return RedirectToAction("Login", "Account", new {area = string.Empty});
                 }
                 
@@ -73,7 +100,6 @@ namespace EasyTravel.Web.Controllers
            
         }
 
-        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
