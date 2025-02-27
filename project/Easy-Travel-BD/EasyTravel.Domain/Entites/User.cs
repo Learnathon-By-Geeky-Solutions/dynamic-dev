@@ -11,7 +11,6 @@ namespace EasyTravel.Domain.Entites
 {
     public class User : IdentityUser<Guid>
     {
-        //public override Guid Id {  get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Gender { get; set; }
