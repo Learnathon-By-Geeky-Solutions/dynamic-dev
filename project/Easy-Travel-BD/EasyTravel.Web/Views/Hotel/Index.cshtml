@@ -1,0 +1,37 @@
+﻿@model IEnumerable<EasyTravel.Domain.Entites.Hotel>
+
+<h1> Bus Booking </h1
+
+ <div class="container mx-auto mt-4">
+    <div class="row">
+       @{
+     foreach(var hotel in Model)
+     {
+         <div class="col-md-4">
+             <div class="card" style="width: 18rem;">
+                 <img src="@hotel.Image" class="card-img-top" alt="...">
+                 <div class="card-body">
+                     <h5 class="card-title">
+                     @hotel.Name
+                     </h5>
+                     <h6 class="card-subtitle mb-2 text-muted">
+                         @hotel.Address
+                         </h6>
+                      <div> 
+                      <span>Ratings:  @await Html.PartialAsync("_Rating", hotel.Rating)</span>
+                    
+                      </div>
+                         <p class="card-text">
+                             @hotel.Description
+                             </p>
+                <a asp-controller="Hotel" asp-action="Details" asp-route-HotelId="@hotel.Id" class="btn btn-success btn-sm fw-bold text-dark">Rooms</a>
+                <a asp-controller="Hotel" asp-action="Book" asp-route-HotelId="@hotel.Id" class="btn btn-warning btn-sm fw-bold text-dark">Book</a>
+                  </div>
+              </div>
+          </div>
+ }
+ }
+
+    </div>
+</div>
+    
