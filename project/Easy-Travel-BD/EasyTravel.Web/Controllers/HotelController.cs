@@ -17,6 +17,14 @@ namespace EasyTravel.Web.Controllers
             return View(hotels);
             //return View();
         }
+        [HttpGet]
+        public IActionResult  Details(Guid id)
+        {
+            var hotel = _hotelService.Get(id);
+            return View(hotel);
+            //return View();
+        }
+
         
     }
 }
