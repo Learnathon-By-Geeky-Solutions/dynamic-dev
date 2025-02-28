@@ -1,0 +1,19 @@
+﻿@model int
+
+@{
+    var maxStars = 5;
+}
+
+<div class="rating">
+    @for (int i = 1; i <= maxStars; i++)
+    {
+        if (i <= Model)
+        {
+            <i class="bi bi-star-fill text-warning"></i> <!-- Filled Star -->
+        }
+        else
+        {
+            <i class="bi bi-star text-muted"></i> <!-- Empty Star -->
+        }
+    }
+</div>
