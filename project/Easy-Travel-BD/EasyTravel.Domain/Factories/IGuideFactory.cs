@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyTravel.Domain.Services
+namespace EasyTravel.Domain.Factories
 {
-    public interface IGuideService : IService<Guide,Guid>
+    public interface IGuideFactory : IEntityFactory<Guide>
     {
-        Guide GetGuideInstance();
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Factories
 {
-    public class GuideFactory : IEntityFactory<Guide>
+    public class GuideFactory : IGuideFactory
     {
         public Guide CreateInstance()
         {

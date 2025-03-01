@@ -1,5 +1,7 @@
-﻿using EasyTravel.Domain;
+﻿using EasyTravel.Application.Factories;
+using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Factories;
 using EasyTravel.Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -12,10 +14,22 @@ namespace EasyTravel.Application.Services
     public class GuideService : IGuideService
     {
         private IApplicationUnitOfWork _applicationUnitOfWork;
-        public GuideService(IApplicationUnitOfWork applicationUnitOfWork)
+        private readonly IAgencyService _agencyService;
+        private readonly IGuideFactory _guideFactory;
+        public GuideService(IApplicationUnitOfWork applicationUnitOfWork,IAgencyService agencyService,IGuideFactory guideFactory)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
+            _agencyService = agencyService;
+            _guideFactory = guideFactory;
         }
+        public Guide GetGuideInstance()
+        {
+            var agencyList = _agencyService.GetAll();
+            var guide = _guideFactory.CreateInstance();
+            guide.Agencies = agencyList.ToList();
+            return guide;
+        }
+
         public void Create(Guide entity)
         {
             _applicationUnitOfWork.GuideRepository.Add(entity);
@@ -37,32 +51,6 @@ namespace EasyTravel.Application.Services
         {
             return _applicationUnitOfWork.GuideRepository.GetAll();
         }
-
-        public Guide GetInstance()
-        {
-            var model = new Guide
-            {
-                FirstName = string.Empty,
-                LastName = string.Empty,
-                Email = string.Empty,
-                ContactNumber = string.Empty,
-                Address = string.Empty,
-                ProfilePicture = string.Empty,
-                Bio = string.Empty,
-                LanguagesSpoken = string.Empty,
-                LicenseNumber = string.Empty,
-                DateOfBirth = DateTime.MinValue,
-                Specialization = string.Empty,
-                YearsOfExperience = 0,
-                Availability = false,
-                HourlyRate = 0,
-                Rating = 0,
-                Status = null,
-                AgencyId = default
-            };
-            return model;
-        }
-
         public void Update(Guide entity)
         {
             _applicationUnitOfWork.GuideRepository.Edit(entity);
