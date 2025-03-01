@@ -56,9 +56,9 @@ namespace EasyTravel.Web
             .InstancePerLifetimeScope();
             builder.RegisterType<SessionService>().As<ISessionService>()
             .InstancePerLifetimeScope();
-            builder.RegisterType<PhotographerFactory>().As<IEntityFactory<Photographer>>()
+            builder.RegisterType<PhotographerFactory>().As<IPhotographerFactory>()
             .InstancePerLifetimeScope();
-            builder.RegisterType<GuideFactory>().As<IEntityFactory<Guide>>()
+            builder.RegisterType<GuideFactory>().As<IGuideFactory>()
             .InstancePerLifetimeScope();
             base.Load(builder);
         }
