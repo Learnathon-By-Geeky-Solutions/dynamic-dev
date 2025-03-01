@@ -17,5 +17,11 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             _context = context;
         }
+
+        public IEnumerable<Room> GetRooms(Guid hotelId)
+        {
+            return _context.Rooms.Where(r => r.HotelId == hotelId).ToList();
+        }
+
     }
 }

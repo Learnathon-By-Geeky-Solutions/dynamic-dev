@@ -45,5 +45,10 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork.RoomRepository.Edit(entity);
             _applicationUnitOfWork.Save();
         }
+
+        public IEnumerable<Room> GetRoomByHotel(Guid id)
+        {
+            return _applicationUnitOfWork.RoomRepository.GetRooms(id);
+        }
     }
 }

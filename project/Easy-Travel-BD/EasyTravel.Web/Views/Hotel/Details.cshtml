@@ -1,10 +1,6 @@
 ﻿@using EasyTravel.Domain.Entites
-@model Hotel
-
-@{
-    ViewData["Title"] = "Details";
-}
-
+@model HotelRoomViewModel
+ 
 
 <div class="main">
     <div class="hotel-info">
@@ -12,34 +8,74 @@
             <img class="logo" src="https://www.logodesign.net/logo/buildings-with-house-roof-and-sun-778ld.png?nwm=1&nws=1&industry=hotel&sf=&txt_keyword=All" alt="">
         </div>
         <div class="mid">
-            <h2 class="name">@Model.Name                   </h2>
-            <p>   <i class="bi bi-geo-alt-fill"></i>    @Model.Address </p>
-            <p><i class="bi bi-telephone"></i>  @Model.Phone</p>
+            <h2 class="name">@Model.Hotel.Name                   </h2>
+            <p>   <i class="bi bi-geo-alt-fill"></i>    @Model.Hotel.Address </p>
+            <p><i class="bi bi-telephone"></i>  @Model.Hotel.Phone</p>
 
         </div>
         <div class="right">
-            <h3>  @Model.Rating </h3>
-            @await Html.PartialAsync("_Rating", Model.Rating)
+            <h3>  @Model.Hotel.Rating </h3>
+            @await Html.PartialAsync("_Rating", Model.Hotel.Rating)
         </div>
 
     </div>
-    <div class="cover-photo"> <img src="@Model.Image"> </div>
+    <div class="cover-photo"> <img src="@Model.Hotel.Image"> </div>
     <p> Your comfort here  </p>
     <div class="section">
         <h2>Description</h2>
-       <p> @Model.Description </p>
+       <p> @Model.Hotel.Description </p>
     </div>
     <div>
         <h2>Rooms</h2>
         <p> All List of Rooms  </p>
+        <h2>Available Rooms</h2>
+        @if (Model.Rooms != null && Model.Rooms.Any())
+        {
 
+            <div class="container mx-auto mt-4">
+                <div class="row">
+                @foreach (var room in Model.Rooms)
+                {
+                        <div class="col-md-4">
+                            <div class="card" style="width: 18rem;">
+                                <img src="@room.Image1" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        @room.RoomType
+                                    </h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">
+                                   @room.IsAvailable == 1 ? "Available" : "Not Available"
+                                    </h6>
+                                    <div>
+                                        <span>Price Per Night: @room.PricePerNight </span>
+
+                                    </div>
+                                    <p class="card-text">
+                                        @room.Description
+                                    </p>
+                                    <a asp-controller="Hotel" asp-action="Details" asp-route-id="" class="btn btn-success btn-sm fw-bold text-dark">Details</a>
+                                    <a asp-controller="Hotel" asp-action="Book" asp-route-Id="@room.Id" class="btn btn-warning btn-sm fw-bold text-dark">Book</a>
+                                </div>
+                            </div>
+                        </div>
+
+                }
+                </div>
+            </div>
+        }
+        else
+        {
+            <p>No rooms available</p>
+        }
+        
+        <a asp-action="Index">Back to List</a>
     </div>
     <div>
         <h2>Contact</h2>
-        <p> <span>Mobile :</span> 01867210892 </p>
-        <p> <span>email :</span> cse@gmail.com </p>
-        <p>   <i class="bi bi-geo-alt-fill"></i>    Cumilla Jhawtola , Cumilla </p>
-        <p><i class="bi bi-house"></i> Comilla</p>
+        <p> <span>Mobile :</span> @Model.Hotel.Phone </p>
+        <p> <span>email :</span>  @Model.Hotel.Email </p>
+        <p>   <i class="bi bi-geo-alt-fill"></i>   @Model.Hotel.Address </p>
+        <p><i class="bi bi-house"></i> @Model.Hotel.City</p>
 
 
     </div>
