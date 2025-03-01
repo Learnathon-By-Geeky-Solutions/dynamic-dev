@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
-    public class AgencyService : IAgencyService
+    public class AgencyService : IAdminAgencyService
     {
         private readonly IApplicationUnitOfWork _applicationunitOfWork;
         public AgencyService(IApplicationUnitOfWork applicationunitOfWork)
