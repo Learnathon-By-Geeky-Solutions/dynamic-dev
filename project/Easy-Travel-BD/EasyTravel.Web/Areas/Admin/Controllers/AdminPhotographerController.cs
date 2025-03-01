@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class PhotographerController : Controller
+    public class AdminPhotographerController : Controller
     {
         private readonly IPhotographerService _photographerService;
-        public PhotographerController(IPhotographerService photographerService)
+        public AdminPhotographerController(IPhotographerService photographerService)
         {
             _photographerService = photographerService;
         }
@@ -35,7 +35,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _photographerService.Create(model);
-                return RedirectToAction("Index", "Photographer", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
             }
             return View();
         }
@@ -58,7 +58,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 model.UpdatedAt = DateTime.Now;
                 _photographerService.Update(model);
-                return RedirectToAction("Index", "Photographer", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
             }
             return View();
         }
@@ -82,7 +82,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             _photographerService.Delete(model.Id);
-            return RedirectToAction("Index", "Photographer", new { area = "Admin" });
+            return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
         }
     }
 }
