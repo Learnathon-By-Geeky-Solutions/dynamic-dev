@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EasyTravel.Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Controllers
 {
