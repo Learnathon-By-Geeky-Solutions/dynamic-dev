@@ -28,7 +28,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var model = _photographerService.GetPhotographerInstance();
             return View(model);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(Photographer model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -50,7 +50,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var model = _photographerService.Get(id);
             return View(model);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Update(Photographer model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -73,7 +73,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var model = _photographerService.Get(id);
             return View(model);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Photographer model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";

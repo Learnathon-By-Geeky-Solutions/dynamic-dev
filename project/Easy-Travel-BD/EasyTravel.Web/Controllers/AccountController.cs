@@ -23,6 +23,7 @@ namespace EasyTravel.Web.Controllers
             //_roleManager = roleManager;
         }
 
+        [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -33,7 +34,7 @@ namespace EasyTravel.Web.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -68,6 +69,7 @@ namespace EasyTravel.Web.Controllers
 
         }
 
+        [HttpGet]
         public IActionResult Register(string? returnUrl = null)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -79,7 +81,7 @@ namespace EasyTravel.Web.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
