@@ -22,12 +22,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             var guides = _guideService.GetAll();
             return View(guides);
         }
         [HttpGet]
         public IActionResult Create()
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             var model = _guideFactory.CreateInstance();
             var agencyList = _agencyService.GetAll();
             model.Agencies = agencyList.ToList();
@@ -36,6 +38,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Guide model)
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (ModelState.IsValid)
             {
                 _guideService.Create(model);
@@ -46,6 +49,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Update(Guid id)
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
@@ -58,6 +62,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Update(Guide model)
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (ModelState.IsValid)
             {
                 model.UpdatedAt = DateTime.Now;
@@ -69,6 +75,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
@@ -81,6 +88,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Delete(Guide model)
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (model.Id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });

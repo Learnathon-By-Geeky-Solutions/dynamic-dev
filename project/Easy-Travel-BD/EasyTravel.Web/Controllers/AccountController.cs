@@ -25,6 +25,7 @@ namespace EasyTravel.Web.Controllers
 
         public IActionResult Login(string? returnUrl = null)
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (_signInManager.IsSignedIn(User))
             {
                 return Redirect(returnUrl ?? Url.Content("~/"));
@@ -35,6 +36,7 @@ namespace EasyTravel.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
@@ -68,6 +70,7 @@ namespace EasyTravel.Web.Controllers
 
         public IActionResult Register(string? returnUrl = null)
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (_signInManager.IsSignedIn(User))
             {
                 return Redirect(returnUrl ?? Url.Content("~/"));
@@ -79,6 +82,7 @@ namespace EasyTravel.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (ModelState.IsValid)
             {
                 var user = new User { FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = model.DateOfBirth, Gender = model.Gender, Email = model.Email,UserName = model.Email };
@@ -102,6 +106,7 @@ namespace EasyTravel.Web.Controllers
 
         public async Task<IActionResult> Logout()
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account", new { area = string.Empty });
         }
