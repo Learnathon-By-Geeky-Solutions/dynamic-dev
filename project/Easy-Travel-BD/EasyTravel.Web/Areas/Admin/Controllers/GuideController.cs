@@ -13,11 +13,9 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     {
         private readonly IGuideService _guideService;
         
-        public GuideController(IGuideService guideService, IAgencyService agencyService,IEntityFactory<Guide> guideFactory)
+        public GuideController(IGuideService guideService)
         {
             _guideService = guideService;
-            _agencyService = agencyService;
-            _guideFactory = guideFactory;
         }
         public IActionResult Index()
         {
@@ -29,9 +27,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         public IActionResult Create()
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-            var model = _guideFactory.CreateInstance();
-            var agencyList = _agencyService.GetAll();
-            model.Agencies = agencyList.ToList();
+            var model = _guideService.GetGuideInstance();
             return View(model);
         }
         [HttpPost]
@@ -53,15 +49,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var agencyList = _agencyService.GetAll();
             var model = _guideService.Get(id);
-            model.Agencies = agencyList.ToList();
             return View(model);
         }
         [HttpPost]
         public IActionResult Update(Guide model)
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (ModelState.IsValid)
             {
@@ -79,9 +72,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var agencyList = _agencyService.GetAll();
             var model = _guideService.Get(id);
-            model.Agencies = agencyList.ToList();
             return View(model);
         }
         [HttpPost]
