@@ -12,8 +12,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     public class GuideController : Controller
     {
         private readonly IGuideService _guideService;
-        private readonly IAgencyService _agencyService;
-        private readonly IEntityFactory<Guide> _guideFactory;
+        
         public GuideController(IGuideService guideService, IAgencyService agencyService,IEntityFactory<Guide> guideFactory)
         {
             _guideService = guideService;

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Factories
 {
-    public class PhotographerFactory : IEntityFactory<Photographer>
+    public class PhotographerFactory : IPhotographerFactory
     {
         public Photographer CreateInstance()
         {

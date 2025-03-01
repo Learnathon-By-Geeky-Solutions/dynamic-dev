@@ -1,4 +1,5 @@
-﻿using EasyTravel.Domain;
+﻿using EasyTravel.Application.Factories;
+using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Factories;
 using EasyTravel.Domain.Repositories;
@@ -15,8 +16,8 @@ namespace EasyTravel.Application.Services
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly IAgencyService _agencyService;
-        private readonly IEntityFactory<Photographer> _photographerFactory;
-        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork, IAgencyService agencyService, IEntityFactory<Photographer> phototgrapherFactory)
+        private readonly IPhotographerFactory _photographerFactory;
+        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork, IAgencyService agencyService, IPhotographerFactory phototgrapherFactory)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
             _agencyService = agencyService;
