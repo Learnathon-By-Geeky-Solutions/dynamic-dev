@@ -25,7 +25,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             return View();
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(Agency model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -47,7 +47,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var agency = _agencyService.Get(id);
             return View(agency);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Update(Agency model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -69,7 +69,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var agency = _agencyService.Get(id);
             return View(agency);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Agency model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";

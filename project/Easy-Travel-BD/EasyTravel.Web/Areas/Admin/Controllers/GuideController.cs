@@ -30,7 +30,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var model = _guideService.GetGuideInstance();
             return View(model);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(Guide model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -52,7 +52,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var model = _guideService.Get(id);
             return View(model);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Update(Guide model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -75,7 +75,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var model = _guideService.Get(id);
             return View(model);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Guide model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
