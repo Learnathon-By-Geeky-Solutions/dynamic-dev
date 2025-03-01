@@ -23,11 +23,13 @@ namespace EasyTravel.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             return View();
         }
 
         public IActionResult Privacy()
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             return View();
         }
 

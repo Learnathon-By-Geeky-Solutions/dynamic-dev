@@ -38,12 +38,6 @@ namespace EasyTravel.Application.Services
         {
             return _applicationunitOfWork.AgencyRepository.GetAll();
         }
-
-        public Agency GetInstance()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Update(Agency agency)
         {
             _applicationunitOfWork.AgencyRepository.Edit(agency);

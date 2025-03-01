@@ -16,9 +16,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
-            var isAdmin = _userService.IsAdmin(_sessionService.GetString("UserRole"));
-            return isLoggedIn == true && isAdmin == true ? View() : RedirectToAction("Error","Home",new {area = string.Empty});
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            return View();
         }
     }
 }
