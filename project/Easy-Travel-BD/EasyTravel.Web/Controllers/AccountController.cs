@@ -50,7 +50,7 @@ namespace EasyTravel.Web.Controllers
                         var role = await _userManager.GetRolesAsync(user);
                         if (role.Contains("admin"))
                         {
-                            return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+                            return RedirectToAction("Index", "AdminDashboard", new { area = "Admin" });
                         }
                         if (Url.IsLocalUrl(returnUrl))
                         {

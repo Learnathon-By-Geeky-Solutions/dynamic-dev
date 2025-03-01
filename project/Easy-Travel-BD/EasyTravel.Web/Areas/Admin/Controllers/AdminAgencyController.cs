@@ -1,7 +1,4 @@
-﻿using EasyTravel.Application.Factories;
-using EasyTravel.Application.Services;
-using EasyTravel.Domain.Entites;
-using EasyTravel.Domain.Factories;
+﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,35 +6,33 @@ using Microsoft.AspNetCore.Mvc;
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class GuideController : Controller
+    public class AdminAgencyController : Controller
     {
-        private readonly IGuideService _guideService;
-        
-        public GuideController(IGuideService guideService)
+        private readonly IAgencyService _agencyService;
+        public AdminAgencyController(IAgencyService agencyService)
         {
-            _guideService = guideService;
+            _agencyService = agencyService;
         }
         public IActionResult Index()
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-            var guides = _guideService.GetAll();
-            return View(guides);
+            var agencies = _agencyService.GetAll();
+            return View(agencies);
         }
         [HttpGet]
         public IActionResult Create()
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-            var model = _guideService.GetGuideInstance();
-            return View(model);
+            return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Create(Guide model)
+        public IActionResult Create(Agency model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (ModelState.IsValid)
             {
-                _guideService.Create(model);
-                return RedirectToAction("Index", "Guide", new { area = "Admin" });
+                _agencyService.Create(model);
+                return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
             }
             return View();
         }
@@ -49,18 +44,17 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var model = _guideService.Get(id);
-            return View(model);
+            var agency = _agencyService.Get(id);
+            return View(agency);
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Update(Guide model)
+        public IActionResult Update(Agency model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (ModelState.IsValid)
             {
-                model.UpdatedAt = DateTime.Now;
-                _guideService.Update(model);
-                return RedirectToAction("Index", "Guide", new { area = "Admin" });
+                _agencyService.Update(model);
+                return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
             }
             return View();
         }
@@ -72,19 +66,19 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var model = _guideService.Get(id);
-            return View(model);
+            var agency = _agencyService.Get(id);
+            return View(agency);
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Delete(Guide model)
+        public IActionResult Delete(Agency model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (model.Id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            _guideService.Delete(model.Id);
-            return RedirectToAction("Index", "Guide", new { area = "Admin" });
+            _agencyService.Delete(model.Id);
+            return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
         }
     }
 }

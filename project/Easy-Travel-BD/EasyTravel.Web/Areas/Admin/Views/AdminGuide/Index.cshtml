@@ -6,7 +6,7 @@
 <div class="entity-list">
     <h2>Guide List</h2>
     <div class="create-btn">
-        <a asp-area="Admin" asp-controller="Guide" asp-action="Create">Create Guide</a>
+        <a asp-area="Admin" asp-controller="AdminGuide" asp-action="Create">Create Guide</a>
     </div>
     @foreach (var guide in Model)
     {
@@ -20,8 +20,8 @@
 
             <!-- Buttons Section -->
             <div class="actions">
-                <a asp-area="Admin" asp-controller="Guide" asp-action="Update" asp-route-id="@guide.Id" class="update-btn">Update</a>
-                <a asp-area="Admin" asp-controller="Guide" asp-action="Delete" asp-route-id="@guide.Id" class="delete-btn">Delete</a>
+                <a asp-area="Admin" asp-controller="AdminGuide" asp-action="Update" asp-route-id="@guide.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="AdminGuide" asp-action="Delete" asp-route-id="@guide.Id" class="delete-btn">Delete</a>
             </div>
         </div>
     }
