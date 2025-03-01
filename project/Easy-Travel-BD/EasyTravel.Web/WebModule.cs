@@ -48,11 +48,11 @@ namespace EasyTravel.Web
             .InstancePerLifetimeScope();
             builder.RegisterType<UserService>().As<IUserService>()
             .InstancePerLifetimeScope();
-            builder.RegisterType<AgencyService>().As<IAgencyService>()
+            builder.RegisterType<AgencyService>().As<IAdminAgencyService>()
             .InstancePerLifetimeScope();
-            builder.RegisterType<PhotographerService>().As<IPhotographerService>()
+            builder.RegisterType<PhotographerService>().As<IAdminPhotographerService>()
             .InstancePerLifetimeScope();
-            builder.RegisterType<GuideService>().As<IGuideService>()
+            builder.RegisterType<GuideService>().As<IAdminGuideService>()
             .InstancePerLifetimeScope();
             builder.RegisterType<SessionService>().As<ISessionService>()
             .InstancePerLifetimeScope();

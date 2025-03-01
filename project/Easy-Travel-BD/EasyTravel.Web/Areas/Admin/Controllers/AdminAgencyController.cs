@@ -8,8 +8,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminAgencyController : Controller
     {
-        private readonly IAgencyService _agencyService;
-        public AdminAgencyController(IAgencyService agencyService)
+        private readonly IAdminAgencyService _agencyService;
+        public AdminAgencyController(IAdminAgencyService agencyService)
         {
             _agencyService = agencyService;
         }

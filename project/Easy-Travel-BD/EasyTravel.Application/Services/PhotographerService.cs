@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
-    public class PhotographerService : IPhotographerService
+    public class PhotographerService : IAdminPhotographerService
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
-        private readonly IAgencyService _agencyService;
+        private readonly IAdminAgencyService _agencyService;
         private readonly IPhotographerFactory _photographerFactory;
-        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork, IAgencyService agencyService, IPhotographerFactory phototgrapherFactory)
+        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork, IAdminAgencyService agencyService, IPhotographerFactory phototgrapherFactory)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
             _agencyService = agencyService;

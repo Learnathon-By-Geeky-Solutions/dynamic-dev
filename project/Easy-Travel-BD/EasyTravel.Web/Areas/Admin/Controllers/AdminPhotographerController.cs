@@ -10,8 +10,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminPhotographerController : Controller
     {
-        private readonly IPhotographerService _photographerService;
-        public AdminPhotographerController(IPhotographerService photographerService)
+        private readonly IAdminPhotographerService _photographerService;
+        public AdminPhotographerController(IAdminPhotographerService photographerService)
         {
             _photographerService = photographerService;
         }

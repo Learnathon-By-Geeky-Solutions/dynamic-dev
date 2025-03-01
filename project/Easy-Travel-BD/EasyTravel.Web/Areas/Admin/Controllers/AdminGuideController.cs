@@ -11,9 +11,9 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminGuideController : Controller
     {
-        private readonly IGuideService _guideService;
+        private readonly IAdminGuideService _guideService;
         
-        public AdminGuideController(IGuideService guideService)
+        public AdminGuideController(IAdminGuideService guideService)
         {
             _guideService = guideService;
         }

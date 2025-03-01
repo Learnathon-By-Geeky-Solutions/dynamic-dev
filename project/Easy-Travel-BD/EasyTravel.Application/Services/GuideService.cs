@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
-    public class GuideService : IGuideService
+    public class GuideService : IAdminGuideService
     {
         private IApplicationUnitOfWork _applicationUnitOfWork;
-        private readonly IAgencyService _agencyService;
+        private readonly IAdminAgencyService _agencyService;
         private readonly IGuideFactory _guideFactory;
-        public GuideService(IApplicationUnitOfWork applicationUnitOfWork,IAgencyService agencyService,IGuideFactory guideFactory)
+        public GuideService(IApplicationUnitOfWork applicationUnitOfWork,IAdminAgencyService agencyService,IGuideFactory guideFactory)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
             _agencyService = agencyService;
