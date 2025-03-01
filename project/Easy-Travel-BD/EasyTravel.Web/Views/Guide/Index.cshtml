@@ -5,18 +5,24 @@
 }
 
 <div class="entity-list">
-    <h2>Photographer List</h2>
-    @foreach (var pg in Model)
+    <h2>Guide List</h2>
+    <div class="heading-row">
+        <span class="name">Name</span>
+        <span>YearsOfExperience</span>
+        <span>Rating</span>
+        <span>HourlyRate</span>
+    </div>
+    @foreach (var gu in Model)
     {
         <div class="entity-row">
-            <span class="name">@pg.FirstName</span>
-            <span>@pg.YearsOfExperience</span>
-            <span>@pg.Rating</span>
-            <span>@pg.HourlyRate</span>
+            <span class="name">@gu.FirstName</span>
+            <span>@gu.YearsOfExperience</span>
+            <span>@gu.Rating</span>
+            <span>@gu.HourlyRate</span>
 
             <!-- Buttons Section -->
             <div class="actions">
-                <a asp-area="Admin" asp-controller="" asp-action="" asp-route-id="@pg.Id" class="update-btn">Book</a>
+                <a asp-area="Admin" asp-controller="" asp-action="" asp-route-id="@gu.Id" class="update-btn">Book</a>
             </div>
         </div>
     }
