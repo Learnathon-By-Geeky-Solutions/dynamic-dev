@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="Areas\Admin\Controllers\AgencyController.cs~RF261c1a8.TMP" />
+    <None Remove="Views\Bus\BusBooking.cshtml~RFaf1e33.TMP" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +35,17 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\Admin\Views\Car\Update.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Bus\SelectSeats.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
