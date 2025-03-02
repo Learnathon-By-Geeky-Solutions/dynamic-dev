@@ -20,6 +20,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View(hotels);
             //return View();
         }
+       /* public IActionResult HotelWithroom()
+        {
+            var hotels = _hotelService.GetAllHotelsWithRooms(); // Fetch hotels with rooms
+            return View(hotels);
+        }*/
+
 
         [HttpGet]
         public IActionResult Create()
@@ -38,7 +44,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         [HttpGet]
         public IActionResult Update(Guid id)
-        
         {
             if(id==Guid.Empty)
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
@@ -74,6 +79,15 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             }
             _hotelService.Delete(model.Id);
             return RedirectToAction("Index", "Hotel", new { area = "Admin" });
+        }
+
+        public IActionResult HotelDetails(Guid id)
+        {
+            if (id == Guid.Empty)
+                return RedirectToAction("Error", "Home", new { area = "Admin" });
+            var hotel = _hotelService.Get(id);
+            return View(hotel);
+
         }
     }
 }
