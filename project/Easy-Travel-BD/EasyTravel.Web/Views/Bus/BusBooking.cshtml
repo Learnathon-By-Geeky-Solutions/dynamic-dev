@@ -1,0 +1,208 @@
+﻿@model EasyTravel.Web.ViewModels.BookingViewModel
+
+@{
+    ViewData["Title"] = "Bus Ticket Booking";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Index" method="post" id="bookingForm">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-bus text-success me-2"></i>
+                            <div>
+                                <h5 class="mb-0">Bus Details</h5>
+                                <small class="text-muted">@Model.Bus.OperatorName - @Model.Bus.BusType</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <small class="text-muted">From</small>
+                                <h6>@Model.Bus.From</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <small class="text-muted">To</small>
+                                <h6>@Model.Bus.To</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted">Departure</small>
+                                <h6>@Model.Bus.DepartureTime.ToString("dd MMM yyyy hh:mm tt")</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <small class="text-muted">Arrival</small>
+                                <h6>@Model.Bus.ArrivalTime.ToString("dd MMM yyyy hh:mm tt")</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-chair text-primary me-2"></i>
+                            <h5 class="mb-0">Select Seats</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="seat-map">
+                            @foreach (var seat in Model.Bus.Seats)
+                            {
+                                <div class="seat @(!seat.IsAvailable ? "occupied" : "")"
+                                     data-seat="@seat.SeatNumber"
+                                     data-available="@seat.IsAvailable.ToString().ToLower()">
+                                    @seat.SeatNumber
+                                </div>
+                            }
+                        </div>
+                        <input type="hidden" id="selectedSeats" name="SelectedSeatNumbers" />
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user text-warning me-2"></i>
+                            <h5 class="mb-0">Passenger Details</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="BookingForm.PassengerName">Passenger Name <span class="text-danger">*</span></label>
+                                <input asp-for="BookingForm.PassengerName" class="form-control" />
+                                <span asp-validation-for="BookingForm.PassengerName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="BookingForm.Email">Email <span class="text-danger">*</span></label>
+                                <input asp-for="BookingForm.Email" class="form-control" />
+                                <span asp-validation-for="BookingForm.Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="BookingForm.PhoneNumber">Phone Number <span class="text-danger">*</span></label>
+                                <input asp-for="BookingForm.PhoneNumber" class="form-control" />
+                                <span asp-validation-for="BookingForm.PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" />
+                <button type="submit" class="btn btn-success w-100" id="submitButton" disabled>
+                    PROCEED TO PAYMENT
+                </button>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Booking Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted">Selected Seats</small>
+                        <div id="selectedSeatsDisplay" class="selected-seats-tags"></div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Price per Seat</small>
+                        <h6>৳@Model.Bus.Price</h6>
+                    </div>
+                    <div class="total-section">
+                        <small class="text-muted">Total Amount</small>
+                        <h4 class="text-success">৳<span id="totalAmountDisplay">0</span></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .seat-map {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px;
+        }
+
+        .seat {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+            .seat.occupied {
+                background-color: #f0f0f0;
+                cursor: not-allowed;
+                color: #999;
+            }
+
+            .seat.selected {
+                background-color: #28a745;
+                color: white;
+                border-color: #28a745;
+            }
+
+        .selected-seats-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .seat-tag {
+            background-color: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const pricePerSeat = @Model.Bus.Price;
+            let selectedSeats = [];
+
+            $('.seat').click(function() {
+                if ($(this).data('available') === false) return;
+
+                const seatNumber = $(this).data('seat');
+
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    selectedSeats = selectedSeats.filter(s => s !== seatNumber);
+                } else {
+                    $(this).addClass('selected');
+                    selectedSeats.push(seatNumber);
+                }
+
+                updateBookingSummary();
+            });
+
+            function updateBookingSummary() {
+                const totalAmount = selectedSeats.length * pricePerSeat;
+
+                $('#selectedSeatsDisplay').html(
+                    selectedSeats.map(seat => `<span class="seat-tag">${seat}</span>`).join('')
+                );
+                $('#totalAmountDisplay').text(totalAmount);
+                $('#totalAmount').val(totalAmount);
+                $('#selectedSeats').val(selectedSeats.join(','));
+
+                $('#submitButton').prop('disabled', selectedSeats.length === 0);
+            }
+        });
+    </script>
+}

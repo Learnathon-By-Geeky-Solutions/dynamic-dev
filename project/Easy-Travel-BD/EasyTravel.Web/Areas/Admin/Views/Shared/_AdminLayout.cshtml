@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Index.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Easy-Travel-BD.styles.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
   
 
 </head>
@@ -49,9 +50,7 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Photographer" asp-action="Index">Photographer</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Guide" asp-action="Index">Guide</a></li>
                             </ul>
-                        </li>
-
-                      
+                        </li>                    
                     </ul>
 
                     <partial name="_LoginPartial" />
@@ -90,5 +89,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    
 </body>
 </html>

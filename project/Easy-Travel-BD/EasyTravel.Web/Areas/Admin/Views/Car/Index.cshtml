@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Car>
+
+@{
+    ViewData["Title"] = "Car List";
+}
+
+<div class="entity-list">
+    <h2>@ViewData["Title"]</h2>
+    <div class="create-btn">
+        <a asp-area="Admin" asp-controller="Car" asp-action="Create">Create Car</a>
+    </div>
+
+    @foreach (var car in Model)
+    {
+        <div class="entity-row">
+                <div class="col-md-1 text-center">
+                    <img src="@car.ImagePath" alt="@car.OperatorName" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: contain;">
+                </div>
+                <div class="col-md-2">
+                    <h5 class="mb-1 text-dark">@car.OperatorName</h5>
+                    <p class="mb-0 text-muted"><strong>Route:</strong> @car.From - @car.To</p>
+                    <p class="mb-0 text-muted"><strong>Type:</strong> @car.CarType</p>
+                </div>
+                <div class="col-md-2">
+                    <p class="mb-0"><strong>Dep:</strong> <span class="text-success">@car.DepartureTime.ToString("hh:mm tt")</span></p>
+                </div>
+                <div class="col-md-1">
+                    <hr class="border border-warning border-2">
+                </div>
+                <div class="col-md-1">
+                    <p class="mb-0"><strong>Arr:</strong> <span class="text-success">@car.ArrivalTime.ToString("hh:mm tt")</span></p>
+                </div>
+                <div class="col-md-1 text-center">
+                    <p class="price text-primary fw-bold fs-5">৳@car.Price</p>
+                    <a href="#" class="btn btn-warning btn-sm fw-bold text-dark">BOOK</a>
+                </div>
+
+            <div class="col-md-2 actions">
+                <a asp-area="Admin" asp-controller="Car" asp-action="Update" asp-route-CarId="@car.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="Car" asp-action="Delete" asp-route-CarId="@car.Id" class="delete-btn">Delete</a>
+            </div>
+                
+       </div>
+        
+    }
+</div>
+

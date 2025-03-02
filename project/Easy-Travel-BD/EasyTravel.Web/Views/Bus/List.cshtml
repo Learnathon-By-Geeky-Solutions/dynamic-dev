@@ -48,24 +48,10 @@
                 <!-- Price & Book Button -->
                 <div class="col-md-2 text-center">
                     <p class="price text-primary fw-bold fs-5">৳@bus.Price</p>
-                    <a href="#" class="btn btn-warning btn-sm fw-bold text-dark">BOOK</a>
+                    <a  asp-controller="Bus" asp-action="SelectSeats" asp-route-BusId="@bus.Id" class="btn btn-warning btn-sm fw-bold text-dark">Book</a>
                 </div>
 
-                <!-- Admin Controls: Edit & Delete Buttons -->
-                @if (HttpContextAccessor.HttpContext?.Session?.GetString("UserRole") == "Admin")
-                {
-                
-                    <div class="col-md-2 text-center mt-2">
-                        <a asp-controller="Bus" asp-action="Update" asp-route-BusId="@bus.Id"
-                           class="btn btn-success mx-2">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </a>
-                        <a asp-controller="Bus" asp-action="Delete" asp-route-BusId="@bus.Id"
-                           class="btn btn-danger mx-2">
-                            <i class="bi bi-trash-fill"></i> Delete
-                        </a>
-                    </div>
-                }
+              
             </div>
         </div>
     }
