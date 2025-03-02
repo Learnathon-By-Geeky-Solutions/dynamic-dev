@@ -1,8 +1,10 @@
-﻿@model EasyTravel.Web.ViewModels.BusBookingViewModel
+﻿@model EasyTravel.Web.ViewModels.CarBookingViewModel
 
 @{
-    ViewData["Title"] = "Bus Ticket Booking";
+    ViewData["Title"] = "Car Booking";
+
 }
+
 
 <div class="container">
     <div class="row">
@@ -11,10 +13,10 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-bus text-success me-2"></i>
+                            <i class="fas fa-car text-success me-2"></i>
                             <div>
-                                <h5 class="mb-0">Bus Details</h5>
-                                <small class="text-muted">@Model.Bus.OperatorName - @Model.Bus.BusType</small>
+                                <h5 class="mb-0">Car Details</h5>
+                                <small class="text-muted">@Model.Car.OperatorName - @Model.Car.CarType</small>
                             </div>
                         </div>
                     </div>
@@ -22,40 +24,22 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <small class="text-muted">From</small>
-                                <h6>@Model.Bus.From</h6>
+                                <h6>@Model.Car.From</h6>
                             </div>
                             <div class="col-md-6">
                                 <small class="text-muted">To</small>
-                                <h6>@Model.Bus.To</h6>
+                                <h6>@Model.Car.To</h6>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <small class="text-muted">Departure</small>
-                                <h6>@Model.Bus.DepartureTime.ToString("dd MMM yyyy hh:mm tt")</h6>
+                                <h6>@Model.Car.DepartureTime.ToString("dd MMM yyyy hh:mm tt")</h6>
                             </div>
                             <div class="col-md-6">
                                 <small class="text-muted">Arrival</small>
-                                <h6>@Model.Bus.ArrivalTime.ToString("dd MMM yyyy hh:mm tt")</h6>
+                                <h6>@Model.Car.ArrivalTime.ToString("dd MMM yyyy hh:mm tt")</h6>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-chair text-primary me-2"></i>
-                            <h5 class="mb-0">Select Seats</h5>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <small class="text-muted">Selected Seats</small>
-                        <div id="selectedSeatsDisplay" class="selected-seats-tags">
-                            @foreach (var seat in Model.SelectedSeatNumbers)
-                            {
-                                <span class="seat-tag">@seat</span>
-                            }
                         </div>
                     </div>
                 </div>
@@ -88,8 +72,8 @@
                     </div>
                 </div>
 
-                <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" />
-                <button type="submit" class="btn btn-success w-100" id="submitButton" >
+                <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" value="@Model.Car.Price" />
+                <button type="submit" class="btn btn-success w-100">
                     PROCEED TO PAYMENT
                 </button>
             </form>
@@ -102,21 +86,16 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <small class="text-muted">Selected Seats</small>
-                        <div id="selectedSeatsDisplay" class="selected-seats-tags">
-                            @foreach (var seat in Model.SelectedSeatNumbers)
-                            {
-                                <span class="seat-tag">@seat</span>
-                            }
-                        </div>
+                        <small class="text-muted">Car Type</small>
+                        <h6>@Model.Car.CarType</h6>
                     </div>
                     <div class="mb-3">
-                        <small class="text-muted">Price per Seat</small>
-                        <h6>৳@Model.Bus.Price</h6>
+                        <small class="text-muted">Journey</small>
+                        <h6>@Model.Car.From to @Model.Car.To</h6>
                     </div>
                     <div class="total-section">
                         <small class="text-muted">Total Amount</small>
-                        <h4 class="text-success">৳<span id="totalAmountDisplay">@Model.TotalAmount</span></h4>
+                        <h4 class="text-success">৳@Model.Car.Price</h4>
                     </div>
                 </div>
             </div>
@@ -124,48 +103,7 @@
     </div>
 </div>
 
-@section Styles {
-    <style>
-        .seat-map {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 20px;
-        }
-
-        .seat {
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-            .seat.occupied {
-                background-color: #f0f0f0;
-                cursor: not-allowed;
-                color: #999;
-            }
-
-            .seat.selected {
-                background-color: #28a745;
-                color: white;
-                border-color: #28a745;
-            }
-
-        .selected-seats-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-
-        .seat-tag {
-            background-color: #e9ecef;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.9em;
-        }
-    </style>
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }
-
-

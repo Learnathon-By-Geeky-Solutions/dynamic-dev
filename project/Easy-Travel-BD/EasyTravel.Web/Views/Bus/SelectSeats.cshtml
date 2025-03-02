@@ -61,31 +61,35 @@
 
             <div class="text-end mt-6">
                 <h5>Selected Seats: <span id="selectedSeatsDisplay">None</span></h5>
-                <h5>Total Amount: $<span id="totalAmount">0</span></h5>
-                <a  asp-controller="Bus" asp-action="BusBooking" asp-route-BusId="@Model.Id" class="update-btn mt-2">Continue</a>
+                <h5>Total Amount: ৳<span id="totalAmountDisplay">0</span></h5>
+                <button type="button" onclick="continueToBooking()" class="update-btn mt-2">Continue</button>
             </div>
-
-            
         </div>
     </div>
 </div>
 
-<style>
+<form id="bookingForm" asp-controller="Bus" asp-action="BusBooking" method="post">
+    <input type="hidden" id="selectedSeatsInput" name="selectedSeats" />
+    <input type="hidden" id="totalAmountInput" name="totalAmount" />
+    <input type="hidden" name="busId" value="@Model.Id" />
+</form>
 
+<style>
     .update-btn {
-        text-decoration: none; 
+        text-decoration: none;
         display: inline-block;
-        padding: 10px 20px; 
+        padding: 10px 20px;
         background-color: #007bff;
-        color: #fff; 
-        border-radius: 5px; 
+        color: #fff;
+        border-radius: 5px;
+        border: none;
         transition: background-color 0.3s ease;
     }
 
-    .update-btn:hover {
-        background-color: #0056b3; 
-        text-decoration: none; 
-    }
+        .update-btn:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
 
     .seat-container {
         max-width: 600px;
@@ -184,11 +188,9 @@
         const pricePerSeat = @Model.Price;
 
         function toggleSeat(seatElement) {
-            // Only process elements with seat numbers
             const seatNumber = seatElement.getAttribute('data-seat-number');
-            if (!seatNumber) {
-                return;
-            }
+
+            if (!seatNumber) return;
 
             if (seatElement.classList.contains('selected')) {
                 seatElement.classList.remove('selected');
@@ -212,12 +214,26 @@
                 ? Array.from(selectedSeats).join(', ')
                 : 'None';
 
-            const totalAmount = document.getElementById('totalAmount');
-            totalAmount.textContent = (selectedSeats.size * pricePerSeat).toFixed(2);
+            const totalAmount = selectedSeats.size * pricePerSeat;
+            document.getElementById('totalAmountDisplay').textContent = totalAmount.toFixed(2);
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            updateDisplay();
-        });
+        function continueToBooking() {
+            if (selectedSeats.size === 0) {
+                alert('Please select at least one seat before proceeding.');
+                return;
+            }
+
+            const selectedSeatsString = Array.from(selectedSeats).join(',');
+            const totalAmount = (selectedSeats.size * pricePerSeat).toFixed(2);
+
+            // Populate the hidden inputs in the form
+            document.getElementById('selectedSeatsInput').value = selectedSeatsString;
+            document.getElementById('totalAmountInput').value = totalAmount;
+
+
+            // Submit the form
+            document.getElementById('bookingForm').submit();
+        }
     </script>
 }

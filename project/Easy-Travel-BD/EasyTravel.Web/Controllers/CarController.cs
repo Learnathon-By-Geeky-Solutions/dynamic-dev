@@ -1,5 +1,6 @@
 ﻿using EasyTravel.Application.Services;
 using EasyTravel.Domain.Services;
+using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Controllers
@@ -15,6 +16,21 @@ namespace EasyTravel.Web.Controllers
             _carService = carService;
 
         }
+
+        public IActionResult CarBooking(Guid CarId)
+        {
+            var car = _carService.GetCarById(CarId);
+            if (car == null) return NotFound();
+
+            var viewModel = new CarBookingViewModel
+            {
+                Car = car,
+                BookingForm = new BookingForm()
+            };
+
+            return View(viewModel);
+        }
+        
 
         public IActionResult List()
         {

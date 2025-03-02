@@ -26,7 +26,7 @@ namespace EasyTravel.Infrastructure
             HotelBookingRepository = hotelBookingRepository;
         }
 
-        public IUserRepository UserRepository { get; private set; }
+        public IUserRepository UserRepository { get; private set; } 
         public IBusRepository BusRepository { get; private set; }
         public ICarRepository CarRepository { get; private set; }
         public IAgencyRepository AgencyRepository { get; private set; }
