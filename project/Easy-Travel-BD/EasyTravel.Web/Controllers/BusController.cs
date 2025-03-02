@@ -32,20 +32,28 @@ namespace EasyTravel.Web.Controllers
 
             return View(bus);
         }
-
-        public IActionResult BusBooking(Guid busId)
+        public IActionResult BusBooking(Guid busId, string selectedSeats, decimal totalAmount)
         {
+            
+
             var bus = _busService.GetBusById(busId);
             if (bus == null) return NotFound();
 
-            var viewModel = new BookingViewModel
+            var viewModel = new BusBookingViewModel
             {
                 Bus = bus,
-                BookingForm = new BusBookingForm()
+                BookingForm = new BookingForm(),
+                SelectedSeatNumbers = string.IsNullOrEmpty(selectedSeats)
+                    ? new List<string>()
+                    : selectedSeats.Split(',').ToList(),
+                TotalAmount = totalAmount
             };
 
             return View(viewModel);
         }
+
+
+
 
     }
 }

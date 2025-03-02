@@ -2,7 +2,7 @@
 
 namespace EasyTravel.Web.ViewModels
 {
-    public class BusBookingForm
+    public class BookingForm
     {
         [Required(ErrorMessage = "Passenger name is required")]
         [MaxLength(100)]
