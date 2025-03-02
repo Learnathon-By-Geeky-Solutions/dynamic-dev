@@ -1,6 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Factories;
-using EasyTravel.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Factories
 {
-    public class PhotographerFactory : IPhotographerFactory
+    public class GuideFactory : IGuideFactory
     {
-        public Photographer CreateInstance()
+        public Guide CreateInstance()
         {
-            return new Photographer
+            return new Guide
             {
                 FirstName = string.Empty,
                 LastName = string.Empty,
@@ -23,14 +22,13 @@ namespace EasyTravel.Application.Factories
                 ProfilePicture = string.Empty,
                 Bio = string.Empty,
                 DateOfBirth = DateTime.MinValue,
-                Skills = string.Empty,
-                PortfolioUrl = string.Empty,
+                LanguagesSpoken = string.Empty,
+                LicenseNumber = string.Empty,
                 Specialization = string.Empty,
                 YearsOfExperience = 0,
                 Availability = false,
                 HourlyRate = 0,
                 Rating = 0,
-                SocialMediaLinks = null,
                 Status = null,
                 AgencyId = default
             };

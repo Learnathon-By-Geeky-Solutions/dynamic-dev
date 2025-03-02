@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250227042619_UpdatedIdentityTables")]
+    partial class UpdatedIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +58,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Agencies", (string)null);
+                    b.ToTable("Agencies");
 
                     b.HasData(
                         new
@@ -113,82 +116,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Buses", (string)null);
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BusId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PassengerName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusId");
-
-                    b.ToTable("BusBooking", (string)null);
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Car", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CarType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("From")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OperatorName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("To")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Buses");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
@@ -277,7 +205,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Guides", (string)null);
+                    b.ToTable("Guides");
 
                     b.HasData(
                         new
@@ -303,137 +231,6 @@ namespace EasyTravel.Web.Migrations
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             YearsOfExperience = 5
                         });
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Hotel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("varchar(15)");
-
-                    b.Property<int>("Rating")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(3);
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Hotels");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e2a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
-                            Address = "123 Main St, Anytown, USA",
-                            City = "Anytown",
-                            CreatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc),
-                            Description = "A luxurious hotel with all modern amenities.",
-                            Email = "info@grandhotel.com",
-                            Image = "grandhotel.jpg",
-                            Name = "Grand Hotel",
-                            Phone = "123-456-7890",
-                            Rating = 5,
-                            UpdatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            Id = new Guid("f3a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
-                            Address = "456 Beach Rd, Seaside, USA",
-                            City = "Seaside",
-                            CreatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc),
-                            Description = "A beautiful resort with stunning sunset views.",
-                            Email = "info@sunsetresort.com",
-                            Image = "sunsetresort.jpg",
-                            Name = "Sunset Resort",
-                            Phone = "987-654-3210",
-                            Rating = 4,
-                            UpdatedAt = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc)
-                        });
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.HotelBooking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CheckInDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CheckOutDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<Guid>("HotelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("RoomIdsJson")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HotelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("HotelBookings");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Photographer", b =>
@@ -524,7 +321,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Photographers", (string)null);
+                    b.ToTable("Photographers");
 
                     b.HasData(
                         new
@@ -552,100 +349,6 @@ namespace EasyTravel.Web.Migrations
                             YearsOfExperience = 5
                         });
                 });
-
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
-
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("HotelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Image1")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Image2")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Image3")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Image4")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("IsAvailable")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<int>("MaxOccupancy")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PricePerNight")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("RoomNumber")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("RoomType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HotelId");
-
-                    b.ToTable("Rooms");
-
-                    b.Property<Guid?>("BusBookingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BusId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SeatNumber")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusBookingId");
-
-                    b.HasIndex("BusId");
-
-                    b.ToTable("Seat", (string)null);
-
-                }));
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.User", b =>
                 {
@@ -877,17 +580,6 @@ namespace EasyTravel.Web.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
-                        .WithMany("BusBookings")
-                        .HasForeignKey("BusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bus");
-                });
-
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
                 {
                     b.HasOne("EasyTravel.Domain.Entites.Agency", "Agency")
@@ -897,25 +589,6 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Agency");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.HotelBooking", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.Hotel", "Hotel")
-                        .WithMany("HotelBookings")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EasyTravel.Domain.Entites.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Hotel");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Photographer", b =>
@@ -980,52 +653,6 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.Hotel", "Hotel")
-                        .WithMany("Rooms")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Hotel");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Hotel", b =>
-                {
-                    b.Navigation("HotelBookings");
-
-                    b.Navigation("Rooms");
-
-                    modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
-                        {
-                            b.HasOne("EasyTravel.Domain.Entites.BusBooking", null)
-                                .WithMany("SelectedSeats")
-                                .HasForeignKey("BusBookingId");
-
-                            b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
-                                .WithMany("Seats")
-                                .HasForeignKey("BusId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b.Navigation("Bus");
-                        });
-
-                    modelBuilder.Entity("EasyTravel.Domain.Entites.Bus", b =>
-                        {
-                            b.Navigation("BusBookings");
-
-                            b.Navigation("Seats");
-                        });
-
-                    modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                        {
-                            b.Navigation("SelectedSeats");
-                        });
-
-                });
         }
     }
 }

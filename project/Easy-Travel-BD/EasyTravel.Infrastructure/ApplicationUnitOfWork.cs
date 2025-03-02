@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 namespace EasyTravel.Infrastructure
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
-    {   
-        public ApplicationUnitOfWork(ApplicationDbContext context, IUserRepository userRepository, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository)
+    {
+        public ApplicationUnitOfWork(ApplicationDbContext context, IUserRepository userRepository, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository)
            : base(context)
         {
             UserRepository = userRepository;
@@ -20,6 +20,7 @@ namespace EasyTravel.Infrastructure
             BusRepository = busRepository;
             AgencyRepository = agencyRepository;
             PhotographerRepository = photographerRepository;
+            GuideRepository = guideRepository;
             HotelRepository = hotelRepository;
             RoomRepository = roomRepository;
             HotelBookingRepository = hotelBookingRepository;

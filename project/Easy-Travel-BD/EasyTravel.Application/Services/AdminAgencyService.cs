@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
-    public class AgencyService : IAgencyService
+    public class AdminAgencyService : IAdminAgencyService
     {
         private readonly IApplicationUnitOfWork _applicationunitOfWork;
-        public AgencyService(IApplicationUnitOfWork applicationunitOfWork)
+        public AdminAgencyService(IApplicationUnitOfWork applicationunitOfWork)
         {
             _applicationunitOfWork = applicationunitOfWork;
         }
@@ -38,12 +38,6 @@ namespace EasyTravel.Application.Services
         {
             return _applicationunitOfWork.AgencyRepository.GetAll();
         }
-
-        public Agency GetInstance()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Update(Agency agency)
         {
             _applicationunitOfWork.AgencyRepository.Edit(agency);
