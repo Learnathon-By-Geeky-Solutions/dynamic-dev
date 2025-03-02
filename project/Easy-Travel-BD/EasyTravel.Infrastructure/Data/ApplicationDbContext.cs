@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EasyTravel.Domain.Entites;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace EasyTravel.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
     {
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
-
-        public DbSet<User> Users { get; set; }
         public DbSet<Bus> Buses { get; set; }
 
         public DbSet<Car> Cars { get; set; }
@@ -69,7 +69,6 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Photographer>()
               .Property(p => p.HourlyRate)
               .HasColumnType("decimal(18,2)");
-
             modelBuilder.Entity<Guide>()
            .Property(a => a.HireDate)
            .ValueGeneratedOnAdd()
@@ -90,6 +89,31 @@ namespace EasyTravel.Infrastructure.Data
                 .Property(g => g.HourlyRate)
                 .HasColumnType("decimal(18,2)");
 
+            modelBuilder.Entity<User>()
+                .Property(a => a.CreatedAt)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<IdentityUserRole<Guid>>()
+                .Property(a => a.RoleId)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValue(new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"));
+
+
+            modelBuilder.Entity<IdentityRole<Guid>>()
+                .HasData(
+                new IdentityRole<Guid>
+                {
+                    Id = new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"),
+                    Name = "admin",
+                    NormalizedName = "admin"
+                },
+                new IdentityRole<Guid>
+                {
+                    Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
+                    Name = "client",
+                    NormalizedName = "client"
+                }
+                );
             modelBuilder.Entity<Agency>().HasData(
             new Agency
             {
@@ -324,7 +348,6 @@ namespace EasyTravel.Infrastructure.Data
         {
             _connectionString = connectionString;
             _migrationAssembly = migrationAssembly;
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

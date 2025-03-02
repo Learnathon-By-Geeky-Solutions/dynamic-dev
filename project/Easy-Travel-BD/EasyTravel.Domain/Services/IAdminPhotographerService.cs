@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IAgencyService : IService<Agency>
+    public interface IAdminPhotographerService : IService<Photographer,Guid>
     {
+        public Photographer GetPhotographerInstance();
     }
 }

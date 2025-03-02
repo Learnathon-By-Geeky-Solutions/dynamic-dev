@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyTravel.Domain.Services
+namespace EasyTravel.Domain.Factories
 {
-    public interface IGuideService : IGetService<Guide,Guid>
+    public interface IPhotographerFactory : IEntityFactory<Photographer>
     {
     }
 }
