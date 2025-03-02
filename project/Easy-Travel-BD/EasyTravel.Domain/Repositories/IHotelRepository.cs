@@ -9,6 +9,6 @@ namespace EasyTravel.Domain.Repositories
 {
     public interface IHotelRepository : IRepository<Hotel,Guid>
     {
-
+       
     }
 }

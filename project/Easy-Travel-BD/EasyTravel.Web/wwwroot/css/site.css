@@ -27,3 +27,48 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+
+
+/*Hotel Details Page*/
+
+
+
+.hotel-info {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 10px;
+    ;
+}
+
+.logo {
+    width: 150px;
+    height: 100px;
+}
+
+.mid {
+    grid-column: 2 / 4;
+    align-items: center;
+    justify-items: left;
+}
+
+.cover-photo > img {
+    width: 100%;
+    height: 50vh;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .logo {
+        grid-column: 1/3;
+    }
+
+    .mid {
+        grid-row: 2/3;
+        grid-column: 1/4;
+    }
+
+    .right {
+        grid-column: 3/4;
+    }
+}

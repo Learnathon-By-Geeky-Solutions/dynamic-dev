@@ -9,5 +9,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IRoomService:IService<Room>
     {
+        public IEnumerable<Room> GetRoomByHotel(Guid id);
     }
 }

@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Repositories
 {
-    public interface IRoomRepository:IRepository<Room,Guid>
+    public interface IRoomRepository : IRepository<Room, Guid>
     {
+      public  IEnumerable<Room> GetRooms(Guid id);
     }
 }

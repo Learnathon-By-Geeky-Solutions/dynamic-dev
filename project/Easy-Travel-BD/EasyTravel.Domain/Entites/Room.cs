@@ -41,6 +41,6 @@ namespace EasyTravel.Domain.Entites
 
         [ForeignKey("Hotel")]
         public Guid HotelId { get; set; }
-        public Hotel Hotel { get; set; }
+        public Hotel? Hotel { get; set; }
     }
 }
