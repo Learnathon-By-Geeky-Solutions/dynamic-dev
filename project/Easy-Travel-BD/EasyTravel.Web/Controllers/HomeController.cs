@@ -2,10 +2,12 @@ using System.Diagnostics;
 using EasyTravel.Application.Services;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -18,16 +20,16 @@ namespace EasyTravel.Web.Controllers
             _userService = userService;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
-            HttpContext.Response.Headers["Cache-Control"]= "no-store, no-cache, must-revalidate";
-            var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
-            var controller = _userService.GetUserController(_sessionService.GetString("UserRole"));
-            return isLoggedIn == false ? View() : RedirectToAction("Index", controller, new {area = "Admin"});
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            return View();
         }
 
         public IActionResult Privacy()
         {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             return View();
         }
 
