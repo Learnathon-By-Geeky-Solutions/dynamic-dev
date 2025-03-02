@@ -52,16 +52,37 @@ namespace EasyTravel.Web
            .InstancePerLifetimeScope();
             builder.RegisterType<UserService>().As<IUserService>()
             .InstancePerLifetimeScope();
-            builder.RegisterType<AgencyService>().As<IAgencyService>()
+            builder.RegisterType<AdminAgencyService>().As<IAdminAgencyService>()
+            .InstancePerLifetimeScope();
+            builder.RegisterType<AdminPhotographerService>().As<IAdminPhotographerService>()
+            .InstancePerLifetimeScope();
+            builder.RegisterType<AdminGuideService>().As<IAdminGuideService>()
+            .InstancePerLifetimeScope();
+            builder.RegisterType<SessionService>().As<ISessionService>()
+            .InstancePerLifetimeScope();
+
+            builder.RegisterType<PhotographerFactory>().As<IPhotographerFactory>()
+            .InstancePerLifetimeScope();
+            builder.RegisterType<GuideFactory>().As<IGuideFactory>()
             .InstancePerLifetimeScope();
             builder.RegisterType<PhotographerService>().As<IPhotographerService>()
             .InstancePerLifetimeScope();
             builder.RegisterType<GuideService>().As<IGuideService>()
             .InstancePerLifetimeScope();
-            builder.RegisterType<SessionService>().As<ISessionService>()
-            .InstancePerLifetimeScope();
-            builder.RegisterType<PhotographerFactory>().As<IEntityFactory<Photographer>>()
-            .InstancePerLifetimeScope();
+
+            builder.RegisterType<HotelRepository>().As<IHotelRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<HotelService>().As<IHotelService>()
+             .InstancePerLifetimeScope();
+            builder.RegisterType<RoomRepository>().As<IRoomRepository>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<RoomService>().As<IRoomService>()
+                   .InstancePerLifetimeScope();
+            builder.RegisterType<HotelBookingRepository>().As<IHotelBookingRepository>()
+                 .InstancePerLifetimeScope();
+            builder.RegisterType<HotelBookingService>().As<IHotelBookingService>()
+               .InstancePerLifetimeScope();
+               
             base.Load(builder);
         }
 

@@ -1,7 +1,10 @@
 ﻿
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Web.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 
 
@@ -9,70 +12,105 @@ namespace EasyTravel.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserService _userService;
-        private readonly ISessionService _sessionService;
-        public AccountController(IUserService userService, ISessionService sessionService)
-        {
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
 
-            _userService = userService;
-            _sessionService = sessionService;
+        public AccountController(UserManager<User> userManager,SignInManager<User> signInManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            //_roleManager = roleManager;
         }
 
-        public IActionResult Login()
+        [HttpGet]
+        public IActionResult Login(string? returnUrl = null)
         {
-            var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
-            return isLoggedIn == false ? View() : RedirectToAction("Error","Home",new { area = string.Empty});
-        }
-
-
-
-        [HttpPost]
-        public IActionResult Login(string email, string password)
-        {
-
-            if (_userService.AuthenticateUser(email, password))
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            if (_signInManager.IsSignedIn(User))
             {
-                var user = _userService.GetUserByEmail(email);
-
-                HttpContext.Session.SetString("UserLoggedIn", "true");
-                HttpContext.Session.SetString("UserRole", user.Role);
-                HttpContext.Session.SetString("UserName", user.Name);
-
-                return user.Role == "Admin"
-                    ? RedirectToAction("Index", "Dashboard", new { area = "Admin" })
-                    : RedirectToAction("Index", "Home", new {area = string.Empty});
+                return Redirect(returnUrl ?? Url.Content("~/"));
             }
-            ViewBag.ErrorMessage = "Invalid email or password.";
             return View();
-
         }
 
-        public IActionResult Register()
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
-            var isLoggedIn = _userService.IsLoggedIn(_sessionService.GetString("UserLoggedIn"));
-            return isLoggedIn == false ? View() : RedirectToAction("Error", "Home", new { area = string.Empty });
-        }
-
-
-        [HttpPost]
-        public IActionResult Register(User user)
-        {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(model.Email!, model.Password!, model.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        var role = await _userManager.GetRolesAsync(user);
+                        if (role.Contains("admin"))
+                        {
+                            return RedirectToAction("Index", "AdminDashboard", new { area = "Admin" });
+                        }
+                        if (Url.IsLocalUrl(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        return RedirectToAction("Index", "Home", new { area = string.Empty });
+                    }
+                    ModelState.AddModelError(string.Empty, "Invalid Login attemp !");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User not found! ");
+                }
+            }
+            return View(model);
 
-                _userService.RegisterUser(user);
-                return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public IActionResult Register(string? returnUrl = null)
+        {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            if (_signInManager.IsSignedIn(User))
+            {
+                return Redirect(returnUrl ?? Url.Content("~/"));
+            }
+            return View();
+        }
+
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            if (ModelState.IsValid)
+            {
+                var user = new User { FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = model.DateOfBirth, Gender = model.Gender, Email = model.Email,UserName = model.Email };
+                var result = await _userManager.CreateAsync(user,model.Password);
+
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "client");
+                    return RedirectToAction("Login", "Account", new {area = string.Empty});
+                }
+                
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
 
-            return View();
+            return View(model);
            
         }
 
-        [HttpPost]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login");
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account", new { area = string.Empty });
         }
     }
 }
