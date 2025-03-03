@@ -37,6 +37,8 @@ namespace EasyTravel.Domain.Entites
 
         public Bus Bus { get; set; }
 
+       
+
 
 
 

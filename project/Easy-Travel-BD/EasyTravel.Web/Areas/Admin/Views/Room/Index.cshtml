@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Room>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Room and room </h1>
+<div class="entity-list">
+    <h2>room List</h2>
+    <div class="create-btn">
+        <a asp-area="Admin" asp-controller="Room" asp-action="Create">Create room</a>
+    </div>
+   
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Hotel Name</th>
+                <th>Room Number</th>
+                <th>Room Type</th>
+                <th>Price Per Night</th>
+                <th>Max Occupancy</th>
+                <th>Is Available</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var room in Model)
+            {
+                <tr>
+                    <td>@room.Hotel?.Name</td>
+                    <td>@room.RoomNumber</td>
+                    <td>@room.RoomType</td>
+                    <td>@room.PricePerNight.ToString("C")</td>
+                    <td>@room.MaxOccupancy</td>
+                    <td>@(room.IsAvailable ? "Yes" : "No")</td>
+                    <td>
+                        <a asp-area="Admin" asp-controller="Room" asp-action="Update" asp-route-id="@room.Id" class="btn btn-warning">Update</a>
+                        <a asp-area="Admin" asp-controller="Room" asp-action="Delete" asp-route-id="@room.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

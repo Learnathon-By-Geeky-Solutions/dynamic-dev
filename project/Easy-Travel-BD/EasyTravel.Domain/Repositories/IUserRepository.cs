@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Repositories
 {
-    public interface IUserRepository:IRepository<User,Guid>
+    public interface IUserRepository
     {
         User GetUserByEmail(string email);
         void AddUser(User user);

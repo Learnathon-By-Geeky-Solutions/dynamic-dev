@@ -37,6 +37,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View(buses);
         }
 
+      
+
         [HttpGet]
         public IActionResult Update(Guid BusId)
         {
@@ -89,6 +91,9 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
 
         }
+
+
+        
 
     }
 }

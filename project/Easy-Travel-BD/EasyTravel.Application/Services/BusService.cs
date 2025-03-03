@@ -22,6 +22,23 @@ namespace EasyTravel.Application.Services
         }
         public void CreateBus(Bus bus)
         {
+
+            for (char row = 'A'; row <= 'G'; row++)
+            {
+                for (int col = 1; col <= 4; col++)
+                {
+                    var seat = new Seat
+                    {
+                        Id = Guid.NewGuid(),
+                        BusId = bus.Id,
+                        SeatNumber = $"{row}{col}",
+                        IsAvailable = true
+                    };
+                    bus.Seats.Add(seat);
+                }
+            }
+
+           
             _applicationUnitOfWork1.BusRepository.Addbus(bus);
             _applicationUnitOfWork1.Save();
         }

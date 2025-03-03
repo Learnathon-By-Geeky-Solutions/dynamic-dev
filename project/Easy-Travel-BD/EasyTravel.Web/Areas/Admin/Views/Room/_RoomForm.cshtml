@@ -1,0 +1,118 @@
+﻿@model EasyTravel.Domain.Entites.Room
+@{
+    var action = ViewData["Title"];
+    bool isDisabled = false;
+    if ((string?)action == "Delete")
+    {
+        isDisabled = true;
+    }
+}
+<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
+    <div class="card-header bg-primary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">@ViewData["Title"]</h2>
+            </div>
+        </div>
+    </div>
+    <form method="post" asp-action="@action" asp-controller="Room">
+        <div class="form-group">
+            <label for="RoomNumber" style="width:100%">
+                Room Number
+                <input asp-for="RoomNumber" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="RoomNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="RoomType" style="width:100%">
+                Room Type
+                <input asp-for="RoomType" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="RoomType" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label for="PricePerNight" style="width:100%">
+                Price Per Night
+                <input asp-for="PricePerNight" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="PricePerNight" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="MaxOccupancy" style="width:100%">
+                Max Occupancy
+                <input asp-for="MaxOccupancy" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="MaxOccupancy" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Description" style="width:100%">
+                Description
+                <input asp-for="Description" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Image1" style="width:100%">
+                Image1
+                <input asp-for="Image1" class="form-control" required="@(isDisabled ? null :"required")" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Image1" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Image2" style="width:100%">
+                Image2
+                <input asp-for="Image2" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Image2" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Image3" style="width:100%">
+                Image3
+                <input asp-for="Image3" class="form-control"  disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Image3" class="text-danger"></span>
+
+        </div>
+
+        <div class="form-group">
+            <label for="Image4" style="width:100%">
+                Image4
+                <input asp-for="Image4" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Image4" class="text-danger"></span>
+
+        </div> 
+        
+        <div class="form-group">
+            <label for="IsAvailable" style="width:100%">
+                IsAvailable
+                <select asp-for="IsAvailable" class="form-control" disabled="@(isDisabled ? "disabled" : null)">
+                    <option value="true">Available</option>
+                    <option value="false">Not Available</option>
+                </select>
+            </label>
+            <span asp-validation-for="IsAvailable" class="text-danger"></span>
+
+        </div>
+
+        <div class="form-group">
+            <label for="HotelId" style="width:100%">
+                Hotel
+                <select asp-for="HotelId" class="form-control" asp-items="ViewBag.Hotels" required="@(isDisabled ? null :"required")" readonly="@(isDisabled ? "readonly" : null)"></select>
+            </label>
+            <span asp-validation-for="HotelId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary"> @action Room</button>
+            <a asp-area="Admin" asp-controller="Room" asp-action="Create" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+</div>
