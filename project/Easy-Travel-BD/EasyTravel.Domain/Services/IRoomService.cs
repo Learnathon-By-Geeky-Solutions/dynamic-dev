@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IRoomService:IService<Room>
+    public interface IRoomService:IService<Room,Guid>
     {
         public IEnumerable<Room> GetRoomByHotel(Guid id);
     }
