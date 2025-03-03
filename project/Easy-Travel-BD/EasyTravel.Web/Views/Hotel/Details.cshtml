@@ -5,7 +5,7 @@
 <div class="main">
     <div class="hotel-info">
         <div class="left">
-            <img class="logo" src="https://www.logodesign.net/logo/buildings-with-house-roof-and-sun-778ld.png?nwm=1&nws=1&industry=hotel&sf=&txt_keyword=All" alt="">
+            <img class="logo" src="https://www.logodesign.net/logo/buildings-with-house-roof-and-sun-778ld.png?nwm=1&nws=1&industry=hotel&sf=&txt_keyword=All" alt="@Model.Hotel.Name" title="@Model.Hotel.Name">
         </div>
         <div class="mid">
             <h2 class="name">@Model.Hotel.Name                   </h2>
@@ -38,7 +38,7 @@
                 {
                         <div class="col-md-4">
                             <div class="card" style="width: 18rem;">
-                                <img src="@room.Image1" class="card-img-top" alt="...">
+                                <img src="@room.Image1" class="card-img-top" alt="@room.RoomType" title="@Model.Hotel.Name">
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         @room.RoomType

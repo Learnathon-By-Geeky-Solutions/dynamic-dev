@@ -55,7 +55,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Agencies", (string)null);
+                    b.ToTable("Agencies");
 
                     b.HasData(
                         new
@@ -113,7 +113,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Buses", (string)null);
+                    b.ToTable("Buses");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
@@ -145,7 +145,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("BusId");
 
-                    b.ToTable("BusBooking", (string)null);
+                    b.ToTable("BusBooking");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Car", b =>
@@ -188,7 +188,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
@@ -277,7 +277,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Guides", (string)null);
+                    b.ToTable("Guides");
 
                     b.HasData(
                         new
@@ -524,7 +524,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Photographers", (string)null);
+                    b.ToTable("Photographers");
 
                     b.HasData(
                         new
@@ -553,11 +553,7 @@ namespace EasyTravel.Web.Migrations
                         });
                 });
 
-
             modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
-
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -622,6 +618,13 @@ namespace EasyTravel.Web.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BusBookingId")
                         .HasColumnType("uniqueidentifier");
@@ -643,9 +646,8 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("BusId");
 
-                    b.ToTable("Seat", (string)null);
-
-                }));
+                    b.ToTable("Seat");
+                });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.User", b =>
                 {
@@ -929,6 +931,32 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("Agency");
                 });
 
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
+                {
+                    b.HasOne("EasyTravel.Domain.Entites.Hotel", "Hotel")
+                        .WithMany("Rooms")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
+                {
+                    b.HasOne("EasyTravel.Domain.Entites.BusBooking", null)
+                        .WithMany("SelectedSeats")
+                        .HasForeignKey("BusBookingId");
+
+                    b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
+                        .WithMany("Seats")
+                        .HasForeignKey("BusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bus");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -979,17 +1007,17 @@ namespace EasyTravel.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
-#pragma warning restore 612, 618
 
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Bus", b =>
                 {
-                    b.HasOne("EasyTravel.Domain.Entites.Hotel", "Hotel")
-                        .WithMany("Rooms")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("BusBookings");
 
-                    b.Navigation("Hotel");
+                    b.Navigation("Seats");
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
+                {
+                    b.Navigation("SelectedSeats");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Hotel", b =>
@@ -997,35 +1025,8 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("HotelBookings");
 
                     b.Navigation("Rooms");
-
-                    modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
-                        {
-                            b.HasOne("EasyTravel.Domain.Entites.BusBooking", null)
-                                .WithMany("SelectedSeats")
-                                .HasForeignKey("BusBookingId");
-
-                            b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
-                                .WithMany("Seats")
-                                .HasForeignKey("BusId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b.Navigation("Bus");
-                        });
-
-                    modelBuilder.Entity("EasyTravel.Domain.Entites.Bus", b =>
-                        {
-                            b.Navigation("BusBookings");
-
-                            b.Navigation("Seats");
-                        });
-
-                    modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                        {
-                            b.Navigation("SelectedSeats");
-                        });
-
                 });
+#pragma warning restore 612, 618
         }
     }
 }
