@@ -23,6 +23,6 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             return _context.Rooms;
         }
-       
+
     }
 }

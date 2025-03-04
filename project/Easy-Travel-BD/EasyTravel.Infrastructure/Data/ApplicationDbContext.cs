@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EasyTravel.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
+    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
@@ -22,11 +22,10 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<Guide> Guides { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<HotelBooking>  HotelBookings { get; set; }
+        public DbSet<HotelBooking> HotelBookings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<Bus>()
               .Property(b => b.Price)
               .HasColumnType("decimal(18,2)");
@@ -53,6 +52,10 @@ namespace EasyTravel.Infrastructure.Data
                 .HasDefaultValueSql("NEWID()");
 
             modelBuilder.Entity<Photographer>()
+                .HasOne(p => p.Agency)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Photographer>()
                 .Property(a => a.HireDate)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
@@ -70,6 +73,10 @@ namespace EasyTravel.Infrastructure.Data
               .Property(p => p.HourlyRate)
               .HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Guide>()
+            .HasOne(p => p.Agency)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Guide>()
            .Property(a => a.HireDate)
            .ValueGeneratedOnAdd()
            .HasDefaultValueSql("GETDATE()");
@@ -83,7 +90,7 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Guide>()
                 .Property(a => a.Status)
                 .HasDefaultValue("Active");
-         
+
 
             modelBuilder.Entity<Guide>()
                 .Property(g => g.HourlyRate)
