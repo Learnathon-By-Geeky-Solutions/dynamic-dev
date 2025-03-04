@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin"),Authorize(Roles = "admin")]
+    [Area("Admin")]
     public class AdminDashboardController : Controller
     {
         private readonly IUserService _userService;
@@ -19,5 +19,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             return View();
         }
+
+
+      
     }
 }
