@@ -26,7 +26,10 @@ namespace EasyTravel.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<Seat>()
+                .ToTable("Seats");
+            modelBuilder.Entity<BusBooking>()
+               .ToTable("BusBookings");
             modelBuilder.Entity<Bus>()
               .Property(b => b.Price)
               .HasColumnType("decimal(18,2)");
@@ -52,6 +55,9 @@ namespace EasyTravel.Infrastructure.Data
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWID()");
 
+
+            modelBuilder.Entity<Photographer>()
+                .ToTable("Photographers");
             modelBuilder.Entity<Photographer>()
                 .Property(a => a.HireDate)
                 .ValueGeneratedOnAdd()
@@ -69,6 +75,14 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Photographer>()
               .Property(p => p.HourlyRate)
               .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Agency>()
+           .HasMany(b => b.Photographers)
+           .WithOne(bb => bb.Agency)
+           .HasForeignKey(bb => bb.AgencyId)
+           .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Guide>()
+               .ToTable("Guides");
             modelBuilder.Entity<Guide>()
            .Property(a => a.HireDate)
            .ValueGeneratedOnAdd()
@@ -83,7 +97,7 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Guide>()
                 .Property(a => a.Status)
                 .HasDefaultValue("Active");
-         
+
 
             modelBuilder.Entity<Guide>()
                 .Property(g => g.HourlyRate)
@@ -173,7 +187,10 @@ namespace EasyTravel.Infrastructure.Data
            });
 
             #region Hotel Booking Realated 
-
+            modelBuilder.Entity<HotelBooking>()
+                .ToTable("HotelBookings");
+            modelBuilder.Entity<Room>()
+             .ToTable("Rooms");
             modelBuilder.Entity<Hotel>(entity =>
             {
                 // Configure primary key
