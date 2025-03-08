@@ -6,13 +6,33 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EasyTravel.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateHourlyRatePrecisionandbusbookingsandseats : Migration
+    public partial class addBusSeatBusBookingTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "BusBooking",
+                name: "Buses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OperatorName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    BusType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    From = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    To = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalSeats = table.Column<int>(type: "int", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Buses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BusBookings",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -24,9 +44,9 @@ namespace EasyTravel.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BusBooking", x => x.Id);
+                    table.PrimaryKey("PK_BusBookings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BusBooking_Buses_BusId",
+                        name: "FK_BusBookings_Buses_BusId",
                         column: x => x.BusId,
                         principalTable: "Buses",
                         principalColumn: "Id",
@@ -34,7 +54,7 @@ namespace EasyTravel.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seat",
+                name: "Seats",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -45,14 +65,14 @@ namespace EasyTravel.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Seat", x => x.Id);
+                    table.PrimaryKey("PK_Seats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Seat_BusBooking_BusBookingId",
+                        name: "FK_Seats_BusBookings_BusBookingId",
                         column: x => x.BusBookingId,
-                        principalTable: "BusBooking",
+                        principalTable: "BusBookings",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Seat_Buses_BusId",
+                        name: "FK_Seats_Buses_BusId",
                         column: x => x.BusId,
                         principalTable: "Buses",
                         principalColumn: "Id",
@@ -60,18 +80,18 @@ namespace EasyTravel.Web.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BusBooking_BusId",
-                table: "BusBooking",
+                name: "IX_BusBookings_BusId",
+                table: "BusBookings",
                 column: "BusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Seat_BusBookingId",
-                table: "Seat",
+                name: "IX_Seats_BusBookingId",
+                table: "Seats",
                 column: "BusBookingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Seat_BusId",
-                table: "Seat",
+                name: "IX_Seats_BusId",
+                table: "Seats",
                 column: "BusId");
         }
 
@@ -79,10 +99,13 @@ namespace EasyTravel.Web.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Seat");
+                name: "Seats");
 
             migrationBuilder.DropTable(
-                name: "BusBooking");
+                name: "BusBookings");
+
+            migrationBuilder.DropTable(
+                name: "Buses");
         }
     }
 }
