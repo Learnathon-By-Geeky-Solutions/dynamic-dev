@@ -18,11 +18,11 @@ namespace EasyTravel.Infrastructure.Data
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<Agency> Agencies { get; set; }
-        //public DbSet<Photographer> Photographers { get; set; }
-        //public DbSet<Guide> Guides { get; set; }
+        public DbSet<Photographer> Photographers { get; set; }
+        public DbSet<Guide> Guides { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
-        //public DbSet<Room> Rooms { get; set; }
-        //public DbSet<HotelBooking>  HotelBookings { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<HotelBooking>  HotelBookings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

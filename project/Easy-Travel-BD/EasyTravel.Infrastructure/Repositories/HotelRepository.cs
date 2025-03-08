@@ -21,8 +21,7 @@ namespace EasyTravel.Infrastructure.Repositories
         // NO NEED GetRooms but i will implement it later.
         public IEnumerable<Room> GetRooms()
         {
-            throw new NotImplementedException();
-            //return _context.Rooms;
+            return _context.Rooms;
         }
        
     }
