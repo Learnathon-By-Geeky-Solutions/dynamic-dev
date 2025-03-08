@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EasyTravel.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class Hotelrelatedtablesarecreated : Migration
+    public partial class addHotelBookingRoomHotelTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,15 +51,15 @@ namespace EasyTravel.Web.Migrations
                 {
                     table.PrimaryKey("PK_HotelBookings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HotelBookings_Hotels_HotelId",
-                        column: x => x.HotelId,
-                        principalTable: "Hotels",
+                        name: "FK_HotelBookings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_HotelBookings_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_HotelBookings_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });

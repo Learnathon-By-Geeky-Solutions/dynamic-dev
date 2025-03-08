@@ -145,7 +145,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("BusId");
 
-                    b.ToTable("BusBooking");
+                    b.ToTable("BusBookings", (string)null);
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Car", b =>
@@ -277,7 +277,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Guides");
+                    b.ToTable("Guides", (string)null);
 
                     b.HasData(
                         new
@@ -433,7 +433,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HotelBookings");
+                    b.ToTable("HotelBookings", (string)null);
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Photographer", b =>
@@ -448,6 +448,9 @@ namespace EasyTravel.Web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("AgencyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AgencyId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Availability")
@@ -524,7 +527,9 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("AgencyId");
 
-                    b.ToTable("Photographers");
+                    b.HasIndex("AgencyId1");
+
+                    b.ToTable("Photographers", (string)null);
 
                     b.HasData(
                         new
@@ -617,7 +622,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
@@ -646,7 +651,7 @@ namespace EasyTravel.Web.Migrations
 
                     b.HasIndex("BusId");
 
-                    b.ToTable("Seat");
+                    b.ToTable("Seats", (string)null);
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.User", b =>
@@ -923,10 +928,14 @@ namespace EasyTravel.Web.Migrations
             modelBuilder.Entity("EasyTravel.Domain.Entites.Photographer", b =>
                 {
                     b.HasOne("EasyTravel.Domain.Entites.Agency", "Agency")
-                        .WithMany()
+                        .WithMany("Photographers")
                         .HasForeignKey("AgencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("EasyTravel.Domain.Entites.Agency", null)
+                        .WithMany("Guides")
+                        .HasForeignKey("AgencyId1");
 
                     b.Navigation("Agency");
                 });
@@ -1006,6 +1015,13 @@ namespace EasyTravel.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Agency", b =>
+                {
+                    b.Navigation("Guides");
+
+                    b.Navigation("Photographers");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Bus", b =>
