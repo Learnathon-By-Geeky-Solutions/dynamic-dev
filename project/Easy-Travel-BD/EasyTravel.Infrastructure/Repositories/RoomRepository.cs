@@ -20,8 +20,7 @@ namespace EasyTravel.Infrastructure.Repositories
 
         public IEnumerable<Room> GetRooms(Guid hotelId)
         {
-            throw new NotImplementedException();
-            //return _context.Rooms.Where(r => r.HotelId == hotelId).ToList();
+            return _context.Rooms.Where(r => r.HotelId == hotelId).ToList();
         }
 
     }
