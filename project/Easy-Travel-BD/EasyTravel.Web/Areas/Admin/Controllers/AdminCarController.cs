@@ -1,16 +1,17 @@
 ﻿using EasyTravel.Application.Services;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    public class CarController : Controller
+    [Area("Admin"), Authorize(Roles = "admin")]
+    public class AdminCarController : Controller
     {
         private readonly ICarService _carService;
 
-        public CarController(ICarService carService)
+        public AdminCarController(ICarService carService)
         {
             _carService = carService;
         }
@@ -24,7 +25,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _carService.CreateCar(car);
-                return RedirectToAction("Index", "Car", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
 
             }
             return View();
@@ -57,7 +58,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _carService.UpdateCar(car);
-                return RedirectToAction("Index", "car", new { area = "Admin" });
+                return RedirectToAction("Index", "Admincar", new { area = "Admin" });
             }
             return View();
 
@@ -83,7 +84,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _carService.DeleteBus(car);
-                return RedirectToAction("Index", "car", new { area = "Admin" });
+                return RedirectToAction("Index", "Admincar", new { area = "Admin" });
             }
             return View();
 
