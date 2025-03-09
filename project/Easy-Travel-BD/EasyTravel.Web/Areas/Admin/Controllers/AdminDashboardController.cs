@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin"),Authorize(Roles ="admin")]
+    [Area("Admin")]
+    [Authorize(Roles = "admin, busmanager")]
     public class AdminDashboardController : Controller
     {
         private readonly IUserService _userService;

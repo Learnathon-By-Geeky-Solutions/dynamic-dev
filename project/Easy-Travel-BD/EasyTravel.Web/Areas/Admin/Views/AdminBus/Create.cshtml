@@ -1,7 +1,7 @@
-﻿@model EasyTravel.Domain.Entites.Car
+﻿@model EasyTravel.Domain.Entites.Bus
 
 @{
-    ViewData["Title"] = "Update Car";
+    ViewData["Title"] = "Create Bus";
 }
 
 <div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
@@ -12,12 +12,10 @@
             </div>
         </div>
     </div>
-    <form method="post" asp-area="Admin" asp-controller="Car" asp-action="Update">
-        <input type="hidden" asp-for="Id" />
-        <partial name="_CarForm" />
+    <form method="post" asp-controller="AdminBus" asp-area="Admin" asp-action="Create">
+        <partial name="_BusForm" />
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Update Car</button>
-            <a asp-area="Admin" asp-controller="Car" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Create Bus</button>
         </div>
     </form>
 </div>

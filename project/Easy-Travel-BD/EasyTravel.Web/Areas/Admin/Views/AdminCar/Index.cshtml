@@ -7,7 +7,7 @@
 <div class="entity-list">
     <h2>@ViewData["Title"]</h2>
     <div class="create-btn">
-        <a asp-area="Admin" asp-controller="Car" asp-action="Create">Create Car</a>
+        <a asp-area="Admin" asp-controller="AdminCar" asp-action="Create">Create Car</a>
     </div>
 
     @foreach (var car in Model)
@@ -36,8 +36,8 @@
                 </div>
 
             <div class="col-md-2 actions">
-                <a asp-area="Admin" asp-controller="Car" asp-action="Update" asp-route-CarId="@car.Id" class="update-btn">Update</a>
-                <a asp-area="Admin" asp-controller="Car" asp-action="Delete" asp-route-CarId="@car.Id" class="delete-btn">Delete</a>
+                <a asp-area="Admin" asp-controller="AdminCar" asp-action="Update" asp-route-CarId="@car.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="AdminCar" asp-action="Delete" asp-route-CarId="@car.Id" class="delete-btn">Delete</a>
             </div>
                 
        </div>

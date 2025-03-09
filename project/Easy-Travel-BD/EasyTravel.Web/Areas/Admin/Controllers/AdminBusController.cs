@@ -1,15 +1,17 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class BusController : Controller
+    [Authorize(Roles = "admin, busmanager")]
+    public class AdminBusController : Controller
     {
         private readonly IBusService _busService;
 
-        public BusController(IBusService busService)
+        public AdminBusController(IBusService busService)
         {
             _busService = busService;
         }
@@ -25,7 +27,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _busService.CreateBus(bus);
-                return RedirectToAction("Index", "Bus", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminBus", new { area = "Admin" });
 
             }
             return View();
@@ -60,7 +62,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _busService.UpdateBus(bus);
-                return RedirectToAction("Index", "Bus", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminBus", new { area = "Admin" });
             }
             return View();
 
@@ -86,7 +88,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _busService.DeleteBus(bus);
-                return RedirectToAction("Index", "Bus", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminBus", new { area = "Admin" });
             }
             return View();
 
