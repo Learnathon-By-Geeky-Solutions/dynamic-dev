@@ -48,7 +48,7 @@ namespace EasyTravel.Web.Controllers
                     if (result.Succeeded)
                     {
                         var role = await _userManager.GetRolesAsync(user);
-                        if (role.Contains("admin"))
+                        if (role.Contains("admin")|| role.Contains("agencyManager") || role.Contains("hotelManager") || role.Contains("busManager") || role.Contains("carManager"))
                         {
                             return RedirectToAction("Index", "AdminDashboard", new { area = "Admin" });
                         }
