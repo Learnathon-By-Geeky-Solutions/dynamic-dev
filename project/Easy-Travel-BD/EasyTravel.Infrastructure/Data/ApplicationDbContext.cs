@@ -126,7 +126,31 @@ namespace EasyTravel.Infrastructure.Data
                     Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
                     Name = "client",
                     NormalizedName = "client"
-                }
+                },
+                 new IdentityRole<Guid>
+                 {
+                     Id = new Guid("4558E034-03AF-4D30-819F-9A24CB81C942"),
+                     Name = "agencyManager",
+                     NormalizedName = "agencyManager"
+                 },
+                  new IdentityRole<Guid>
+                  {
+                      Id = new Guid("C10F83B0-9008-468B-B931-5E73FF416337"),
+                      Name = "busManager",
+                      NormalizedName = "busManager"
+                  },
+                   new IdentityRole<Guid>
+                   {
+                       Id = new Guid("862B8016-7786-4CF2-BCB1-A4AAC017FF2C"),
+                       Name = "carManager",
+                       NormalizedName = "carManager"
+                   },
+                   new IdentityRole<Guid>
+                   {
+                       Id = new Guid("292DCAF2-AADC-493A-8F19-E7905AB98299"),
+                       Name = "hotelManager",
+                       NormalizedName = "hotelManager"
+                   }
                 );
             modelBuilder.Entity<Agency>().HasData(
             new Agency

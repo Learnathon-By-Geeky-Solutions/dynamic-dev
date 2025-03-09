@@ -3,11 +3,12 @@ using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Factories;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"), Authorize(Roles = "admin,photographerManager")]
     public class AdminPhotographerController : Controller
     {
         private readonly IAdminPhotographerService _photographerService;
