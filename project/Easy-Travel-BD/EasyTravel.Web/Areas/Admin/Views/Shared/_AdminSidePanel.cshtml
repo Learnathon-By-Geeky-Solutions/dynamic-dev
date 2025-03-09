@@ -1,18 +1,48 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> userManager
+@{
     var controllers = new List<string>();
     controllers.Add("AdminAgency");
     controllers.Add("AdminPhotographer");
     controllers.Add("AdminGuide");
     controllers.Add("Hotel");
     controllers.Add("Room");
-
+    controllers.Add("HotelBooking");
     controllers.Add("Bus");
+    controllers.Add("Seat");
+    controllers.Add("BusBooking");
     controllers.Add("Car");
-    
+
     var length = controllers.Count();
+    int i = -1;
+    if(User.IsInRole("admin"))
+    {
+        i = 0;
+    }
+    else if (User.IsInRole("agencyManager"))
+    {
+        i = 0;
+        length = 3;
+    }
+    else if (User.IsInRole("hotelManager"))
+    {
+        i = 3;
+        length = 6;
+    }
+    else if (User.IsInRole("busManager"))
+    {
+        i = 6;
+        length = 9;
+    }
+    else if(User.IsInRole("carManager"))
+    {
+        i = 9;
+        length = 10;
+    }
+
 }
 <div class="list-group">
-    @for(int i = 0; i < length; i++)
+    @for(; i < length; i++)
     {
         <a asp-area="Admin" asp-controller="@controllers[i]" asp-action="Index" class="list-group-item list-group-item-action list-group-item-primary">@controllers[i].Replace("Admin","")</a>
         <br />
