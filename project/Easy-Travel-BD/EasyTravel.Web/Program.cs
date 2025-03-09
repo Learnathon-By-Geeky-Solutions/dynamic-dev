@@ -73,7 +73,7 @@ try
         options =>
         {
             //options.SignIn.RequireConfirmedAccount = true;
-            options.Password.RequiredLength = 8;
+            options.Password.RequiredLength = 6;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequireDigit = false;
             options.Password.RequireLowercase = false;
@@ -119,6 +119,7 @@ try
 
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseStaticFiles();
 
     app.MapStaticAssets();
 
