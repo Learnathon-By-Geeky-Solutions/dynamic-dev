@@ -37,8 +37,6 @@ namespace EasyTravel.Application.Services
                     bus.Seats.Add(seat);
                 }
             }
-
-           
             _applicationUnitOfWork1.BusRepository.Addbus(bus);
             _applicationUnitOfWork1.Save();
         }
