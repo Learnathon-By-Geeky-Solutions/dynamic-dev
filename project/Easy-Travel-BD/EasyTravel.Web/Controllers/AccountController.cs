@@ -46,7 +46,7 @@ namespace EasyTravel.Web.Controllers
 
                         if (roles.Contains("busmanager"))
                         {
-                            return RedirectToAction("Index", "Bus", new { area = "Admin" });
+                            return RedirectToAction("Index", "AdminBus", new { area = "Admin" });
                         }
                         if (roles.Contains("admin"))
                         {
