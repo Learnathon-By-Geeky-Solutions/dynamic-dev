@@ -1,12 +1,9 @@
-﻿
-using EasyTravel.Domain.Entites;
+﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
-
-
+using System.Threading.Tasks;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -14,13 +11,11 @@ namespace EasyTravel.Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        //private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<User> userManager,SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            //_roleManager = roleManager;
         }
 
         [HttpGet]
@@ -34,7 +29,7 @@ namespace EasyTravel.Web.Controllers
             return View();
         }
 
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
@@ -47,8 +42,13 @@ namespace EasyTravel.Web.Controllers
                     var result = await _signInManager.PasswordSignInAsync(model.Email!, model.Password!, model.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        var role = await _userManager.GetRolesAsync(user);
-                        if (role.Contains("admin"))
+                        var roles = await _userManager.GetRolesAsync(user);
+
+                        if (roles.Contains("busmanager"))
+                        {
+                            return RedirectToAction("Index", "Bus", new { area = "Admin" });
+                        }
+                        if (roles.Contains("admin"))
                         {
                             return RedirectToAction("Index", "AdminDashboard", new { area = "Admin" });
                         }
@@ -58,15 +58,14 @@ namespace EasyTravel.Web.Controllers
                         }
                         return RedirectToAction("Index", "Home", new { area = string.Empty });
                     }
-                    ModelState.AddModelError(string.Empty, "Invalid Login attemp !");
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt!");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "User not found! ");
+                    ModelState.AddModelError(string.Empty, "User not found!");
                 }
             }
             return View(model);
-
         }
 
         [HttpGet]
@@ -80,30 +79,27 @@ namespace EasyTravel.Web.Controllers
             return View();
         }
 
-
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (ModelState.IsValid)
             {
-                var user = new User { FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = model.DateOfBirth, Gender = model.Gender, Email = model.Email,UserName = model.Email };
-                var result = await _userManager.CreateAsync(user,model.Password);
+                var user = new User { FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = model.DateOfBirth, Gender = model.Gender, Email = model.Email, UserName = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "client");
-                    return RedirectToAction("Login", "Account", new {area = string.Empty});
+                    return RedirectToAction("Login", "Account", new { area = string.Empty });
                 }
-                
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
             return View(model);
-           
         }
 
         public async Task<IActionResult> Logout()
