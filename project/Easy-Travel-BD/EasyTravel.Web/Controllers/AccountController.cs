@@ -26,7 +26,7 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             if (_signInManager.IsSignedIn(User))
             {
                 var referrerUrl = HttpContext.Request.Headers["Referer"].ToString();
@@ -38,7 +38,7 @@ namespace EasyTravel.Web.Controllers
         [HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         { 
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
@@ -69,7 +69,7 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             if (_signInManager.IsSignedIn(User))
             {
                 var referrerUrl = HttpContext.Request.Headers["Referer"].ToString();
@@ -82,7 +82,7 @@ namespace EasyTravel.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             if (ModelState.IsValid)
             {
                 var user = new User { FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = model.DateOfBirth, Gender = model.Gender, Email = model.Email,UserName = model.Email };
@@ -106,7 +106,7 @@ namespace EasyTravel.Web.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account", new { area = string.Empty });
         }

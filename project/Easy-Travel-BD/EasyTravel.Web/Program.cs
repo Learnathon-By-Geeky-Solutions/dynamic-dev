@@ -14,6 +14,7 @@ using System.Reflection;
 using EasyTravel.Web.Hubs;
 using Microsoft.AspNetCore.Identity;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Web.Middleware;
 
 
 var configuration = new ConfigurationBuilder()
@@ -112,6 +113,8 @@ try
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
+    app.UseMiddleware<RequestLoggingMiddleware>();
+    app.UseMiddleware<NoCacheMiddleware>();
     app.MapHub<SeatHub>("/seatHub");
     app.UseHttpsRedirection();
     app.UseRouting();

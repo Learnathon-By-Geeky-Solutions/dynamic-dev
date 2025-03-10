@@ -13,7 +13,7 @@ namespace EasyTravel.Web.Controllers
         }
         public IActionResult Index()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             var models = _guideService.GetAll();
             return View(models);
         }

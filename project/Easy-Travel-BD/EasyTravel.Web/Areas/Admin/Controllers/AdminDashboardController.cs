@@ -18,7 +18,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [Authorize(Roles ="admin,agencyManager,busManager,carManager,hotelManager")]
         public IActionResult Index()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             return View();
         }
 
