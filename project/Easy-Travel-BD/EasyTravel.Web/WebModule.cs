@@ -82,7 +82,8 @@ namespace EasyTravel.Web
                  .InstancePerLifetimeScope();
             builder.RegisterType<HotelBookingService>().As<IHotelBookingService>()
                .InstancePerLifetimeScope();
-               
+            builder.RegisterType<AuthService>().As<IAuthService>()
+               .InstancePerLifetimeScope();
             base.Load(builder);
         }
 
