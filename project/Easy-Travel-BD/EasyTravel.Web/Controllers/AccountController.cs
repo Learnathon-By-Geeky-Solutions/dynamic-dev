@@ -1,4 +1,4 @@
-﻿
+﻿using Microsoft.AspNetCore.Http.Extensions;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
@@ -24,21 +24,21 @@ namespace EasyTravel.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(string? returnUrl = null)
+        public IActionResult Login()
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (_signInManager.IsSignedIn(User))
             {
-                return Redirect(returnUrl ?? Url.Content("~/"));
+                var referrerUrl = HttpContext.Request.Headers["Referer"].ToString();
+                return Redirect(referrerUrl);
             }
             return View();
         }
 
         [HttpPost,ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
-        {
+        public async Task<IActionResult> Login(LoginViewModel model)
+        { 
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-            returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
@@ -52,11 +52,8 @@ namespace EasyTravel.Web.Controllers
                         {
                             return RedirectToAction("Index", "AdminDashboard", new { area = "Admin" });
                         }
-                        if (Url.IsLocalUrl(returnUrl))
-                        {
-                            return Redirect(returnUrl);
-                        }
-                        return RedirectToAction("Index", "Home", new { area = string.Empty });
+                        var referrerUrl = HttpContext.Request.Headers["Referer"].ToString();
+                        return Redirect(referrerUrl);
                     }
                     ModelState.AddModelError(string.Empty, "Invalid Login attemp !");
                 }
@@ -70,12 +67,13 @@ namespace EasyTravel.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register(string? returnUrl = null)
+        public IActionResult Register()
         {
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (_signInManager.IsSignedIn(User))
             {
-                return Redirect(returnUrl ?? Url.Content("~/"));
+                var referrerUrl = HttpContext.Request.Headers["Referer"].ToString();
+                return Redirect(referrerUrl);
             }
             return View();
         }
