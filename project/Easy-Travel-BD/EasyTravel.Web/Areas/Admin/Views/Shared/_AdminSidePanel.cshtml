@@ -15,14 +15,9 @@
     controllers.Add("Car");
 
     var length = controllers.Count();
-    int i = -1;
-    if(User.IsInRole("admin"))
+    int i = 0;
+    if (User.IsInRole("agencyManager"))
     {
-        i = 0;
-    }
-    else if (User.IsInRole("agencyManager"))
-    {
-        i = 0;
         length = 3;
     }
     else if (User.IsInRole("hotelManager"))

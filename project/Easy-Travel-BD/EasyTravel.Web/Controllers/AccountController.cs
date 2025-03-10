@@ -5,6 +5,7 @@ using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using EasyTravel.Application.Services;
 
 
 
@@ -14,66 +15,55 @@ namespace EasyTravel.Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        //private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IAuthService _authService;
 
-        public AccountController(UserManager<User> userManager,SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IAuthService authService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            //_roleManager = roleManager;
+            _authService = authService;
         }
 
         [HttpGet]
         public IActionResult Login()
         {
-            
+
             if (_signInManager.IsSignedIn(User))
             {
-                var referrerUrl = HttpContext.Request.Headers["Referer"].ToString();
-                return Redirect(referrerUrl);
+                HttpContext.Response.
+                var currentUrl = HttpContext.Request.GetDisplayUrl();
+                return Redirect(currentUrl);
             }
             return View();
         }
 
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
-        { 
-            
-            if (ModelState.IsValid)
+        {
+
+            if (!ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
-                {
-                    var result = await _signInManager.PasswordSignInAsync(model.Email!, model.Password!, model.RememberMe, false);
-                    if (result.Succeeded)
-                    {
-                        var role = await _userManager.GetRolesAsync(user);
-                        if (role.Contains("admin")|| role.Contains("agencyManager") || role.Contains("hotelManager") || role.Contains("busManager") || role.Contains("carManager"))
-                        {
-                            return RedirectToAction("Index", "AdminDashboard", new { area = "Admin" });
-                        }
-                        var referrerUrl = HttpContext.Request.Headers["Referer"].ToString();
-                        return Redirect(referrerUrl);
-                    }
-                    ModelState.AddModelError(string.Empty, "Invalid Login attemp !");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "User not found! ");
-                }
+                return View(model);
             }
-            return View(model);
+            var (success, errorMessage, redirectUrl) = await _authService.AuthenticateUserAsync(model.Email, model.Password, false);
+
+            if (!success)
+            {
+                ModelState.AddModelError(string.Empty, errorMessage);
+                return View(model);
+            }
+            var refererUrl = HttpContext.Request.Headers["Referer"].ToString();
+            return Redirect(string.IsNullOrEmpty(redirectUrl) ? refererUrl: redirectUrl);
 
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            
             if (_signInManager.IsSignedIn(User))
             {
-                var referrerUrl = HttpContext.Request.Headers["Referer"].ToString();
-                return Redirect(referrerUrl);
+                var currentUrl = HttpContext.Request.GetDisplayUrl();
+                return Redirect(currentUrl);
             }
             return View();
         }
@@ -82,33 +72,32 @@ namespace EasyTravel.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            
-            if (ModelState.IsValid)
-            {
-                var user = new User { FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = model.DateOfBirth, Gender = model.Gender, Email = model.Email,UserName = model.Email };
-                var result = await _userManager.CreateAsync(user,model.Password);
 
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "client");
-                    return RedirectToAction("Login", "Account", new {area = string.Empty});
-                }
-                
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var (success, errorMessage) = await _authService.RegisterUserAsync(model.FirstName,model.LastName,model.DateOfBirth,model.Gender,model.Email,model.Email,model.Password);
+
+            if (!success)
+            {
+                ModelState.AddModelError(string.Empty, errorMessage);
+                return View(model);
             }
 
-            return View(model);
-           
+            return RedirectToAction("Login", "Account");
         }
 
         public async Task<IActionResult> Logout()
         {
-            
+
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account", new { area = string.Empty });
+            var currentUrl = HttpContext.Request.GetDisplayUrl();
+            if(currentUrl.Contains("Admin") || currentUrl.Contains("admin"))
+            {
+                return RedirectToAction("Login", "Account", new { area = "Admin" });
+            }
+            return RedirectToAction(currentUrl);
         }
     }
 }

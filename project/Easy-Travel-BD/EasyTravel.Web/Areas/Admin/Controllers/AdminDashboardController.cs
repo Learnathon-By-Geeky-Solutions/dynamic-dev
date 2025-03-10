@@ -18,7 +18,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [Authorize(Roles ="admin,agencyManager,busManager,carManager,hotelManager")]
         public IActionResult Index()
         {
-            
             return View();
         }
 
