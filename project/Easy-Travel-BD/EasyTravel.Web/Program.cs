@@ -112,6 +112,14 @@ try
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
+    app.UseStatusCodePages(context =>
+    {
+        if (context.HttpContext.Response.StatusCode == 404)
+        {
+            context.HttpContext.Response.Redirect("/Home/Error");
+        }
+        return System.Threading.Tasks.Task.CompletedTask;
+    });
     app.MapHub<SeatHub>("/seatHub");
     app.UseHttpsRedirection();
     app.UseRouting();

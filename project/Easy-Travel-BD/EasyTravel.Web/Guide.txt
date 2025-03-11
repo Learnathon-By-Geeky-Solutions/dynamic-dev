@@ -1,0 +1,19 @@
+﻿1. Notification
+	* update your controller to set TempData values for success / error/info/warning messages. Here's an example
+	  
+      [HttpPost]
+  public IActionResult Update(Hotel model)
+  {
+      if (ModelState.IsValid)
+      {
+          _hotelService.Update(model);
+          TempData["success"] = "The hotel has been updated successfully";
+
+          return RedirectToAction("Index", "Hotel", new { area = "Admin" });
+      }
+      return View();
+  }
+
+  For modification: shared /_Notification.cshtml
+
+For any modification: https://github.com/CodeSeven/toastr
