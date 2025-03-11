@@ -7,7 +7,7 @@
 <div class="entity-list">
     <h2>Bus List</h2>
     <div class="create-btn">
-        <a asp-area="Admin" asp-controller="Bus" asp-action="Create">Create Bus</a>
+        <a asp-area="Admin" asp-controller="AdminBus" asp-action="Create">Create Bus</a>
     </div>
 
     @foreach (var bus in Model)
@@ -36,8 +36,8 @@
                 </div>
 
             <div class="col-md-2 actions">
-                <a asp-area="Admin" asp-controller="Bus" asp-action="Update" asp-route-BusId="@bus.Id" class="update-btn">Update</a>
-                <a asp-area="Admin" asp-controller="Bus" asp-action="Delete" asp-route-BusId="@bus.Id" class="delete-btn">Delete</a>
+                <a asp-area="Admin" asp-controller="AdminBus" asp-action="Update" asp-route-BusId="@bus.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="AdminBus" asp-action="Delete" asp-route-BusId="@bus.Id" class="delete-btn">Delete</a>
             </div>
                 
        </div>

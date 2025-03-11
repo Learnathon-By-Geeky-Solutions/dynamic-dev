@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using EasyTravel.Application.Services;
-
-
+using System.Threading.Tasks;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -15,6 +14,7 @@ namespace EasyTravel.Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+
         private readonly IAuthService _authService;
 
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IAuthService authService)
@@ -36,6 +36,7 @@ namespace EasyTravel.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Login(LoginViewModel model)
         {
 
@@ -56,7 +57,6 @@ namespace EasyTravel.Web.Controllers
                 return Redirect(string.IsNullOrEmpty(refererUrl) ? "/Home/Index" : refererUrl);
             }
             return Redirect(redirectUrl);
-
         }
 
         [HttpGet]
@@ -69,7 +69,6 @@ namespace EasyTravel.Web.Controllers
             }
             return View();
         }
-
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
