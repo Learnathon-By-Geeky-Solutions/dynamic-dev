@@ -37,6 +37,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["success"] = "The hotel has been created successfully";
                 _hotelService.Create(model);
                 return RedirectToAction("Index", "Hotel", new { area = "Admin" });
             }
@@ -56,6 +57,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _hotelService.Update(model);
+                TempData["success"] = "The hotel has been updated successfully";
+
                 return RedirectToAction("Index", "Hotel", new { area = "Admin" });
             }
             return View();
@@ -65,6 +68,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (id == Guid.Empty)
             {
+                TempData["error"] = "The hotel not found";
+
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             var hotel = _hotelService.Get(id);
@@ -75,6 +80,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (model.Id == Guid.Empty)
             {
+                TempData["error"] = "The hotel not found";
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             _hotelService.Delete(model.Id);
