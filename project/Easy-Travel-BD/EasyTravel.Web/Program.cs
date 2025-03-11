@@ -15,6 +15,7 @@ using EasyTravel.Web.Hubs;
 using Microsoft.AspNetCore.Identity;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Web.Middleware;
+using Autofac.Core;
 
 
 var configuration = new ConfigurationBuilder()
@@ -86,6 +87,10 @@ try
         }
         )
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+  
+
+
 
 
     builder.Services.AddDistributedMemoryCache();
