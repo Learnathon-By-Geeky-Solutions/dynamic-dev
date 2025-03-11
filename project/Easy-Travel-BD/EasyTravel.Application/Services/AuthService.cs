@@ -62,11 +62,6 @@ namespace EasyTravel.Application.Services
             var adminRoles = new HashSet<string> { "admin", "agencyManager", "hotelManager", "busManager", "carManager" };
             return adminRoles.Contains(role);
         }
-        private bool IsClientRole(string role)
-        {
-            var clientRoles = new HashSet<string> { "client" };
-            return clientRoles.Contains(role);
-        }
 
     }
 }
