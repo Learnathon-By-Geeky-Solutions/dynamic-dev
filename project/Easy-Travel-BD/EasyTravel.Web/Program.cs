@@ -113,10 +113,10 @@ try
     }
     app.UseMiddleware<RequestLoggingMiddleware>();
     app.UseMiddleware<NoCacheMiddleware>();
-    app.MapHub<SeatHub>("/seatHub");
     app.UseHttpsRedirection();
     app.UseRouting();
     app.UseSession();
+    app.MapHub<SeatHub>("/seatHub");
 
     app.UseAuthentication();
     app.UseAuthorization();
