@@ -51,6 +51,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Index.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Easy-Travel-BD.styles.css" asp-append-version="true" />
+    @* Notification CSS CDN *@  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
 </head>
 <!--end::Head-->
@@ -669,7 +671,7 @@
         <!--end::Sidebar-->
         <!--begin::App Main-->
         <main class="app-main">
-
+            <partial name="_Notification" />
             @RenderBody()
         </main>
         <!--end::App Main-->
