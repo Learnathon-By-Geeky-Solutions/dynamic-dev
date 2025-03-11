@@ -27,12 +27,10 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-
             if (_signInManager.IsSignedIn(User))
             {
-                HttpContext.Response.
-                var currentUrl = HttpContext.Request.GetDisplayUrl();
-                return Redirect(currentUrl);
+                var refererUrl = HttpContext.Session.GetString("LastVisitedPage");
+                return Redirect(string.IsNullOrEmpty(refererUrl) ? "/Home/Index" : refererUrl);
             }
             return View();
         }
@@ -52,8 +50,12 @@ namespace EasyTravel.Web.Controllers
                 ModelState.AddModelError(string.Empty, errorMessage);
                 return View(model);
             }
-            var refererUrl = HttpContext.Request.Headers["Referer"].ToString();
-            return Redirect(string.IsNullOrEmpty(redirectUrl) ? refererUrl: redirectUrl);
+            if (string.IsNullOrEmpty(redirectUrl))
+            {
+                var refererUrl = HttpContext.Session.GetString("LastVisitedPage");
+                return Redirect(string.IsNullOrEmpty(refererUrl) ? "/Home/Index" : refererUrl);
+            }
+            return Redirect(redirectUrl);
 
         }
 
@@ -62,8 +64,8 @@ namespace EasyTravel.Web.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                var currentUrl = HttpContext.Request.GetDisplayUrl();
-                return Redirect(currentUrl);
+                var refererUrl = HttpContext.Session.GetString("LastVisitedPage");
+                return Redirect(string.IsNullOrEmpty(refererUrl) ? "/Home/Index" : refererUrl);
             }
             return View();
         }
@@ -77,7 +79,7 @@ namespace EasyTravel.Web.Controllers
             {
                 return View(model);
             }
-            var (success, errorMessage) = await _authService.RegisterUserAsync(model.FirstName,model.LastName,model.DateOfBirth,model.Gender,model.Email,model.Email,model.Password);
+            var (success, errorMessage) = await _authService.RegisterUserAsync(model.FirstName, model.LastName, model.DateOfBirth, model.Gender, model.Email, model.Email, model.Password);
 
             if (!success)
             {
@@ -92,12 +94,18 @@ namespace EasyTravel.Web.Controllers
         {
 
             await _signInManager.SignOutAsync();
-            var currentUrl = HttpContext.Request.GetDisplayUrl();
-            if(currentUrl.Contains("Admin") || currentUrl.Contains("admin"))
+            string? refererUrl = HttpContext.Session.GetString("LastVisitedPage");
+            if(!string.IsNullOrEmpty(refererUrl))
             {
-                return RedirectToAction("Login", "Account", new { area = "Admin" });
+                if(refererUrl.Contains("Admin"))
+                {
+                    HttpContext.Session.Remove("LastVisitedPage");
+                    refererUrl = "/Home/Index";
+                }
+                return Redirect(refererUrl);
+
             }
-            return RedirectToAction(currentUrl);
+            return Redirect("/Home/Index");
         }
     }
 }

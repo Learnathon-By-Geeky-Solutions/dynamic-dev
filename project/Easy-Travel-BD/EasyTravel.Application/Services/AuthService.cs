@@ -53,7 +53,6 @@ namespace EasyTravel.Application.Services
 
             var roles = await _userManager.GetRolesAsync(user);
             if (roles.Any(role => IsAdminRole(role))) return (true, "", "/Admin/AdminDashboard/Index");
-            if (roles.Any(role => IsClientRole(role))) return (true, "", "/Home/Index");
 
             return (true, "User role is not defined", null);
         }

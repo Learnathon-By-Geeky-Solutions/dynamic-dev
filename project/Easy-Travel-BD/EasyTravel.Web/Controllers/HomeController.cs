@@ -4,6 +4,7 @@ using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ namespace EasyTravel.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            
+            HttpContext.Session.SetString("LastVisitedPage","/Home/Index");
             return View();
         }
 
