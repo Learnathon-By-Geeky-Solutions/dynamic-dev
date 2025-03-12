@@ -5,7 +5,6 @@
 
 }
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -44,6 +43,7 @@
                     </div>
                 </div>
 
+                ```
                 <div class="card mb-4">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
@@ -54,18 +54,29 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label asp-for="BookingForm.PassengerName">Passenger Name <span class="text-danger">*</span></label>
-                                <input asp-for="BookingForm.PassengerName" class="form-control" />
+                                <label asp-for="BookingForm.PassengerName">
+                                    Passenger Name
+                                    <input asp-for="BookingForm.PassengerName" class="form-control" />
+                                </label>
+
                                 <span asp-validation-for="BookingForm.PassengerName" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="BookingForm.Email">Email <span class="text-danger">*</span></label>
-                                <input asp-for="BookingForm.Email" class="form-control" />
+                                <label asp-for="BookingForm.Email">
+                                    Email
+
+                                    <input asp-for="BookingForm.Email" class="form-control" />
+                                </label>
+
                                 <span asp-validation-for="BookingForm.Email" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="BookingForm.PhoneNumber">Phone Number <span class="text-danger">*</span></label>
-                                <input asp-for="BookingForm.PhoneNumber" class="form-control" />
+                                <label asp-for="BookingForm.PhoneNumber">
+                                    Phone Number
+                                    <input asp-for="BookingForm.PhoneNumber" class="form-control" />
+
+                                </label>
+
                                 <span asp-validation-for="BookingForm.PhoneNumber" class="text-danger"></span>
                             </div>
                         </div>
@@ -101,6 +112,9 @@
             </div>
         </div>
     </div>
+
+    ```
+
 </div>
 
 @section Scripts {

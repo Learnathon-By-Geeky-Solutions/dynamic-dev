@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace EasyTravel.Application.Services
 {
@@ -68,6 +69,44 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork1.Save();
 
         }
+
+        public void SaveBooking(BusBooking booking, List<Guid> seatIds)
+        {
+            // Start a transaction to ensure both operations succeed or fail together
+            using (var transaction = new TransactionScope())
+            {
+                try
+                {
+                    // Save the booking
+                    _applicationUnitOfWork1.BusBookingRepository.Add(booking);
+                    _applicationUnitOfWork1.Save();
+
+                    // Update the seat availability
+                    foreach (var seatId in seatIds)
+                    {
+                        var seat = _applicationUnitOfWork1.SeatRepository.GetById(seatId);
+                        if (seat != null)
+                        {
+                            seat.IsAvailable = false;
+                            _applicationUnitOfWork1.SeatRepository.Edit(seat);
+                            _applicationUnitOfWork1.Save();
+                        }
+                    }
+
+                    // Commit the transaction
+                    transaction.Complete();
+                }
+                catch
+                {
+                    // Transaction will automatically roll back if an exception occurs
+                    throw;
+                }
+            }
+        }
+
+
+
+
 
     }
 }

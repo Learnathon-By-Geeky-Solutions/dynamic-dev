@@ -48,9 +48,15 @@
                             @for (int col = 1; col <= 4; col++)
                             {
                                 var seatNumber = $"{row}{col}";
-                                <button class="seat available"
+                                // Find the seat in the model to determine availability
+                                var seat = Model.Seats.FirstOrDefault(s => s.SeatNumber == seatNumber);
+                                var statusClass = seat == null || seat.IsAvailable ? "available" : "booked";
+
+                                <button class="seat @statusClass"
                                         onclick="toggleSeat(this)"
-                                        data-seat-number="@seatNumber">
+                                @(statusClass == "booked" ? "disabled" : "")
+                                        data-seat-number="@seatNumber"
+                                        data-seat-id="@((seat?.Id ?? Guid.Empty).ToString())">
                                     @seatNumber
                                 </button>
                             }
@@ -70,6 +76,7 @@
 
 <form id="bookingForm" asp-controller="Bus" asp-action="BusBooking" method="post">
     <input type="hidden" id="selectedSeatsInput" name="selectedSeats" />
+    <input type="hidden" id="selectedSeatIdsInput" name="selectedSeatIds" />
     <input type="hidden" id="totalAmountInput" name="totalAmount" />
     <input type="hidden" name="busId" value="@Model.Id" />
 </form>
@@ -174,6 +181,8 @@
         background-color: #dc3545;
         color: white;
         border-color: #dc3545;
+        cursor: not-allowed;
+        opacity: 0.8;
     }
 
     .bus-front {
@@ -184,21 +193,30 @@
 @section Scripts {
     <script>
         let selectedSeats = new Set();
+        let selectedSeatIds = new Set();
         const maxSeats = 4;
         const pricePerSeat = @Model.Price;
 
         function toggleSeat(seatElement) {
-            const seatNumber = seatElement.getAttribute('data-seat-number');
+            // Safety check - if seat is booked, don't allow selection
+            if (seatElement.classList.contains('booked')) return;
 
-            if (!seatNumber) return;
+            const seatNumber = seatElement.getAttribute('data-seat-number');
+            const seatId = seatElement.getAttribute('data-seat-id');
+
+            if (!seatNumber || !seatId) return;
 
             if (seatElement.classList.contains('selected')) {
                 seatElement.classList.remove('selected');
+                seatElement.classList.add('available');
                 selectedSeats.delete(seatNumber);
+                selectedSeatIds.delete(seatId);
             } else {
                 if (selectedSeats.size < maxSeats) {
+                    seatElement.classList.remove('available');
                     seatElement.classList.add('selected');
                     selectedSeats.add(seatNumber);
+                    selectedSeatIds.add(seatId);
                 } else {
                     alert('You can only select up to ' + maxSeats + ' seats.');
                     return;
@@ -225,12 +243,13 @@
             }
 
             const selectedSeatsString = Array.from(selectedSeats).join(',');
+            const selectedSeatIdsString = Array.from(selectedSeatIds).join(',');
             const totalAmount = (selectedSeats.size * pricePerSeat).toFixed(2);
 
             // Populate the hidden inputs in the form
             document.getElementById('selectedSeatsInput').value = selectedSeatsString;
+            document.getElementById('selectedSeatIdsInput').value = selectedSeatIdsString;
             document.getElementById('totalAmountInput').value = totalAmount;
-
 
             // Submit the form
             document.getElementById('bookingForm').submit();
