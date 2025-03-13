@@ -1,4 +1,4 @@
-﻿@model EasyTravel.Domain.Entites.Bus
+﻿@model EasyTravel.Web.ViewModels.BusSeatsViewModel
 
 @{
     ViewData["Title"] = "Select Seats";
@@ -35,6 +35,9 @@
                 </div>
             </div>
 
+         
+
+
             <div class="seat-container text-center">
                 <div class="bus-front mb-4">
                     <i class="fas fa-bus fa-2x"></i>
@@ -49,7 +52,10 @@
                             {
                                 var seatNumber = $"{row}{col}";
                                 // Find the seat in the model to determine availability
+
+
                                 var seat = Model.Seats.FirstOrDefault(s => s.SeatNumber == seatNumber);
+
                                 var statusClass = seat == null || seat.IsAvailable ? "available" : "booked";
 
                                 <button class="seat @statusClass"
@@ -78,7 +84,7 @@
     <input type="hidden" id="selectedSeatsInput" name="selectedSeats" />
     <input type="hidden" id="selectedSeatIdsInput" name="selectedSeatIds" />
     <input type="hidden" id="totalAmountInput" name="totalAmount" />
-    <input type="hidden" name="busId" value="@Model.Id" />
+    <input type="hidden" name="busId" value="@Model.Bus.Id" />
 </form>
 
 <style>
@@ -195,7 +201,7 @@
         let selectedSeats = new Set();
         let selectedSeatIds = new Set();
         const maxSeats = 4;
-        const pricePerSeat = @Model.Price;
+        const pricePerSeat = @Model.Bus.Price;
 
         function toggleSeat(seatElement) {
             // Safety check - if seat is booked, don't allow selection

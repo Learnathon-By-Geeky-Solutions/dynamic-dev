@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250312085652_UpdateBusMigration")]
-    partial class UpdateBusMigration
+    [Migration("20250312110021_Seat and Bookings migrations")]
+    partial class SeatandBookingsmigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
