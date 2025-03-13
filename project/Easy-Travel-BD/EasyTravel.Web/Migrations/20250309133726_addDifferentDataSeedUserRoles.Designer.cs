@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250309133726_addDifferentDataSeedUserRoles")]
+    partial class addDifferentDataSeedUserRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,9 +125,6 @@ namespace EasyTravel.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("BusId")
                         .HasColumnType("uniqueidentifier");
 
@@ -138,14 +138,6 @@ namespace EasyTravel.Web.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("SelectedSeatIds")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("SelectedSeats")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -642,6 +634,9 @@ namespace EasyTravel.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("BusBookingId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("BusId")
                         .HasColumnType("uniqueidentifier");
 
@@ -654,6 +649,8 @@ namespace EasyTravel.Web.Migrations
                         .HasColumnType("nvarchar(5)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BusBookingId");
 
                     b.HasIndex("BusId");
 
@@ -983,6 +980,10 @@ namespace EasyTravel.Web.Migrations
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
                 {
+                    b.HasOne("EasyTravel.Domain.Entites.BusBooking", null)
+                        .WithMany("SelectedSeats")
+                        .HasForeignKey("BusBookingId");
+
                     b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
                         .WithMany("Seats")
                         .HasForeignKey("BusId")
@@ -1055,6 +1056,11 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("BusBookings");
 
                     b.Navigation("Seats");
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
+                {
+                    b.Navigation("SelectedSeats");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Hotel", b =>
