@@ -1,6 +1,12 @@
 ﻿1. Notification
 	* update your controller to set TempData values for success / error/info/warning messages. Here's an example
-	  
+	   possible values are: success, error, info, warning
+         
+       TempData["success"] = "The hotel has been updated successfully";
+        TempData["error"] = "The hotel not found";
+         TempData["info"] = "The hotel ..";
+          TempData["warning"] = "The hotel ..";
+
       [HttpPost]
   public IActionResult Update(Hotel model)
   {
