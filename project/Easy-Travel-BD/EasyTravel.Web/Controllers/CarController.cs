@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Application.Services;
+using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -30,12 +31,46 @@ namespace EasyTravel.Web.Controllers
 
             return View(viewModel);
         }
+
+      /*  public IActionResult CarBooking(CarBookingViewModel model)
+        {
+
+
+            var carbooking = new CarBooking
+            {
+                Id = Guid.NewGuid(),
+                BusId = model.BusId,
+                PassengerName = model.BookingForm.PassengerName,
+                Email = model.BookingForm.Email,
+                PhoneNumber = model.BookingForm.PhoneNumber,
+                TotalAmount = model.TotalAmount, // Using model.TotalAmount directly instead of BookingForm.TotalAmount
+                BookingDate = DateTime.Now,
+                SelectedSeats = model.SelectedSeatNumbers,
+                SelectedSeatIds = model.SelectedSeatIds,
+
+
+            };
+
+            _busService.SaveBooking(busbooking, model.SelectedSeatIds);
+            return RedirectToAction("BusConfirmBooking");
+
+
+
+
+
+
+
+
+            return View(model);
+        }/*
+
+
         
 
         public IActionResult List()
         {
              var cars = _carService.GetAllCars();
             return View(cars);
-        }
+        }*/
     }
 }
