@@ -42,8 +42,10 @@ namespace EasyTravel.Domain.Entites
         [Range(0, double.MaxValue)]
         [Column(TypeName = "decimal(18,2)")]
         public required decimal Price { get; set; }
-      
+
+        public bool IsAvailable { get; set; } = true;
         public string? ImagePath { get; set; }
+        
 
 
 

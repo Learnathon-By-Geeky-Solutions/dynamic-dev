@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "admin, busmanager")]
+    [Authorize(Roles = "admin, busManager")]
     public class AdminBusController : Controller
     {
         private readonly IBusService _busService;
