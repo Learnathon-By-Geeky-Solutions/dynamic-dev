@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Web.Middleware;
 using Autofac.Core;
+using EasyTravel.Domain;
 
 
 var configuration = new ConfigurationBuilder()
@@ -71,7 +72,7 @@ try
         options.UseSqlServer(connectionString, (x) => x.MigrationsAssembly(migrationAssembly)));
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    builder.Services.AddIdentity<User,IdentityRole<Guid>>(
+    builder.Services.AddIdentity<User,Role>(
         options =>
         {
             //options.SignIn.RequireConfirmedAccount = true;

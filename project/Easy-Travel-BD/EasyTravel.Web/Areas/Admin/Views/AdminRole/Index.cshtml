@@ -1,0 +1,26 @@
+﻿@using EasyTravel.Domain
+@model IEnumerable<Role>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="entity-list">
+    <h2>Role List</h2>
+    <div class="create-btn">
+        <a asp-area="Admin" asp-controller="AdminRole" asp-action="Create">Create Role</a>
+    </div>
+    @foreach (var role in Model)
+    {
+        <div class="entity-row">
+            <span class="name">@role.Name</span>
+            <span>@role.NormalizedName</span>
+            <span>@role.ConcurrencyStamp</span>
+
+            <!-- Buttons Section -->
+            <div class="actions">
+                <a asp-area="Admin" asp-controller="AdminRole" asp-action="Update" asp-route-id="@role.Id" class="update-btn">Update</a>
+                <a asp-area="Admin" asp-controller="AdminRole" asp-action="Delete" asp-route-id="@role.Id" class="delete-btn">Delete</a>
+            </div>
+        </div>
+    }
+</div>
