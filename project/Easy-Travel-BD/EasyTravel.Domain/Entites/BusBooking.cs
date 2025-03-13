@@ -35,11 +35,11 @@ namespace EasyTravel.Domain.Entites
         public DateTime BookingDate { get; set; }
 
         [Required]
-        public List<String> SelectedSeats { get; set; }
+        public List<String>? SelectedSeats { get; set; }
         [Required]
-        public List<Guid> SelectedSeatIds { get; set; }
+        public List<Guid>? SelectedSeatIds { get; set; }
 
-        public Bus Bus { get; set; }
+        public Bus? Bus { get; set; }
 
        
 

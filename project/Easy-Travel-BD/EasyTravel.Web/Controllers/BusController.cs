@@ -25,21 +25,31 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult SelectSeats(Guid busId)
         {
-            var bus = _busService.GetBusById(busId);
+            var bus = _busService.GetseatBusById(busId);
             if (bus == null)
                 return NotFound();
 
-            return View(bus);
+            // Ensure seats are populated
+            var model = new BusSeatsViewModel
+            {
+                Bus = bus,
+                Seats = bus.Seats
+            };
+
+            return View(model);
         }
+
+
 
         [HttpPost]
         public IActionResult BusBooking(Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
         {
-            var bus = _busService.GetBusById(busId);
+            var bus = _busService.GetseatBusById(busId);
             if (bus == null) return NotFound();
 
             var viewModel = new BusBookingViewModel
             {
+                BusId=busId,
                 Bus = bus,
                 BookingForm = new BookingForm(),
                 SelectedSeatNumbers = string.IsNullOrEmpty(selectedSeats)
@@ -53,46 +63,43 @@ namespace EasyTravel.Web.Controllers
             return View(viewModel);
         }
 
-       [HttpPost]
+        [HttpPost]
         public IActionResult BusConfirmBooking(BusBookingViewModel model)
         {
 
-          
+
 
             var busbooking = new BusBooking
             {
-                BusId = model.Bus.Id,
+                Id = Guid.NewGuid(),
+                BusId = model.BusId,
                 PassengerName = model.BookingForm.PassengerName,
                 Email = model.BookingForm.Email,
                 PhoneNumber = model.BookingForm.PhoneNumber,
-                TotalAmount = model.BookingForm.TotalAmount,
+                TotalAmount = model.TotalAmount, // Using model.TotalAmount directly instead of BookingForm.TotalAmount
                 BookingDate = DateTime.Now,
                 SelectedSeats = model.SelectedSeatNumbers,
                 SelectedSeatIds = model.SelectedSeatIds,
-                Bus = model.Bus
+
 
             };
 
-
             _busService.SaveBooking(busbooking, model.SelectedSeatIds);
+            return RedirectToAction("BusConfirmBooking");
+            
+        }
 
+        [HttpGet]
 
+        public IActionResult BusConfirmBooking()
+        {
 
-            return RedirectToAction("BusConfirmBooking", new { id = busbooking.Id });
+            return View();
         }
 
 
 
-       /*  public IActionResult BookingConfirmation(Guid busId)
-         {
-             var booking = _busService.GetBusById(busId);
-            if (booking == null)
-             {
-                 return NotFound();
-             }
-
-             return View(booking);
-         }*/
+    
 
 
 

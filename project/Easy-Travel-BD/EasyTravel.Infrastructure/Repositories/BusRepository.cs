@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EasyTravel.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace EasyTravel.Infrastructure.Repositories
 {
@@ -27,6 +28,13 @@ namespace EasyTravel.Infrastructure.Repositories
         public IEnumerable<Bus> GetAllBuses()
         {
             return _context.Buses.ToList();
+        }
+
+
+        public IQueryable<Bus> GetBuses()
+        {
+            
+            return _context.Buses.AsQueryable();
         }
     }
 }

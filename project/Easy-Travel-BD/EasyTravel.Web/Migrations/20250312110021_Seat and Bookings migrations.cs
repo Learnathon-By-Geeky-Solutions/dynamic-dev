@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EasyTravel.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateBusMigration : Migration
+    public partial class SeatandBookingsmigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

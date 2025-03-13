@@ -97,6 +97,8 @@
                     </div>
                 </div>
 
+
+               
                 @foreach (var seat in Model.SelectedSeatNumbers)
                 {
                     <input type="hidden" name="SelectedSeatNumbers" value="@seat" />
@@ -107,7 +109,8 @@
                     <input type="hidden" name="SelectedSeatIds" value="@seatId" />
                 }
 
-                <input type="hidden" name="BusId" value="@Model.Bus.Id" />
+                <input type="hidden" name="BusId" value="@Model.BusId" />
+                <input type="hidden" name="BookingForm.TotalAmount" value="@Model.TotalAmount" />
                 <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" />
 
                 <button type="submit" class="btn btn-success w-100" id="submitButton">
@@ -144,47 +147,3 @@
         </div>
     </div>
 </div>
-
-@section Styles {
-    <style>
-        .seat-map {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 20px;
-        }
-
-        .seat {
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-            .seat.occupied {
-                background-color: #f0f0f0;
-                cursor: not-allowed;
-                color: #999;
-            }
-
-            .seat.selected {
-                background-color: #28a745;
-                color: white;
-                border-color: #28a745;
-            }
-
-        .selected-seats-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-
-        .seat-tag {
-            background-color: #e9ecef;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.9em;
-        }
-    </style>
-}

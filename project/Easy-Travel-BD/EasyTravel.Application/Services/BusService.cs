@@ -3,6 +3,7 @@ using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,12 +49,29 @@ namespace EasyTravel.Application.Services
 
         }
 
+
+
+        public Bus GetseatBusById(Guid busId)
+        {
+            // Ensure that the Bus entity and its associated Seats are eagerly loaded
+            var bus = _applicationUnitOfWork1.BusRepository
+                            .GetBuses()  // Returns IQueryable<Bus>
+                            .Include(b => b.Seats)  // Eagerly load Seats
+                            .FirstOrDefault(b => b.Id == busId); // Get the bus by busId
+
+            return bus;
+        }
+
+
+
         public Bus GetBusById(Guid BusId)
         {
            var bus= _applicationUnitOfWork1.BusRepository.GetById(BusId);
 
             return bus;
         }
+
+     
 
         public void UpdateBus(Bus bus)
         {

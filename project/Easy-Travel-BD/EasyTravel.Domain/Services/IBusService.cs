@@ -16,5 +16,6 @@ namespace EasyTravel.Domain.Services
         void UpdateBus(Bus bus);
         void DeleteBus(Bus bus);
         void SaveBooking(BusBooking booking, List<Guid> seatIds);
+        Bus GetseatBusById(Guid busId);
     }
 }
