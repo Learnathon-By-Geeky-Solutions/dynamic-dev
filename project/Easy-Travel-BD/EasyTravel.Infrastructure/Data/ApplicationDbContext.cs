@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using EasyTravel.Domain.Entites;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using EasyTravel.Domain;
 
 namespace EasyTravel.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
+    public class ApplicationDbContext : IdentityDbContext<User,Role,Guid>
     {
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
