@@ -113,7 +113,6 @@ namespace EasyTravel.Infrastructure.Data
                 .ValueGeneratedOnAdd()
                 .HasDefaultValue(new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"));
 
-
             modelBuilder.Entity<IdentityRole<Guid>>()
                 .HasData(
                 new IdentityRole<Guid>

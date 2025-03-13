@@ -1,10 +1,11 @@
-﻿using EasyTravel.Domain.Services;
+﻿using EasyTravel.Domain;
+using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin"),Authorize(Roles = "admin")]
+    [Area("Admin"), Authorize(Roles = "admin")]
     public class AdminRoleController : Controller
     {
         private readonly IAdminRoleService _adminRoleService;
@@ -12,11 +13,62 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _adminRoleService = adminRoleService;
         }
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Index");
             var roles = await _adminRoleService.GetAllAsync();
             return View(roles);
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Create");
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Role model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _adminRoleService.CreateAsync(model);
+                return RedirectToAction("Index", "AdminRole", new { area = "Admin" });
+            }
+            return View(model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid id)
+        {
+            HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Update");
+            var model = await _adminRoleService.GetAsync(id);
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(Role model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _adminRoleService.UpdateAsync(model);
+                return RedirectToAction("Index", "AdminRole", new { area = "Admin" });
+            }
+            return View(model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Delete");
+            var model = await _adminRoleService.GetAsync(id);
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(Role model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _adminRoleService.DeleteAsync(model.Id);
+                return RedirectToAction("Index", "AdminRole", new { area = "Admin" });
+            }
+            return View(model);
         }
     }
 }
