@@ -19,7 +19,7 @@ namespace EasyTravel.Application.Services
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        public async Task<(bool Success, string ErrorMessage)> RegisterUserAsync(string firstName,string lastName,DateTime dateOfBirth,string gender,string email,string userName,string password)
+        public async Task<(bool Success, string ErrorMessage)> RegisterUserAsync(string firstName, string lastName, DateTime dateOfBirth, string gender, string email, string userName, string password)
         {
             var user = new User
             {
