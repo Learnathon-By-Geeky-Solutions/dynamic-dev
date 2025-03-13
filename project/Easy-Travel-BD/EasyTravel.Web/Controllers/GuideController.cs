@@ -13,6 +13,7 @@ namespace EasyTravel.Web.Controllers
         }
         public IActionResult Index()
         {
+            HttpContext.Session.SetString("LastVisitedPage", "/Guide/Index");
             var models = _guideService.GetAll();
             return View(models);
         }
