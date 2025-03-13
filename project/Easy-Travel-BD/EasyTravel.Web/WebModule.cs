@@ -45,6 +45,9 @@ namespace EasyTravel.Web
             builder.RegisterType<SeatRepository>().As<ISeatRepository>()
            .InstancePerLifetimeScope();
 
+            builder.RegisterType<CarBookingRepository>().As<ICarBookingRepository>()
+         .InstancePerLifetimeScope();
+
             builder.RegisterType<AgencyRepository>().As<IAgencyRepository>()
             .InstancePerLifetimeScope();
             builder.RegisterType<PhotographerRepository>().As<IPhotographerRepository>()

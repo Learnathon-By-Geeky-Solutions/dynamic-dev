@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <form asp-action="Index" method="post" id="bookingForm">
+            <form asp-controller="Car" asp-action="CarBooking" method="post" id="bookingForm">
                 <div class="card mb-4">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
@@ -84,8 +84,9 @@
                 </div>
 
                 <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" value="@Model.Car.Price" />
+                <input type="hidden" name="CarId" value="@Model.CarId" />
                 <button type="submit" class="btn btn-success w-100">
-                    PROCEED TO PAYMENT
+                    Confirm Booking
                 </button>
             </form>
         </div>
