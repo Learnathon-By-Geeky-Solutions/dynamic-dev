@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyTravel.Web.Areas.Admin.Models
 {
-    public class UserViewModel : RegisterViewModel
+    public class AdminUserViewModel : RegisterViewModel
     {
         public string Role { get; set; }
         public List<Role>? Roles { get; set; }

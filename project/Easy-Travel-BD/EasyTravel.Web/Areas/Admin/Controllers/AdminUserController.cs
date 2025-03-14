@@ -1,4 +1,5 @@
-﻿using EasyTravel.Domain;
+﻿using AutoMapper;
+using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Areas.Admin.Models;
@@ -12,10 +13,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     {
         private readonly IAdminUserService _adminUserService;
         private readonly IAdminRoleService _adminRoleService;
-        public AdminUserController(IAdminUserService adminUserService, IAdminRoleService adminRoleService)
+        private readonly IMapper _mapper;
+        public AdminUserController(IAdminUserService adminUserService, IAdminRoleService adminRoleService,IMapper mapper)
         {
             _adminUserService = adminUserService;
             _adminRoleService = adminRoleService;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -25,20 +28,23 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View(roles);
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Create");
-            var roles = _adminRoleService.GetAllAsync();
-            var user = new UserViewModel();
-            user.Roles = roles.Result.ToList();
-            return View(user);
+            var roles = await _adminRoleService.GetAllAsync();
+            var user = _adminUserService.GetUserInstance();
+            var model = _mapper.Map<AdminUserViewModel>(user);
+            model.Roles = roles.ToList();
+            return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UserViewModel model)
+        public async Task<IActionResult> Create(AdminUserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var (success,errormessage) = await _adminUserService.CreateAsync(model.FirstName,model.LastName,model.DateOfBirth,model.Gender,model.Email,model.Email,model.Password,model.Role);
+                var user = _mapper.Map<User>(model);
+                user.UserName = model.Email;
+                var (success,errormessage) = await _adminUserService.CreateAsync(user,model.Password,model.Role);
                 if (!success)
                 {
                     ModelState.AddModelError(string.Empty, errormessage);
@@ -46,52 +52,60 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 }
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
-            
+            var roles = await _adminRoleService.GetAllAsync();
+            model.Roles = roles.ToList();
             return View(model);
         }
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Update");
-            var roles = _adminRoleService.GetAllAsync();
-            var user = _adminUserService.GetAsync(id);
-            var model = new UserViewModel
-            {
-                FirstName = user.Result.FirstName,
-                LastName = user.Result.LastName,
-                DateOfBirth = user.Result.DateOfBirth,
-                Gender = user.Result.Gender,
-                Email = user.Result.Email,
-                Roles = roles.Result.ToList()
-
-            };
+            var roles = await _adminRoleService.GetAllAsync();
+            var user = await _adminUserService.GetAsync(id);
+            var model = _mapper.Map<AdminUserViewModel>(user);
+            model.Roles = roles.ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(UserViewModel model)
+        public async Task<IActionResult> Update(AdminUserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                await _adminUserService.UpdateAsync(model.FirstName, model.LastName, model.DateOfBirth, model.Gender, model.Email, model.Email, model.Role);
+                var user = _mapper.Map<User>(model);
+                user.UserName = model.Email;
+                var (success, errormessage) = await _adminUserService.UpdateAsync(user,model.Role);
+                if (!success)
+                {
+                    ModelState.AddModelError(string.Empty, errormessage);
+                    return View(model);
+                }
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
+            var roles = await _adminRoleService.GetAllAsync();
+            model.Roles = roles.ToList();
             return View(model);
         }
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Delete");
-            var model = await _adminUserService.GetAsync(id);
+            var roles = await _adminRoleService.GetAllAsync();
+            var user = await _adminUserService.GetAsync(id);
+            var model = _mapper.Map<AdminUserViewModel>(user);
+            model.Roles = roles.ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(User model)
+        public async Task<IActionResult> Delete(AdminUserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                await _adminUserService.DeleteAsync(model.Id);
+                var user = await _adminUserService.GetByEmailAsync(model.Email);
+                await _adminUserService.DeleteAsync(user.Id);
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
+            var roles = await _adminRoleService.GetAllAsync();
+            model.Roles = roles.ToList();
             return View(model);
         }
     }

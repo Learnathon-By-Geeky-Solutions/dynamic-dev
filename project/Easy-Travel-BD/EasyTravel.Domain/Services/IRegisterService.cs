@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyTravel.Domain.Entites;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IRegisterService
     {
-        Task<(bool Success, string ErrorMessage)> RegisterUserAsync(string firstName, string lastName, DateTime dateOfBirth, string gender, string email, string userName, string password);
+        Task<(bool Success, string ErrorMessage)> RegisterUserAsync(User user, string password);
     }
 }
