@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using EasyTravel.Domain.Entites;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using EasyTravel.Domain;
 
 namespace EasyTravel.Infrastructure.Data
 {

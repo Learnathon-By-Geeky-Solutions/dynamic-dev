@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Identity;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Web.Middleware;
 using Autofac.Core;
-using EasyTravel.Domain;
 
 
 var configuration = new ConfigurationBuilder()
