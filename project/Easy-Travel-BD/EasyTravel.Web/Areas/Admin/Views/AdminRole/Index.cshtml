@@ -9,6 +9,15 @@
     <div class="create-btn">
         <a asp-area="Admin" asp-controller="AdminRole" asp-action="Create">Create Role</a>
     </div>
+    <div class="entity-row">
+        <span class="name">Name</span>
+        <span>NormalizedName</span>
+        <span>ConcurrencyStamp</span>
+
+        <!-- Buttons Section -->
+        <div class="actions">
+        </div>
+    </div>
     @foreach (var role in Model)
     {
         <div class="entity-row">

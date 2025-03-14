@@ -1,4 +1,4 @@
-﻿using EasyTravel.Domain;
+﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +26,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Create");
             return View();
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Role model)
         {
             if (ModelState.IsValid)
@@ -43,7 +43,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var model = await _adminRoleService.GetAsync(id);
             return View(model);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(Role model)
         {
             if (ModelState.IsValid)
@@ -60,7 +60,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var model = await _adminRoleService.GetAsync(id);
             return View(model);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Role model)
         {
             if (ModelState.IsValid)

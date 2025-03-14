@@ -1,4 +1,4 @@
-﻿using EasyTravel.Domain;
+﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Identity;
 using System;

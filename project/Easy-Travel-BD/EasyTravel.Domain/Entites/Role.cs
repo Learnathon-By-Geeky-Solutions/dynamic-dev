@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyTravel.Domain
+namespace EasyTravel.Domain.Entites
 {
     public class Role : IdentityRole<Guid>
     {

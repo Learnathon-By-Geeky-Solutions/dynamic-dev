@@ -12,14 +12,12 @@ namespace EasyTravel.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
         private readonly IAuthService _authService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IAuthService authService)
+        public AccountController(SignInManager<User> signInManager, IAuthService authService)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
             _authService = authService;
         }
@@ -44,7 +42,7 @@ namespace EasyTravel.Web.Controllers
             {
                 return View(model);
             }
-            var (success, errorMessage, redirectUrl) = await _authService.AuthenticateUserAsync(model.Email, model.Password, false);
+            var (success, errorMessage, redirectUrl) = await _authService.LoginService.AuthenticateUserAsync(model.Email, model.Password, false);
 
             if (!success)
             {
@@ -78,7 +76,7 @@ namespace EasyTravel.Web.Controllers
             {
                 return View(model);
             }
-            var (success, errorMessage) = await _authService.RegisterUserAsync(model.FirstName, model.LastName, model.DateOfBirth, model.Gender, model.Email, model.Email, model.Password);
+            var (success, errorMessage) = await _authService.RegisterService.RegisterUserAsync(model.FirstName, model.LastName, model.DateOfBirth, model.Gender, model.Email, model.Email, model.Password);
 
             if (!success)
             {
