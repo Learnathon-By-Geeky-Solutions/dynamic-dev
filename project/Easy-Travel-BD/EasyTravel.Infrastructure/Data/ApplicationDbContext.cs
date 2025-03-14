@@ -282,12 +282,12 @@ namespace EasyTravel.Infrastructure.Data
                 entity.HasKey(e => e.Id);
 
                 // Configure relationships
-                entity.HasOne(e => e.User)
+                entity.HasOne<User>()
                       .WithMany()
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(e => e.Hotel)
+                entity.HasOne<Hotel>()
                       .WithMany(h => h.HotelBookings)
                       .HasForeignKey(e => e.HotelId)
                       .OnDelete(DeleteBehavior.Cascade);
@@ -308,6 +308,7 @@ namespace EasyTravel.Infrastructure.Data
                 entity.Property(e => e.RoomIdsJson)
                       .IsRequired();
             });
+
 
             #endregion Hotel Booking
             // Seed data for Hotel
@@ -354,7 +355,7 @@ namespace EasyTravel.Infrastructure.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(_connectionString, (x) => x.MigrationsAssembly(_migrationAssembly));
+                optionsBuilder.UseSqlServer(_connectionString, x => x.MigrationsAssembly(_migrationAssembly));
             }
 
             base.OnConfiguring(optionsBuilder);
