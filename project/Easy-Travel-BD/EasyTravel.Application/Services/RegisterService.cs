@@ -16,18 +16,8 @@ namespace EasyTravel.Application.Services
         {
             _userManager = userManager;
         }
-        public async Task<(bool Success, string ErrorMessage)> RegisterUserAsync(string firstName, string lastName, DateTime dateOfBirth, string gender, string email, string userName, string password)
+        public async Task<(bool Success, string ErrorMessage)> RegisterUserAsync(User user, string password)
         {
-            var user = new User
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = dateOfBirth,
-                Gender = gender,
-                Email = email,
-                UserName = email
-            };
-
             var result = await _userManager.CreateAsync(user, password);
 
             if (!result.Succeeded)

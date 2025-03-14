@@ -88,10 +88,10 @@ try
         )
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-  
 
 
 
+    builder.Services.AddAutoMapper(migrationAssembly);
 
     builder.Services.AddDistributedMemoryCache();
     builder.Services.AddSession(options =>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using EasyTravel.Application.Services;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -15,11 +16,12 @@ namespace EasyTravel.Web.Controllers
         private readonly SignInManager<User> _signInManager;
 
         private readonly IAuthService _authService;
-
-        public AccountController(SignInManager<User> signInManager, IAuthService authService)
+        private readonly IMapper _mapper;
+        public AccountController(SignInManager<User> signInManager, IAuthService authService,IMapper mapper)
         {
             _signInManager = signInManager;
             _authService = authService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -76,7 +78,9 @@ namespace EasyTravel.Web.Controllers
             {
                 return View(model);
             }
-            var (success, errorMessage) = await _authService.RegisterService.RegisterUserAsync(model.FirstName, model.LastName, model.DateOfBirth, model.Gender, model.Email, model.Email, model.Password);
+            var user = _mapper.Map<User>(model);
+            user.UserName = model.Email;
+            var (success, errorMessage) = await _authService.RegisterService.RegisterUserAsync(user, model.Password);
 
             if (!success)
             {
