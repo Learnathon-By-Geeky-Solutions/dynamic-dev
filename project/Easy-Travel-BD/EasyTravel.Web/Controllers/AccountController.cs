@@ -94,9 +94,9 @@ namespace EasyTravel.Web.Controllers
 
             await _signInManager.SignOutAsync();
             string? refererUrl = HttpContext.Session.GetString("LastVisitedPage");
-            if(!string.IsNullOrEmpty(refererUrl))
+            if (!string.IsNullOrEmpty(refererUrl))
             {
-                if(refererUrl.Contains("Admin"))
+                if (refererUrl.Contains("Admin"))
                 {
                     HttpContext.Session.Remove("LastVisitedPage");
                     refererUrl = "/Home/Index";

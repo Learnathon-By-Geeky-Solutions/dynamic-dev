@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,9 @@ namespace EasyTravel.Domain.Repositories
     {
         void Addbus(Bus bus);
         IEnumerable<Bus> GetAllBuses();
+
+        public IQueryable<Bus> GetBuses();
+      
 
 
 

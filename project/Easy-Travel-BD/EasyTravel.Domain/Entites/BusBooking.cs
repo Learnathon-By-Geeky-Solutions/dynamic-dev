@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class BusBooking
+    public class BusBooking:IEntity<Guid>
     {
         [Key]
         public Guid Id { get; set; }
@@ -32,10 +32,14 @@ namespace EasyTravel.Domain.Entites
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }
 
-        [Required]
-        public List<Seat> SelectedSeats { get; set; }
+        public DateTime BookingDate { get; set; }
 
-        public Bus Bus { get; set; }
+        [Required]
+        public List<String>? SelectedSeats { get; set; }
+        [Required]
+        public List<Guid>? SelectedSeatIds { get; set; }
+
+        public Bus? Bus { get; set; }
 
        
 

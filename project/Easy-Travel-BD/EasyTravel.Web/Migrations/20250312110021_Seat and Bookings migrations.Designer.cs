@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312110021_Seat and Bookings migrations")]
+    partial class SeatandBookingsmigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,9 +187,6 @@ namespace EasyTravel.Web.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
                     b.Property<string>("OperatorName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -203,41 +203,6 @@ namespace EasyTravel.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cars");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.CarBooking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CarId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PassengerName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.ToTable("CarBookings");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
@@ -820,30 +785,6 @@ namespace EasyTravel.Web.Migrations
                             Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
                             Name = "client",
                             NormalizedName = "client"
-                        },
-                        new
-                        {
-                            Id = new Guid("4558e034-03af-4d30-819f-9a24cb81c942"),
-                            Name = "agencyManager",
-                            NormalizedName = "agencyManager"
-                        },
-                        new
-                        {
-                            Id = new Guid("c10f83b0-9008-468b-b931-5e73ff416337"),
-                            Name = "busManager",
-                            NormalizedName = "busManager"
-                        },
-                        new
-                        {
-                            Id = new Guid("862b8016-7786-4cf2-bcb1-a4aac017ff2c"),
-                            Name = "carManager",
-                            NormalizedName = "carManager"
-                        },
-                        new
-                        {
-                            Id = new Guid("292dcaf2-aadc-493a-8f19-e7905ab98299"),
-                            Name = "hotelManager",
-                            NormalizedName = "hotelManager"
                         });
                 });
 
@@ -961,17 +902,6 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Bus");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.CarBooking", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.Car", "Car")
-                        .WithMany()
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
