@@ -23,6 +23,7 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<HotelBooking>  HotelBookings { get; set; }
+        public DbSet<PhotographerBooking> PhotographerBookings {  get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -122,45 +123,45 @@ namespace EasyTravel.Infrastructure.Data
                 .ValueGeneratedOnAdd()
                 .HasDefaultValue(new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"));
 
-            //modelBuilder.Entity<IdentityRole<Guid>>()
-            //    .HasData(
-            //    new IdentityRole<Guid>
-            //    {
-            //        Id = new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"),
-            //        Name = "admin",
-            //        NormalizedName = "admin"
-            //    },
-            //    new IdentityRole<Guid>
-            //    {
-            //        Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
-            //        Name = "client",
-            //        NormalizedName = "client"
-            //    },
-            //     new IdentityRole<Guid>
-            //     {
-            //         Id = new Guid("4558E034-03AF-4D30-819F-9A24CB81C942"),
-            //         Name = "agencyManager",
-            //         NormalizedName = "agencyManager"
-            //     },
-            //      new IdentityRole<Guid>
-            //      {
-            //          Id = new Guid("C10F83B0-9008-468B-B931-5E73FF416337"),
-            //          Name = "busManager",
-            //          NormalizedName = "busManager"
-            //      },
-            //       new IdentityRole<Guid>
-            //       {
-            //           Id = new Guid("862B8016-7786-4CF2-BCB1-A4AAC017FF2C"),
-            //           Name = "carManager",
-            //           NormalizedName = "carManager"
-            //       },
-            //       new IdentityRole<Guid>
-            //       {
-            //           Id = new Guid("292DCAF2-AADC-493A-8F19-E7905AB98299"),
-            //           Name = "hotelManager",
-            //           NormalizedName = "hotelManager"
-            //       }
-            //    );
+            modelBuilder.Entity<Role>()
+                .HasData(
+                new Role
+                {
+                    Id = new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"),
+                    Name = "admin",
+                    NormalizedName = "admin"
+                },
+                new Role
+                {
+                    Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
+                    Name = "client",
+                    NormalizedName = "client"
+                },
+                 new Role
+                 {
+                     Id = new Guid("4558E034-03AF-4D30-819F-9A24CB81C942"),
+                     Name = "agencyManager",
+                     NormalizedName = "agencyManager"
+                 },
+                  new Role
+                  {
+                      Id = new Guid("C10F83B0-9008-468B-B931-5E73FF416337"),
+                      Name = "busManager",
+                      NormalizedName = "busManager"
+                  },
+                   new Role
+                   {
+                       Id = new Guid("862B8016-7786-4CF2-BCB1-A4AAC017FF2C"),
+                       Name = "carManager",
+                       NormalizedName = "carManager"
+                   },
+                   new Role
+                   {
+                       Id = new Guid("292DCAF2-AADC-493A-8F19-E7905AB98299"),
+                       Name = "hotelManager",
+                       NormalizedName = "hotelManager"
+                   }
+                );
             modelBuilder.Entity<Agency>().HasData(
             new Agency
             {

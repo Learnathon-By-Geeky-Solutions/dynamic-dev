@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250308084809_addAgencyPhotographerGuideTables")]
-    partial class addAgencyPhotographerGuideTables
+    [Migration("20250315102423_AddPhotographerAgencyGuideTablesWithDataSeed")]
+    partial class AddPhotographerAgencyGuideTablesWithDataSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,127 +71,6 @@ namespace EasyTravel.Web.Migrations
                             Name = "Irfan",
                             Website = "irfan.com"
                         });
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Bus", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("BusType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("From")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OperatorName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("To")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("TotalSeats")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Buses");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BusId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PassengerName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusId");
-
-                    b.ToTable("BusBookings", (string)null);
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Car", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CarType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("From")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OperatorName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("To")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
@@ -430,33 +309,70 @@ namespace EasyTravel.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BusBookingId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("BusId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SeatNumber")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BusBookingId");
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.HasIndex("BusId");
+                    b.ToTable("AspNetRoles", (string)null);
 
-                    b.ToTable("Seats", (string)null);
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"),
+                            Name = "admin",
+                            NormalizedName = "admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
+                            Name = "client",
+                            NormalizedName = "client"
+                        },
+                        new
+                        {
+                            Id = new Guid("4558e034-03af-4d30-819f-9a24cb81c942"),
+                            Name = "agencyManager",
+                            NormalizedName = "agencyManager"
+                        },
+                        new
+                        {
+                            Id = new Guid("c10f83b0-9008-468b-b931-5e73ff416337"),
+                            Name = "busManager",
+                            NormalizedName = "busManager"
+                        },
+                        new
+                        {
+                            Id = new Guid("862b8016-7786-4cf2-bcb1-a4aac017ff2c"),
+                            Name = "carManager",
+                            NormalizedName = "carManager"
+                        },
+                        new
+                        {
+                            Id = new Guid("292dcaf2-aadc-493a-8f19-e7905ab98299"),
+                            Name = "hotelManager",
+                            NormalizedName = "hotelManager"
+                        });
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.User", b =>
@@ -540,48 +456,6 @@ namespace EasyTravel.Web.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"),
-                            Name = "admin",
-                            NormalizedName = "admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
-                            Name = "client",
-                            NormalizedName = "client"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -689,17 +563,6 @@ namespace EasyTravel.Web.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
-                        .WithMany("BusBookings")
-                        .HasForeignKey("BusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bus");
-                });
-
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
                 {
                     b.HasOne("EasyTravel.Domain.Entites.Agency", "Agency")
@@ -726,24 +589,9 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("Agency");
                 });
 
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Seat", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.BusBooking", null)
-                        .WithMany("SelectedSeats")
-                        .HasForeignKey("BusBookingId");
-
-                    b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
-                        .WithMany("Seats")
-                        .HasForeignKey("BusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bus");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("EasyTravel.Domain.Entites.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -770,7 +618,7 @@ namespace EasyTravel.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("EasyTravel.Domain.Entites.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -797,18 +645,6 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("Guides");
 
                     b.Navigation("Photographers");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Bus", b =>
-                {
-                    b.Navigation("BusBookings");
-
-                    b.Navigation("Seats");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
-                {
-                    b.Navigation("SelectedSeats");
                 });
 #pragma warning restore 612, 618
         }
