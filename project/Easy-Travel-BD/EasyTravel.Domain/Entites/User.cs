@@ -17,6 +17,8 @@ namespace EasyTravel.Domain.Entites
         public DateTime? DateOfBirth { get; set; }
 
         public DateTime? CreatedAt { get; set; }
-        
+        public List<PhotographerBooking>? PhotographerBookings { get; set; }
+
+
     }
 }
