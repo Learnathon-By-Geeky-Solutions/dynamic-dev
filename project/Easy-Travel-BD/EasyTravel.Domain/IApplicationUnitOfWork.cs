@@ -20,6 +20,9 @@ namespace EasyTravel.Domain
         public IRoomRepository RoomRepository { get; }
         public IHotelBookingRepository HotelBookingRepository { get; }
         public ICarRepository CarRepository { get; }
+        public IBusBookingRepository BusBookingRepository { get; }
+        public ISeatRepository SeatRepository { get; }
+        public ICarBookingRepository CarBookingRepository { get; }
         
     }
 }

@@ -14,6 +14,8 @@ using System.Reflection;
 using EasyTravel.Web.Hubs;
 using Microsoft.AspNetCore.Identity;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Web.Middleware;
+using Autofac.Core;
 
 
 var configuration = new ConfigurationBuilder()
@@ -73,7 +75,7 @@ try
         options =>
         {
             //options.SignIn.RequireConfirmedAccount = true;
-            options.Password.RequiredLength = 8;
+            options.Password.RequiredLength = 6;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequireDigit = false;
             options.Password.RequireLowercase = false;
@@ -86,12 +88,14 @@ try
         )
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+  
+
+
+
 
     builder.Services.AddDistributedMemoryCache();
     builder.Services.AddSession(options =>
     {
-
-        options.IdleTimeout = TimeSpan.FromMinutes(60); // Set session timeout
         options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
         options.Cookie.HttpOnly = true;                // Make cookies accessible only through HTTP
         options.Cookie.IsEssential = true;             // Essential for GDPR compliance
@@ -112,13 +116,16 @@ try
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
-    app.MapHub<SeatHub>("/seatHub");
+    app.UseMiddleware<RequestLoggingMiddleware>();
+    app.UseMiddleware<NoCacheMiddleware>();
     app.UseHttpsRedirection();
     app.UseRouting();
     app.UseSession();
+    app.MapHub<SeatHub>("/seatHub");
 
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseStaticFiles();
 
     app.MapStaticAssets();
 
