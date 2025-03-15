@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EasyTravel.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentityTables : Migration
+    public partial class AddIdentityTablesWithDataSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -168,7 +168,11 @@ namespace EasyTravel.Web.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
+                    { new Guid("292dcaf2-aadc-493a-8f19-e7905ab98299"), null, "hotelManager", "hotelManager" },
+                    { new Guid("4558e034-03af-4d30-819f-9a24cb81c942"), null, "agencyManager", "agencyManager" },
+                    { new Guid("862b8016-7786-4cf2-bcb1-a4aac017ff2c"), null, "carManager", "carManager" },
                     { new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"), null, "admin", "admin" },
+                    { new Guid("c10f83b0-9008-468b-b931-5e73ff416337"), null, "busManager", "busManager" },
                     { new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"), null, "client", "client" }
                 });
 

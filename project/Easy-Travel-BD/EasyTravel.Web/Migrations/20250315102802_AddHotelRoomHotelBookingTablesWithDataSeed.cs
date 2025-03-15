@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EasyTravel.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class addHotelBookingRoomHotelTables : Migration
+    public partial class AddHotelRoomHotelBookingTablesWithDataSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
