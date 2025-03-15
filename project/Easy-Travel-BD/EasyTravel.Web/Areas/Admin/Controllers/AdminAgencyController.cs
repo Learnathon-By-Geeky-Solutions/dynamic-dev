@@ -1,11 +1,12 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin"),Authorize(Roles ="admin,agencyManager")]
     public class AdminAgencyController : Controller
     {
         private readonly IAdminAgencyService _agencyService;
@@ -15,20 +16,20 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             var agencies = _agencyService.GetAll();
             return View(agencies);
         }
         [HttpGet]
         public IActionResult Create()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(Agency model)
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             if (ModelState.IsValid)
             {
                 _agencyService.Create(model);
@@ -39,7 +40,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Update(Guid id)
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             if (id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
@@ -50,7 +51,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Update(Agency model)
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             if (ModelState.IsValid)
             {
                 _agencyService.Update(model);
@@ -61,7 +62,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             if (id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
@@ -72,7 +73,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Agency model)
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            
             if (model.Id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin"),Authorize(Roles = "admin")]
+    [Area("Admin"),Authorize(Roles = "admin,agencyManager,busManager,carManager,hotelManager")]
     public class AdminDashboardController : Controller
     {
         private readonly IUserService _userService;
@@ -14,10 +14,15 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _userService = userService;
             _sessionService = sessionService;
         }
+
+        [Authorize(Roles ="admin,agencyManager,busManager,carManager,hotelManager")]
         public IActionResult Index()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminDashboard/index");
             return View();
         }
+
+
+      
     }
 }

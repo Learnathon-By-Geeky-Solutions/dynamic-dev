@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EasyTravel.Domain.Factories;
+
 namespace EasyTravel.Application.Factories
 {
     public class PhotographerFactory : IPhotographerFactory
