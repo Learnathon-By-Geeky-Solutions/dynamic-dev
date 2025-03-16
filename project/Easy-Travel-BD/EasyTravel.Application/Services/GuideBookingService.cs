@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
-    public class PhotographerBookingService : IPhotographerBookingService
+    public class GuideBookingService : IGuideBookingService
     {
         public void AddBooking()
         {

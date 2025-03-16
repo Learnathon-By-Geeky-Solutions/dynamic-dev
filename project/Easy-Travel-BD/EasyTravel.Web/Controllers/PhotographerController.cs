@@ -6,6 +6,7 @@ using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.WebSockets;
+using System.Text.Json;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -14,7 +15,7 @@ namespace EasyTravel.Web.Controllers
         private readonly IPhotographerService _photographerService;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
-        public PhotographerController(IPhotographerService photographerService, UserManager<User> userManager,IMapper mapper)
+        public PhotographerController(IPhotographerService photographerService, UserManager<User> userManager, IMapper mapper)
         {
             _photographerService = photographerService;
             _userManager = userManager;
@@ -28,31 +29,28 @@ namespace EasyTravel.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Book(Guid id)
+        public IActionResult Book(Guid id)
         {
-            if (User.Identity?.IsAuthenticated == false)
+            if (TempData["MyData"] is null)
             {
-                return RedirectToAction("User", "BookingForm");
+                return RedirectToAction("BookingForm", "User");
             }
-            var user = await _userManager.GetUserAsync(User);
-            return View();
+            var user = JsonSerializer.Deserialize<BookingFormViewModel>((string)TempData["MyData"]);
+            var model = _mapper.Map<PhotographerBookingViewModel>(user);
+            var photographer = _photographerService.Get(id);
+            model = _mapper.Map<PhotographerBookingViewModel>(photographer);
+            return View(model);
         }
+
         [HttpPost]
-        public IActionResult Book(BookingFormViewModel model)
+        public IActionResult Book(PhotographerBookingViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var pgmodel = _mapper.Map<PhotographerBookingViewModel>(model);
-                var photographer = _photographerService.Get(model.PhotographerId);
 
             }
             return View(model);
         }
-        [HttpPost]
-        public IActionResult Book(PhotographerBookingViewModel model)
-        {
-            return View(model);
-        }
-       
+
     }
 }

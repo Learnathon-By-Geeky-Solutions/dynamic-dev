@@ -1,4 +1,5 @@
-﻿@model BookingFormViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@model BookingFormViewModel
 @{
     ViewData["Title"] = "Booking Form Page";
 
@@ -7,33 +8,64 @@
     <h2 class="card-title text-center">User Booking Form</h2>
     <form asp-antiforgery=true method="post" asp-action="BookingForm">
         <input asp-for="PhotographerId" hidden />
+        @if(User.Identity?.IsAuthenticated == false)
+        {
+            <div class="form-group">
+                <label for="FirstName" style="width:100%">
+                    First Name
+                    <input asp-for="FirstName" class="form-control" required />
+                </label>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="LastName" style="width:100%">
+                    Last Name
+                    <input asp-for="LastName" class="form-control" required />
+                </label>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Email" style="width:100%">
+                    Email
+                    <input asp-for="Email" class="form-control" type="email" required />
+                </label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="PhoneNumber" style="width:100%">
+                    Phone Number
+                    <input asp-for="PhoneNumber" type="number" class="form-control" required />
+                </label>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        }
         <div class="form-group">
-            <label for="FirstName" style="width:100%">
-                First Name
-                <input asp-for="FirstName" class="form-control" required />
+            <label for="StartTime" style="width:100%">
+                Start Time
+                <input asp-for="StartTime" class="form-control" required />
             </label>
-            <span asp-validation-for="FirstName" class="text-danger"></span>
+            <span asp-validation-for="StartTime" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="LastName" style="width:100%">
-                Last Name
-                <input asp-for="LastName" class="form-control" required />
+            <label for="EndTime" style="width:100%">
+                End Time
+                <input asp-for="EndTime" class="form-control" />
             </label>
-            <span asp-validation-for="LastName" class="text-danger"></span>
+            <span asp-validation-for="EndTime" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="Email" style="width:100%">
-                Email
-                <input asp-for="Email" class="form-control" type="email" required />
+            <label for="TimeInHour" style="width:100%">
+                Select Time In Hour
+                <input asp-for="TimeInHour" class="form-control" type="email" required />
             </label>
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <span asp-validation-for="TimeInHour" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="PhoneNumber" style="width:100%">
-                Phone Number
-                <input asp-for="PhoneNumber" type="number" class="form-control" required />
+            <label for="TotalAmount" style="width:100%">
+                Total Amount
+                <input asp-for="TotalAmount" type="number" class="form-control" required />
             </label>
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            <span asp-validation-for="TotalAmount" class="text-danger"></span>
         </div>
        
         <div class="form-group">

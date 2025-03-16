@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class PhotographerBookingViewModel
+    public class GuideBooking : IEntity<Guid>
     {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
+        public Guid Id { get; set; }
+        public string? UserName { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public int TimeInHour { get; set; }
         public decimal TotalAmount { get; set; }
-        public string? PhotographerFirstName { get; set; }
-        public string? PhotographerLastName { get; set; }
-        public string? PhotographerEmail { get; set; }
-        public string? PhotographerPhoneNumber { get; set; }
-
+        public DateTime? CreatedAt { get; set; }
+        public Guid? UserId { get; set; }
+        public User User { get; set; }
+        public Guid GuideId { get; set; }
+        public Guide Guide { get; set; }
     }
 }
