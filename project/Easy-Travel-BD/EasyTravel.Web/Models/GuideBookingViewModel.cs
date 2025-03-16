@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class PhotographerBookingViewModel
+    public class GuideBookingViewModel
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
@@ -16,10 +16,10 @@ namespace EasyTravel.Domain.Entites
         public DateTime? EndTime { get; set; }
         public int TimeInHour { get; set; }
         public decimal TotalAmount { get; set; }
-        public string? PhotographerFirstName { get; set; }
-        public string? PhotographerLastName { get; set; }
-        public string? PhotographerEmail { get; set; }
-        public string? PhotographerPhoneNumber { get; set; }
+        public string? GuideFirstName { get; set; }
+        public string? GuideLastName { get; set; }
+        public string? GuideEmail { get; set; }
+        public string? GuidePhoneNumber { get; set; }
 
     }
 }

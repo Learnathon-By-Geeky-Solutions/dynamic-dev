@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IPhotographerBookingService : IBookingService
+    public interface IBookingService
     {
+        void AddBooking();
+        bool CancelBooking();
     }
 }
