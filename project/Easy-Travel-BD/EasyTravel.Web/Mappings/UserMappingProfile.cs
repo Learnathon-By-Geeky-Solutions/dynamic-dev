@@ -10,6 +10,7 @@ namespace EasyTravel.Web.Mappings
         public UserMappingProfile()
         {
             CreateMap<RegisterViewModel, User>().ReverseMap();
+            CreateMap<SearchFormModel, PhotographerBooking>().ReverseMap();
             CreateMap<BookingFormViewModel, PhotographerBookingViewModel>().ReverseMap();
             CreateMap<User, BookingFormViewModel>().ReverseMap();
             CreateMap<Photographer,PhotographerBookingViewModel>()

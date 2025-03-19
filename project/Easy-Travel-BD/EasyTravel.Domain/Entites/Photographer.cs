@@ -26,6 +26,8 @@ namespace EasyTravel.Domain.Entites
 
         [Phone]
         public required string ContactNumber { get; set; }
+        public required string PreferredLocations { get; set; }
+        public required string PreferredEvents { get; set; }
 
         public required string Address { get; set; }
 

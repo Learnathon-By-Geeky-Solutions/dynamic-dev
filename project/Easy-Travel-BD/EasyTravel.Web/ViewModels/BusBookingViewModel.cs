@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Web.Models;
 
 namespace EasyTravel.Web.ViewModels
 {

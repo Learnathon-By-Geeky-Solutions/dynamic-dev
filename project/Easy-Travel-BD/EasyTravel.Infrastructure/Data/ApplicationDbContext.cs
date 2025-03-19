@@ -98,6 +98,17 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Guide>()
                 .Property(a => a.Status)
                 .HasDefaultValue("Active");
+            modelBuilder.Entity<GuideBooking>()
+            .Property(a => a.Id)
+            .ValueGeneratedOnAdd()
+            .HasDefaultValueSql("NEWID()");
+            modelBuilder.Entity<GuideBooking>()
+                .Property(pg => pg.CreatedAt)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<GuideBooking>()
+             .Property(b => b.TotalAmount)
+             .HasColumnType("decimal(18,2)");
             modelBuilder.Entity<PhotographerBooking>()
                .Property(a => a.Id)
                .ValueGeneratedOnAdd()
@@ -189,6 +200,8 @@ namespace EasyTravel.Infrastructure.Data
                YearsOfExperience = 5,
                Availability = true,
                HourlyRate = 50.00m,
+               PreferredEvents = "marriage",
+               PreferredLocations = "dhaka,sylhet",
                Status = "Active",
                SocialMediaLinks = "https://twitter.com/johndoe",
                Skills = "Photography,Video Editing,Grahphics Design",
@@ -211,6 +224,8 @@ namespace EasyTravel.Infrastructure.Data
                DateOfBirth = new DateTime(1985, 5, 15),
                LanguagesSpoken = "English, Spanish",
                Specialization = "Communication,Hiking,Swimming,Skydive",
+               PreferredLocations = "dhaka,sylhet",
+               PreferredEvents = "citytour,museumtour,hilltracking",
                YearsOfExperience = 5,
                LicenseNumber = "ABC123456",
                Availability = true,

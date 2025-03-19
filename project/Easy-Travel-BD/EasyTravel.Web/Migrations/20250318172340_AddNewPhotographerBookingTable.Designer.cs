@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250318172340_AddNewPhotographerBookingTable")]
+    partial class AddNewPhotographerBookingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,14 +254,6 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PreferredEvents")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredLocations")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProfilePicture")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -304,8 +299,6 @@ namespace EasyTravel.Web.Migrations
                             LanguagesSpoken = "English, Spanish",
                             LastName = "Mahmud",
                             LicenseNumber = "ABC123456",
-                            PreferredEvents = "citytour,museumtour,hilltracking",
-                            PreferredLocations = "dhaka,sylhet",
                             ProfilePicture = "profile-pic.jpg",
                             Rating = 4.5m,
                             Specialization = "Communication,Hiking,Swimming,Skydive",
@@ -313,68 +306,6 @@ namespace EasyTravel.Web.Migrations
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             YearsOfExperience = 5
                         });
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.GuideBooking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EventDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EventLocation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EventType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("GuideId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TimeInHour")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuideId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("GuideBooking");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Hotel", b =>
@@ -566,14 +497,6 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PreferredEvents")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredLocations")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProfilePicture")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -627,8 +550,6 @@ namespace EasyTravel.Web.Migrations
                             HourlyRate = 50.00m,
                             LastName = "Mahmud",
                             PortfolioUrl = "https://johndoeportfolio.com",
-                            PreferredEvents = "marriage",
-                            PreferredLocations = "dhaka,sylhet",
                             ProfilePicture = "profile.jpg",
                             Rating = 4.5m,
                             Skills = "Photography,Video Editing,Grahphics Design",
@@ -663,12 +584,10 @@ namespace EasyTravel.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EventLocation")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EventType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1074,23 +993,6 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Agency");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.GuideBooking", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.Guide", "Guide")
-                        .WithMany()
-                        .HasForeignKey("GuideId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EasyTravel.Domain.Entites.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Guide");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.HotelBooking", b =>

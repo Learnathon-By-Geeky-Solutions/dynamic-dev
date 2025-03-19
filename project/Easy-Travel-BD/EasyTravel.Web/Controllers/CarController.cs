@@ -1,5 +1,6 @@
 ﻿using EasyTravel.Application.Services;
 using EasyTravel.Domain.Services;
+using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 

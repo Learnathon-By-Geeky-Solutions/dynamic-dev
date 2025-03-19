@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EasyTravel.Web.ViewModels
+namespace EasyTravel.Web.Models
 {
     public class BookingForm
     {

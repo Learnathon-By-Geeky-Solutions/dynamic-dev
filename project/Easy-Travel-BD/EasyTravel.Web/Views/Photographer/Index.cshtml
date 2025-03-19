@@ -1,58 +1,48 @@
-﻿@using EasyTravel.Domain.Entites
-@model IEnumerable<Photographer>
+﻿@model SearchResultViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Photographer List";
 }
+@section PhotographerStyles{
+    <style>
+        .photographer-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+        }
 
-<div class="pg-container">
-    @* <div class="sidebar"> *@
-    @*     <div class="sidebar"> *@
-    @*         <form action="/Photographer/Search" method="post"> *@
-    @*             <div class="form-group"> *@
-    @*                 <label for="photographerName">Photographer Name</label> *@
-    @*                 <input type="text" id="photographerName" name="name" value="" class="form-control" /> *@
+        .photographer-card:hover {
+        transform: translateY(-5px);
+        }
 
-    @*             </div> *@
-    @*             <div class="form-group"> *@
-    @*                 <label for="experience">Minimum Experience</label> *@
-    @*                 <input type="number" id="experience" name="experience" value="" class="form-control" /> *@
-
-    @*             </div> *@
-    @*             <div class="form-group"> *@
-    @*                 <label for="minRating">Minimum Rating</label> *@
-    @*                 <input type="number" id="minRating" name="rating" value="" min="1" max="5" step="0.1" class="form-control" /> *@
-
-    @*             </div> *@
-    @*             <div class="form-group"> *@
-    @*                 <label for="maxRate">Maximum Hourly Rate</label> *@
-    @*                 <input type="number" id="maxRate" name="maxRate" value="" class="form-control" /> *@
-
-    @*             </div> *@
-    @*             <button type="submit" class="btn btn-primary">Search</button> *@
-
-    @*         </form> *@
-    @*     </div> *@
-    @* </div> *@
-    <div class="entity-list">
-        <h2>Photographer List</h2>
-        <div class="">
-            <span class="name">Name</span>
-            <span>YearsOfExperience</span>
-            <span>Rating</span>
-            <span>HourlyRate</span>
-            <span></span>
+        .profile-picture {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        }
+    </style>
+}
+<div class="mt-5 w-75 mx-auto ">
+    <div class="d-flex justify-content-between shadow-sm rounded-2 w-100">
+        <div class="d-flex justify-content-between">
+            <a href="#"><i class="bi bi-caret-left-fill fs-1 text-danger"></i></a>
+            <h2 class="text-center">Photographer List</h2>
+            <a href="#"><i class="bi bi-caret-right-fill fs-1 text-danger"></i></a>
         </div>
-        @foreach (var pg in Model)
+    </div>
+    <div class="row shadow-sm rounded-2 ps-5 mt-5">
+        @foreach (var photographer in Model.Photographers)
         {
-            <div class="entity-row">
-                <span class="name">@pg.FirstName</span>
-                <span>@pg.YearsOfExperience</span>
-                <span>@pg.Rating</span>
-                <span>@pg.HourlyRate</span>
-
-                <!-- Buttons Section -->
-                <div class="actions">
-                    <a asp-area="" asp-controller="Photographer" asp-action="Book" asp-route-id="@pg.Id" class="update-btn">Book</a>
+            var amount = photographer.HourlyRate * Model.Model.TimeInHour;
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="photographer-card p-3 d-flex align-items-center">
+                    <img src="@photographer.ProfilePicture" alt="Profile Picture" class="profile-picture me-3">
+                    <div>
+                        <h5 class="mb-1">@photographer.FirstName</h5>
+                        <p class="mb-1">⭐ Rating: @photographer.Rating</p>
+                        <p class="mb-2"> BDT: @amount </p>
+                        <a asp-asp-area="" asp-controller="Photographer" asp-action="Book" class="btn btn-primary btn-sm">Book Now</a>
+                    </div>
                 </div>
             </div>
         }
