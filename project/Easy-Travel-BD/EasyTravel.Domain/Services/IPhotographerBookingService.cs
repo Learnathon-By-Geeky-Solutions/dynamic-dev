@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyTravel.Domain.Entites;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IPhotographerBookingService : IBookingService
     {
+         Task<IEnumerable<PhotographerBooking>> GetBookingListAsync(PhotographerBooking photographerBooking);
     }
 }

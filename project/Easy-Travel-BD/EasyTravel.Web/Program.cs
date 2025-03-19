@@ -96,7 +96,7 @@ try
     builder.Services.AddDistributedMemoryCache();
     builder.Services.AddSession(options =>
     {
-        options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+        options.IdleTimeout = TimeSpan.FromMinutes(20); // Set session timeout
         options.Cookie.HttpOnly = true;                // Make cookies accessible only through HTTP
         options.Cookie.IsEssential = true;             // Essential for GDPR compliance
     });

@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Repositories
 {
-    public interface IPhotographerRepository : IRepository<Photographer,Guid>
+    public interface IPhotographerBookingRepository : IRepository<PhotographerBooking,Guid>
     {
-        IEnumerable<Photographer> GetPhotographers();
     }
 }

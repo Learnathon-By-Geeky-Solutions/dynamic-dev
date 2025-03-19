@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace EasyTravel.Web.Controllers
     {
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        public UserController(IMapper mapper, UserManager<User> userManager)
+        private readonly ISessionService _sessionService;
+        public UserController(IMapper mapper, UserManager<User> userManager, ISessionService sessionService)
         {
             _mapper = mapper;
             _userManager = userManager;
+            _sessionService = sessionService;
         }
         public IActionResult Index()
         {
@@ -25,21 +28,24 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult BookingForm()
         {
-            HttpContext.Session.SetString("LastVisitedPage", "/User/BookingForm");
-            return View();
+            var lastPage = _sessionService.GetString("LastVisitedPage");
+            if(lastPage?.Contains("/Photographer/Index") == true)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Photographer");
         }
         [HttpPost]
         public async Task<IActionResult> BookingForm(BookingFormViewModel model)
         {
-            if (User.Identity?.IsAuthenticated == true)
-            {
-                var reguser = await _userManager.GetUserAsync(User);
-                model = _mapper.Map<BookingFormViewModel>(reguser);
-            }
             if (ModelState.IsValid)
             {
-                TempData["MyData"] = JsonSerializer.Serialize(model);
-                return RedirectToAction("Book", "Photographer");
+                _sessionService.SetString("FirstName", model.FirstName);
+                _sessionService.SetString("LastName", model.LastName);
+                _sessionService.SetString("Email", model.Email);
+                _sessionService.SetString("PhoneNumber", model.PhoneNumber);
+                _sessionService.SetString("Gender", model.Gender);
+                return RedirectToAction("Review", "Photographer");
             }
             return View(model);
         }

@@ -15,9 +15,7 @@ namespace EasyTravel.Web.Models
 
         [Phone]
         public string? PhoneNumber { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
-        public int TimeInHour { get; set; }
-        public decimal TotalAmount { get; set; }
+        
+        public string? Gender { get; set; }
     }
 }

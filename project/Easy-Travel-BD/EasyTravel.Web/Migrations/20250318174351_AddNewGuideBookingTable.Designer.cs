@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250318174351_AddNewGuideBookingTable")]
+    partial class AddNewGuideBookingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,10 +254,6 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PreferredEvents")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PreferredLocations")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -304,7 +303,6 @@ namespace EasyTravel.Web.Migrations
                             LanguagesSpoken = "English, Spanish",
                             LastName = "Mahmud",
                             LicenseNumber = "ABC123456",
-                            PreferredEvents = "citytour,museumtour,hilltracking",
                             PreferredLocations = "dhaka,sylhet",
                             ProfilePicture = "profile-pic.jpg",
                             Rating = 4.5m,
@@ -663,12 +661,10 @@ namespace EasyTravel.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EventLocation")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EventType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

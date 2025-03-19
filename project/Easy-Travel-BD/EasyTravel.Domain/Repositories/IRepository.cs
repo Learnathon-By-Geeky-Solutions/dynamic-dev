@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace EasyTravel.Domain.Repositories
         Task EditAsync(TEntity entityToUpdate);
         IList<TEntity> GetAll();
         Task<IList<TEntity>> GetAllAsync();
+        Task<IList<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter,
+           Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
         TEntity GetById(TKey id);
         Task<TEntity> GetByIdAsync(TKey id);
         int GetCount(Expression<Func<TEntity, bool>> filter = null);
