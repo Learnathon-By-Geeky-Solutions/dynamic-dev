@@ -28,6 +28,10 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult BookingForm()
         {
+            if(User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction("Search", "Photographer");
+            }
             var lastPage = _sessionService.GetString("LastVisitedPage");
             if(lastPage?.Contains("/Photographer/Index") == true)
             {
@@ -35,7 +39,7 @@ namespace EasyTravel.Web.Controllers
             }
             return RedirectToAction("Index", "Photographer");
         }
-        [HttpPost]
+        [HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> BookingForm(BookingFormViewModel model)
         {
             if (ModelState.IsValid)

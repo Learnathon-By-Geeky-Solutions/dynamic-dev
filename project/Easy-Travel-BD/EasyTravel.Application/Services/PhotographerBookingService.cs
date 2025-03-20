@@ -16,9 +16,10 @@ namespace EasyTravel.Application.Services
         {
             _applicationUnitOfWork = applicationUnitOfWork;
         }
-        public void AddBooking()
+        public void AddBooking(PhotographerBooking model)
         {
-            throw new NotImplementedException();
+            _applicationUnitOfWork.PhotographerBookingRepository.Add(model);
+            _applicationUnitOfWork.Save();
         }
 
         public bool CancelBooking()

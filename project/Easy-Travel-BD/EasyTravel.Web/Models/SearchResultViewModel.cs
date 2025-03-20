@@ -4,7 +4,7 @@ namespace EasyTravel.Web.Models
 {
     public class SearchResultViewModel
     {
-        public SearchFormModel? Model { get; set; }
+        public SearchFormModel? SearchFormModel { get; set; }
         public string? EventType { get; set; }
         public string? EventLocation { get; set; }
         public decimal TotalAmount { get; set; }

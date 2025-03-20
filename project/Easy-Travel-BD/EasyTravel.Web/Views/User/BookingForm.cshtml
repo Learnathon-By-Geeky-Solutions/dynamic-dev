@@ -4,51 +4,59 @@
     ViewData["Title"] = "Booking Form Page";
 
 }
-<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
-    <h2 class="card-title text-center">User Booking Form</h2>
-    <form asp-antiforgery=true method="post" asp-action="BookingForm">
-        @if(User.Identity?.IsAuthenticated == false)
-        {
-            <div class="form-group">
-                <label for="FirstName" style="width:100%">
-                    First Name
-                    <input asp-for="FirstName" class="form-control" required />
-                </label>
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+<div class="border-2 border-black">
+<h2 class="card-title text-center bg-secondary rounded py-3">User Booking Form</h2>
+    <form asp-antiforgery=true method="post" asp-action="BookingForm" asp-controller="User">
+        <div class="row shadow-sm rounded-2 px-3 py-4">
+            @if (User.Identity?.IsAuthenticated == false)
+            {
+                <div class="form-group">
+                    <label for="FirstName" style="width:100%">
+                        First Name
+                        <input asp-for="FirstName" class="form-control" required />
+                    </label>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group my-3">
+                    <label for="LastName" style="width:100%">
+                        Last Name
+                        <input asp-for="LastName" class="form-control" required />
+                    </label>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender" class="text-secondary fw-bold">Gender</label>
+                    <div class="gap-3">
+                        <label for="male">
+                            Male
+                            <input type="radio" id="male" name="Gender" value="Male" asp-for="Gender">
+                        </label>
+
+                        <label for="female">
+                            Female
+                            <input type="radio" id="female" name="Gender" value="Female" asp-for="Gender">
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group my-3">
+                    <label for="Email" style="width:100%">
+                        Email
+                        <input asp-for="Email" class="form-control" type="email" required />
+                    </label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="PhoneNumber" style="width:100%">
+                        Phone Number
+                        <input asp-for="PhoneNumber" type="number" class="form-control" required />
+                    </label>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group my-3">
+                <button type="submit" class="btn btn-primary" style="width:120px">Continue</button>
             </div>
-            <div class="form-group">
-                <label for="LastName" style="width:100%">
-                    Last Name
-                    <input asp-for="LastName" class="form-control" required />
-                </label>
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="Email" style="width:100%">
-                    Email
-                    <input asp-for="Email" class="form-control" type="email" required />
-                </label>
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="PhoneNumber" style="width:100%">
-                    Phone Number
-                    <input asp-for="PhoneNumber" type="number" class="form-control" required />
-                </label>
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-        }
-        <div class="form-group">
-            <label for="StartTime" style="width:100%">
-                Start Time
-                <input asp-for="Gender" class="form-control" required />
-            </label>
-            <span asp-validation-for="Gender" class="text-danger"></span>
-        </div>
-       
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary me-2">Submit</button>
-            <a asp-area="" asp-controller="Photographer" asp-action="Index" class="btn btn-secondary">Back to List</a>
         </div>
     </form>
+
 </div>
