@@ -21,18 +21,18 @@ namespace EasyTravel.Application.Services
 
         public Photographer Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _applicationUnitOfWork.PhotographerRepository.GetById(id);
         }
 
         public IEnumerable<Photographer> GetAll()
         {
-            throw new NotImplementedException();
+            return _applicationUnitOfWork.PhotographerRepository.GetAll();
         }
 
         public async Task<IEnumerable<Photographer>> GetPhotographerListAsync(PhotographerBooking photographerBooking)
         {
             var bookings =  await _photographerBookingService.GetBookingListAsync(photographerBooking);
-            if (bookings == null)
+            if (bookings.ToList().Count() == 0)
             {
                 return await _applicationUnitOfWork.PhotographerRepository.GetAsync(e => e.Availability == true);
             }

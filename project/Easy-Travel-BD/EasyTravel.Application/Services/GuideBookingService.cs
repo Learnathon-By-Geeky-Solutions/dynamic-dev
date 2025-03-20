@@ -1,4 +1,5 @@
-﻿using EasyTravel.Domain.Services;
+﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace EasyTravel.Application.Services
 {
     public class GuideBookingService : IGuideBookingService
     {
-        public void AddBooking()
+        public void AddBooking(GuideBooking model)
         {
             throw new NotImplementedException();
         }

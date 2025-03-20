@@ -19,9 +19,6 @@ namespace EasyTravel.Web.Models
 
         [DataType(DataType.Time)]
         public TimeSpan EndTime { get; set; }
-        //public string? EventLocation { get; set; }
-        //public string? EventType { get; set; }
-        //public IEnumerable<Photographer>? Photographers { get; set; }
-        //public Photographer? Photographer { get; set; }
+
     }
 }

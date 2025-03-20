@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Photographer List";
 }
-@section PhotographerStyles{
+@section PhotographerStyles {
     <style>
         .photographer-card {
         border-radius: 15px;
@@ -22,26 +22,47 @@
         }
     </style>
 }
-<div class="mt-5 w-75 mx-auto ">
-    <div class="d-flex justify-content-between shadow-sm rounded-2 w-100">
-        <div class="d-flex justify-content-between">
+
+<div class="row shadow-sm rounded-2 ps-5 mt-5">
+    <div class="mx-auto col-lg-8">
+        <div class="d-flex justify-content-between mb-lg-5">
             <a href="#"><i class="bi bi-caret-left-fill fs-1 text-danger"></i></a>
             <h2 class="text-center">Photographer List</h2>
             <a href="#"><i class="bi bi-caret-right-fill fs-1 text-danger"></i></a>
         </div>
-    </div>
-    <div class="row shadow-sm rounded-2 ps-5 mt-5">
         @foreach (var photographer in Model.Photographers)
         {
-            var amount = photographer.HourlyRate * Model.Model.TimeInHour;
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="photographer-card p-3 d-flex align-items-center">
+            <div class="photographer-card p-3 d-flex my-4 align-items-center">
+                <div class="w-3">
                     <img src="@photographer.ProfilePicture" alt="Profile Picture" class="profile-picture me-3">
-                    <div>
-                        <h5 class="mb-1">@photographer.FirstName</h5>
-                        <p class="mb-1">⭐ Rating: @photographer.Rating</p>
-                        <p class="mb-2"> BDT: @amount </p>
-                        <a asp-asp-area="" asp-controller="Photographer" asp-action="Book" class="btn btn-primary btn-sm">Book Now</a>
+                </div>
+                <div class="d-flex gap-5 justify-content-between">
+                    <div class="my-lg-1 my-sm-0">
+                        <div>
+                            <h6 class="my-1 text-muted">Personal Info</h6>
+                            <p class="fs-5 fw-bolder">@photographer.FirstName @photographer.LastName</p>
+                            <h6>@photographer.Email</h6>
+                            <h6>@photographer.SocialMediaLinks</h6>
+                        </div>
+                    </div>
+                    <div class="my-1">
+                        <h6 class="my-1 text-muted">Rating</h6>
+                        <p class="mb-lg-3 fs-5 fs-sm-1">⭐ @photographer.Rating</p>
+                        <h6 class="my-1 text-muted">Experience</h6>
+                        <p class="mb-lg-2 fs-5 fs-sm-1">@photographer.YearsOfExperience</p>
+                    </div>
+                    <div class="my-1">
+                        <h6 class="my-1 mb-lg-2 text-muted">Total Price</h6>
+                        @{
+                            var amount = photographer.HourlyRate * Model.SearchFormModel?.TimeInHour;
+                        }
+                        <p class="mb-lg-2 my-sm-0"> BDT: @amount </p>
+                    </div>
+                    <div class="my-1">
+                        <a asp-area="" asp-controller="Photographer" asp-action="Book" asp-route-id="@photographer.Id" class="btn btn-primary">
+                            Book
+                            Now
+                        </a>
                     </div>
                 </div>
             </div>

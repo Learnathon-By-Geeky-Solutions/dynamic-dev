@@ -5,7 +5,9 @@ using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Graph;
 using System.Net.WebSockets;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace EasyTravel.Web.Controllers
@@ -13,15 +15,19 @@ namespace EasyTravel.Web.Controllers
     public class PhotographerController : Controller
     {
         private readonly IPhotographerService _photographerService;
+        private readonly IAgencyService _agencyService;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly ISessionService _sessionService;
-        public PhotographerController(IPhotographerService photographerService, UserManager<User> userManager, IMapper mapper, ISessionService sessionService)
+        private readonly IPhotographerBookingService _photographerBookingService;
+        public PhotographerController(IPhotographerService photographerService, UserManager<User> userManager, IMapper mapper, ISessionService sessionService, IAgencyService agencyService, IPhotographerBookingService photographerBookingService)
         {
             _photographerService = photographerService;
             _userManager = userManager;
             _mapper = mapper;
             _sessionService = sessionService;
+            _agencyService = agencyService;
+            _photographerBookingService = photographerBookingService;
         }
         [HttpGet]
         public IActionResult Index()
@@ -29,7 +35,7 @@ namespace EasyTravel.Web.Controllers
             HttpContext.Session.SetString("LastVisitedPage", "/Photographer/Index");
             var model = new SearchResultViewModel
             {
-                Model = new SearchFormModel
+                SearchFormModel = new SearchFormModel
                 {
                     EventDate = DateTime.Parse(_sessionService.GetString("EventDate")),
                     StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime")),
@@ -37,7 +43,7 @@ namespace EasyTravel.Web.Controllers
                     EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime")),
                 },
             };
-            var pgBookingModel = _mapper.Map<PhotographerBooking>(model.Model);
+            var pgBookingModel = _mapper.Map<PhotographerBooking>(model.SearchFormModel);
             model.Photographers = _photographerService.GetPhotographerListAsync(pgBookingModel).Result;
             return View(model);
         }
@@ -56,6 +62,8 @@ namespace EasyTravel.Web.Controllers
                 _sessionService.SetString("StartTime", model.StartTime.ToString());
                 _sessionService.SetString("TimeInHour", model.TimeInHour.ToString());
                 _sessionService.SetString("EndTime", model.EndTime.ToString());
+                _sessionService.SetString("EventType", "");
+                _sessionService.SetString("EventLocation", "");
                 return RedirectToAction("Index", "Photographer");
             }
             return View(model);
@@ -71,12 +79,19 @@ namespace EasyTravel.Web.Controllers
             return RedirectToAction("Review","Photographer");
         }
 
-        [HttpPost]
+        [HttpPost,ValidateAntiForgeryToken]
         public IActionResult Book(PhotographerBookingViewModel model)
         {
             if (ModelState.IsValid)
             {
-
+                var pgBooking = _mapper.Map<PhotographerBooking>(model);
+                if (User.Identity.IsAuthenticated == true)
+                {
+                    pgBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                }
+                pgBooking.PhotographerId = Guid.Parse(_sessionService.GetString("PhotographerId"));
+                _photographerBookingService.AddBooking(pgBooking);
+                return View();
             }
             return View(model);
         }
@@ -87,6 +102,8 @@ namespace EasyTravel.Web.Controllers
             var pgId = Guid.Parse(_sessionService.GetString("PhotographerId"));
             var photographer = _photographerService.Get(pgId);
             pgBooking.Photographer = photographer;
+            var agency = _agencyService.Get(photographer.AgencyId);
+            pgBooking.AgencyName = agency.Name;
             if(User.Identity?.IsAuthenticated == false)
             {
                 pgBooking.FirstName = _sessionService.GetString("FirstName");
@@ -100,8 +117,8 @@ namespace EasyTravel.Web.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 pgBooking = _mapper.Map<PhotographerBookingViewModel>(user);
             }
-            pgBooking.StartTime = DateTime.Parse(_sessionService.GetString("StartTime"));
-            pgBooking.EndTime = DateTime.Parse(_sessionService.GetString("EndTime"));
+            pgBooking.StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"));
+            pgBooking.EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"));
             pgBooking.TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"));
             pgBooking.EventType = _sessionService.GetString("EventType");
             pgBooking.EventLocation = _sessionService.GetString("EventLocation");
