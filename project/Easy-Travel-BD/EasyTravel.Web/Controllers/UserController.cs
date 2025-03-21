@@ -33,13 +33,13 @@ namespace EasyTravel.Web.Controllers
                 return RedirectToAction("Search", "Photographer");
             }
             var lastPage = _sessionService.GetString("LastVisitedPage");
-            if(lastPage?.Contains("Photographer") == true)
+            if(lastPage?.Contains("/Photographer/Review") == true)
             {
-                return RedirectToAction("Index", "Photographer");
+                return RedirectToAction("List", "Photographer");
             }
-            if (lastPage?.Contains("Guide") == true)
+            if (lastPage?.Contains("/Guide/Review") == true)
             {
-                return RedirectToAction("Index", "Guide");
+                return RedirectToAction("List", "Guide");
             }
             return View();
             

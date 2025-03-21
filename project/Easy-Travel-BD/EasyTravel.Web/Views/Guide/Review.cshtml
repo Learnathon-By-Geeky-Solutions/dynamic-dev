@@ -1,0 +1,75 @@
+﻿@model GuideBookingViewModel
+@{
+
+}
+<div class="d-flex justify-content-center gap-lg-3">
+    <div>
+        <div>
+            <h3 class="text-danger">Guide details</h3>
+            <hr>
+            <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-start gap-lg-2">
+                    <div>
+                        <img>
+                    </div>
+                    <div>
+                        <p>@Model.Guide?.FirstName @Model.Guide?.LastName</p>
+                        <p>@Model.Guide?.Rating</p>
+                        <p>@Model.AgencyName</p>
+                    </div>
+                </div>
+                <div>
+                    <p>@Model.EventType</p>
+                </div>
+                <hr>
+            </div>
+            <div class="d-flex justify-content-between">
+                <p>Starts from : @Model.StartTime</p>
+                <p>Ends at : @Model.EndTime</p>
+            </div>
+        </div>
+        <div class="">
+            <h3 class="text-danger">User Details</h3>
+                <div class="row shadow-lg rounded-3 my-4 p-3">
+                    <h3 class="m-1 py-1 bg-danger text-white rounded-2">User</h3>
+                    <div class="d-flex justify-content-between px-3 my-3 text-secondary">
+                        <div class="d-flex">
+                            <div>
+                                <p>Name:</p>
+                                <p>Email:</p>
+                            </div>
+                            <div class="mx-4">
+                                <p>@Model.FirstName @Model.LastName</p>
+                                <p>@Model.Email</p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p>Gender:</p>
+                                <p>Phone Number:</p>
+                            </div>
+                            <div class="mx-4">
+                                <p>@Model.Gender</p>
+                                <p>@Model.PhoneNumber</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form asp-antiforgery=true method="post" asp-action="Book" asp-controller="Guide">
+                    <input asp-for="FirstName" hidden/>
+                    <input asp-for="LastName" hidden/>
+                    <input asp-for="Email" hidden/>
+                    <input asp-for="PhoneNumber" hidden/>
+                    <input asp-for="Gender" hidden/>
+                    <input asp-for="EventType" hidden/>
+                    <input asp-for="EventLocation" hidden/>
+                    <input asp-for="StartTime" hidden/>
+                    <input asp-for="EndTime" hidden/>
+                    <input asp-for="TimeInHour" hidden/>
+                    <input asp-for="TotalAmount" hidden/>
+                    <button type="submit" class="btn btn-danger">Book</button>
+                </form>
+        </div>
+    </div>
+    <div></div>
+</div>

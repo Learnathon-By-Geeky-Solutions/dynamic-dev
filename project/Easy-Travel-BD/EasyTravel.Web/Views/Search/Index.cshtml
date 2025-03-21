@@ -1,15 +1,25 @@
-﻿@model SearchFormModel
+﻿@inject IHttpContextAccessor _httpContextAccessor
+@model SearchFormModel
 @{
     var startDate = DateTime.Today;
     var endDate = startDate.AddDays(30);
     var formattedStartDate = startDate.ToString("yyyy-MM-dd");
     var formattedEndDate = endDate.ToString("yyyy-MM-dd");
     var formattedStartTime = DateTime.Now.ToString("HH:mm");
+    var type = @_httpContextAccessor.HttpContext.Session.GetString("LastVisitedPage");
+    if(type.Contains("Guide") == true)
+    {
+        type = "Guides";
+    }
+    else
+    {
+        type = "Photographers";
+    }
 }
 
-<form class="mt-5" method="post" asp-area="" asp-antiforgery="true" asp-action="Search" asp-controller="Photographer">
+<form class="mt-5" method="post" asp-area="" asp-antiforgery="true" asp-action="Index" asp-controller="Search">
     <div class="shadow rounded-2" id="myForm">
-        <h2 class="text-white bg-danger text-center py-4 my-3 rounded">Search photographer</h2>
+        <h2 class="text-white bg-danger text-center py-4 my-3 rounded">Search @type</h2>
         <div class="my-5 py-5">
             <div class="row justify-content-center">
                 <!-- Event Date -->

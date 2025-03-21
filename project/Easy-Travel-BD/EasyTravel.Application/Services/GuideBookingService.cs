@@ -18,7 +18,8 @@ namespace EasyTravel.Application.Services
         }
         public void AddBooking(GuideBooking model)
         {
-            throw new NotImplementedException();
+            _applicationUnitOfWork.GuideBookingRepository.Add(model);
+            _applicationUnitOfWork.Save();
         }
 
         public bool CancelBooking()

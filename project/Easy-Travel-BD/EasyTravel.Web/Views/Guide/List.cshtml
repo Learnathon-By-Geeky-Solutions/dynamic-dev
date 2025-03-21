@@ -1,0 +1,70 @@
+﻿@model SearchResultViewModel
+@{
+    ViewData["Title"] = "Guide List";
+}
+@section GuideStyles {
+    <style>
+        .guide-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+        }
+
+        .guide-card:hover {
+        transform: translateY(-5px);
+        }
+
+        .profile-picture {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        }
+    </style>
+}
+
+<div class="row shadow-sm rounded-2 ps-5 mt-5">
+    <div class="mx-auto col-lg-8">
+        <div class="d-flex justify-content-between mb-lg-5">
+            <a href="#"><i class="bi bi-caret-left-fill fs-1 text-danger"></i></a>
+            <h2 class="text-center">Guide List</h2>
+            <a href="#"><i class="bi bi-caret-right-fill fs-1 text-danger"></i></a>
+        </div>
+        @foreach (var guide in Model.Guides)
+        {
+            <div class="guide-card p-3 d-flex my-4 align-items-center">
+                <div class="w-3">
+                    <img src="@guide.ProfilePicture" alt="Profile Picture" class="profile-picture me-3">
+                </div>
+                <div class="d-flex gap-5 justify-content-between">
+                    <div class="my-lg-1 my-sm-0">
+                        <div>
+                            <h6 class="my-1 text-muted">Personal Info</h6>
+                            <p class="fs-5 fw-bolder">@guide.FirstName @guide.LastName</p>
+                            <h6>@guide.Email</h6>
+                        </div>
+                    </div>
+                    <div class="my-1">
+                        <h6 class="my-1 text-muted">Rating</h6>
+                        <p class="mb-lg-3 fs-5 fs-sm-1">⭐ @guide.Rating</p>
+                        <h6 class="my-1 text-muted">Experience</h6>
+                        <p class="mb-lg-2 fs-5 fs-sm-1">@guide.YearsOfExperience</p>
+                    </div>
+                    <div class="my-1">
+                        <h6 class="my-1 mb-lg-2 text-muted">Total Price</h6>
+                        @{
+                            var amount = guide.HourlyRate * Model.SearchFormModel?.TimeInHour;
+                        }
+                        <p class="mb-lg-2 my-sm-0"> BDT: @amount </p>
+                    </div>
+                    <div class="my-1">
+                        <a asp-area="" asp-controller="Guide" asp-action="Book" asp-route-id="@guide.Id" class="btn btn-primary">
+                            Book
+                            Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
