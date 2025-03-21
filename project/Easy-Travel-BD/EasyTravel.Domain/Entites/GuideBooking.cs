@@ -12,8 +12,9 @@ namespace EasyTravel.Domain.Entites
         public string UserName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string EventType { get; set; }
-        public string EventLocation { get; set; }
+        public string Gender { get; set; }
+        public string? EventType { get; set; }
+        public string? EventLocation { get; set; }
         public DateTime EventDate { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
