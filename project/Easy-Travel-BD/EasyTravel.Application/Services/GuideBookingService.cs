@@ -1,4 +1,5 @@
-﻿using EasyTravel.Domain.Entites;
+﻿using EasyTravel.Domain;
+using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,22 @@ namespace EasyTravel.Application.Services
 {
     public class GuideBookingService : IGuideBookingService
     {
+        private readonly IApplicationUnitOfWork _applicationUnitOfWork;
+        public GuideBookingService(IApplicationUnitOfWork applicationUnitOfWork)
+        {
+            _applicationUnitOfWork = applicationUnitOfWork;
+        }
         public void AddBooking(GuideBooking model)
         {
             throw new NotImplementedException();
         }
 
         public bool CancelBooking()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<GuideBooking>> GetBookingListAsync(GuideBooking guideBooking)
         {
             throw new NotImplementedException();
         }

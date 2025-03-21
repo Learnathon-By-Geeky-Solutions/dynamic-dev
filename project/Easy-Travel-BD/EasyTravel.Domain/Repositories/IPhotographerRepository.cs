@@ -9,6 +9,5 @@ namespace EasyTravel.Domain.Repositories
 {
     public interface IPhotographerRepository : IRepository<Photographer,Guid>
     {
-        IEnumerable<Photographer> GetPhotographers();
     }
 }

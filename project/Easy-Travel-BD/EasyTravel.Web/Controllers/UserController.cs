@@ -33,23 +33,37 @@ namespace EasyTravel.Web.Controllers
                 return RedirectToAction("Search", "Photographer");
             }
             var lastPage = _sessionService.GetString("LastVisitedPage");
-            if(lastPage?.Contains("/Photographer/Index") == true)
+            if(lastPage?.Contains("Photographer") == true)
             {
-                return View();
+                return RedirectToAction("Index", "Photographer");
             }
-            return RedirectToAction("Index", "Photographer");
+            if (lastPage?.Contains("Guide") == true)
+            {
+                return RedirectToAction("Index", "Guide");
+            }
+            return View();
+            
         }
         [HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> BookingForm(BookingFormViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var lastPage = _sessionService.GetString("LastVisitedPage");
                 _sessionService.SetString("FirstName", model.FirstName);
                 _sessionService.SetString("LastName", model.LastName);
                 _sessionService.SetString("Email", model.Email);
                 _sessionService.SetString("PhoneNumber", model.PhoneNumber);
                 _sessionService.SetString("Gender", model.Gender);
-                return RedirectToAction("Review", "Photographer");
+                if (lastPage.Contains("Photographer") == true)
+                {
+                    return RedirectToAction("Review", "Photographer");
+                }
+                if (lastPage.Contains("Guide") == true)
+                {
+                    return RedirectToAction("Review", "Guide");
+                }
+                
             }
             return View(model);
         }

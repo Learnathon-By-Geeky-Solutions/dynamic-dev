@@ -17,10 +17,5 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             _context = context;
         }
-
-        public IEnumerable<Photographer> GetPhotographers()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
