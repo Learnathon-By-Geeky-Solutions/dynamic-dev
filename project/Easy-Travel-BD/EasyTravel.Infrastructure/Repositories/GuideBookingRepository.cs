@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Infrastructure.Repositories
 {
-    public class GuideBookingRepository : Repository<PhotographerBooking,Guid>,IPhotographerBookingRepository
+    public class GuideBookingRepository : Repository<GuideBooking,Guid>,IGuideBookingRepository
     {
         private readonly ApplicationDbContext _context;
         public GuideBookingRepository(ApplicationDbContext context) : base(context) 
