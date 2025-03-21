@@ -12,7 +12,7 @@ namespace EasyTravel.Infrastructure
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public ApplicationUnitOfWork(ApplicationDbContext context, IUserRepository userRepository, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IPhotographerBookingRepository photographerBookingRepository)
+        public ApplicationUnitOfWork(ApplicationDbContext context, IUserRepository userRepository, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IPhotographerBookingRepository photographerBookingRepository,IGuideBookingRepository guideBookingRepository)
            : base(context)
         {
             UserRepository = userRepository;
@@ -25,6 +25,7 @@ namespace EasyTravel.Infrastructure
             RoomRepository = roomRepository;
             HotelBookingRepository = hotelBookingRepository;
             PhotographerBookingRepository = photographerBookingRepository;
+            GuideBookingRepository = guideBookingRepository;
         }
 
         public IUserRepository UserRepository { get; private set; } 
@@ -37,5 +38,6 @@ namespace EasyTravel.Infrastructure
         public IRoomRepository RoomRepository { get; private set; }
         public IHotelBookingRepository HotelBookingRepository { get; private set; }
         public IPhotographerBookingRepository PhotographerBookingRepository { get; private set; }
+        public IGuideBookingRepository GuideBookingRepository { get; private set; }
     }
 }
