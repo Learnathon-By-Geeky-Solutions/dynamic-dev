@@ -16,8 +16,8 @@ namespace EasyTravel.Domain.Entites
         public string? EventType { get; set; }
         public string? EventLocation { get; set; }
         public DateTime EventDate { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
         public int TimeInHour { get; set; }
         public decimal TotalAmount { get; set; }
         public DateTime CreatedAt { get; set; }
