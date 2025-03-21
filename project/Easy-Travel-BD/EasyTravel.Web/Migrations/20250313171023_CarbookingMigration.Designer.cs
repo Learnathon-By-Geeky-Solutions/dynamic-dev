@@ -4,6 +4,7 @@ using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyTravel.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250313171023_CarbookingMigration")]
+    partial class CarbookingMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,14 +303,6 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PreferredEvents")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredLocations")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProfilePicture")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -353,8 +348,6 @@ namespace EasyTravel.Web.Migrations
                             LanguagesSpoken = "English, Spanish",
                             LastName = "Mahmud",
                             LicenseNumber = "ABC123456",
-                            PreferredEvents = "citytour,museumtour,hilltracking",
-                            PreferredLocations = "dhaka,sylhet",
                             ProfilePicture = "profile-pic.jpg",
                             Rating = 4.5m,
                             Specialization = "Communication,Hiking,Swimming,Skydive",
@@ -362,69 +355,6 @@ namespace EasyTravel.Web.Migrations
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             YearsOfExperience = 5
                         });
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.GuideBooking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time");
-
-                    b.Property<DateTime>("EventDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EventLocation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EventType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("GuideId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
-
-                    b.Property<int>("TimeInHour")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuideId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("GuideBooking");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Hotel", b =>
@@ -616,14 +546,6 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PreferredEvents")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredLocations")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProfilePicture")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -677,8 +599,6 @@ namespace EasyTravel.Web.Migrations
                             HourlyRate = 50.00m,
                             LastName = "Mahmud",
                             PortfolioUrl = "https://johndoeportfolio.com",
-                            PreferredEvents = "marriage",
-                            PreferredLocations = "dhaka,sylhet",
                             ProfilePicture = "profile.jpg",
                             Rating = 4.5m,
                             Skills = "Photography,Video Editing,Grahphics Design",
@@ -687,135 +607,6 @@ namespace EasyTravel.Web.Migrations
                             Status = "Active",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             YearsOfExperience = 5
-                        });
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.PhotographerBooking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time");
-
-                    b.Property<DateTime>("EventDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EventLocation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EventType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("PhotographerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
-
-                    b.Property<int>("TimeInHour")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PhotographerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PhotographerBookings");
-                });
-
-            modelBuilder.Entity("EasyTravel.Domain.Entites.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"),
-                            Name = "admin",
-                            NormalizedName = "admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
-                            Name = "client",
-                            NormalizedName = "client"
-                        },
-                        new
-                        {
-                            Id = new Guid("4558e034-03af-4d30-819f-9a24cb81c942"),
-                            Name = "agencyManager",
-                            NormalizedName = "agencyManager"
-                        },
-                        new
-                        {
-                            Id = new Guid("c10f83b0-9008-468b-b931-5e73ff416337"),
-                            Name = "busManager",
-                            NormalizedName = "busManager"
-                        },
-                        new
-                        {
-                            Id = new Guid("862b8016-7786-4cf2-bcb1-a4aac017ff2c"),
-                            Name = "carManager",
-                            NormalizedName = "carManager"
-                        },
-                        new
-                        {
-                            Id = new Guid("292dcaf2-aadc-493a-8f19-e7905ab98299"),
-                            Name = "hotelManager",
-                            NormalizedName = "hotelManager"
                         });
                 });
 
@@ -993,6 +784,72 @@ namespace EasyTravel.Web.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"),
+                            Name = "admin",
+                            NormalizedName = "admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
+                            Name = "client",
+                            NormalizedName = "client"
+                        },
+                        new
+                        {
+                            Id = new Guid("4558e034-03af-4d30-819f-9a24cb81c942"),
+                            Name = "agencyManager",
+                            NormalizedName = "agencyManager"
+                        },
+                        new
+                        {
+                            Id = new Guid("c10f83b0-9008-468b-b931-5e73ff416337"),
+                            Name = "busManager",
+                            NormalizedName = "busManager"
+                        },
+                        new
+                        {
+                            Id = new Guid("862b8016-7786-4cf2-bcb1-a4aac017ff2c"),
+                            Name = "carManager",
+                            NormalizedName = "carManager"
+                        },
+                        new
+                        {
+                            Id = new Guid("292dcaf2-aadc-493a-8f19-e7905ab98299"),
+                            Name = "hotelManager",
+                            NormalizedName = "hotelManager"
+                        });
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -1131,23 +988,6 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("Agency");
                 });
 
-            modelBuilder.Entity("EasyTravel.Domain.Entites.GuideBooking", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.Guide", "Guide")
-                        .WithMany()
-                        .HasForeignKey("GuideId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EasyTravel.Domain.Entites.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Guide");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("EasyTravel.Domain.Entites.HotelBooking", b =>
                 {
                     b.HasOne("EasyTravel.Domain.Entites.Hotel", "Hotel")
@@ -1182,23 +1022,6 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("Agency");
                 });
 
-            modelBuilder.Entity("EasyTravel.Domain.Entites.PhotographerBooking", b =>
-                {
-                    b.HasOne("EasyTravel.Domain.Entites.Photographer", "Photographer")
-                        .WithMany()
-                        .HasForeignKey("PhotographerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EasyTravel.Domain.Entites.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Photographer");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
                 {
                     b.HasOne("EasyTravel.Domain.Entites.Hotel", "Hotel")
@@ -1223,7 +1046,7 @@ namespace EasyTravel.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("EasyTravel.Domain.Entites.Role", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1250,7 +1073,7 @@ namespace EasyTravel.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("EasyTravel.Domain.Entites.Role", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
