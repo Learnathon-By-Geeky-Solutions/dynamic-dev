@@ -12,9 +12,11 @@ namespace EasyTravel.Application.Services
     public class GuideService : IGuideService
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
-        public GuideService(IApplicationUnitOfWork applicationUnitOfWork)
+        private readonly IGuideBookingService _guideBookingService;
+        public GuideService(IApplicationUnitOfWork applicationUnitOfWork, IGuideBookingService guideBookingService)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
+            _guideBookingService = guideBookingService;
         }
         public Guide Get(Guid id)
         {
@@ -24,6 +26,22 @@ namespace EasyTravel.Application.Services
         public IEnumerable<Guide> GetAll()
         {
             return _applicationUnitOfWork.GuideRepository.GetAll();
+        }
+
+        public async Task<IEnumerable<Guide>> GetGuideListAsync(GuideBooking guideBooking)
+        {
+            var bookings = await _guideBookingService.GetBookingListAsync(guideBooking);
+            if (bookings.ToList().Count() == 0)
+            {
+                return await _applicationUnitOfWork.GuideRepository.GetAsync(e => e.Availability == true);
+            }
+            var guidelist = new List<Guide>();
+            foreach (var booking in bookings)
+            {
+                var guidemodel = await _applicationUnitOfWork.GuideRepository.GetByIdAsync(booking.Id);
+                guidelist.Add(guidemodel);
+            }
+            return guidelist;
         }
     }
 }

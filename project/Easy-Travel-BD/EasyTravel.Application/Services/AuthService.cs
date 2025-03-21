@@ -11,6 +11,7 @@ namespace EasyTravel.Application.Services
 {
     public class AuthService : IAuthService
     {
+        public AuthService(ILoginService loginService, IRegisterService registerService)
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
@@ -64,9 +65,11 @@ namespace EasyTravel.Application.Services
         }
         private bool IsClientRole(string role)
         {
-            var clientRoles = new HashSet<string> { "client" };
-            return clientRoles.Contains(role);
+            LoginService = loginService;
+            RegisterService = registerService;
         }
+        public ILoginService LoginService { get; private set; }
 
+        public IRegisterService RegisterService { get; private set; }
     }
 }
