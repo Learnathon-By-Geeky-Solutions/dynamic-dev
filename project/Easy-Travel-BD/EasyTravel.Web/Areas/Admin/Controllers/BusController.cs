@@ -25,13 +25,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _busService.CreateBus(bus);
-                TempData["success"] = "The bus has created successfully";
-
                 return RedirectToAction("Index", "Bus", new { area = "Admin" });
 
             }
-            TempData["error"] = "The Bus not created ";
-
+            
             return View();
         }
 
@@ -39,9 +36,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             var buses = _busService.GetAllBuses();
             return View(buses);
-        }
-
-      
+        }    
 
         [HttpGet]
         public IActionResult Update(Guid BusId)
@@ -49,25 +44,17 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var bus = _busService.GetBusById(BusId);
             if (bus == null)
             {
-                TempData["error"] = "The bus not found";
-
-                return NotFound();
+               return NotFound();
             }
-
-
             return View(bus);
-
         }
-
 
         [HttpPost]
         public IActionResult Update(Bus bus)
         {
             if (ModelState.IsValid)
             {
-                _busService.UpdateBus(bus);
-                TempData["success"] = "The bus has updated successfully";
-
+                _busService.UpdateBus(bus);   
                 return RedirectToAction("Index", "Bus", new { area = "Admin" });
             }
             TempData["error"] = "The bus not updated";
@@ -84,31 +71,18 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
-
             return View(bus);
-
         }
-
         [HttpPost]
         public IActionResult Delete(Bus bus)
         {
             if (ModelState.IsValid)
             {
-                TempData["success"] = "The bus has deleted successfully";
-
                 _busService.DeleteBus(bus);
                 return RedirectToAction("Index", "Bus", new { area = "Admin" });
             }
-            TempData["error"] = "The bus not found";
-
             return View();
-
-        }
-
-
-        
-
-    }
+        }       
+     }
 }
 

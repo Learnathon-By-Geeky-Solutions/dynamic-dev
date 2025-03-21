@@ -23,3 +23,8 @@
   For modification: shared /_Notification.cshtml
 
 For any modification: https://github.com/CodeSeven/toastr
+
+
+
+/admin/Layout 
+  <partial name="_Notification" /> add this before  render body
