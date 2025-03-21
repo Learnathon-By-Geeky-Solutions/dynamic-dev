@@ -9,5 +9,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IGuideService : IGetService<Guide,Guid>
     {
+        Task<IEnumerable<Guide>> GetGuideListAsync(GuideBooking guideBooking);
     }
 }

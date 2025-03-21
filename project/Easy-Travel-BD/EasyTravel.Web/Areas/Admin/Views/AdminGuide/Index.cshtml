@@ -8,6 +8,18 @@
     <div class="create-btn">
         <a asp-area="Admin" asp-controller="AdminGuide" asp-action="Create">Create Guide</a>
     </div>
+    <div class="entity-row">
+        <span class="name">FirstName</span>
+        <span>Email</span>
+        <span>ContactNumber</span>
+        <span>DateOfBirth</span>
+        <span>Address</span>
+        <span>ProfilePicture</span>
+
+        <!-- Buttons Section -->
+        <div class="actions">
+        </div>
+    </div>
     @foreach (var guide in Model)
     {
         <div class="entity-row">
