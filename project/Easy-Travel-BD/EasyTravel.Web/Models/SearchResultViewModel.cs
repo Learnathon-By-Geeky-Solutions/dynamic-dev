@@ -9,6 +9,8 @@ namespace EasyTravel.Web.Models
         public string? EventLocation { get; set; }
         public decimal TotalAmount { get; set; }
         public Photographer? Photographer { get; set; }
+        public Guide? Guide { get; set; }
         public IEnumerable<Photographer>? Photographers { get; set; }
+        public IEnumerable<Guide>? Guides { get; set; }
     }
 }
