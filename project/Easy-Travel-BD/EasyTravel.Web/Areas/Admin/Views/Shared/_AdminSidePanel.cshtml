@@ -1,18 +1,53 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> userManager
+
+@{
     var controllers = new List<string>();
+    controllers.Add("AdminUser");
+    controllers.Add("AdminRole");
     controllers.Add("AdminAgency");
     controllers.Add("AdminPhotographer");
     controllers.Add("AdminGuide");
+    controllers.Add("AdminHotel");
+    controllers.Add("AdminRoom");
+    controllers.Add("AdminHotelBooking");
+    controllers.Add("AdminBus");
+    controllers.Add("AdminSeat");
+    controllers.Add("AdminBusBooking");
     controllers.Add("Hotel");
     controllers.Add("Room");
+    controllers.Add("HotelBooking");
+    controllers.Add("AdminBus");
+    controllers.Add("Seat");
+    controllers.Add("BusBooking");
+    controllers.Add("AdminCar");
 
-    controllers.Add("Bus");
-    controllers.Add("Car");
-    
     var length = controllers.Count();
+    int i = 0;
+    if (User.IsInRole("agencyManager"))
+    {
+        i = 2;
+        length = 5;
+    }
+    else if (User.IsInRole("hotelManager"))
+    {
+        i = 5;
+        length = 8;
+    }
+    else if (User.IsInRole("busManager"))
+    {
+        i = 8;
+        length = 11;
+    }
+    else if(User.IsInRole("carManager"))
+    {
+        i = 11;
+        length = 14;
+    }
+
 }
 <div class="list-group">
-    @for(int i = 0; i < length; i++)
+    @for(; i < length; i++)
     {
         <a asp-area="Admin" asp-controller="@controllers[i]" asp-action="Index" class="list-group-item list-group-item-action list-group-item-primary">@controllers[i].Replace("Admin","")</a>
         <br />

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EasyTravel.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
+    public class ApplicationDbContext : IdentityDbContext<User,Role,Guid>
     {
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
@@ -23,10 +23,17 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<HotelBooking>  HotelBookings { get; set; }
+        public DbSet<PhotographerBooking> PhotographerBookings {  get; set; }
+        public DbSet<Seat> Seats { get; set; }
+        public DbSet<BusBooking> BusBookings { get; set;}
+        public DbSet<CarBooking> CarBookings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<Seat>()
+                .ToTable("Seats");
+            modelBuilder.Entity<BusBooking>()
+               .ToTable("BusBookings");
             modelBuilder.Entity<Bus>()
               .Property(b => b.Price)
               .HasColumnType("decimal(18,2)");
@@ -52,6 +59,9 @@ namespace EasyTravel.Infrastructure.Data
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWID()");
 
+
+            modelBuilder.Entity<Photographer>()
+                .ToTable("Photographers");
             modelBuilder.Entity<Photographer>()
                 .Property(a => a.HireDate)
                 .ValueGeneratedOnAdd()
@@ -69,6 +79,14 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Photographer>()
               .Property(p => p.HourlyRate)
               .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Agency>()
+           .HasMany(b => b.Photographers)
+           .WithOne(bb => bb.Agency)
+           .HasForeignKey(bb => bb.AgencyId)
+           .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Guide>()
+               .ToTable("Guides");
             modelBuilder.Entity<Guide>()
            .Property(a => a.HireDate)
            .ValueGeneratedOnAdd()
@@ -83,7 +101,28 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Guide>()
                 .Property(a => a.Status)
                 .HasDefaultValue("Active");
-         
+            modelBuilder.Entity<GuideBooking>()
+            .Property(a => a.Id)
+            .ValueGeneratedOnAdd()
+            .HasDefaultValueSql("NEWID()");
+            modelBuilder.Entity<GuideBooking>()
+                .Property(pg => pg.CreatedAt)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<GuideBooking>()
+             .Property(b => b.TotalAmount)
+             .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<PhotographerBooking>()
+               .Property(a => a.Id)
+               .ValueGeneratedOnAdd()
+               .HasDefaultValueSql("NEWID()");
+            modelBuilder.Entity<PhotographerBooking>()
+                .Property(pg => pg.CreatedAt)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PhotographerBooking>()
+             .Property(b => b.TotalAmount)
+             .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Guide>()
                 .Property(g => g.HourlyRate)
@@ -98,21 +137,44 @@ namespace EasyTravel.Infrastructure.Data
                 .ValueGeneratedOnAdd()
                 .HasDefaultValue(new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"));
 
-
-            modelBuilder.Entity<IdentityRole<Guid>>()
+            modelBuilder.Entity<Role>()
                 .HasData(
-                new IdentityRole<Guid>
+                new Role
                 {
                     Id = new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"),
                     Name = "admin",
                     NormalizedName = "admin"
                 },
-                new IdentityRole<Guid>
+                new Role
                 {
                     Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
                     Name = "client",
                     NormalizedName = "client"
-                }
+                },
+                 new Role
+                 {
+                     Id = new Guid("4558E034-03AF-4D30-819F-9A24CB81C942"),
+                     Name = "agencyManager",
+                     NormalizedName = "agencyManager"
+                 },
+                  new Role
+                  {
+                      Id = new Guid("C10F83B0-9008-468B-B931-5E73FF416337"),
+                      Name = "busManager",
+                      NormalizedName = "busManager"
+                  },
+                   new Role
+                   {
+                       Id = new Guid("862B8016-7786-4CF2-BCB1-A4AAC017FF2C"),
+                       Name = "carManager",
+                       NormalizedName = "carManager"
+                   },
+                   new Role
+                   {
+                       Id = new Guid("292DCAF2-AADC-493A-8F19-E7905AB98299"),
+                       Name = "hotelManager",
+                       NormalizedName = "hotelManager"
+                   }
                 );
             modelBuilder.Entity<Agency>().HasData(
             new Agency
@@ -141,6 +203,8 @@ namespace EasyTravel.Infrastructure.Data
                YearsOfExperience = 5,
                Availability = true,
                HourlyRate = 50.00m,
+               PreferredEvents = "marriage",
+               PreferredLocations = "dhaka,sylhet",
                Status = "Active",
                SocialMediaLinks = "https://twitter.com/johndoe",
                Skills = "Photography,Video Editing,Grahphics Design",
@@ -163,6 +227,8 @@ namespace EasyTravel.Infrastructure.Data
                DateOfBirth = new DateTime(1985, 5, 15),
                LanguagesSpoken = "English, Spanish",
                Specialization = "Communication,Hiking,Swimming,Skydive",
+               PreferredLocations = "dhaka,sylhet",
+               PreferredEvents = "citytour,museumtour,hilltracking",
                YearsOfExperience = 5,
                LicenseNumber = "ABC123456",
                Availability = true,
@@ -173,7 +239,10 @@ namespace EasyTravel.Infrastructure.Data
            });
 
             #region Hotel Booking Realated 
-
+            modelBuilder.Entity<HotelBooking>()
+                .ToTable("HotelBookings");
+            modelBuilder.Entity<Room>()
+             .ToTable("Rooms");
             modelBuilder.Entity<Hotel>(entity =>
             {
                 // Configure primary key

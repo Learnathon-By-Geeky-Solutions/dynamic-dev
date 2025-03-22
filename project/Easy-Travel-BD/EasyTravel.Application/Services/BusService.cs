@@ -3,11 +3,13 @@ using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace EasyTravel.Application.Services
 {
@@ -37,8 +39,6 @@ namespace EasyTravel.Application.Services
                     bus.Seats.Add(seat);
                 }
             }
-
-           
             _applicationUnitOfWork1.BusRepository.Addbus(bus);
             _applicationUnitOfWork1.Save();
         }
@@ -49,12 +49,29 @@ namespace EasyTravel.Application.Services
 
         }
 
+
+
+        public Bus GetseatBusById(Guid busId)
+        {
+            // Ensure that the Bus entity and its associated Seats are eagerly loaded
+            var bus = _applicationUnitOfWork1.BusRepository
+                            .GetBuses()  // Returns IQueryable<Bus>
+                            .Include(b => b.Seats)  // Eagerly load Seats
+                            .FirstOrDefault(b => b.Id == busId); // Get the bus by busId
+
+            return bus;
+        }
+
+
+
         public Bus GetBusById(Guid BusId)
         {
            var bus= _applicationUnitOfWork1.BusRepository.GetById(BusId);
 
             return bus;
         }
+
+     
 
         public void UpdateBus(Bus bus)
         {
@@ -70,6 +87,44 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork1.Save();
 
         }
+
+        public void SaveBooking(BusBooking booking, List<Guid> seatIds)
+        {
+            // Start a transaction to ensure both operations succeed or fail together
+            using (var transaction = new TransactionScope())
+            {
+                try
+                {
+                    // Save the booking
+                    _applicationUnitOfWork1.BusBookingRepository.Add(booking);
+                    _applicationUnitOfWork1.Save();
+
+                    // Update the seat availability
+                    foreach (var seatId in seatIds)
+                    {
+                        var seat = _applicationUnitOfWork1.SeatRepository.GetById(seatId);
+                        if (seat != null)
+                        {
+                            seat.IsAvailable = false;
+                            _applicationUnitOfWork1.SeatRepository.Edit(seat);
+                            _applicationUnitOfWork1.Save();
+                        }
+                    }
+
+                    // Commit the transaction
+                    transaction.Complete();
+                }
+                catch
+                {
+                    // Transaction will automatically roll back if an exception occurs
+                    throw;
+                }
+            }
+        }
+
+
+
+
 
     }
 }
