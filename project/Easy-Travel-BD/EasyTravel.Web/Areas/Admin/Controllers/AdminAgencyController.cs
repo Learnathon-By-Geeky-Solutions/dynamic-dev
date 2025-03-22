@@ -33,6 +33,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _agencyService.Create(model);
+                TempData["success"] = "The agency has been created successfully";
                 return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
             }
             return View();
@@ -55,6 +56,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _agencyService.Update(model);
+                TempData["success"] = "The agency has been updated successfully";
+
                 return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
             }
             return View();
@@ -65,6 +68,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             
             if (id == Guid.Empty)
             {
+                TempData["error"] = "The agency not found";
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             var agency = _agencyService.Get(id);
@@ -76,9 +80,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             
             if (model.Id == Guid.Empty)
             {
+                TempData["error"] = "The agency not found";
+
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             _agencyService.Delete(model.Id);
+            TempData["success"] = "The agency was deleted";
+
             return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
         }
     }
