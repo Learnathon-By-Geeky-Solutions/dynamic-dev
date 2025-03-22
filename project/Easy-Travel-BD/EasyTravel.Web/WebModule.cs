@@ -40,17 +40,29 @@ namespace EasyTravel.Web
             .InstancePerLifetimeScope();
             builder.RegisterType<CarRepository>().As<ICarRepository>()
              .InstancePerLifetimeScope();
+            builder.RegisterType<BusBookingRepository>().As<IBusBookingRepository>()
+           .InstancePerLifetimeScope();
+            builder.RegisterType<SeatRepository>().As<ISeatRepository>()
+           .InstancePerLifetimeScope();
+
+            builder.RegisterType<CarBookingRepository>().As<ICarBookingRepository>()
+         .InstancePerLifetimeScope();
+
             builder.RegisterType<AgencyRepository>().As<IAgencyRepository>()
             .InstancePerLifetimeScope();
             builder.RegisterType<PhotographerRepository>().As<IPhotographerRepository>()
             .InstancePerLifetimeScope();
             builder.RegisterType<GuideRepository>().As<IGuideRepository>()
             .InstancePerLifetimeScope();
+            builder.RegisterType<PhotographerBookingRepository>().As<IPhotographerBookingRepository>()
+            .InstancePerLifetimeScope();
+            builder.RegisterType<GuideBookingRepository>().As<IGuideBookingRepository>()
+                .InstancePerLifetimeScope();
             builder.RegisterType<BusService>().As<IBusService>()
             .InstancePerLifetimeScope();
             builder.RegisterType<CarService>().As<ICarService>()
            .InstancePerLifetimeScope();
-            builder.RegisterType<UserService>().As<IUserService>()
+            builder.RegisterType<AdminUserService>().As<IAdminUserService>()
             .InstancePerLifetimeScope();
             builder.RegisterType<AdminAgencyService>().As<IAdminAgencyService>()
             .InstancePerLifetimeScope();
@@ -82,7 +94,20 @@ namespace EasyTravel.Web
                  .InstancePerLifetimeScope();
             builder.RegisterType<HotelBookingService>().As<IHotelBookingService>()
                .InstancePerLifetimeScope();
-               
+            builder.RegisterType<AuthService>().As<IAuthService>()
+               .InstancePerLifetimeScope();
+            builder.RegisterType<LoginService>().As<ILoginService>()
+               .InstancePerLifetimeScope();
+            builder.RegisterType<RegisterService>().As<IRegisterService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<AdminRoleService>().As<IAdminRoleService>()
+               .InstancePerLifetimeScope();
+            builder.RegisterType<PhotographerBookingService>().As<IPhotographerBookingService>()
+              .InstancePerLifetimeScope();
+            builder.RegisterType<GuideBookingService>().As<IGuideBookingService>()
+              .InstancePerLifetimeScope();
+            builder.RegisterType<AgencyService>().As<IAgencyService>()
+                .InstancePerLifetimeScope();
             base.Load(builder);
         }
 

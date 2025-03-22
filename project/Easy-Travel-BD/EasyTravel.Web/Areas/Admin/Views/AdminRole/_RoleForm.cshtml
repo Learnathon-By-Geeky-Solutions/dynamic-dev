@@ -1,0 +1,44 @@
+﻿@using EasyTravel.Domain
+@model Role
+@{
+    var action = ViewData["Title"];
+    bool isDisabled = false;
+    if((string?)action == "Delete")
+    {
+        isDisabled = true;
+    }
+
+}
+<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
+    <h2 class="card-title text-center">@action Role</h2>
+    <form asp-antiforgery=true method="post" asp-action="@action">
+        <div class="form-group">
+            <label for="Name" style="width:100%">
+                Name
+                <input asp-for="Name" class="form-control" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="NormalizedName" style="width:100%">
+                NormalizedName
+                <input asp-for="NormalizedName" class="form-control" required="@(isDisabled ? null : "required")"
+                       disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="NormalizedName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="ConcurrencyStamp" style="width:100%">
+                ConcurrencyStamp
+                <input asp-for="ConcurrencyStamp" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
+            </label>
+            <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary me-2">@action</button>
+            <a asp-area="Admin" asp-controller="AdminRole" asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+</div>

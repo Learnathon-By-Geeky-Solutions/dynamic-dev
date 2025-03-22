@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class Seat
+    public class Seat: IEntity<Guid>
     {
         [Key]
         public Guid Id { get; set; }
@@ -20,7 +20,7 @@ namespace EasyTravel.Domain.Entites
 
         [Required]
         public bool IsAvailable { get; set; } // E.g., true for available, false for sold
-        public Bus Bus { get; set; }
+        public Bus? Bus { get; set; }
 
 
 

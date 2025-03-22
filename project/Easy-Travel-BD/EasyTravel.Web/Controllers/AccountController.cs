@@ -1,116 +1,112 @@
-﻿
+﻿using Microsoft.AspNetCore.Http.Extensions;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
-
-
+using EasyTravel.Application.Services;
+using System.Threading.Tasks;
+using AutoMapper;
 
 namespace EasyTravel.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        //private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<User> userManager,SignInManager<User> signInManager)
+        private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
+        public AccountController(SignInManager<User> signInManager, IAuthService authService,IMapper mapper)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
-            //_roleManager = roleManager;
+            _authService = authService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult Login(string? returnUrl = null)
+        public IActionResult Login()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (_signInManager.IsSignedIn(User))
             {
-                return Redirect(returnUrl ?? Url.Content("~/"));
+                var refererUrl = HttpContext.Session.GetString("LastVisitedPage");
+                return Redirect(string.IsNullOrEmpty(refererUrl) ? "/Home/Index" : refererUrl);
             }
             return View();
         }
 
-        [HttpPost,ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
-        {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-            returnUrl ??= Url.Content("~/");
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
-                {
-                    var result = await _signInManager.PasswordSignInAsync(model.Email!, model.Password!, model.RememberMe, false);
-                    if (result.Succeeded)
-                    {
-                        var role = await _userManager.GetRolesAsync(user);
-                        if (role.Contains("admin"))
-                        {
-                            return RedirectToAction("Index", "AdminDashboard", new { area = "Admin" });
-                        }
-                        if (Url.IsLocalUrl(returnUrl))
-                        {
-                            return Redirect(returnUrl);
-                        }
-                        return RedirectToAction("Index", "Home", new { area = string.Empty });
-                    }
-                    ModelState.AddModelError(string.Empty, "Invalid Login attemp !");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "User not found! ");
-                }
-            }
-            return View(model);
+        [HttpPost, ValidateAntiForgeryToken]
 
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var (success, errorMessage, redirectUrl) = await _authService.LoginService.AuthenticateUserAsync(model.Email, model.Password, false);
+
+            if (!success)
+            {
+                ModelState.AddModelError(string.Empty, errorMessage);
+                return View(model);
+            }
+            if (string.IsNullOrEmpty(redirectUrl))
+            {
+                var refererUrl = HttpContext.Session.GetString("LastVisitedPage");
+                return Redirect(string.IsNullOrEmpty(refererUrl) ? "/Home/Index" : refererUrl);
+            }
+            return Redirect(redirectUrl);
         }
 
         [HttpGet]
-        public IActionResult Register(string? returnUrl = null)
+        public IActionResult Register()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             if (_signInManager.IsSignedIn(User))
             {
-                return Redirect(returnUrl ?? Url.Content("~/"));
+                var refererUrl = HttpContext.Session.GetString("LastVisitedPage");
+                return Redirect(string.IsNullOrEmpty(refererUrl) ? "/Home/Index" : refererUrl);
             }
             return View();
         }
-
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-            if (ModelState.IsValid)
-            {
-                var user = new User { FirstName = model.FirstName, LastName = model.LastName, DateOfBirth = model.DateOfBirth, Gender = model.Gender, Email = model.Email,UserName = model.Email };
-                var result = await _userManager.CreateAsync(user,model.Password);
 
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "client");
-                    return RedirectToAction("Login", "Account", new {area = string.Empty});
-                }
-                
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = _mapper.Map<User>(model);
+            user.UserName = model.Email;
+            var (success, errorMessage) = await _authService.RegisterService.RegisterUserAsync(user, model.Password);
+
+            if (!success)
+            {
+                ModelState.AddModelError(string.Empty, errorMessage);
+                return View(model);
             }
 
-            return View(model);
-           
+            return RedirectToAction("Login", "Account");
         }
 
         public async Task<IActionResult> Logout()
         {
-            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account", new { area = string.Empty });
+            string? refererUrl = HttpContext.Session.GetString("LastVisitedPage");
+            if (!string.IsNullOrEmpty(refererUrl))
+            {
+                if (refererUrl.Contains("Admin"))
+                {
+                    HttpContext.Session.Remove("LastVisitedPage");
+                    refererUrl = "/Home/Index";
+                }
+                return Redirect(refererUrl);
+
+            }
+            return Redirect("/Home/Index");
         }
     }
 }
