@@ -102,6 +102,7 @@ namespace EasyTravel.Web.Controllers
             pgBooking.Photographer = photographer;
             var agency = _agencyService.Get(photographer.AgencyId);
             pgBooking.AgencyName = agency.Name;
+            pgBooking.EventDate = DateTime.Parse(_sessionService.GetString("EventDate"));
             pgBooking.StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"));
             pgBooking.EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"));
             pgBooking.TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"));
