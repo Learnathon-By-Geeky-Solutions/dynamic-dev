@@ -23,6 +23,8 @@ namespace EasyTravel.Application.Factories
                 Bio = string.Empty,
                 DateOfBirth = DateTime.MinValue,
                 LanguagesSpoken = string.Empty,
+                PreferredLocations = string.Empty,
+                PreferredEvents = string.Empty,
                 LicenseNumber = string.Empty,
                 Specialization = string.Empty,
                 YearsOfExperience = 0,

@@ -15,5 +15,6 @@ namespace EasyTravel.Domain.Services
         Car GetCarById(Guid CarId);
         void UpdateCar(Car car);
         void DeleteBus(Car car);
+        void SaveBooking(CarBooking booking, Guid CarId);
     }
 }

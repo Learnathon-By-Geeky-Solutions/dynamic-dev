@@ -40,6 +40,8 @@ namespace EasyTravel.Domain.Entites
         [StringLength(500)]
 
         public required string LanguagesSpoken { get; set; }
+        public required string PreferredLocations { get; set; }
+        public required string PreferredEvents { get; set; }
 
         public required string Specialization { get; set; }
 

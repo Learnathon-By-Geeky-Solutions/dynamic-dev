@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <form asp-action="Index" method="post" id="bookingForm">
+            <form asp-controller="Bus" asp-action="BusConfirmBooking" method="post" id="bookingForm">
                 <div class="card mb-4">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
@@ -70,27 +70,51 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label asp-for="BookingForm.PassengerName">Passenger Name <span class="text-danger">*</span></label>
-                                <input asp-for="BookingForm.PassengerName" class="form-control" />
+                                <label asp-for="BookingForm.PassengerName">
+                                    Passenger Name
+                                    <input asp-for="BookingForm.PassengerName" class="form-control" />
+                                </label>
                                 <span asp-validation-for="BookingForm.PassengerName" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="BookingForm.Email">Email <span class="text-danger">*</span></label>
-                                <input asp-for="BookingForm.Email" class="form-control" />
+                                <label asp-for="BookingForm.Email">
+                                    Email
+                                    <input asp-for="BookingForm.Email" class="form-control" />
+                                </label>
+
                                 <span asp-validation-for="BookingForm.Email" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="BookingForm.PhoneNumber">Phone Number <span class="text-danger">*</span></label>
-                                <input asp-for="BookingForm.PhoneNumber" class="form-control" />
+                                <label asp-for="BookingForm.PhoneNumber">
+                                    Phone Number
+
+                                    <input asp-for="BookingForm.PhoneNumber" class="form-control" />
+                                </label>
+
                                 <span asp-validation-for="BookingForm.PhoneNumber" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" />
-                <button type="submit" class="btn btn-success w-100" id="submitButton" >
-                    PROCEED TO PAYMENT
+
+               
+                @foreach (var seat in Model.SelectedSeatNumbers)
+                {
+                    <input type="hidden" name="SelectedSeatNumbers" value="@seat" />
+                }
+
+                @foreach (var seatId in Model.SelectedSeatIds)
+                {
+                    <input type="hidden" name="SelectedSeatIds" value="@seatId" />
+                }
+
+                <input type="hidden" name="BusId" value="@Model.BusId" />
+                <input type="hidden" name="BookingForm.TotalAmount" value="@Model.TotalAmount" />
+                <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" />
+
+                <button type="submit" class="btn btn-success w-100" id="submitButton">
+                    Confirm Booking
                 </button>
             </form>
         </div>
@@ -123,49 +147,3 @@
         </div>
     </div>
 </div>
-
-@section Styles {
-    <style>
-        .seat-map {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 20px;
-        }
-
-        .seat {
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-            .seat.occupied {
-                background-color: #f0f0f0;
-                cursor: not-allowed;
-                color: #999;
-            }
-
-            .seat.selected {
-                background-color: #28a745;
-                color: white;
-                border-color: #28a745;
-            }
-
-        .selected-seats-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-
-        .seat-tag {
-            background-color: #e9ecef;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.9em;
-        }
-    </style>
-}
-
-
