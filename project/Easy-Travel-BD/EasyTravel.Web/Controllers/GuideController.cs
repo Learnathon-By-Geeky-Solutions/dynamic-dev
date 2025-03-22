@@ -103,6 +103,7 @@ namespace EasyTravel.Web.Controllers
             guideBooking.Guide = guide;
             var agency = _agencyService.Get(guide.AgencyId);
             guideBooking.AgencyName = agency.Name;
+            guideBooking.EventDate = DateTime.Parse(_sessionService.GetString("EventDate"));
             guideBooking.StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"));
             guideBooking.EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"));
             guideBooking.TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"));
