@@ -15,6 +15,8 @@ namespace EasyTravel.Domain.Entites
 
             [Required]
             public Guid CarId { get; set; }
+            [Required]
+            public Guid UserId { get; set; }
 
             [Required]
             [MaxLength(100)]
@@ -33,6 +35,7 @@ namespace EasyTravel.Domain.Entites
             public decimal TotalAmount { get; set; }
 
             public DateTime BookingDate { get; set; }
+            public User User { get; set; }
             public Car? Car { get; set; }
 
 
