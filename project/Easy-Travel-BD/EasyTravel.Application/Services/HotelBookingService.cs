@@ -20,7 +20,9 @@ namespace EasyTravel.Application.Services
 
         public void Create(HotelBooking entity)
         {
-            throw new NotImplementedException();
+            _applicationunitOfWork.HotelBookingRepository.Add(entity);
+            _applicationunitOfWork.Save();
+
         }
 
         public void Delete(Guid id)

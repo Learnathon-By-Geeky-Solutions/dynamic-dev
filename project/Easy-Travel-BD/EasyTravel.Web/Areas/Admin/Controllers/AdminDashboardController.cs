@@ -7,9 +7,9 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     [Area("Admin"),Authorize(Roles = "admin,agencyManager,busManager,carManager,hotelManager")]
     public class AdminDashboardController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly IAdminUserService _userService;
         private readonly ISessionService _sessionService;
-        public AdminDashboardController(IUserService userService, ISessionService sessionService)
+        public AdminDashboardController(IAdminUserService userService, ISessionService sessionService)
         {
             _userService = userService;
             _sessionService = sessionService;

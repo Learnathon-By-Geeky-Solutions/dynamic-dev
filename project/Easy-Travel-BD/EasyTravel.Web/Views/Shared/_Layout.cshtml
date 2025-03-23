@@ -13,9 +13,12 @@
     <link rel="stylesheet" href="~/css/Photographer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Easy-Travel-BD.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-   
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
     @RenderSection("Styles", required: false)
+    @RenderSection("PhotographerStyles", required: false)
+    @RenderSection("GuideStyles", required: false)
 
 </head>
 <body>
@@ -77,6 +80,7 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <partial name="_Notification" />
             @RenderBody()
         </main>
     </div>

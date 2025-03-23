@@ -1,0 +1,148 @@
+﻿@inject IHttpContextAccessor _httpContextAccessor
+@model SearchFormModel
+@{
+    var startDate = DateTime.Today;
+    var endDate = startDate.AddDays(30);
+    var formattedStartDate = startDate.ToString("yyyy-MM-dd");
+    var formattedEndDate = endDate.ToString("yyyy-MM-dd");
+    var formattedStartTime = DateTime.Now.ToString("HH:mm");
+    var type = @_httpContextAccessor.HttpContext.Session.GetString("LastVisitedPage");
+    if (type.Contains("Guide") == true)
+    {
+        type = "Guides";
+    }
+    else
+    {
+        type = "Photographers";
+    }
+}
+
+<form class="mt-5" method="post" asp-area="" asp-antiforgery="true" asp-action="Index" asp-controller="Search">
+    <div class="shadow rounded-2" id="myForm">
+        <h2 class="text-white bg-danger text-center py-4 my-3 rounded">Search @type</h2>
+        <div class="my-5 py-5">
+            <div class="row justify-content-center">
+                <!-- Event Date -->
+                <div class="col-3 form-group">
+                    <label asp-for="EventDate" class="text-secondary fw-bold">
+                        Event Date
+                        <input asp-for="EventDate" type="date" class="form-control" id="EventDate"
+                               value="@formattedStartDate" min="@formattedStartDate" max="@formattedEndDate">
+                    </label>
+                </div>
+
+                <!-- Editable Start Time -->
+                <div class="col-3 form-group">
+                    <label asp-for="StartTime" class="text-secondary fw-bold">
+                        Start Time
+                        <input asp-for="StartTime" type="time" class="form-control" id="StartTime"
+                               value="@formattedStartTime">
+                    </label>
+                </div>
+
+                <!-- Hours Selection -->
+                <div class="col-3 form-group hour-class-container position-relative">
+                    <button type="button" class="btn btn-primary custom hour-class-toggle" aria-expanded="false">
+                        Select time in hours
+                        <div class="selected-values">1 hour</div>
+                    </button>
+                    <div class="collapse hour-class-options position-absolute bg-white p-2 rounded shadow">
+                        <div class="input-group">
+                            <label asp-for="TimeInHour" class="input-group-text">
+                                Number of Hours
+                                <input asp-for="TimeInHour" id="TimeInHour" class="form-control" value="1" min="1" max="24" readonly>
+                            </label>
+                            <button type="button" class="btn btn-secondary increment">+</button>
+                            <button type="button" class="btn btn-secondary decrement">-</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic End Time -->
+            <div class="my-3">
+                <div class="form-group w-25 mx-auto">
+                    <label asp-for="EndTime" class="text-secondary fw-bold">
+                        End Time
+                        <input asp-for="EndTime" type="time" class="form-control" id="EndTime" readonly>
+                    </label>
+                </div>
+
+                <div class="w-25 mx-auto my-2">
+                    <button type="submit" class="btn btn-danger" style="width:150px">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hourClassToggle = document.querySelector('.hour-class-toggle');
+        const hourClassOptions = document.querySelector('.hour-class-options');
+        const numHoursInput = document.getElementById('TimeInHour');
+        const incrementButton = document.querySelector('.increment');
+        const decrementButton = document.querySelector('.decrement');
+        const selectedValuesSpan = document.querySelector('.selected-values');
+        const startTimeInput = document.getElementById('StartTime');
+        const endTimeInput = document.getElementById('EndTime');
+
+        // Toggle hour dropdown and update accessibility
+        hourClassToggle.addEventListener('click', function () {
+            const isExpanded = hourClassOptions.classList.toggle('show');
+            hourClassToggle.setAttribute('aria-expanded', isExpanded);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            if (!hourClassToggle.contains(event.target) && !hourClassOptions.contains(event.target)) {
+                hourClassOptions.classList.remove('show');
+                hourClassToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Update hour selection text
+        function updateSelectedValues() {
+            const numHours = numHoursInput.value;
+            selectedValuesSpan.textContent = `${numHours} ${numHours == 1 ? 'hour' : 'hours'}`;
+        }
+
+        // Update End Time
+        function updateEndTime() {
+            const [startHours, startMinutes] = startTimeInput.value.split(":").map(Number);
+            const hoursToAdd = parseInt(numHoursInput.value) || 0;
+
+            const newTime = new Date();
+            newTime.setHours(startHours + hoursToAdd, startMinutes);
+
+            const endHours = newTime.getHours().toString().padStart(2, '0');
+            const endMinutes = newTime.getMinutes().toString().padStart(2, '0');
+            endTimeInput.value = `${endHours}:${endMinutes}`;
+        }
+
+        // Increment hours
+        incrementButton.addEventListener('click', function () {
+            if (parseInt(numHoursInput.value) < 24) {
+                numHoursInput.value = parseInt(numHoursInput.value) + 1;
+                updateSelectedValues();
+                updateEndTime();
+            }
+        });
+
+        // Decrement hours
+        decrementButton.addEventListener('click', function () {
+            if (parseInt(numHoursInput.value) > 1) {
+                numHoursInput.value = parseInt(numHoursInput.value) - 1;
+                updateSelectedValues();
+                updateEndTime();
+            }
+        });
+
+        // Sync End Time when Start Time changes
+        startTimeInput.addEventListener('input', updateEndTime);
+
+        // Initial Setup
+        updateSelectedValues();
+        updateEndTime();
+    });
+</script>

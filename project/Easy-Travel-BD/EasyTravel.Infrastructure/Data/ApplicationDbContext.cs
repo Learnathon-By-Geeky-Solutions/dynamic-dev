@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EasyTravel.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
+    public class ApplicationDbContext : IdentityDbContext<User,Role,Guid>
     {
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
@@ -23,6 +23,7 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<HotelBooking>  HotelBookings { get; set; }
+        public DbSet<PhotographerBooking> PhotographerBookings {  get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<BusBooking> BusBookings { get; set;}
         public DbSet<CarBooking> CarBookings { get; set; }
@@ -100,7 +101,28 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Guide>()
                 .Property(a => a.Status)
                 .HasDefaultValue("Active");
-
+            modelBuilder.Entity<GuideBooking>()
+            .Property(a => a.Id)
+            .ValueGeneratedOnAdd()
+            .HasDefaultValueSql("NEWID()");
+            modelBuilder.Entity<GuideBooking>()
+                .Property(pg => pg.CreatedAt)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<GuideBooking>()
+             .Property(b => b.TotalAmount)
+             .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<PhotographerBooking>()
+               .Property(a => a.Id)
+               .ValueGeneratedOnAdd()
+               .HasDefaultValueSql("NEWID()");
+            modelBuilder.Entity<PhotographerBooking>()
+                .Property(pg => pg.CreatedAt)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<PhotographerBooking>()
+             .Property(b => b.TotalAmount)
+             .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Guide>()
                 .Property(g => g.HourlyRate)
@@ -115,40 +137,39 @@ namespace EasyTravel.Infrastructure.Data
                 .ValueGeneratedOnAdd()
                 .HasDefaultValue(new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"));
 
-
-            modelBuilder.Entity<IdentityRole<Guid>>()
+            modelBuilder.Entity<Role>()
                 .HasData(
-                new IdentityRole<Guid>
+                new Role
                 {
                     Id = new Guid("b3c9d8f4-1a2b-4c5d-9e6f-7a8b9c0d1e2f"),
                     Name = "admin",
                     NormalizedName = "admin"
                 },
-                new IdentityRole<Guid>
+                new Role
                 {
                     Id = new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"),
                     Name = "client",
                     NormalizedName = "client"
                 },
-                 new IdentityRole<Guid>
+                 new Role
                  {
                      Id = new Guid("4558E034-03AF-4D30-819F-9A24CB81C942"),
                      Name = "agencyManager",
                      NormalizedName = "agencyManager"
                  },
-                  new IdentityRole<Guid>
+                  new Role
                   {
                       Id = new Guid("C10F83B0-9008-468B-B931-5E73FF416337"),
                       Name = "busManager",
                       NormalizedName = "busManager"
                   },
-                   new IdentityRole<Guid>
+                   new Role
                    {
                        Id = new Guid("862B8016-7786-4CF2-BCB1-A4AAC017FF2C"),
                        Name = "carManager",
                        NormalizedName = "carManager"
                    },
-                   new IdentityRole<Guid>
+                   new Role
                    {
                        Id = new Guid("292DCAF2-AADC-493A-8F19-E7905AB98299"),
                        Name = "hotelManager",
@@ -182,6 +203,8 @@ namespace EasyTravel.Infrastructure.Data
                YearsOfExperience = 5,
                Availability = true,
                HourlyRate = 50.00m,
+               PreferredEvents = "marriage",
+               PreferredLocations = "dhaka,sylhet",
                Status = "Active",
                SocialMediaLinks = "https://twitter.com/johndoe",
                Skills = "Photography,Video Editing,Grahphics Design",
@@ -204,6 +227,8 @@ namespace EasyTravel.Infrastructure.Data
                DateOfBirth = new DateTime(1985, 5, 15),
                LanguagesSpoken = "English, Spanish",
                Specialization = "Communication,Hiking,Swimming,Skydive",
+               PreferredLocations = "dhaka,sylhet",
+               PreferredEvents = "citytour,museumtour,hilltracking",
                YearsOfExperience = 5,
                LicenseNumber = "ABC123456",
                Availability = true,
@@ -326,12 +351,12 @@ namespace EasyTravel.Infrastructure.Data
                 entity.HasKey(e => e.Id);
 
                 // Configure relationships
-                entity.HasOne(e => e.User)
+                entity.HasOne<User>()
                       .WithMany()
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(e => e.Hotel)
+                entity.HasOne<Hotel>()
                       .WithMany(h => h.HotelBookings)
                       .HasForeignKey(e => e.HotelId)
                       .OnDelete(DeleteBehavior.Cascade);
@@ -352,6 +377,7 @@ namespace EasyTravel.Infrastructure.Data
                 entity.Property(e => e.RoomIdsJson)
                       .IsRequired();
             });
+
 
             #endregion Hotel Booking
             // Seed data for Hotel
@@ -398,7 +424,7 @@ namespace EasyTravel.Infrastructure.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(_connectionString, (x) => x.MigrationsAssembly(_migrationAssembly));
+                optionsBuilder.UseSqlServer(_connectionString, x => x.MigrationsAssembly(_migrationAssembly));
             }
 
             base.OnConfiguring(optionsBuilder);
