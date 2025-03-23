@@ -6,7 +6,7 @@
 }
 <div class="border-2 border-black">
     <h2 class="card-title text-center bg-secondary rounded py-3">User Booking Form</h2>
-    <form asp-antiforgery=true method="post" asp-action="BookingForm" asp-controller="User">
+    <form asp-antiforgery=true method="post" asp-action="BookingForm" asp-controller="Booking">
         <div class="row shadow-sm rounded-2 px-3 py-4">
             @if (User.Identity?.IsAuthenticated == false)
             {
