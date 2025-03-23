@@ -22,22 +22,20 @@ namespace EasyTravel.Infrastructure.Repositories
 
         public void Addbus(Bus bus)
         {
-            //_context.Buses.Add(bus);
+            _context.Buses.Add(bus);
         }
 
         public IEnumerable<Bus> GetAllBuses()
         {
-            throw new NotImplementedException();
 
-            //return _context.Buses.ToList();
+            return _context.Buses.ToList();
         }
 
 
         public IQueryable<Bus> GetBuses()
         {
-            throw new NotImplementedException();
 
-            //return _context.Buses.AsQueryable();
+            return _context.Buses.AsQueryable();
         }
     }
 }
