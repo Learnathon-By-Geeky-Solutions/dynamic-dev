@@ -22,13 +22,12 @@ namespace EasyTravel.Infrastructure.Repositories
         public void AddCar(Car car)
         {
 
-            //_context.Cars.Add(car);
+            _context.Cars.Add(car);
         }
 
         public IEnumerable<Car> GetAllCars()
         {
-            //return _context.Cars.ToList();
-            throw new NotImplementedException();
+            return _context.Cars.ToList();
         }
     }
 }

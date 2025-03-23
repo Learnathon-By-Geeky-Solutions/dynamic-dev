@@ -25,7 +25,7 @@ namespace EasyTravel.Domain.Entites
         public DateTime AddDate { get; set; }
 
         public List<Photographer>? Photographers { get; set; }
-        public List<Photographer>? Guides { get; set; }
+        public List<Guide>? Guides { get; set; }
 
     }
 }
