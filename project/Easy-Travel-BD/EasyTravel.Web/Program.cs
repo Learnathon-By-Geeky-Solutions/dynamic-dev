@@ -121,6 +121,8 @@ try
     app.UseHttpsRedirection();
     app.UseRouting();
     app.UseSession();
+
+    // Add this in your Program.cs where you configure app
     app.MapHub<SeatHub>("/seatHub");
 
     app.UseAuthentication();
