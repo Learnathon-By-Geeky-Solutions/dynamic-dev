@@ -21,8 +21,9 @@ namespace EasyTravel.Web.Mappings
         .ForMember(dest => dest.Id, opt => opt.Ignore())
         .ReverseMap();
             CreateMap<User, BookingFormViewModel>().ReverseMap();
-            CreateMap<User, GuideBookingViewModel>().ReverseMap();
             CreateMap<User, PhotographerViewModel>().ReverseMap();
+            CreateMap<User, GuideBookingViewModel>().ReverseMap();
+            CreateMap<User, PhotographerBookingViewModel>().ReverseMap();
             CreateMap<BookingFormViewModel, GuideBookingViewModel>().ReverseMap();
             CreateMap<GuideBookingViewModel, GuideBooking>()
               .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
