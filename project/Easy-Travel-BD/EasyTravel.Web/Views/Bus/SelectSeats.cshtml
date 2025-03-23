@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-         
+
 
 
             <div class="seat-container text-center">
@@ -197,14 +197,49 @@
 </style>
 
 @section Scripts {
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
     <script>
         let selectedSeats = new Set();
         let selectedSeatIds = new Set();
         const maxSeats = 4;
         const pricePerSeat = @Model.Bus.Price;
+        const busId = '@Model.Bus.Id';
+        let connection;
+
+        // Initialize SignalR connection
+        async function initializeSignalR() {
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("/seatHub")
+                .withAutomaticReconnect()
+                .build();
+
+            connection.on("SeatStatusChanged", (seatNumber, seatId, status) => {
+                const seatElement = document.querySelector(`[data-seat-number="${seatNumber}"]`);
+                if (!seatElement || selectedSeats.has(seatNumber)) return;
+
+                if (status === "selected") {
+                    seatElement.classList.remove("available");
+                    seatElement.classList.add("booked");
+                    seatElement.disabled = true;
+                } else if (status === "available") {
+                    seatElement.classList.remove("booked");
+                    seatElement.classList.add("available");
+                    seatElement.disabled = false;
+                }
+            });
+
+            try {
+                await connection.start();
+                console.log("SignalR Connected!");
+                await connection.invoke("JoinBusGroup", busId);
+            } catch (err) {
+                console.error("SignalR Connection Error: ", err);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", initializeSignalR);
 
         function toggleSeat(seatElement) {
-            // Safety check - if seat is booked, don't allow selection
             if (seatElement.classList.contains('booked')) return;
 
             const seatNumber = seatElement.getAttribute('data-seat-number');
@@ -217,15 +252,22 @@
                 seatElement.classList.add('available');
                 selectedSeats.delete(seatNumber);
                 selectedSeatIds.delete(seatId);
+
+                if (connection.state === signalR.HubConnectionState.Connected) {
+                    connection.invoke("SeatUnselected", busId, seatNumber, seatId).catch(err => console.error(err));
+                }
             } else {
                 if (selectedSeats.size < maxSeats) {
                     seatElement.classList.remove('available');
                     seatElement.classList.add('selected');
                     selectedSeats.add(seatNumber);
                     selectedSeatIds.add(seatId);
+
+                    if (connection.state === signalR.HubConnectionState.Connected) {
+                        connection.invoke("SeatSelected", busId, seatNumber, seatId).catch(err => console.error(err));
+                    }
                 } else {
                     alert('You can only select up to ' + maxSeats + ' seats.');
-                    return;
                 }
             }
 
@@ -233,13 +275,11 @@
         }
 
         function updateDisplay() {
-            const selectedSeatsDisplay = document.getElementById('selectedSeatsDisplay');
-            selectedSeatsDisplay.textContent = selectedSeats.size > 0
+            document.getElementById('selectedSeatsDisplay').textContent = selectedSeats.size > 0
                 ? Array.from(selectedSeats).join(', ')
                 : 'None';
 
-            const totalAmount = selectedSeats.size * pricePerSeat;
-            document.getElementById('totalAmountDisplay').textContent = totalAmount.toFixed(2);
+            document.getElementById('totalAmountDisplay').textContent = (selectedSeats.size * pricePerSeat).toFixed(2);
         }
 
         function continueToBooking() {
