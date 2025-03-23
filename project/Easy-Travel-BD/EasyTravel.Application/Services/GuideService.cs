@@ -30,18 +30,22 @@ namespace EasyTravel.Application.Services
 
         public async Task<IEnumerable<Guide>> GetGuideListAsync(GuideBooking guideBooking)
         {
-            var bookings = await _guideBookingService.GetBookingListAsync(guideBooking);
+            var bookings = await _applicationUnitOfWork.GuideBookingRepository.GetAsync(e =>
+            e.EventDate == guideBooking.EventDate && e.StartTime > DateTime.Now.TimeOfDay && e.StartTime >= guideBooking.StartTime && e.StartTime <= guideBooking.EndTime || e.EndTime >= guideBooking.StartTime && e.EndTime <= guideBooking.EndTime);
+            var guides = await _applicationUnitOfWork.GuideRepository.GetAsync(e => e.Availability == true);
             if (bookings.ToList().Count() == 0)
             {
-                return await _applicationUnitOfWork.GuideRepository.GetAsync(e => e.Availability == true);
+                return guides;
             }
-            var guidelist = new List<Guide>();
-            foreach (var booking in bookings)
+            var guideList = new List<Guide>();
+            foreach (var guide in guides)
             {
-                var guidemodel = await _applicationUnitOfWork.GuideRepository.GetByIdAsync(booking.Id);
-                guidelist.Add(guidemodel);
+                if (bookings.Any(e => e.GuideId != guide.Id))
+                {
+                    guideList.Add(guide);
+                }
             }
-            return guidelist;
+            return guideList;
         }
     }
 }

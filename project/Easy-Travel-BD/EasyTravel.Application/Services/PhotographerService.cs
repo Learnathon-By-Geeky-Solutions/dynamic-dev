@@ -3,6 +3,7 @@ using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,16 +32,20 @@ namespace EasyTravel.Application.Services
 
         public async Task<IEnumerable<Photographer>> GetPhotographerListAsync(PhotographerBooking photographerBooking)
         {
-            var bookings =  await _photographerBookingService.GetBookingListAsync(photographerBooking);
+            var bookings = await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e =>
+            e.EventDate == photographerBooking.EventDate && e.StartTime > DateTime.Now.TimeOfDay && e.StartTime >= photographerBooking.StartTime && e.StartTime <= photographerBooking.EndTime || e.EndTime >= photographerBooking.StartTime && e.EndTime <= photographerBooking.EndTime);
+            var photographers = await _applicationUnitOfWork.PhotographerRepository.GetAsync(e => e.Availability == true);
             if (bookings.ToList().Count() == 0)
             {
-                return await _applicationUnitOfWork.PhotographerRepository.GetAsync(e => e.Availability == true);
+                return photographers;
             }
             var pglist = new List<Photographer>();
-            foreach(var booking in bookings)
+            foreach (var photographer in photographers)
             {
-                var pgmodel = await _applicationUnitOfWork.PhotographerRepository.GetByIdAsync(booking.Id);
-                pglist.Add(pgmodel);
+                if (bookings.Any(e => e.PhotographerId != photographer.Id))
+                {
+                    pglist.Add(photographer);
+                }
             }
             return pglist;
         }
