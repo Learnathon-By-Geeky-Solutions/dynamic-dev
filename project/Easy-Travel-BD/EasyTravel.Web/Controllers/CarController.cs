@@ -5,6 +5,7 @@ using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -39,25 +40,28 @@ namespace EasyTravel.Web.Controllers
         [HttpPost]
         public IActionResult CarBooking(CarBookingViewModel model)
         {
-
-
-            var Carbooking = new CarBooking
+            var carBooking = new CarBooking
             {
                 Id = Guid.NewGuid(),
                 CarId = model.CarId,
                 PassengerName = model.BookingForm.PassengerName,
                 Email = model.BookingForm.Email,
                 PhoneNumber = model.BookingForm.PhoneNumber,
-                TotalAmount = model.BookingForm.TotalAmount, 
+                TotalAmount = model.BookingForm.TotalAmount,
                 BookingDate = DateTime.Now,
-
             };
 
-            _carService.SaveBooking(Carbooking, model.CarId);
+            // Adding UserId to the CarBooking if the user is authenticated
+            if (User.Identity.IsAuthenticated)
+            {
+                carBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            }
 
-           
+            _carService.SaveBooking(carBooking, model.CarId);
+
             return RedirectToAction("CarConfirmBooking");
         }
+
 
         [HttpGet]
 
