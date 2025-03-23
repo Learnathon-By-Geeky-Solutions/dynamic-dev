@@ -15,6 +15,7 @@ namespace EasyTravel.Domain.Entites
 
         [Required]
         public Guid BusId { get; set; }
+        [Required]
         public Guid UserId { get; set; }
 
         [Required]
