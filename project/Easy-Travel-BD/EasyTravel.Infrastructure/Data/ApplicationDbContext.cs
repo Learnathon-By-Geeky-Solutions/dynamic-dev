@@ -15,15 +15,15 @@ namespace EasyTravel.Infrastructure.Data
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
         public DbSet<Bus> Buses { get; set; }
-
         public DbSet<Car> Cars { get; set; }
         public DbSet<Agency> Agencies { get; set; }
         public DbSet<Photographer> Photographers { get; set; }
         public DbSet<Guide> Guides { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<HotelBooking>  HotelBookings { get; set; }
+        public DbSet<HotelBooking> HotelBookings { get; set; }
         public DbSet<PhotographerBooking> PhotographerBookings {  get; set; }
+        public DbSet<GuideBooking> GuideBookings {  get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<BusBooking> BusBookings { get; set; }
         public DbSet<CarBooking> CarBookings { get; set; }
@@ -101,6 +101,9 @@ namespace EasyTravel.Infrastructure.Data
             modelBuilder.Entity<Guide>()
                 .Property(a => a.Status)
                 .HasDefaultValue("Active");
+            modelBuilder.Entity<Guide>()
+                .Property(g => g.HourlyRate)
+                .HasColumnType("decimal(18,2)");
             modelBuilder.Entity<GuideBooking>()
             .Property(a => a.Id)
             .ValueGeneratedOnAdd()
@@ -124,9 +127,6 @@ namespace EasyTravel.Infrastructure.Data
              .Property(b => b.TotalAmount)
              .HasColumnType("decimal(18,2)");
 
-            modelBuilder.Entity<Guide>()
-                .Property(g => g.HourlyRate)
-                .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<User>()
                 .Property(a => a.CreatedAt)
