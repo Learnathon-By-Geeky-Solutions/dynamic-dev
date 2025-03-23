@@ -25,7 +25,7 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<HotelBooking>  HotelBookings { get; set; }
         public DbSet<PhotographerBooking> PhotographerBookings {  get; set; }
         public DbSet<Seat> Seats { get; set; }
-        public DbSet<BusBooking> BusBookings { get; set;}
+        public DbSet<BusBooking> BusBookings { get; set; }
         public DbSet<CarBooking> CarBookings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
