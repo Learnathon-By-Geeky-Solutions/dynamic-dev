@@ -27,10 +27,10 @@ namespace EasyTravel.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<GuideBooking>> GetBookingListAsync(GuideBooking guideBooking)
+        public async Task<IEnumerable<GuideBooking>> GetBookingListAsync(GuideBooking model)
         {
             return await _applicationUnitOfWork.GuideBookingRepository.GetAsync(e =>
-            e.EventDate == guideBooking.EventDate && (e.EndTime < guideBooking.StartTime || e.StartTime > guideBooking.EndTime));
+            e.EventDate.Date >= model.EventDate.Date && (e.EndTime < model.StartTime || e.StartTime > model.EndTime));
         }
     }
 }
