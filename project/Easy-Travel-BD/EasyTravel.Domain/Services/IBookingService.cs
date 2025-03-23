@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyTravel.Domain.Entites;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace EasyTravel.Domain.Services
 {
     public interface IBookingService<TEntity>
     {
+        Task<IEnumerable<TEntity>> GetBookingListAsync(TEntity model);
         void AddBooking(TEntity model);
         bool CancelBooking();
     }

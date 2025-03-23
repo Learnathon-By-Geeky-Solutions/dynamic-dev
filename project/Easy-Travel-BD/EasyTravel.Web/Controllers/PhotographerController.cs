@@ -6,6 +6,7 @@ using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Graph;
+using Microsoft.IdentityModel.Tokens;
 using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Text.Json;
@@ -59,9 +60,9 @@ namespace EasyTravel.Web.Controllers
             _sessionService.SetString("PhotographerId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
-                return RedirectToAction("BookingForm", "User");
+                return RedirectToAction("BookingForm", "Booking");
             }
-            return RedirectToAction("Review","Photographer");
+            return RedirectToAction("Review", "Photographer");
         }
 
         [HttpPost,ValidateAntiForgeryToken]
@@ -75,6 +76,7 @@ namespace EasyTravel.Web.Controllers
                     pgBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 }
                 pgBooking.PhotographerId = Guid.Parse(_sessionService.GetString("PhotographerId"));
+                _sessionService.Remove("PhotographerId");
                 _photographerBookingService.AddBooking(pgBooking);
                 return View();
             }
@@ -83,6 +85,11 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Review()
         {
+            var pgId = _sessionService.GetString("PhotographerId");
+            if(string.IsNullOrEmpty(pgId))
+            {
+                return Redirect(pgId);
+            }
             var pgBooking = new PhotographerBookingViewModel();
             if(User.Identity?.IsAuthenticated == false)
             {
@@ -97,11 +104,11 @@ namespace EasyTravel.Web.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 pgBooking = _mapper.Map<PhotographerBookingViewModel>(user);
             }
-            var pgId = Guid.Parse(_sessionService.GetString("PhotographerId"));
-            var photographer = _photographerService.Get(pgId);
+            var photographer = _photographerService.Get(Guid.Parse(pgId));
             pgBooking.Photographer = photographer;
             var agency = _agencyService.Get(photographer.AgencyId);
             pgBooking.AgencyName = agency.Name;
+            pgBooking.EventDate = DateTime.Parse(_sessionService.GetString("EventDate"));
             pgBooking.StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"));
             pgBooking.EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"));
             pgBooking.TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"));
