@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +28,10 @@ namespace EasyTravel.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<PhotographerBooking>> GetBookingListAsync(PhotographerBooking photographerBooking)
+        public async Task<IEnumerable<PhotographerBooking>> GetBookingListAsync(PhotographerBooking model)
         {
             return await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e =>
-            e.EventDate == photographerBooking.EventDate && (e.EndTime < photographerBooking.StartTime || e.StartTime > photographerBooking.EndTime));
+             e.EventDate.Date >= model.EventDate.Date && (e.EndTime < model.StartTime || e.StartTime > model.EndTime));
 
         }
     }
