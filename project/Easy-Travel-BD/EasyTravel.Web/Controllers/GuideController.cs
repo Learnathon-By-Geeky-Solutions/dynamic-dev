@@ -83,6 +83,11 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Review()
         {
+            var guideId = _sessionService.GetString("GuideId");
+            if (string.IsNullOrEmpty(guideId))
+            {
+                return Redirect("/Guide/List");
+            }
             _sessionService.SetString("LastVisitedPage", "/Guide/Review");
             var guideBooking = new GuideBookingViewModel();
             if (User.Identity?.IsAuthenticated == false)
@@ -98,8 +103,7 @@ namespace EasyTravel.Web.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 guideBooking = _mapper.Map<GuideBookingViewModel>(user);
             }
-            var guideId = Guid.Parse(_sessionService.GetString("GuideId"));
-            var guide = _guideService.Get(guideId);
+            var guide = _guideService.Get(Guid.Parse(guideId));
             guideBooking.Guide = guide;
             var agency = _agencyService.Get(guide.AgencyId);
             guideBooking.AgencyName = agency.Name;

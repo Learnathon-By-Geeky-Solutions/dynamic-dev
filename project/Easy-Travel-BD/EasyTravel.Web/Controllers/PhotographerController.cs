@@ -88,8 +88,9 @@ namespace EasyTravel.Web.Controllers
             var pgId = _sessionService.GetString("PhotographerId");
             if(string.IsNullOrEmpty(pgId))
             {
-                return Redirect(pgId);
+                return Redirect("/Photographer/List");
             }
+            _sessionService.SetString("LastVisitedPage", "/Photographer/Review");
             var pgBooking = new PhotographerBookingViewModel();
             if(User.Identity?.IsAuthenticated == false)
             {
