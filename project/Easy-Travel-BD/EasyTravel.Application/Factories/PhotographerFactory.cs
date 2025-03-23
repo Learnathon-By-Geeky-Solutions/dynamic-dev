@@ -19,6 +19,8 @@ namespace EasyTravel.Application.Factories
                 LastName = string.Empty,
                 Email = string.Empty,
                 ContactNumber = string.Empty,
+                PreferredLocations = string.Empty,
+                PreferredEvents = string.Empty,
                 Address = string.Empty,
                 ProfilePicture = string.Empty,
                 Bio = string.Empty,

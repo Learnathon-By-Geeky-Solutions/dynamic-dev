@@ -16,8 +16,8 @@ namespace EasyTravel.Web.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<HomeController> _logger;
         private readonly ISessionService _sessionService;
-        private readonly IUserService _userService;
-        public HomeController(ILogger<HomeController> logger,ISessionService sessionService, IUserService userService,SignInManager<User> signInManager)
+        private readonly IAdminUserService _userService;
+        public HomeController(ILogger<HomeController> logger,ISessionService sessionService, IAdminUserService userService,SignInManager<User> signInManager)
         {
             _logger = logger;
             _sessionService = sessionService;
@@ -38,10 +38,11 @@ namespace EasyTravel.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }

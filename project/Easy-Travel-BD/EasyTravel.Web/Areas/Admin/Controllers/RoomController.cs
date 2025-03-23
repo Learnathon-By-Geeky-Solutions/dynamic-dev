@@ -34,6 +34,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["success"] = "The room has been created successfully";
                 _roomService.Create(model);
                 return RedirectToAction("Index", "Room", new { area = "Admin" });
             }
@@ -67,6 +68,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _roomService.Update(model);
+                TempData["success"] = "The room has been updated successfully";
+
                 return RedirectToAction("Index", "Room", new { area = "Admin" });
             }
             return View();
@@ -89,6 +92,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             _roomService.Delete(model.Id);
+            TempData["success"] = "The room has been delete successfully";
+
             return RedirectToAction("Index", "Room", new { area = "Admin" });
         }
 
