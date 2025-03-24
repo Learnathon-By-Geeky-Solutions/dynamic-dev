@@ -1,7 +1,7 @@
 ﻿@model HotelBookingViewModel
 
 @{
-   // ViewData["Title"] = "HotelBooking";
+    // ViewData["Title"] = "HotelBooking";
 }
 
 <div class="container">
@@ -55,35 +55,35 @@
 
                         <div class="container mx-auto mt-4">
                             <div class="row">
-                               
-                                    <div class="col-md-4">
-                                        <div class="card" style="width: 18rem;">
-                                            <img src="@Model.room.Image1" class="card-img-top" alt="@Model.room.RoomType" title="@Model.hotel.Name">
-                                            <div class="card-body">
-                                                <h5 class="card-title">
+
+                                <div class="col-md-4">
+                                    <div class="card" style="width: 18rem;">
+                                        <img src="@Model.room.Image1" class="card-img-top" alt="@Model.room.RoomType" title="@Model.hotel.Name">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
                                                 @Model.room.RoomType
-                                                </h5>
-                                                <h6 class="card-subtitle mb-2 text-muted">
+                                            </h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">
                                                 @(Model.room.IsAvailable ? "Available" : "Not Available")
-                                                </h6>
-                                                <div>
+                                            </h6>
+                                            <div>
                                                 <span>Price Per Night: @Model.room.PricePerNight </span>
 
-                                                </div>
-                                                <p class="card-text">
-                                                    @Model.room.Description
-                                                </p>
-                                                <a asp-controller="Hotel" asp-action="Details" asp-route-id="" class="btn btn-success btn-sm fw-bold text-dark">Details</a>
                                             </div>
+                                            <p class="card-text">
+                                                @Model.room.Description
+                                            </p>
+                                            <a asp-controller="Hotel" asp-action="Details" asp-route-id="" class="btn btn-success btn-sm fw-bold text-dark">Details</a>
                                         </div>
                                     </div>
+                                </div>
 
-                                
+
                             </div>
                         </div>
 
                     </div>
-                </div>              
+                </div>
                 <input type="hidden" asp-for="@Model.hotelBooking.HotelId" value="@Model.hotel.Id" />
                 <input type="hidden" asp-for="@Model.hotelBooking.RoomIdsJson" value="@Model.room.Id" />
                 <input type="hidden" asp-for="@Model.hotelBooking.UserId" value="D56560DB-3290-4C91-BE5F-08DD59579E67" />
@@ -104,36 +104,12 @@
                         <small class="text-muted">Price per Room</small>
                         <h6>৳@Model.room.PricePerNight</h6>
                     </div>
-                    
+
                 </div>
                 <div class="total-section card-body">
                     <small class="text-muted">Total Amount</small>
                     <h4 class="text-success">৳<span id="totalAmountDisplay">@Model.room.PricePerNight</span></h4>
                 </div>
-
-
-
-              @*   <div class="card-body">
-                    <div class="mb-3">
-                        <small class="text-muted">Selected Rooms</small>
-                        <div id="selectedRoomsDisplay" class="selected-rooms-tags">
-                            @foreach (var room in Model.HotelRoom.SelectedRoomNumbers)
-                            {
-                                <span class="room-tag">@room</span>
-                            }
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <small class="text-muted">Price per Room</small>
-                        <h6>৳@Model.HotelRoom.Rooms.</h6>
-                    </div>
-                    <div class="total-section">
-                        <small class="text-muted">Total Amount</small>
-                        <h4 class="text-success">৳<span id="totalAmountDisplay">@Model.HotelRoom.TotalAmount</span></h4>
-                    </div>
-                </div> *@
-
-               
 
             </div>
         </div>
