@@ -28,11 +28,21 @@ namespace EasyTravel.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<PhotographerBooking>> GetBookingListAsync(PhotographerBooking model)
+        public async Task<IEnumerable<PhotographerBooking>> GetBookingListByFormDataAsync(PhotographerBooking model)
         {
             return await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e =>
-             e.EventDate.Date >= model.EventDate.Date && (e.EndTime < model.StartTime || e.StartTime > model.EndTime));
+            e.EventDate == model.EventDate && e.StartTime > DateTime.Now.TimeOfDay && e.StartTime >= model.StartTime && e.StartTime <= model.EndTime || e.EndTime >= model.StartTime && e.EndTime <= model.EndTime);
 
+        }
+
+        public async Task<bool> IsBooked(PhotographerBooking model)
+        {
+            var bookings = await GetBookingListByFormDataAsync(model);
+            if (bookings.Any(e => e.PhotographerId == model.PhotographerId))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

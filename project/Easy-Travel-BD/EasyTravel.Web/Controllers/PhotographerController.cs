@@ -34,7 +34,7 @@ namespace EasyTravel.Web.Controllers
         public IActionResult Index()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Photographer/Index");
-            return RedirectToAction("Index","Search");
+            return RedirectToAction("Index", "Search");
         }
         [HttpGet]
         public async Task<IActionResult> List()
@@ -55,8 +55,22 @@ namespace EasyTravel.Web.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult Book(Guid id)
+        public async Task<IActionResult> Book(Guid id)
         {
+            var model = new PhotographerBooking()
+            {
+                EventDate = DateTime.Parse(_sessionService.GetString("EventDate")),
+                StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime")),
+                TimeInHour = int.Parse(_sessionService.GetString("TimeInHour")),
+                EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime")),
+                PhotographerId = id,
+            };
+
+            if (await _photographerBookingService.IsBooked(model) == true)
+            {
+                TempData["Message"] = "This photographer is already booked for this time slot. Please choose another time slot.";
+                return RedirectToAction("/Photographer/List");
+            }
             _sessionService.SetString("PhotographerId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
@@ -65,7 +79,7 @@ namespace EasyTravel.Web.Controllers
             return RedirectToAction("Review", "Photographer");
         }
 
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Book(PhotographerBookingViewModel model)
         {
             if (ModelState.IsValid)
@@ -86,13 +100,13 @@ namespace EasyTravel.Web.Controllers
         public async Task<IActionResult> Review()
         {
             var pgId = _sessionService.GetString("PhotographerId");
-            if(string.IsNullOrEmpty(pgId))
+            if (string.IsNullOrEmpty(pgId))
             {
                 return Redirect("/Photographer/List");
             }
             _sessionService.SetString("LastVisitedPage", "/Photographer/Review");
             var pgBooking = new PhotographerBookingViewModel();
-            if(User.Identity?.IsAuthenticated == false)
+            if (User.Identity?.IsAuthenticated == false)
             {
                 pgBooking.FirstName = _sessionService.GetString("FirstName");
                 pgBooking.LastName = _sessionService.GetString("LastName");
