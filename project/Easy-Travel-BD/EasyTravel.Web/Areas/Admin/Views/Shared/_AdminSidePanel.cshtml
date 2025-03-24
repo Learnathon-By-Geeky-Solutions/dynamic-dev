@@ -5,44 +5,44 @@
     var controllers = new List<string>();
     controllers.Add("AdminUser");
     controllers.Add("AdminRole");
+    controllers.Add("AdminUserRole");
+    controllers.Add("AdminBooking");
     controllers.Add("AdminAgency");
     controllers.Add("AdminPhotographer");
     controllers.Add("AdminGuide");
+    controllers.Add("AdminPhotographerBooking");
+    controllers.Add("AdminGuideBooking");
     controllers.Add("AdminHotel");
     controllers.Add("AdminRoom");
     controllers.Add("AdminHotelBooking");
     controllers.Add("AdminBus");
     controllers.Add("AdminSeat");
     controllers.Add("AdminBusBooking");
-    controllers.Add("Hotel");
-    controllers.Add("Room");
-    controllers.Add("HotelBooking");
-    controllers.Add("AdminBus");
-    controllers.Add("Seat");
-    controllers.Add("BusBooking");
     controllers.Add("AdminCar");
+    controllers.Add("AdminCarBooking");
+
 
     var length = controllers.Count();
     int i = 0;
     if (User.IsInRole("agencyManager"))
     {
-        i = 2;
-        length = 5;
+        i = 4;
+        length = 9;
     }
     else if (User.IsInRole("hotelManager"))
     {
-        i = 5;
-        length = 8;
+        i = 9;
+        length = 12;
     }
     else if (User.IsInRole("busManager"))
     {
-        i = 8;
-        length = 11;
+        i = 12;
+        length = 15;
     }
     else if(User.IsInRole("carManager"))
     {
-        i = 11;
-        length = 14;
+        i = 15;
+        length = 17;
     }
 
 }
