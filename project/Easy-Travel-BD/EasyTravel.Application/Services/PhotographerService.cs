@@ -32,8 +32,7 @@ namespace EasyTravel.Application.Services
 
         public async Task<IEnumerable<Photographer>> GetPhotographerListAsync(PhotographerBooking photographerBooking)
         {
-            var bookings = await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e =>
-            e.EventDate == photographerBooking.EventDate && e.StartTime > DateTime.Now.TimeOfDay && e.StartTime >= photographerBooking.StartTime && e.StartTime <= photographerBooking.EndTime || e.EndTime >= photographerBooking.StartTime && e.EndTime <= photographerBooking.EndTime);
+            var bookings = await _photographerBookingService.GetBookingListByFormDataAsync(photographerBooking);
             var photographers = await _applicationUnitOfWork.PhotographerRepository.GetAsync(e => e.Availability == true);
             if (bookings.ToList().Count() == 0)
             {
