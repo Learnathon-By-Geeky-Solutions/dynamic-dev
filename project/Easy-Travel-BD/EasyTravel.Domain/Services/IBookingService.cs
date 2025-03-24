@@ -11,6 +11,7 @@ namespace EasyTravel.Domain.Services
     {
         void AddBooking(TEntity model);
         bool CancelBooking();
-        Task<bool> IsBooked(TEntity model,Guid id);
+        Task<bool> IsBooked(TEntity model);
+        public Task<IEnumerable<TEntity>> GetBookingListByFormDataAsync(TEntity model);
     }
 }
