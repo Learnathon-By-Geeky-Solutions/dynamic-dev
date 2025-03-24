@@ -9,6 +9,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IPhotographerBookingService : IBookingService<PhotographerBooking>
     {
-         
+        public Task<IEnumerable<PhotographerBooking>> GetBookingListByFormDataAsync(PhotographerBooking model);
     }
 }
