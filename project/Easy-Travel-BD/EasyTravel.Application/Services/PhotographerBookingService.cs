@@ -35,10 +35,10 @@ namespace EasyTravel.Application.Services
 
         }
 
-        public async Task<bool> IsBooked(PhotographerBooking model,Guid id)
+        public async Task<bool> IsBooked(PhotographerBooking model)
         {
             var bookings = await GetBookingListByFormDataAsync(model);
-            if (bookings.Any(e => e.PhotographerId == id))
+            if (bookings.Any(e => e.PhotographerId == model.PhotographerId))
             {
                 return true;
             }
