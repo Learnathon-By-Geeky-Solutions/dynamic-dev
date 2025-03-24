@@ -27,13 +27,14 @@ namespace EasyTravel.Infrastructure.Repositories
 
         public IEnumerable<Bus> GetAllBuses()
         {
+
             return _context.Buses.ToList();
         }
 
 
         public IQueryable<Bus> GetBuses()
         {
-            
+
             return _context.Buses.AsQueryable();
         }
     }
