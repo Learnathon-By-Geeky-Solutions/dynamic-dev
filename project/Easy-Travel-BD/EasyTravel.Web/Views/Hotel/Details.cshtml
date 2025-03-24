@@ -44,7 +44,7 @@
                                         @room.RoomType
                                     </h5>
                                     <h6 class="card-subtitle mb-2 text-muted">
-                                   @room.IsAvailable == 1 ? "Available" : "Not Available"
+                                   @(room.IsAvailable ? "Available" : "Not Available")
                                     </h6>
                                     <div>
                                         <span>Price Per Night: @room.PricePerNight </span>
