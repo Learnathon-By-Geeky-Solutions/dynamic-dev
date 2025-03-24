@@ -54,8 +54,22 @@ namespace EasyTravel.Web.Controllers
         }
         
         [HttpGet]
-        public IActionResult Book(Guid id)
+        public async Task<IActionResult> Book(Guid id)
         {
+            var model = new GuideBooking()
+            {
+                EventDate = DateTime.Parse(_sessionService.GetString("EventDate")),
+                StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime")),
+                TimeInHour = int.Parse(_sessionService.GetString("TimeInHour")),
+                EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime")),
+                GuideId = id,
+            };
+
+            if (await _guideBookingService.IsBooked(model) == true)
+            {
+                TempData["Message"] = "This guide is already booked for this time slot. Please choose another time slot.";
+                return RedirectToAction("/Guide/List");
+            }
             _sessionService.SetString("GuideId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
