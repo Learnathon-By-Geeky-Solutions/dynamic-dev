@@ -21,6 +21,7 @@ namespace EasyTravel.Infrastructure.Repositories
 
         public void AddCar(Car car)
         {
+
             _context.Cars.Add(car);
         }
 
