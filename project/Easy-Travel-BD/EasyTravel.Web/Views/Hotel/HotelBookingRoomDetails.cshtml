@@ -1,0 +1,132 @@
+﻿
+@{
+    // ViewData["Title"] = "HotelBookingRoomDetails";
+}
+
+@model HotelBookingViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+                <div class="card mb-4 p-2">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-bus text-success me-2"></i>
+                            <div>
+                                <h5 class="mb-0">Room Details</h5>
+                                <small class="text-muted">@Model.hotel.Name</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="cover-photo"> <img src="@Model.hotel.Image" class="rounded-2" alt="@Model.hotel.Name" title="@Model.hotel.Name"> </div>
+                            <p class="mt-2"><i class="bi bi-geo-alt-fill"></i> @Model.hotel.Address </p>
+                            <p><i class="bi bi-telephone"></i> @Model.hotel.Phone</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <small class="text-muted"> Room Type  </small>
+                            <h5 class="card-title">
+                                @Model.room.RoomType
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted">Availablity </small>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                @(Model.room.IsAvailable ? "Available" : "Not Available")
+                            </h6>
+                        </div> 
+                        <div class="col-md-6">
+                            <small class="text-muted">Price Per Night </small>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                @Model.room.PricePerNight
+                            </h6>
+                        </div>
+                    </div>
+                <div class="row">
+                    <p class="card-text">
+                        @Model.room.Description
+                    </p>
+                </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-chair text-primary me-2"></i>
+                            <h5 class="mb-0"> Rooms photo</h5>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+
+                    <div class="container mx-auto mt-4">
+                        <div class="row d-flex flex-wrap gap-1">
+                            @if (!string.IsNullOrEmpty(Model.room.Image1))
+                            {
+                                <div class="col-md-4" style="width: 18rem;">
+                                    <img src="@Model.room.Image1" class="card-img-top zoom" alt="@Model.room.RoomType" title="@Model.hotel.Name">
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.room.Image2))
+                            {
+                                <div class="col-md-4" style="width: 18rem;">
+                                    <img src="@Model.room.Image2" class="card-img-top zoom" alt="@Model.room.RoomType" title="@Model.hotel.Name">
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.room.Image3))
+                            {
+                                <div class="col-md-4" style="width: 18rem;">
+                                    <img src="@Model.room.Image3" class="card-img-top zoom" alt="@Model.room.RoomType" title="@Model.hotel.Name">
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.room.Image4))
+                            {
+                                <div class="col-md-4" style="width: 18rem;">
+                                    <img src="@Model.room.Image4" class="card-img-top zoom" alt="@Model.room.RoomType" title="@Model.hotel.Name">
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+                 <a asp-controller="Hotel" asp-action="HotelBooking" asp-route-hotelId="@Model.hotel.Id" asp-route-roomId="@Model.room.Id" class="btn btn-success w-100 fw-bold text-dark">Book</a>     
+           
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Room Summary</h5>
+                </div>
+                <small class="text-muted card-body">Selected Rooms</small>
+                <div id="selectedRoomsDisplay" class="selected-rooms-tags m-4">
+                    <div class="mb-3">
+                        <small class="text-muted">Price per Room</small>
+                        <h6> ৳ @Model.room.PricePerNight</h6>
+                    </div>
+
+                </div>
+                <div class="total-section card-body">
+                    <small class="text-muted">Max Occupancy</small>
+                    <h4 class="text-success">@Model.room.MaxOccupancy</h4>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+                                             .zoom {
+                                                 transition: transform 0.5s ease;
+                                             }
+
+                                                 .zoom:hover {
+                                                     transform: scale(1.2);
+                                                 }
+    </style>
+                    }
