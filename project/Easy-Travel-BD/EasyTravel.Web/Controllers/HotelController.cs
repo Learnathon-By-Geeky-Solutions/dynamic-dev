@@ -58,6 +58,21 @@ namespace EasyTravel.Web.Controllers
             };
             return View(viewModel);
         }
+        [HttpGet]
+        public IActionResult HotelBookingRoomDetails(Guid hotelId, Guid roomId)
+        {
+            var hotel = _hotelService.Get(hotelId);
+            var room = _roomService.Get(roomId);
+
+
+            HotelBookingViewModel viewModel = new HotelBookingViewModel
+            {
+                hotel = hotel,
+                room = room,
+                // hotelBooking = { }
+            };
+            return View(viewModel);
+        }
 
         [HttpPost]
         public IActionResult HotelBooking(HotelBookingViewModel viewModel)
