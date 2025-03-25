@@ -108,6 +108,8 @@ namespace EasyTravel.Web
               .InstancePerLifetimeScope();
             builder.RegisterType<AgencyService>().As<IAgencyService>()
                 .InstancePerLifetimeScope();
+            builder.RegisterType<AdminUserRoleService>().As<IAdminUserRoleService>()
+                .InstancePerLifetimeScope();
             base.Load(builder);
         }
 

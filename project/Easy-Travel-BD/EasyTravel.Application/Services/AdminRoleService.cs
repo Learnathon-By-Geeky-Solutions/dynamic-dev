@@ -35,7 +35,7 @@ namespace EasyTravel.Application.Services
             return await _roleManager.FindByIdAsync(id.ToString());
         }
 
-        public async Task<IEnumerable<Role>> GetAllAsync()
+        public IEnumerable<Role> GetAll()
         {
             return _roleManager.Roles.ToList();
         }
