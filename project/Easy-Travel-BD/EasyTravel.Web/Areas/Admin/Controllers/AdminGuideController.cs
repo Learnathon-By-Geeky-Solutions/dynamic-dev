@@ -13,10 +13,11 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     public class AdminGuideController : Controller
     {
         private readonly IAdminGuideService _guideService;
-        
-        public AdminGuideController(IAdminGuideService guideService)
+        private readonly IAgencyService _agencyService;
+        public AdminGuideController(IAdminGuideService guideService, IAgencyService agencyService)
         {
             _guideService = guideService;
+            _agencyService = agencyService;
         }
         public IActionResult Index()
         {
@@ -27,7 +28,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            
             var model = _guideService.GetGuideInstance();
             return View(model);
         }
@@ -40,6 +40,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _guideService.Create(model);
                 return RedirectToAction("Index", "AdminGuide", new { area = "Admin" });
             }
+            model.Agencies = _agencyService.GetAll().ToList();
             return View();
         }
         [HttpGet]
@@ -51,6 +52,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             var model = _guideService.Get(id);
+            model.Agencies = _agencyService.GetAll().ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -63,6 +65,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _guideService.Update(model);
                 return RedirectToAction("Index", "AdminGuide", new { area = "Admin" });
             }
+            model.Agencies = _agencyService.GetAll().ToList();
             return View();
         }
         [HttpGet]
@@ -74,6 +77,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             var model = _guideService.Get(id);
+            model.Agencies = _agencyService.GetAll().ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
