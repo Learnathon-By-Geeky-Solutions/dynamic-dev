@@ -108,7 +108,7 @@
                 </div>
                 <div class="total-section card-body">
                     <small class="text-muted">Total Amount</small>
-                    <h4 class="text-success">৳<span id="totalAmountDisplay">@Model.room.PricePerNight</span></h4>
+                    <h4 class="text-success">৳<span id="totalAmountDisplay">@(Model.room.PricePerNight * (Model.hotelBooking.CheckOutDate - Model.hotelBooking.CheckInDate).Days)</span></h4>
                 </div>
 
 
