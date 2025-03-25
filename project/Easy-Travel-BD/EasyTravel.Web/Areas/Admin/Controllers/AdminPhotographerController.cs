@@ -12,9 +12,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     public class AdminPhotographerController : Controller
     {
         private readonly IAdminPhotographerService _adminPhotographerService;
-        public AdminPhotographerController(IAdminPhotographerService adminPhotographerService)
+        private readonly IAgencyService _agencyService;
+
+        public AdminPhotographerController(IAdminPhotographerService adminPhotographerService, IAgencyService agencyService)
         {
             _adminPhotographerService = adminPhotographerService;
+            _agencyService = agencyService;
         }
         public IActionResult Index()
         {
@@ -37,6 +40,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _adminPhotographerService.Create(model);
                 return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
             }
+            model.Agencies = _agencyService.GetAll().ToList();
             return View();
         }
         [HttpGet]
@@ -48,6 +52,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             var model = _adminPhotographerService.Get(id);
+            model.Agencies = _agencyService.GetAll().ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -60,6 +65,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _adminPhotographerService.Update(model);
                 return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
             }
+            model.Agencies = _agencyService.GetAll().ToList();
             return View();
         }
         [HttpGet]
@@ -71,6 +77,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             var model = _adminPhotographerService.Get(id);
+            model.Agencies = _agencyService.GetAll().ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]

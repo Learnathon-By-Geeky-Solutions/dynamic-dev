@@ -1,0 +1,56 @@
+﻿@using EasyTravel.Domain
+@model AdminUserRoleModel
+@{
+    var action = ViewData["Title"];
+    bool isDisabled = false;
+    if ((string?)action == "Delete")
+    {
+        isDisabled = true;
+    }
+
+}
+<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
+    <h2 class="card-title text-center">@action Role</h2>
+    <form asp-antiforgery=true method="post" asp-action="@action">
+        <div class="d-flex gap-4">
+            <div class="form-group">
+                <label for="Id" style="width:100%">
+                    Select User
+                    <select asp-for="UserId" class="form-control" required="@(isDisabled ? null : "required")"
+                            disabled="@(isDisabled ? "disabled" : null)">
+                        @if (action == "Create")
+                        {
+                            <option value="">-- Select ID --</option>
+                        })
+                        @foreach (var user in Model.Users)
+                        {
+                            <option value="@user.Id">@user.UserName</option>
+                        }
+                        <!-- Add more options dynamically if needed -->
+                    </select>
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="Id" style="width:100%">
+                    Select Role
+                    <select asp-for="RoleId" class="form-control" required="@(isDisabled ? null : "required")"
+                            disabled="@(isDisabled ? "disabled" : null)">
+                        @if (action == "Create")
+                        {
+                            <option value="">-- Select ID --</option>
+                        })
+                        @foreach (var role in Model.Roles)
+                        {
+                            <option value="@role.Id">@role.Name</option>
+                        }
+                        <!-- Add more options dynamically if needed -->
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary me-2">@action</button>
+            <a asp-area="Admin" asp-controller="AdminPhotographer" asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+</div>
