@@ -73,7 +73,7 @@
                                                 <p class="card-text">
                                                     @Model.room.Description
                                                 </p>
-                                                <a asp-controller="Hotel" asp-action="Details" asp-route-id="" class="btn btn-success btn-sm fw-bold text-dark">Details</a>
+                                            <a asp-controller="Hotel" asp-action="HotelBookingRoomDetails" asp-route-hotelId="@Model.hotel.Id" asp-route-roomId="@Model.room.Id" class="btn  btn-success btn-sm fw-bold text-dark">Details</a>
                                             </div>
                                         </div>
                                     </div>
