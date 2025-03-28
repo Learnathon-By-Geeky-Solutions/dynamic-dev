@@ -38,8 +38,6 @@
    
     <header id="header" class="header fixed-top">
 
-
-
         <div class="branding d-flex align-items-cente">
 
             <div class="container position-relative d-flex align-items-center justify-content-between">
@@ -52,61 +50,10 @@
 
                 <nav id="navmenu" class="navmenu">
                     <ul>
-                        <li><a href="#hero" class="active">Home</a></li>
-                        <li><a href="#services">Our Services</a></li>
-                        <li><a href="#bookbus">Book Bus Ticket</a></li>
-                        <li><a href="#hotel">Hotel Booking</a></li>
-                        <li><a href="#tourguide">Tour Guides</a></li>
-                        <li class="dropdown">
-                            <a href="#"><span>More Options</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                            <ul>
-                                <li><a href="#privatecar">Rent a Private Car</a></li>
-                                <li><a href="#travelagency">Find Travel Agencies</a></li>
-                                <li><a href="#photographers">Hire a Photographer</a></li>
-                                <li><a href="#faq">FAQs</a></li>
-                                <li><a href="#support">Support</a></li>
-                                <li><a href="#bookflight">Book Flight</a></li>
-                                <li><a href="blog.html">Travel Blog</a></li>
-
-                                <li><a href="#about">About Us</a></li>
-
-                            </ul>
-                        </li>
-                        <li><a href="#contact">Contact Us</a></li>
-                    </ul>
-                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-                </nav>
-
-
-            </div>
-
-        </div>
-
-    </header>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Easy_Travel_BD</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-
-                            <a class="nav-link text-dark" asp-controller="Bus" asp-action="List">Bus</a>
-                        </li>
-                        <li class="nav-item">
-
-                            <a class="nav-link text-dark" asp-controller="Hotel" asp-action="Index">Hotel</a>
-                        </li>
+                        <li><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>
+                        <li><a href="@Url.Action("Privacy", "Home")">Privacy</a></li>
+                        <li><a href="@Url.Action("List", "Bus")">Bus</a></li>
+                        <li><a href="@Url.Action("Index", "Hotel")">Hotel</a></li>
                         @{
                             var roles = new List<string>
                         {
@@ -118,37 +65,34 @@
                         };
                             foreach (var role in roles)
                             {
-                                if (User.Identity.IsAuthenticated == true && User.IsInRole(role))
+                                if (User.Identity?.IsAuthenticated == true && User.IsInRole(role))
                                 {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-controller="AdminDashboard" asp-action="Index">Dashboard</a>
-                                    </li>
+                                    <li><a href="@Url.Action("Index", "AdminDashboard")">Dashboard</a></li>
                                 }
                             }
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="List">Car</a>
-                        </li>
-
-
-                        <li class="nav-item dropdown">
-                            <a class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Hire
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark justify-content-center">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Photographer" asp-action="Index">Photographer</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Guide" asp-action="Index">Guide</a></li>
+                        <li><a href="@Url.Action("List", "Car")">Car</a></li>
+                        <li class="dropdown">
+                            <a href="#"><span>Hire</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <ul>
+                                <li><a href="@Url.Action("Index", "Photographer")">Photographer</a></li>
+                                <li><a href="@Url.Action("Index", "Guide")">Guide</a></li>
                             </ul>
                         </li>
-
+                        <li><a href="#contact">Contact Us</a></li>
                     </ul>
-                    <partial name="_LoginPartial" />
-
-                </div>
+                    
+                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+                   
+          
+                </nav>
+                <partial name="_LoginPartial" />
             </div>
-        </nav>
+
+        </div>
 
     </header>
+    
     <div class="container">
         <main role="main" class="pb-3">
             <partial name="_Notification" />
