@@ -35,72 +35,7 @@
 
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Easy_Travel_BD</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-
-                            <a class="nav-link text-dark" asp-controller="Bus" asp-action="List">Bus</a>
-                        </li>
-                        <li class="nav-item">
-
-                            <a class="nav-link text-dark" asp-controller="Hotel" asp-action="Index">Hotel</a>
-                        </li> 
-                        @{
-                            var roles = new List<string>
-                            {
-                                "admin",
-                                "busManager",
-                                "agencyManager",
-                                "carManager",
-                                "hotelManager",
-                            };
-                            foreach (var role in roles)
-                            {
-                                if (User.Identity.IsAuthenticated == true && User.IsInRole(role))
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-controller="AdminDashboard" asp-action="Index">Dashboard</a>
-                                    </li>
-                                }
-                            }
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="List">Car</a>
-                        </li>
-
-
-                        <li class="nav-item dropdown">
-                            <a class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Hire
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark justify-content-center">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Photographer" asp-action="Index">Photographer</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Guide" asp-action="Index">Guide</a></li>
-                            </ul>
-                        </li>
-
-                    </ul>
-                    <partial name="_LoginPartial" />
-
-                </div>
-            </div>
-        </nav>
-    
-    </header>
+   
     <header id="header" class="header fixed-top">
 
 
@@ -110,9 +45,9 @@
             <div class="container position-relative d-flex align-items-center justify-content-between">
                 <a href="index.html" class="logo d-flex align-items-center">
                     <!-- Uncomment the line below if you also wish to use an image logo -->
-                    <!-- <img src="assets/img/logo.png" alt=""> -->
-                    <h1 class="sitename">Easy Travel BD</h1>
-                    <span>.</span>
+                    <img src="~/photo/easytravelLogoNav.png" alt="logo">
+                    @* <h1 class="sitename">Easy Travel BD</h1> *@
+                    
                 </a>
 
                 <nav id="navmenu" class="navmenu">
@@ -146,6 +81,72 @@
             </div>
 
         </div>
+
+    </header>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Easy_Travel_BD</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+
+                            <a class="nav-link text-dark" asp-controller="Bus" asp-action="List">Bus</a>
+                        </li>
+                        <li class="nav-item">
+
+                            <a class="nav-link text-dark" asp-controller="Hotel" asp-action="Index">Hotel</a>
+                        </li>
+                        @{
+                            var roles = new List<string>
+                        {
+                        "admin",
+                        "busManager",
+                        "agencyManager",
+                        "carManager",
+                        "hotelManager",
+                        };
+                            foreach (var role in roles)
+                            {
+                                if (User.Identity.IsAuthenticated == true && User.IsInRole(role))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-controller="AdminDashboard" asp-action="Index">Dashboard</a>
+                                    </li>
+                                }
+                            }
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="List">Car</a>
+                        </li>
+
+
+                        <li class="nav-item dropdown">
+                            <a class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Hire
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark justify-content-center">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Photographer" asp-action="Index">Photographer</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Guide" asp-action="Index">Guide</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <partial name="_LoginPartial" />
+
+                </div>
+            </div>
+        </nav>
 
     </header>
     <div class="container">
