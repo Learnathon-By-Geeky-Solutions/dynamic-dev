@@ -17,16 +17,16 @@ namespace EasyTravel.Application.Services
 {
     public class AdminUserService : IAdminUserService
     {
+        private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly UserManager<User> _userManager;
-        private readonly IAdminRoleService _adminRoleService;
-        public AdminUserService(UserManager<User> userManager, IAdminRoleService adminRoleService)
+        public AdminUserService(UserManager<User> userManager, IApplicationUnitOfWork applicationUnitOfWork)
         {
             _userManager = userManager;
-            _adminRoleService = adminRoleService;
+            _applicationUnitOfWork = applicationUnitOfWork;
         }
-        public async Task<(bool Success,string ErrorMessage)> CreateAsync(User user,string password, string role)
+        public async Task<(bool Success,string ErrorMessage)> CreateAsync(User user,string password)
         {
-
+            user.UserName = user.Email;
             var result = await _userManager.CreateAsync(user, password);
 
             if (!result.Succeeded)
@@ -34,8 +34,6 @@ namespace EasyTravel.Application.Services
                 string errorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
                 return (false, errorMessage);
             }
-
-            await _userManager.AddToRoleAsync(user, role);
             return (true, string.Empty);
         }
 
@@ -63,23 +61,18 @@ namespace EasyTravel.Application.Services
             return await _userManager.FindByEmailAsync(email);
         }
 
+        public async Task<bool> IsExist(string email)
+        {
+            return await _userManager.FindByEmailAsync(email) != null;
+        }
         public User GetUserInstance()
         {
             return new User();
         }
 
-        public async Task<(bool Success, string ErrorMessage)> UpdateAsync(string firstName, string lastName, DateTime? dateOfBirth, string gender, string email, string userName, string role)
+        public async Task<(bool Success, string ErrorMessage)> UpdateAsync(User user)
         {
-            var user = new User
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = dateOfBirth,
-                Gender = gender,
-                Email = email,
-                UserName = email
-            };
-
+            user.UserName = user.Email;
             var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
@@ -87,9 +80,6 @@ namespace EasyTravel.Application.Services
                 string errorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
                 return (false, errorMessage);
             }
-            var roles = await _userManager.GetRolesAsync(user);
-            await _userManager.RemoveFromRolesAsync(user, roles);
-            await _userManager.AddToRoleAsync(user, role);
 
             return (true, string.Empty);
         }
