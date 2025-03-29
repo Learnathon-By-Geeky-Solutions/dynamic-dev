@@ -166,7 +166,7 @@
     <!-- Vendor JS File -->
     <script src="~/assets/vendor/aos/aos.js"></script>
     <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>   
     <script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="~/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
     <script src="~/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
@@ -194,6 +194,33 @@
     @* This is must for the AOS (Animate On Scroll) library, which is used to animate elements as they scroll into view. *@
     <script>
         AOS.init();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new Swiper('.init-swiper', {
+                loop: true,
+                speed: 800,
+                autoplay: {
+                    delay: 800,
+                },
+                slidesPerView: 'auto',
+                pagination: {
+                    el: '.swiper-pagination',
+                    type: 'bullets',
+                    clickable: true,
+                },
+                breakpoints: {
+                    320: {
+                        slidesPerView: 1,
+                        spaceBetween: 40,
+                    },
+                    1200: {
+                        slidesPerView: 3,
+                        spaceBetween: 10,
+                    },
+                },
+            });
+        });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
   
