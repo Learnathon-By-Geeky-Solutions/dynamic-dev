@@ -5,3 +5,6 @@
 **/Logs/*
 
 
+# Classify HTML and CSS files as C#
+*.html linguist-language=C#
+*.css linguist-language=C#
