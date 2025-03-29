@@ -7,8 +7,6 @@ namespace EasyTravel.Web.Areas.Admin.Models
 {
     public class AdminUserViewModel : RegisterViewModel
     {
-        public string? PhoneNumber { get; set; }
-        public string Role { get; set; }
-        public List<Role>? Roles { get; set; }
+        public Guid Id { get; set; }
     }
 }
