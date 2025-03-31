@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin"), Authorize(Roles = "admin")]
+    [Area("Admin"), Authorize(Roles = "admin,hotelManager")]
     public class RoomController : Controller
     {
         private readonly IHotelService _hotelService;
