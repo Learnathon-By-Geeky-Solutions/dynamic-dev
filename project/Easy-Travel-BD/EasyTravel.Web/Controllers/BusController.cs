@@ -1,8 +1,10 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -66,9 +68,6 @@ namespace EasyTravel.Web.Controllers
         [HttpPost]
         public IActionResult BusConfirmBooking(BusBookingViewModel model)
         {
-
-
-
             var busbooking = new BusBooking
             {
                 Id = Guid.NewGuid(),
@@ -80,14 +79,18 @@ namespace EasyTravel.Web.Controllers
                 BookingDate = DateTime.Now,
                 SelectedSeats = model.SelectedSeatNumbers,
                 SelectedSeatIds = model.SelectedSeatIds,
-
-
             };
+
+            // Adding UserId to the BusBooking if the user is authenticated
+            if (User.Identity.IsAuthenticated)
+            {
+                busbooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            }
 
             _busService.SaveBooking(busbooking, model.SelectedSeatIds);
             return RedirectToAction("BusConfirmBooking");
-            
         }
+
 
         [HttpGet]
 
@@ -96,6 +99,9 @@ namespace EasyTravel.Web.Controllers
 
             return View();
         }
+
+
+
 
 
 
