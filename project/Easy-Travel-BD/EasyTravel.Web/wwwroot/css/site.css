@@ -28,7 +28,78 @@ body {
   text-align: start;
 }
 
+.custom {
+    border: 1px solid grey;
+    background: none;
+    background-color: none;
+    color: dimgrey;
+}
 
+.traveler-class-options {
+    height: 0; /* Initially hidden */
+    overflow: hidden; /* Hide overflowing content */
+    transition: height 0.3s ease; /* Smooth transition */
+}
+
+    .traveler-class-options.show {
+        max-height: 100px; /* Set a maximum height when expanded (adjust as needed) */
+        overflow: visible;
+    }
+
+.form-check-input:checked {
+    background-color: #dc3545;
+}
+
+.btn-check:checked + .btn {
+    background-color: #dc3545;
+}
+
+.btn-outline-primary {
+    color: #dc3545;
+}
+
+.bg-danger {
+    background-color: #ed1b24 !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+
+.btn-danger {
+    background-color: #ed1b24;
+    border-color: #ed1b24;
+}
+
+ul.list-unstyled {
+    padding-left: 0;
+}
+
+    ul.list-unstyled li {
+        margin-bottom: 1rem;
+    }
+
+        ul.list-unstyled li a {
+            text-decoration: none;
+        }
+
+            ul.list-unstyled li a:hover {
+                text-decoration: underline;
+            }
+
+.form-control {
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+button.btn {
+    font-size: 1rem;
+}
+
+.contact a {
+    text-decoration: none;
+}
 
 /*Hotel Details Page*/
 
@@ -40,11 +111,7 @@ body {
     gap: 10px;
     
 }
-
-.logo {
-    width: 150px;
-    height: 100px;
-}
+/*Logo sizing*/
 
 .mid {
     grid-column: 2 / 4;

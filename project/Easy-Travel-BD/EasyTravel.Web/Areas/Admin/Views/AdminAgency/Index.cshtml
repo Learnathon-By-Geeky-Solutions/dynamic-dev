@@ -8,6 +8,19 @@
     <div class="create-btn">
         <a asp-area="Admin" asp-controller="AdminAgency" asp-action="Create">Create Agency</a>
     </div>
+
+    <div class="entity-row">
+        <span class="name">Name</span>
+        <span>Address</span>
+        <span>ContactNumber</span>
+        <span>Website</span>
+        <span>LicenseNumber</span>
+        <span>AddDate.ToString("yyyy-MM-dd")</span>
+
+        <!-- Buttons Section -->
+        <div class="actions">
+        </div>
+    </div>
     @foreach (var agency in Model)
     {
         <div class="entity-row">

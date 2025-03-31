@@ -45,12 +45,12 @@
           href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
           integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
           crossorigin="anonymous" />
-    
+
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Index.css" asp-append-version="true" />
-    @* <link rel="stylesheet" href="~/Easy-Travel-BD.styles.css" asp-append-version="true" /> *@
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
 </head>
 <!--end::Head-->
@@ -276,7 +276,7 @@
                         data-accordion="false">
                         <li class="nav-item menu-open">
                             <partial name="_AdminSidePanel" />
-                          
+
                         </li>
                         <li class="nav-item">
                             <a href="./generate/theme.html" class="nav-link">
@@ -834,7 +834,7 @@
         createSparkline("#sparkline-3", [15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21]);
     </script>
 
-       @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
     <!--end::Script-->
 </body>
 <!--end::Body-->

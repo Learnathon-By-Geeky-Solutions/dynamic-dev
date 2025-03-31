@@ -44,7 +44,7 @@
                                         @room.RoomType
                                     </h5>
                                     <h6 class="card-subtitle mb-2 text-muted">
-                                   @room.IsAvailable == 1 ? "Available" : "Not Available"
+                                   @(room.IsAvailable ? "Available" : "Not Available")
                                     </h6>
                                     <div>
                                         <span>Price Per Night: @room.PricePerNight </span>
@@ -53,8 +53,9 @@
                                     <p class="card-text">
                                         @room.Description
                                     </p>
-                                    <a asp-controller="Hotel" asp-action="Details" asp-route-id="" class="btn btn-success btn-sm fw-bold text-dark">Details</a>
-                                    <a asp-controller="Hotel" asp-action="Book" asp-route-Id="@room.Id" class="btn btn-warning btn-sm fw-bold text-dark">Book</a>
+                                    @* <a asp-controller="Hotel" asp-action="Details" asp-route-id="" class="btn btn-success btn-sm fw-bold text-dark">Details</a> *@
+                                    <a asp-controller="Hotel" asp-action="HotelBookingRoomDetails" asp-route-hotelId="@Model.Hotel.Id" asp-route-roomId="@room.Id" class="btn  btn-success btn-sm fw-bold text-dark">Details</a>
+                                    <a asp-controller="Hotel" asp-action="HotelBooking" asp-route-hotelId="@Model.Hotel.Id" asp-route-roomId="@room.Id" class="btn btn-warning btn-sm fw-bold text-dark">Book</a>
                                 </div>
                             </div>
                         </div>

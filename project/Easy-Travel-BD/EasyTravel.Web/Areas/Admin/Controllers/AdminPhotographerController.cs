@@ -11,22 +11,24 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     [Area("Admin"), Authorize(Roles = "admin,photographerManager")]
     public class AdminPhotographerController : Controller
     {
-        private readonly IAdminPhotographerService _photographerService;
-        public AdminPhotographerController(IAdminPhotographerService photographerService)
+        private readonly IAdminPhotographerService _adminPhotographerService;
+        private readonly IAgencyService _agencyService;
+
+        public AdminPhotographerController(IAdminPhotographerService adminPhotographerService, IAgencyService agencyService)
         {
-            _photographerService = photographerService;
+            _adminPhotographerService = adminPhotographerService;
+            _agencyService = agencyService;
         }
         public IActionResult Index()
         {
             
-            var photographers = _photographerService.GetAll();
+            var photographers = _adminPhotographerService.GetAll();
             return View(photographers);
         }
         [HttpGet]
         public IActionResult Create()
         {
-            
-            var model = _photographerService.GetPhotographerInstance();
+            var model = _adminPhotographerService.GetPhotographerInstance();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -35,9 +37,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             
             if (ModelState.IsValid)
             {
-                _photographerService.Create(model);
+                _adminPhotographerService.Create(model);
                 return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
             }
+            model.Agencies = _agencyService.GetAll().ToList();
             return View();
         }
         [HttpGet]
@@ -48,7 +51,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var model = _photographerService.Get(id);
+            var model = _adminPhotographerService.Get(id);
+            model.Agencies = _agencyService.GetAll().ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -58,9 +62,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.UpdatedAt = DateTime.Now;
-                _photographerService.Update(model);
+                _adminPhotographerService.Update(model);
                 return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
             }
+            model.Agencies = _agencyService.GetAll().ToList();
             return View();
         }
         [HttpGet]
@@ -71,7 +76,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            var model = _photographerService.Get(id);
+            var model = _adminPhotographerService.Get(id);
+            model.Agencies = _agencyService.GetAll().ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -81,7 +87,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
-            _photographerService.Delete(model.Id);
+            _adminPhotographerService.Delete(model.Id);
             return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
         }
     }
