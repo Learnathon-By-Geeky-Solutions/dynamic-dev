@@ -131,8 +131,12 @@ create-btn{
     height:400px;
 }
 
-@media screen and (max-width: 720px) {
-    .carousel-inner {
+    .carousel-inner .carousel-item img {
+       border-radius:5px;
+    }
+
+    @media screen and (max-width: 720px) {
+        .carousel-inner {
         height: 200px;
     }
 }
