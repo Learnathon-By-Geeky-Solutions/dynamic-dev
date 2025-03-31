@@ -1,110 +1,895 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@* 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
- *@
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Easy Travel BD</h1>
-    <p>Easy Travel BD is a comprehensive travel management platform designed to make traveling across Bangladesh convenient and enjoyable. From booking bus tickets to finding the best hotels, tour guides, and travel agencies, our platform provides a seamless experience for travelers. Additionally, Easy Travel BD enables users to explore tourist spots, read blogs, and share their travel experiences.</p>
-</div>
+   <!-- Hero Section -->
+    <section id="hero" class="hero section accent-background">
 
-<div class="container mt-5">
-    <h2>Team Members</h2>
-    <ul>
-        <li><a href="https://github.com/naeemcse" title="Team Leader">naeemcse</a> (Team Leader)</li>
-        <li><a href="https://github.com/abdurrashed">abdurrashed</a></li>
-        <li><a href="https://github.com/IrfanMahmud1">IrfanMahmud1</a></li>
-    </ul>
+        <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gy-5 justify-content-between">
+                <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                    <h2><span>Travel Whole Bangladesh with </span><span class="accent">EasyTravelBD</span></h2>
+                    <p>We are committed to give you better service and comfort.</p>
+                    <!-- SearchBar -->
+                    <div class="row justify-content-center">
 
-    <h2>Mentor</h2>
-    <ul>
-        <li><a href="https://github.com/sohelatbs23">sohelatbs23</a></li>
-    </ul>
+                        <form class="d-flex">
+                            <div class="input-group">
+                                <input class="form-control form-control-lg foc" type="search"
+                                       placeholder="Search ex: coxbazar" aria-label="Search">
+                                <button class=" btn-primary px-4 btn-get-started" type="submit">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="d-flex mt-4">
+                        <a href="#about" class="btn-get-started">Explore</a>
+                        <a href="#review" class="glightbox btn-watch-video d-flex align-items-center">
+                            <i class="bi bi-play-circle"></i><span>Watch Video</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5  order-1 order-lg-2">
+                    <!-- Carosel -->                
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                    class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                    aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250108151201469466/Best-Hotel-Booking-Apps.webp"
+                                 class="d-block w-100 h-100 fixed-size img-fluid" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://hyperlocalcloud.com/images/new-images/online-bus-ticket-booking-system-why-choose.webp"
+                                 class="d-block w-100 h-100 fixed-size img-fluid" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://img.freepik.com/free-photo/amazing-traveling-experience-image-beautiful-stylish-woman-posing-back-looking-breathtaking-mountains-view-trip-italian-dolomites-hipster-girl-enjoying-adventures_291049-224.jpg?t=st=1742740398~exp=1742743998~hmac=d48324fc8756b24e94aaac4aae55c8c4f521980e02c918b7a973e8cbaba850fe&w=1380"
+                                 class="d-block w-100 h-100 fixed-size img-fluid" alt="...">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <h2>Features</h2>
-    <h3>Home Page</h3>
-    <ul>
-        <li>Navbar with buttons for Packages, Buy Bus Ticket, Book Hotel, Book Guide, Explore Spots in Bangladesh</li>
-        <li>Hero Section showcasing major services: Bus Ticketing, Hotel Booking, Travel Agency, Packages</li>
-        <li>Body with attractive cards showcasing travel packages and details of popular tourist spots in Bangladesh</li>
-        <li>Footer with quick links and contact details</li>
-    </ul>
+        <div class="icon-boxes position-relative" data-aos="fade-up" data-aos-delay="200">
+            <div class="container position-relative">
+                <div class="row gy-4 mt-5">
+                    <div class="col-xl-4 col-md-6">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-bus-front-fill"></i></div>
+                            <h4 class="title"><a href="" class="stretched-link">Buy Bus Ticket</a></h4>
+                        </div>
+                    </div><!--End Icon Box -->
+                    <div class="col-xl-4 col-md-6">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-car-front-fill"></i></div>
+                            <h4 class="title"><a href="" class="stretched-link">Reseve Car</a></h4>
+                        </div>
+                    </div><!--End Icon Box -->
 
-    <h3>Buy Ticket Page</h3>
-    <ul>
-        <li>Ticket Search with input fields for From, To, and Date, and a search button to show available buses</li>
-        <li>Bus Selection with a list of available buses and seat selection option</li>
-        <li>Payment System (if applicable)</li>
-        <li>Ticket Download to generate and download a ticket copy</li>
-        <li>Additional Suggestion to display nearby hotels at the destination area</li>
-    </ul>
+                    <div class="col-xl-4 col-md-6">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-buildings"></i></div>
+                            <h4 class="title"><a href="" class="stretched-link">Book Hotel</a></h4>
+                        </div>
+                    </div><!--End Icon Box -->
+                    <div class="col-xl-4 col-md-6">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-camera-fill"></i></i></div>
+                            <h4 class="title"><a href="" class="stretched-link">Hire Photographer</a></h4>
+                        </div>
+                    </div><!--End Icon Box -->
 
-    <h3>Tour Booking Page</h3>
-    <ul>
-        <li>List of hotels with photos, descriptions, and prices</li>
-        <li>Detailed information and booking options for selected hotels</li>
-        <li>Booking documents as a printable copy</li>
-        <li>Location Selector to filter hotels by location</li>
-    </ul>
+                    <div class="col-xl-4 col-md-6">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-person-walking"></i></div>
+                            <h4 class="title"><a href="" class="stretched-link">Hire Guide </a></h4>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-pencil-square"></i></div>
+                            <h4 class="title"><a href="" class="stretched-link">Write Blog </a></h4>
+                        </div>
+                    </div>
+                    <!--End Icon Box -->
 
-    <h3>Travel Agency Page</h3>
-    <ul>
-        <li>List of trusted travel agencies with detailed information and hiring options</li>
-    </ul>
+                </div>
+            </div>
+        </div>
 
-    <h3>Blog Page</h3>
-    <ul>
-        <li>Admin (and optionally users) can post blogs about tourist spots, travel tips, experiences, and recommendations</li>
-    </ul>
+    </section><!-- /Hero Section -->
+    <!-- Testimonials Section -->
+     <section id="testimonials" class="testimonials section">
 
-    <h3>Admin Page</h3>
-    <ul>
-        <li>Manage platform data: Add or remove buses, hotels, travel agencies</li>
-        <li>Post about tourist spots</li>
-        <li>Manage user accounts</li>
-        <li>View and respond to user feedback</li>
-        <li>Monitor platform analytics</li>
-        <li>Assign roles to users</li>
-    </ul>
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Top Services</h2>
+            <p> Our trusted Partner </p>
+        </div><!-- End Section Title -->
 
-    <h2>Tech Stack</h2>
-    <ul>
-        <li>Frontend: React, Next.js framework</li>
-        <li>Backend: ASP.Net Core</li>
-        <li>Database: MS SQL Server</li>
-        <li>Authentication</li>
-    </ul>
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-    <h2>Vision</h2>
-    <p>Easy Travel BD aims to revolutionize the travel experience in Bangladesh by offering a one-stop platform for all travel needs. Whether you're a solo traveler, a family, or a tour group, our application is designed to make your journey smooth, secure, and memorable.</p>
+            <div class="swiper init-swiper">
 
-    <h2>How to Contribute</h2>
-    <p>We welcome contributions to enhance our platform. Feel free to fork the repository, make changes, and submit pull requests.</p>
+             
+                <div class="swiper-wrapper">
 
-    <h2>Getting Started</h2>
-    <ol>
-        <li>Clone the repository</li>
-        <li>Install dependencies</li>
-        <li>Start development</li>
-    </ol>
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc="
+                                 class="testimonial-img" alt="">
+                            <h3>Hotel Sonargaw</h3>
+                            <h4>Dhaka,Kawran Bazar</h4>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>
+                                    Proin iaculis purus consequat sem cure digni ssim donec porttitora entum
+                                    suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et.
+                                    Maecen aliquam, risus at semper.
+                                </span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div><!-- End testimonial item -->
 
-    <h2>Development Guidelines</h2>
-    <ol>
-        <li>Create feature branches</li>
-        <li>Make small, focused commits</li>
-        <li>Write descriptive commit messages</li>
-        <li>Create pull requests for review</li>
-    </ol>
 
-    <h2>Resources</h2>
-    <ul>
-        <li><a href="docs/Features">Project Documentation</a></li>
-        <li><a href="docs/setup.md">Development Setup</a></li>
-        <li><a href="CONTRIBUTING.md">Contributing Guidelines</a></li>
-    </ul>
-</div>
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="https://coxsbazarcity.com/wp-content/uploads/2024/10/hanif-paribahan.jpg"
+                                 class="testimonial-img" alt="">
+                            <h3>Hanif Bus Service</h3>
+                            <h4>Dhaka,Kawran Bazar</h4>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>
+                                    Proin iaculis purus consequat sem cure digni ssim donec porttitora entum
+                                    suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et.
+                                    Maecen aliquam, risus at semper.
+                                </span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div><!-- End testimonial item -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc="
+                                 class="testimonial-img" alt="">
+                            <h3>Hotel Sonargaw</h3>
+                            <h4>Dhaka,Kawran Bazar</h4>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>
+                                    Proin iaculis purus consequat sem cure digni ssim donec porttitora entum
+                                    suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et.
+                                    Maecen aliquam, risus at semper.
+                                </span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div><!-- End testimonial item -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc="
+                                 class="testimonial-img" alt="">
+                            <h3>Hotel Sonargaw</h3>
+                            <h4>Dhaka,Kawran Bazar</h4>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>
+                                    Proin iaculis purus consequat sem cure digni ssim donec porttitora entum
+                                    suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et.
+                                    Maecen aliquam, risus at semper.
+                                </span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div><!-- End testimonial item -->
+
+
+                </div>
+
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+
+    </section><!-- /Testimonials Section -->
+    <!-- Call To Action Section -->
+    <section id="call-to-action" class="call-to-action section dark-background">
+
+        <div class="container">
+            <img src="assets/img/cta-bg.jpg" alt="">
+            <div class="content row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+                <div class="col-xl-10">
+                    <div class="text-center">
+                        <h3>Call To Action</h3>
+                        
+                        <p>
+                            Experience the best travel services with Easy Travel BD. Book buses, hotels, tour guides,
+                            and camera men all in one place. Make your travel hassle-free and enjoyable.
+                        </p>
+                        <a class="cta-btn" href="#">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section><!-- /Call To Action Section -->
+    <!-- Services Section -->
+    <section id="services" class="services section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Our Services</h2>
+            <p>
+                Discover a wide range of travel services with Easy Travel BD. From bus bookings to hotel
+                reservations, tour guides, and camera men, we have everything you need for a perfect trip.
+            </p>
+        </div><!-- End Section Title -->
+
+
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-bus-front"></i>
+                        </div>
+                        <h3>Bus Ticket</h3>
+                        <p>
+                            Book bus tickets easily with our platform. Choose from a variety of routes and enjoy a
+                            comfortable journey.
+                        </p>
+                        <a href="service-details.html" class="readmore stretched-link">
+                            Read more <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-car-front"></i>
+                        </div>
+                        <h3>Private Car</h3>
+                        <p>
+                            Hire private cars for your travel needs. Enjoy the convenience and comfort of a personal
+                            vehicle.
+                        </p>
+                        <a href="service-details.html" class="readmore stretched-link">
+                            Read more <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        <h3>Hotel</h3>
+                        <p>
+                            Find and book the best hotels at competitive prices. Enjoy a comfortable stay with
+                            top-notch amenities.
+                        </p>
+                        <a href="service-details.html" class="readmore stretched-link">
+                            Read more <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-person-badge"></i>
+                        </div>
+                        <h3>Tour Guide</h3>
+                        <p>
+                            Hire experienced tour guides to explore new places. Get insights and make the most of
+                            your trip.
+                        </p>
+                        <a href="service-details.html" class="readmore stretched-link">
+                            Read more <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-camera"></i>
+                        </div>
+                        <h3>Photographer</h3>
+                        <p>
+                            Book professional photographers to capture your special moments. Get high-quality photos
+                            to cherish forever.
+                        </p>
+                        <a href="service-details.html" class="readmore stretched-link">
+                            Read more <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-pencil-square"></i>
+                        </div>
+                        <h3>Travelling Blog</h3>
+                        <p>Share your experience and help other to travell</p>
+                        <a href="service-details.html" class="readmore stretched-link">
+                            Read more <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div><!-- End Service Item -->
+
+            </div>
+        </div>
+
+    </section><!-- /Services Section -->
+    <!-- Team Section -->
+    <section id="team" class="team section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Our Team</h2>
+            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row gy-4">
+
+                <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
+                    <div class="member">
+                        <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                        <h4>Mynul Hasan Sohel </h4>
+                        <span>Mentor</span>
+                        <div class="social">
+                            <a href=""><i class="bi bi-twitter-x"></i></a>
+                            <a href=""><i class="bi bi-facebook"></i></a>
+                            <a href=""><i class="bi bi-instagram"></i></a>
+                            <a href=""><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div><!-- End Team Member -->
+
+                <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
+                    <div class="member">
+                        <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                        <h4>Abdur Rashed</h4>
+                        <span>CEO</span>
+                        <div class="social">
+                            <a href=""><i class="bi bi-twitter-x"></i></a>
+                            <a href=""><i class="bi bi-facebook"></i></a>
+                            <a href=""><i class="bi bi-instagram"></i></a>
+                            <a href=""><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div><!-- End Team Member -->
+
+                <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
+                    <div class="member">
+                        <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                        <h4>Irfan</h4>
+                        <span>CEO</span>
+                        <div class="social">
+                            <a href=""><i class="bi bi-twitter-x"></i></a>
+                            <a href=""><i class="bi bi-facebook"></i></a>
+                            <a href=""><i class="bi bi-instagram"></i></a>
+                            <a href=""><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div><!-- End Team Member -->
+                <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
+                    <div class="member">
+                        <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                        <h4>Najmul Islam Naeem Naeem</h4>
+                        <span>CEO</span>
+                        <div class="social">
+                            <a href=""><i class="bi bi-twitter-x"></i></a>
+                            <a href=""><i class="bi bi-facebook"></i></a>
+                            <a href=""><i class="bi bi-instagram"></i></a>
+                            <a href=""><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div><!-- End Team Member -->
+
+            </div>
+
+        </div>
+
+    </section><!-- /Team Section -->
+    <!-- Faq Section -->
+    <!-- FAQ Section -->
+    <section id="faq" class="faq section">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="content px-xl-5">
+                        <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
+                        <p>
+                            Got questions? We’ve got answers! Explore our FAQs to learn more about Easy Travel BD’s
+                            services, bookings, payments, and more.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-container">
+
+                        <div class="faq-item faq-active">
+                            <h3><span class="num">1.</span> <span>How do I book a bus ticket?</span></h3>
+                            <div class="faq-content">
+                                <p>
+                                    Booking a bus ticket is simple! Visit the <strong>Bus Ticket</strong> section,
+                                    enter your departure and destination points, select a suitable time, and confirm
+                                    your booking. You will receive a confirmation email or SMS with your ticket
+                                    details.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item -->
+
+                        <div class="faq-item">
+                            <h3><span class="num">2.</span> <span>Can I rent a private car for a trip?</span></h3>
+                            <div class="faq-content">
+                                <p>
+                                    Absolutely! Head over to the <strong>Private Car</strong> section, browse
+                                    available vehicles, select your preferred car, and book it for your travel
+                                    dates. You can also choose drivers if needed.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item -->
+
+                        <div class="faq-item">
+                            <h3>
+                                <span class="num">3.</span> <span>
+                                    What types of hotels are available for
+                                    booking?
+                                </span>
+                            </h3>
+                            <div class="faq-content">
+                                <p>
+                                    We offer a diverse range of hotels, including <strong>
+                                        budget, mid-range, and
+                                        luxury options
+                                    </strong>. Visit our <strong>Hotel</strong> section to explore
+                                    and filter hotels based on price, location, and amenities.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item -->
+
+                        <div class="faq-item">
+                            <h3><span class="num">4.</span> <span>How can I hire a tour guide?</span></h3>
+                            <div class="faq-content">
+                                <p>
+                                    Hiring a tour guide is easy! Browse our <strong>Tour Guide</strong> section to
+                                    view experienced guides, read customer reviews, and select the one that best
+                                    suits your needs. Book their services instantly through our platform.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item -->
+
+                        <div class="faq-item">
+                            <h3>
+                                <span class="num">5.</span> <span>Can I book a photographer for an event?</span>
+                            </h3>
+                            <div class="faq-content">
+                                <p>
+                                    Yes! Whether it's a wedding, vacation, or corporate event, you can hire a
+                                    professional photographer from our <strong>Photographer</strong> section. Choose
+                                    from a variety of skilled photographers and book based on their portfolio and
+                                    availability.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item -->
+
+                        <div class="faq-item">
+                            <h3><span class="num">6.</span> <span>What payment methods do you accept?</span></h3>
+                            <div class="faq-content">
+                                <p>
+                                    We accept multiple payment methods, including <strong>
+                                        credit/debit cards, mobile
+                                        banking (bKash, Nagad, Rocket), and bank transfers
+                                    </strong>. Your
+                                    transactions are secured with top-tier encryption.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item -->
+
+                        <div class="faq-item">
+                            <h3><span class="num">7.</span> <span>How can I cancel a booking?</span></h3>
+                            <div class="faq-content">
+                                <p>
+                                    You can cancel your booking through your <strong>account dashboard</strong>. Go
+                                    to the "My Bookings" section, find the reservation, and select "Cancel."
+                                    Cancellation policies may vary depending on the service provider.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- /FAQ Section -->
+    <!-- Recent Posts Section -->
+    <section id="recent-posts" class="recent-posts section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Recent Blog Posts</h2>
+            <p>Explore the latest travel stories, tips, and guides about traveling in Bangladesh.</p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+            <div class="row gy-4">
+
+                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <article>
+                        <div class="post-img">
+                            <img src="assets/img/blog/blog-1.jpg" alt="Exploring Cox's Bazar" class="img-fluid">
+                        </div>
+                        <p class="post-category">Travel</p>
+                        <h2 class="title">
+                            <a href="blog-details.html">Exploring the Beauty of Cox's Bazar</a>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <img src="assets/img/blog/blog-author.jpg" alt="Author"
+                                 class="img-fluid post-author-img flex-shrink-0">
+                            <div class="post-meta">
+                                <p class="post-author">Maria Doe</p>
+                                <p class="post-date">
+                                    <time datetime="2025-03-01">Mar 1, 2025</time>
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div><!-- End post list item -->
+
+                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <article>
+                        <div class="post-img">
+                            <img src="assets/img/blog/blog-2.jpg" alt="Sundarbans Adventure" class="img-fluid">
+                        </div>
+                        <p class="post-category">Travel</p>
+                        <h2 class="title">
+                            <a href="blog-details.html">A Thrilling Adventure in the Sundarbans</a>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <img src="assets/img/blog/blog-author-2.jpg" alt="Author"
+                                 class="img-fluid post-author-img flex-shrink-0">
+                            <div class="post-meta">
+                                <p class="post-author">Allisa Mayer</p>
+                                <p class="post-date">
+                                    <time datetime="2025-02-15">Feb 15, 2025</time>
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div><!-- End post list item -->
+
+                <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <article>
+                        <div class="post-img">
+                            <img src="assets/img/blog/blog-3.jpg" alt="Historical Dhaka" class="img-fluid">
+                        </div>
+                        <p class="post-category">Travel</p>
+                        <h2 class="title">
+                            <a href="blog-details.html">Discovering the Historical Sites of Dhaka</a>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <img src="assets/img/blog/blog-author-3.jpg" alt="Author"
+                                 class="img-fluid post-author-img flex-shrink-0">
+                            <div class="post-meta">
+                                <p class="post-author">Mark Dower</p>
+                                <p class="post-date">
+                                    <time datetime="2025-01-30">Jan 30, 2025</time>
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div><!-- End post list item -->
+
+            </div><!-- End recent posts list -->
+        </div>
+    </section><!-- /Recent Posts Section -->
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>About Us<br></h2>
+            <p>We commited to give you best service </p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <h3>All Travel Services in a Single Platform</h3>
+                    <img src="https://www.trolleytours.com/wp-content/uploads/2016/07/trolley-tours-of-key-west.jpg"
+                         class="img-fluid rounded-4 mb-4" alt="Travel Services">
+                    <p>
+                        Experience the best travel services with Easy Travel BD. We offer a wide range of services
+                        including bus bookings, hotel reservations, tour guides, and camera man services, all in one
+                        convenient platform.
+                    </p>
+                    <p>
+                        Our platform ensures you get the best deals and services, making your travel experience
+                        seamless and enjoyable. Whether you're planning a vacation or a business trip, Easy Travel
+                        BD has got you covered.
+                    </p>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="250">
+                    <div class="content ps-0 ps-lg-5">
+                        <p class="fst-italic">
+                            Discover the beauty of Bangladesh with our comprehensive travel services. From booking
+                            your transportation to arranging guided tours, we handle it all.
+                        </p>
+                        <ul>
+                            <li>
+                                <i class="bi bi-check-circle-fill"></i> <span>
+                                    Convenient bus bookings with multiple
+                                    options.
+                                </span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill"></i> <span>
+                                    Comfortable and affordable hotel
+                                    reservations.
+                                </span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill"></i> <span>
+                                    Professional tour guides to enhance
+                                    your travel experience.
+                                </span>
+                            </li>
+                            <li>
+                                <i class="bi bi-check-circle-fill"></i> <span>
+                                    Skilled camera men to capture your
+                                    memorable moments.
+                                </span>
+                            </li>
+                        </ul>
+                        <p>
+                            Easy Travel BD is dedicated to providing top-notch services to make your travel
+                            hassle-free and enjoyable. Trust us to handle all your travel needs with professionalism
+                            and care.
+                        </p>
+
+                        <div class="position-relative mt-4">
+                            <img src="https://seapearlcoxsbazar.com/20230826135945im_/http_/www.seapearlcoxsbazar.com/images/rt001.jpg"
+                                 class="img-fluid rounded-4" alt="About Easy Travel BD">
+                            <a href="https://www.youtube.com/watch?v=s3RbCgC4kCU"
+                               class="glightbox pulsating-play-btn"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section><!-- /About Section -->
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Contact Us</h2>
+            <p>Have questions or need assistance? Reach out to our team, and we'll be happy to help!</p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gx-lg-0 gy-4">
+
+                <div class="col-lg-4">
+                    <div class="info-container d-flex flex-column align-items-center justify-content-center">
+
+                        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+                            <i class="bi bi-geo-alt flex-shrink-0"></i>
+                            <div>
+                                <h3>Our Office</h3>
+                                <p>Dhaka, Bangladesh</p>
+                            </div>
+                        </div><!-- End Info Item -->
+
+                        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+                            <i class="bi bi-telephone flex-shrink-0"></i>
+                            <div>
+                                <h3>Call Us</h3>
+                                <p>+880 1234 567 890</p>
+                            </div>
+                        </div><!-- End Info Item -->
+
+                        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+                            <i class="bi bi-envelope flex-shrink-0"></i>
+                            <div>
+                                <h3>Email Us</h3>
+                                <p>support@easytravelbd.com</p>
+                            </div>
+                        </div><!-- End Info Item -->
+
+                        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
+                            <i class="bi bi-clock flex-shrink-0"></i>
+                            <div>
+                                <h3>Working Hours</h3>
+                                <p>Mon-Sat: 9 AM - 10 PM</p>
+                            </div>
+                        </div><!-- End Info Item -->
+
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade"
+                          data-aos-delay="100">
+                        <div class="row gy-4">
+
+                            <div class="col-md-6">
+                                <input type="text" name="name" class="form-control" placeholder="Your Name"
+                                       required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" name="email" placeholder="Your Email"
+                                       required>
+                            </div>
+
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="subject" placeholder="Subject"
+                                       required>
+                            </div>
+
+                            <div class="col-md-12">
+                                <textarea class="form-control" name="message" rows="6" placeholder="Your Message"
+                                          required></textarea>
+                            </div>
+
+                            <div class="col-md-12 text-center">
+                                <div class="loading">Sending...</div>
+                                <div class="error-message"></div>
+                                <div class="sent-message">
+                                    Your message has been sent successfully. We will get back
+                                    to you soon!
+                                </div>
+
+                                <button type="submit">Send Message</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div><!-- End Contact Form -->
+
+            </div>
+        </div>
+
+    </section><!-- /Contact Section -->
+    <!-- /Contact Section -->
+    <!-- We Received Section -->
+    <section id="clients" class="clients section">
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>We Received<br></h2>
+            <p>We received payment all electronic Bank and mobile banking. </p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="swiper init-swiper">
+                <script type="application/json" class="swiper-config">
+                    {
+                      "loop": true,
+                      "speed": 600,
+                      "autoplay": {
+                        "delay": 5000
+                      },
+                      "slidesPerView": "auto",
+                      "pagination": {
+                        "el": ".swiper-pagination",
+                        "type": "bullets",
+                        "clickable": true
+                      },
+                      "breakpoints": {
+                        "320": {
+                          "slidesPerView": 2,
+                          "spaceBetween": 40
+                        },
+                        "480": {
+                          "slidesPerView": 3,
+                          "spaceBetween": 60
+                        },
+                        "640": {
+                          "slidesPerView": 4,
+                          "spaceBetween": 80
+                        },
+                        "992": {
+                          "slidesPerView": 6,
+                          "spaceBetween": 120
+                        }
+                      }
+                    }
+
+                </script>
+            
+                <div class="swiper-wrapper align-items-center">
+                    <div class="swiper-slide">
+                        <img src="https://logos-world.net/wp-content/uploads/2024/10/Bkash-Logo.png"
+                             class="img-fluid" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://freepnglogo.com/images/all_img/1725618764nagad-horizontal-logo-png.png"
+                             class="img-fluid" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://www.dutchbanglabank.com/img/slides/mobile-Banking-Billboard.jpg"
+                             class="img-fluid" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Visa_Electron.svg/1280px-Visa_Electron.svg.png"
+                             class="img-fluid" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://logos-world.net/wp-content/uploads/2024/10/Bkash-Logo.png"
+                             class="img-fluid" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://www.zooinfotech.com/wp-content/uploads/2018/02/Islami-Bank-Bangladesh-Limited.jpg"
+                             class="img-fluid" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://www.dutchbanglabank.com/img/slides/mobile-Banking-Billboard.jpg"
+                             class="img-fluid" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Visa_Electron.svg/1280px-Visa_Electron.svg.png"
+                             class="img-fluid" alt="">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section><!-- /Received Section -->
+    @section Scripts{
+   
+    }
