@@ -126,3 +126,13 @@ create-btn{
     }
 }
 
+/*Carosel fo home page using Bootstrap */
+.carousel-inner{
+    height:400px;
+}
+
+@media screen and (max-width: 720px) {
+    .carousel-inner {
+        height: 200px;
+    }
+}
