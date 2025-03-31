@@ -96,23 +96,20 @@ h6 {
   overflow: hidden;
 }
 
-.pulsating-play-btn:before {
-  content: "";
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  animation-delay: 0s;
-  animation: pulsate-play-btn 2s;
-  animation-direction: forwards;
-  animation-iteration-count: infinite;
-  animation-timing-function: steps;
-  opacity: 1;
-  border-radius: 50%;
-  border: 5px solid color-mix(in srgb, var(--accent-color), transparent 30%);
-  top: -15%;
-  left: -15%;
-  background: rgba(198, 16, 0, 0);
-}
+    .pulsating-play-btn:before {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        animation: pulsate-play-btn 2s steps(1, end) infinite forwards;
+        animation-delay: 0s;
+        opacity: 1;
+        border-radius: 50%;
+        border: 5px solid rgba(0, 131, 116, 0.3); /* Adjusted to use rgba instead of color-mix */
+        top: -15%;
+        left: -15%;
+        background: rgba(198, 16, 0, 0);
+    }
 
 .pulsating-play-btn:after {
   content: "";
