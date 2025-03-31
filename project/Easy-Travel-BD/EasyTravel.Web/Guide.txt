@@ -1,0 +1,43 @@
+﻿1. Notification
+	* update your controller to set TempData values for success / error/info/warning messages. Here's an example
+	   possible values are: success, error, info, warning
+         
+       TempData["success"] = "The hotel has been updated successfully";
+        TempData["error"] = "The hotel not found";
+         TempData["info"] = "The hotel ..";
+          TempData["warning"] = "The hotel ..";
+
+      [HttpPost]
+  public IActionResult Update(Hotel model)
+  {
+      if (ModelState.IsValid)
+      {
+          _hotelService.Update(model);
+          TempData["success"] = "The hotel has been updated successfully";
+
+          return RedirectToAction("Index", "Hotel", new { area = "Admin" });
+      }
+      return View();
+  }
+
+  For modification: shared /_Notification.cshtml
+
+For any modification: https://github.com/CodeSeven/toastr
+
+
+
+/admin/Layout 
+  <partial name="_Notification" /> add this before  render body
+
+
+
+  CSS , html as c#
+  To ensure that your project is recognized primarily as a C# project on GitHub, you can use a .gitattributes file to override the language statistics. This file allows you to specify how GitHub should interpret the files in your repository.
+
+  # Classify HTML and CSS files as C#
+*.html linguist-language=C#
+*.css linguist-language=C#
+
+# Optionally, you can also include other file types if needed
+# *.js linguist-language=C#
+# *.json linguist-language=C#

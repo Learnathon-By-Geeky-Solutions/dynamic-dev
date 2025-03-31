@@ -71,7 +71,7 @@ try
         options.UseSqlServer(connectionString, (x) => x.MigrationsAssembly(migrationAssembly)));
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    builder.Services.AddIdentity<User,IdentityRole<Guid>>(
+    builder.Services.AddIdentity<User,Role>(
         options =>
         {
             //options.SignIn.RequireConfirmedAccount = true;
@@ -88,15 +88,15 @@ try
         )
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-  
 
 
 
+    builder.Services.AddAutoMapper(migrationAssembly);
 
     builder.Services.AddDistributedMemoryCache();
     builder.Services.AddSession(options =>
     {
-        options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+        options.IdleTimeout = TimeSpan.FromMinutes(20); // Set session timeout
         options.Cookie.HttpOnly = true;                // Make cookies accessible only through HTTP
         options.Cookie.IsEssential = true;             // Essential for GDPR compliance
     });
@@ -121,6 +121,8 @@ try
     app.UseHttpsRedirection();
     app.UseRouting();
     app.UseSession();
+
+    // Add this in your Program.cs where you configure app
     app.MapHub<SeatHub>("/seatHub");
 
     app.UseAuthentication();

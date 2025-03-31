@@ -15,6 +15,7 @@ namespace EasyTravel.Domain.Entites
 
         [Required]
         public Guid BusId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -38,7 +39,7 @@ namespace EasyTravel.Domain.Entites
         public List<String>? SelectedSeats { get; set; }
         [Required]
         public List<Guid>? SelectedSeatIds { get; set; }
-
+        public User? User { get; set; }
         public Bus? Bus { get; set; }
 
        
