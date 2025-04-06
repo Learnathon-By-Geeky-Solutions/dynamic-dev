@@ -111,6 +111,8 @@ namespace EasyTravel.Web
             builder.RegisterType<AdminUserRoleService>().As<IAdminUserRoleService>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<AdminGuideBookingService>().As<IAdminGuideBookingService>()
+                .InstancePerLifetimeScope(); 
+            builder.RegisterType<AdminPhotographerBookingService>().As<IAdminPhotographerBookingService>()
                 .InstancePerLifetimeScope();
             base.Load(builder);
         }
