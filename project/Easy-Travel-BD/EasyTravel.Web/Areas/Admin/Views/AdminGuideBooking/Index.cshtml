@@ -1,0 +1,33 @@
+﻿@model IEnumerable<GuideBooking>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="entity-list">
+    <h2>Guide booking List</h2>
+    <div class="entity-row">
+        <span class="name">Name</span>
+        <span>Date</span>
+        @* <span>Event Type</span> *@
+        <span>Event Location</span>
+        <span>Amount</span>
+
+        <!-- Buttons Section -->
+        <div class="actions">
+        </div>
+    </div>
+    @foreach (var guideBooking in Model)
+    {
+        <div class="entity-row">
+            <span class="name">@guideBooking.UserName</span>
+            <span>@guideBooking.EventDate</span>
+            @* <span>@guideBooking.EventType</span> *@
+            <span>@guideBooking.EventLocation</span>
+            <span>@guideBooking.TotalAmount</span>
+            <!-- Buttons Section -->
+            <div class="actions">
+                <a asp-area="Admin" asp-controller="AdminGuideBooking" asp-action="Delete" asp-route-id="@guideBooking.Id" class="delete-btn">Delete</a>
+            </div>
+        </div>
+    }
+</div>
