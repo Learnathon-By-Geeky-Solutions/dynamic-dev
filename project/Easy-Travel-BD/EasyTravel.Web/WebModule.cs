@@ -114,6 +114,10 @@ namespace EasyTravel.Web
                 .InstancePerLifetimeScope(); 
             builder.RegisterType<AdminPhotographerBookingService>().As<IAdminPhotographerBookingService>()
                 .InstancePerLifetimeScope();
+            builder.RegisterType<AdminHotelBookingService>().As<IAdminHotelBookingService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<AdminBusBookingService>().As<IAdminBusBookingService>()
+                .InstancePerLifetimeScope();
             base.Load(builder);
         }
 
