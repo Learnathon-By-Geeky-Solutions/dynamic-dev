@@ -67,7 +67,7 @@
                             {
                                 if (User.Identity?.IsAuthenticated == true && User.IsInRole(role))
                                 {
-                                    <li><a href="@Url.Action("Index", "AdminDashboard")">Dashboard</a></li>
+                                    <li><a href="@Url.Action("Index", "AdminDashboard" , new { Area = "Admin" })">Dashboard</a></li>
                                 }
                             }
                         }
