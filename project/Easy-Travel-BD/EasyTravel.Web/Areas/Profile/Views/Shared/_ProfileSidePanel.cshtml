@@ -11,7 +11,7 @@
 <div class="list-group">
     @foreach (var action in actions)
     {
-        <a asp-area="Admin" asp-controller="BookingHistory" asp-action="action" class="list-group-item list-group-item-action list-group-item-primary">@action</a>
+        <a asp-area="Profile" asp-controller="BookingHistory" asp-action="@action" class="list-group-item list-group-item-action list-group-item-primary">@action</a>
         <br />
     }
 </div>

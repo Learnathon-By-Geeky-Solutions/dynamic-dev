@@ -9,10 +9,10 @@ namespace EasyTravel.Domain.Services
 {
     public interface IBookingHistoryService
     {
-        Task<IEnumerable<BusBooking>> GetBusBookings(Guid id);
-        Task<IEnumerable<CarBooking>> GetCarBookings(Guid id);
-        Task<IEnumerable<HotelBooking>> GetHotelBookings(Guid id);
-        Task<IEnumerable<PhotographerBooking>> GetPhotographerBookings(Guid id);
-        Task<IEnumerable<GuideBooking>> GetGuideBookings(Guid id);
+        Task<IEnumerable<BusBooking>> GetBusBookingsAsync(Guid id);
+        Task<IEnumerable<CarBooking>> GetCarBookingsAsync(Guid id);
+        Task<IEnumerable<HotelBooking>> GetHotelBookingsAsync(Guid id);
+        Task<IEnumerable<PhotographerBooking>> GetPhotographerBookingsAsync(Guid id);
+        Task<IEnumerable<GuideBooking>> GetGuideBookingsAsync(Guid id);
     }
 }

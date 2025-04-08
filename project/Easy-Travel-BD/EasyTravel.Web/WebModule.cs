@@ -120,7 +120,10 @@ namespace EasyTravel.Web
                 .InstancePerLifetimeScope();
             builder.RegisterType<AdminCarBookingService>().As<IAdminCarBookingService>()
              .InstancePerLifetimeScope();
-         base.Load(builder);
+            builder.RegisterType<BookingHistoryService>().As<IBookingHistoryService>()
+             .InstancePerLifetimeScope();
+
+            base.Load(builder);
         }
 
     }
