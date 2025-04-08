@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace EasyTravel.Web.Areas.Profile.Controllers
 {
@@ -12,13 +13,40 @@ namespace EasyTravel.Web.Areas.Profile.Controllers
         {
             _bookingHistoryService = bookingHistoryService;
         }
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult Guide()
+        [HttpGet]
+        public async Task<IActionResult> Guide()
         {
-            return View();
+            var list = await _bookingHistoryService.GetGuideBookingsAsync(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+            return View(list);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Photographer()
+        {
+            var list = await _bookingHistoryService.GetPhotographerBookingsAsync(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+            return View(list);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Bus()
+        {
+            var list = await _bookingHistoryService.GetBusBookingsAsync(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+            return View(list);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Car()
+        {
+            var list = await _bookingHistoryService.GetCarBookingsAsync(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+            return View(list);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Hotel()
+        {
+            var list = await _bookingHistoryService.GetHotelBookingsAsync(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+            return View(list);
         }
     }
 }
