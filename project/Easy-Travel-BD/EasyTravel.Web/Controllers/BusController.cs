@@ -17,6 +17,13 @@ namespace EasyTravel.Web.Controllers
             _busService = busService;
         }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            HttpContext.Session.SetString("LastVisitedPage", "/Guide/Index");
+            return RedirectToAction("Index", "Search");
+        }
+
         public IActionResult List()
         {
 
