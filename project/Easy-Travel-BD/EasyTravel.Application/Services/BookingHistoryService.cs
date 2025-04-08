@@ -16,27 +16,27 @@ namespace EasyTravel.Application.Services
         {
             _applicationUnitOfWork = applicationUnitOfWork;
         }
-        public async Task<IEnumerable<BusBooking>> GetBusBookings(Guid id)
+        public async Task<IEnumerable<BusBooking>> GetBusBookingsAsync(Guid id)
         {
             return await _applicationUnitOfWork.BusBookingRepository.GetAsync(e => e.UserId == id);
         }
 
-        public async Task<IEnumerable<CarBooking>> GetCarBookings(Guid id)
+        public async Task<IEnumerable<CarBooking>> GetCarBookingsAsync(Guid id)
         {
             return await _applicationUnitOfWork.CarBookingRepository.GetAsync(e => e.UserId == id);
         }
 
-        public async Task<IEnumerable<GuideBooking>> GetGuideBookings(Guid id)
+        public async Task<IEnumerable<GuideBooking>> GetGuideBookingsAsync(Guid id)
         {
             return await _applicationUnitOfWork.GuideBookingRepository.GetAsync(e => e.UserId == id);
         }
 
-        public async Task<IEnumerable<HotelBooking>> GetHotelBookings(Guid id)
+        public async Task<IEnumerable<HotelBooking>> GetHotelBookingsAsync(Guid id)
         {
             return await _applicationUnitOfWork.HotelBookingRepository.GetAsync(e => e.UserId == id);
         }
 
-        public async Task<IEnumerable<PhotographerBooking>> GetPhotographerBookings(Guid id)
+        public async Task<IEnumerable<PhotographerBooking>> GetPhotographerBookingsAsync(Guid id)
         {
             return await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e => e.UserId == id);
         }
