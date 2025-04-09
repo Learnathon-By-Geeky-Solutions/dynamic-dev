@@ -89,7 +89,14 @@
                         <hr />
                     </div>
                     <div class="my-4">
-                        <partial name="_ProfileSidePanel"/>
+                        @if (TempData["Header"] == "MyAccount")
+                        {
+                            <partial name="_ProfileSidePanelMyAccount" />
+                        }
+                        else
+                        {
+                            <partial name="_ProfileSidePanelBookingHistory" />
+                        }
                     </div>
                 </div>
                 <div class="col-8 border border-primary rounded pb-3 bg-white">
