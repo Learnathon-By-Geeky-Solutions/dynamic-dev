@@ -47,9 +47,9 @@ namespace EasyTravel.Web.Controllers
             var dateTime = DateTime.Parse(_sessionService.GetString("DateTime"));
 
             // Create the model to pass to the view
-            var model = new SearchBusResultViewModel
+            var model = new SearchCarResultViewModel
             {
-                busSearchFormModel = new BusSearchFormModel
+                CarSearchFormModel = new CarSearchFormModel
                 {
                     From = from,
                     To = to,
@@ -58,7 +58,7 @@ namespace EasyTravel.Web.Controllers
             };
 
             // Get the list of available buses using the BusService
-            model.Buses = await _busService.GetAvailableBusesAsync(from, to, dateTime);
+            model.Cars = await _carService.GetAvailableCarsAsync(from, to, dateTime);
 
             return View(model);
         }
@@ -114,10 +114,6 @@ namespace EasyTravel.Web.Controllers
         }
 
 
-        public IActionResult List()
-        {
-             var cars = _carService.GetAllCars();
-            return View(cars);
-        }
+      
     }
 }
