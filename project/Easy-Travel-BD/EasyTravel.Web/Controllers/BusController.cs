@@ -31,7 +31,7 @@ namespace EasyTravel.Web.Controllers
             {
                 // Log the error
                 Console.WriteLine(ex.Message);
-                return NotFound(); // বা অন্য কিছু fallback
+                return NotFound(); 
             }
         }
 
