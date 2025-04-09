@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EasyTravel.Domain.Entites.Bus>
+﻿@model EasyTravel.Web.Models.SearchBusResultViewModel
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    @foreach (var bus in Model)
+    @foreach (var bus in Model.Buses )
     {
         <div class="card shadow-sm border rounded mb-4">
             <div class="card-body row align-items-center justify-content-between bg-gradient">
