@@ -33,7 +33,7 @@ namespace EasyTravel.Application.Services
                     {
                         Id = Guid.NewGuid(),
                         BusId = bus.Id,
-                        SeatNumber = $"{row}{col}",
+                        SeatNumber = $"{row}{col}", 
                         IsAvailable = true
                     };
                     bus.Seats.Add(seat);
@@ -76,7 +76,7 @@ namespace EasyTravel.Application.Services
         public async Task<IEnumerable<Bus>> GetAvailableBusesAsync(string from, string to, DateTime dateTime)
         {
             // Get buses that match the search parameters
-            var buses = await _applicationUnitOfWork1.BusRepository.GetAsync(bus =>
+            var buses = await _applicationUnitOfWork1.BusRepository.GetAsync(bus=>
                 bus.From == from &&
                 bus.To == to &&
                 bus.DepartureTime.Date == dateTime.Date &&
