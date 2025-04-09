@@ -48,9 +48,9 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public IEnumerable<User> GetAll()
         {
-            return _userManager.Users.ToList();
+            return _userManager.Users;
         }
 
         public async Task<User> GetAsync(Guid id)

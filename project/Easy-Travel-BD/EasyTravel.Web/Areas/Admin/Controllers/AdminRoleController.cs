@@ -17,7 +17,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Index");
-            var roles = await _adminRoleService.GetAllAsync();
+            var roles = _adminRoleService.GetAll();
             return View(roles);
         }
         [HttpGet]
