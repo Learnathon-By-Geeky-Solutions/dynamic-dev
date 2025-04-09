@@ -50,8 +50,7 @@
 
                 <nav id="navmenu" class="navmenu">
                     <ul>
-                        <li><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>
-                        <li><a href="@Url.Action("Privacy", "Home")">Privacy</a></li>
+                        <li><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>                  
                         <li><a href="@Url.Action("List", "Bus")">Bus</a></li>
                         <li><a href="@Url.Action("Index", "Hotel")">Hotel</a></li>
                         @{
@@ -89,7 +88,7 @@
         </div>
 
     </header>
-        <main role="main" class="pb-3">
+        <main role="main" class="py-2">
             <partial name="_Notification" />          
            @RenderBody()     
         </main>
