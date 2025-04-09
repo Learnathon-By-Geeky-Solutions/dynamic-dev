@@ -17,5 +17,6 @@ namespace EasyTravel.Domain.Services
         void DeleteBus(Bus bus);
         void SaveBooking(BusBooking booking, List<Guid> seatIds);
         Bus GetseatBusById(Guid busId);
+        Task<IEnumerable<Bus>> GetAvailableBusesAsync(string from, string to, DateTime dateTime);
     }
 }
