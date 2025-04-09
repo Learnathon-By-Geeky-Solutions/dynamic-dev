@@ -9,6 +9,5 @@ namespace EasyTravel.Domain.Services
 {
     public interface IPhotographerBookingService : IBookingService<PhotographerBooking>
     {
-         
     }
 }

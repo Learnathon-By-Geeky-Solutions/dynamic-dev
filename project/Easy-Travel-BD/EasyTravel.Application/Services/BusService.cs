@@ -73,7 +73,19 @@ namespace EasyTravel.Application.Services
             return bus;
         }
 
-     
+        public async Task<IEnumerable<Bus>> GetAvailableBusesAsync(string from, string to, DateTime dateTime)
+        {
+            // Get buses that match the search parameters
+            var buses = await _applicationUnitOfWork1.BusRepository.GetAsync(bus =>
+                bus.From == from &&
+                bus.To == to &&
+                bus.DepartureTime.Date == dateTime.Date &&
+                bus.Seats.Any(seat => seat.IsAvailable));
+
+            return buses;
+        }
+
+
 
         public void UpdateBus(Bus bus)
         {

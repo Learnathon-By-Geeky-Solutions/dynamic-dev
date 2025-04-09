@@ -14,6 +14,6 @@ namespace EasyTravel.Domain.Services
         Task UpdateAsync(Role entity);
         Task DeleteAsync(Guid id);
         Task<Role> GetAsync(Guid id);
-        Task<IEnumerable<Role>> GetAllAsync();
+        IEnumerable<Role> GetAll();
     }
 }

@@ -24,14 +24,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Index");
-            var roles = await _adminUserService.GetAllAsync();
+            var roles =  _adminUserService.GetAll();
             return View(roles);
         }
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Create");
-            var roles = await _adminRoleService.GetAllAsync();
+            var roles = _adminRoleService.GetAll();
             var user = _adminUserService.GetUserInstance();
             var model = _mapper.Map<AdminUserViewModel>(user);
             model.Roles = roles.ToList();
@@ -52,7 +52,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 }
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
-            var roles = await _adminRoleService.GetAllAsync();
+            var roles = _adminRoleService.GetAll();
             model.Roles = roles.ToList();
             return View(model);
         }
@@ -60,7 +60,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Update(Guid id)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Update");
-            var roles = await _adminRoleService.GetAllAsync();
+            var roles = _adminRoleService.GetAll();
             var user = await _adminUserService.GetAsync(id);
             var model = _mapper.Map<AdminUserViewModel>(user);
             model.Roles = roles.ToList();
@@ -81,7 +81,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 }
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
-            var roles = await _adminRoleService.GetAllAsync();
+            var roles = _adminRoleService.GetAll();
             model.Roles = roles.ToList();
             return View(model);
         }
@@ -89,7 +89,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Delete");
-            var roles = await _adminRoleService.GetAllAsync();
+            var roles = _adminRoleService.GetAll();
             var user = await _adminUserService.GetAsync(id);
             var model = _mapper.Map<AdminUserViewModel>(user);
             model.Roles = roles.ToList();
@@ -104,7 +104,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 await _adminUserService.DeleteAsync(user.Id);
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
-            var roles = await _adminRoleService.GetAllAsync();
+            var roles = _adminRoleService.GetAll();
             model.Roles = roles.ToList();
             return View(model);
         }
