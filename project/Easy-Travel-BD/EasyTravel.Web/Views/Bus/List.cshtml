@@ -46,10 +46,21 @@
                     <h6 class="text-muted mb-2"><i class="bi bi-geo-alt"></i> Route: @bus.From → @bus.To</h6>
                     <h6 class="text-muted mb-2"><i class="bi bi-bus-front"></i> Type: @bus.BusType</h6>
 
+
+                <!-- Departure Time -->
+                <div class="col-md-2">
+                    <p class="mb-0"><strong>Dep:</strong> <span class="text-success">@bus.DepartureTime.ToString("hh:mm tt")</span></p>
+                </div>
+
+                <div class="col-md-1"> 
+                    <hr class="border border-warning border-2">
+                </div>
+
                     <div class="mb-2">
                         <span><strong>Departure:</strong> @bus.DepartureTime.ToString("hh:mm tt")</span> |
                         <span><strong>Arrival:</strong> @bus.ArrivalTime.ToString("hh:mm tt")</span>
                     </div>
+
 
                     <p class="text-muted mb-0">Enjoy a smooth journey with our reliable service.</p>
                 </div>

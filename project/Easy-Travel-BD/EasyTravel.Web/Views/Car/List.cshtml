@@ -1,5 +1,6 @@
-﻿@model IEnumerable<EasyTravel.Domain.Entites.Car>
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+﻿@model EasyTravel.Web.Models.SearchCarResultViewModel
+
+   
 
 @{
     ViewData["Title"] = "Car List";
@@ -14,7 +15,7 @@
         </div>
     </div>
 
-    @foreach (var car in Model)
+    @foreach (var car in Model.Cars)
     {
         <div class="card shadow-sm border rounded mb-4">
             <div class="card-body row align-items-center justify-content-between bg-gradient">
