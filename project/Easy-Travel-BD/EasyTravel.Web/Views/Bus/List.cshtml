@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EasyTravel.Domain.Entites.Bus>
+﻿@model EasyTravel.Web.Models.SearchBusResultViewModel
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
@@ -30,9 +30,7 @@
             </form>
         </div>
     </section>
-
-    <section id="bus-section" class=" container mx-auto mt-1">
-       
+    <section id="bus-section" class=" container mx-auto mt-1">       
         @foreach (var bus in Model)
         {
             <div class="row mb-4 align-items-center bg-white p-3 rounded shadow-sm border result-card">
