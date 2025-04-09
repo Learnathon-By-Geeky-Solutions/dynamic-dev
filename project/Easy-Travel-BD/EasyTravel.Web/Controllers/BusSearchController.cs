@@ -15,6 +15,7 @@ namespace EasyTravel.Web.Controllers
             _busService = busservice;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
@@ -29,7 +30,7 @@ namespace EasyTravel.Web.Controllers
                 // Storing search parameters in session
                 _sessionService.SetString("From", model.From);
                 _sessionService.SetString("To", model.To);
-                _sessionService.SetString("DateTime", model.dateTime.ToString());
+                _sessionService.SetString("DateTime", model.DepartureTime.ToString());
 
                 // Redirect to the List method of BusController
                 return RedirectToAction("List", "Bus");
@@ -40,4 +41,4 @@ namespace EasyTravel.Web.Controllers
     }
 
 }
-}
+
