@@ -10,7 +10,11 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex justify-content-start gap-lg-2">
                     <div>
-                        <img src="" alt="a profile picture of a guide">
+                        <img src="@Model.Guide.ProfilePicture"
+                             alt="Profile picture of Guide John Doe (image not available)"
+                             onError="this.onerror=null;this.src='path/to/placeholder.jpg';"
+                             class="profile-picture me-3">
+
                     </div>
                     <div>
                         <p>@Model.Guide?.FirstName @Model.Guide?.LastName</p>
