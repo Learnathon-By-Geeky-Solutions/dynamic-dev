@@ -13,12 +13,54 @@ namespace EasyTravel.Web.Controllers
     {
 
         private readonly ICarService _carService;
-
-        public CarController(ICarService carService)
+        private readonly ISessionService _sessionService;
+        public CarController(ICarService carService,ISessionService sessionService)
         {
 
             _carService = carService;
+            _sessionService = sessionService;
+        }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            try
+            {
+                return RedirectToAction("Index", "CarSearch");
+            }
+            catch (Exception ex)
+            {
+                
+                Console.WriteLine(ex.Message);
+                return NotFound();
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+
+            // Retrieve search parameters from session
+            var from = _sessionService.GetString("From");
+            var to = _sessionService.GetString("To");
+            var dateTime = DateTime.Parse(_sessionService.GetString("DateTime"));
+
+            // Create the model to pass to the view
+            var model = new SearchCarResultViewModel
+            {
+                CarSearchFormModel = new CarSearchFormModel
+                {
+                    From = from,
+                    To = to,
+                    DepartureTime = dateTime
+                }
+            };
+
+            // Get the list of available buses using the BusService
+            model.Cars = await _carService.GetAvailableCarsAsync(from, to, dateTime);
+
+            return View(model);
         }
 
         public IActionResult CarBooking(Guid CarId)
@@ -72,10 +114,6 @@ namespace EasyTravel.Web.Controllers
         }
 
 
-        public IActionResult List()
-        {
-             var cars = _carService.GetAllCars();
-            return View(cars);
-        }
+      
     }
 }
