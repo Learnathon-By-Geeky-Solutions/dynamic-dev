@@ -111,11 +111,7 @@ button.btn {
     gap: 10px;
     
 }
-
-.logo {
-    width: 150px;
-    height: 100px;
-}
+/*Logo sizing*/
 
 .mid {
     grid-column: 2 / 4;
