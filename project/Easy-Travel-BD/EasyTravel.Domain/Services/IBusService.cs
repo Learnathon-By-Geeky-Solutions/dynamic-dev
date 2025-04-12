@@ -11,11 +11,11 @@ namespace EasyTravel.Domain.Services
     {
         void CreateBus(Bus bus);
         IEnumerable<Bus> GetAllBuses();
-
         Bus GetBusById(Guid BusId);
         void UpdateBus(Bus bus);
         void DeleteBus(Bus bus);
         void SaveBooking(BusBooking booking, List<Guid> seatIds);
         Bus GetseatBusById(Guid busId);
+        Task<IEnumerable<Bus>> GetAvailableBusesAsync(string from, string to, DateTime dateTime);
     }
 }
