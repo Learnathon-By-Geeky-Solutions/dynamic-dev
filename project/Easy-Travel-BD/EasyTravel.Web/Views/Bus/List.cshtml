@@ -2,57 +2,75 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
-    ViewData["Title"] = "Bus List";
+    ViewData["Title"] = "Available Buses";
 }
 
-<div class="container mt-4">
-    <div class="card-header bg-primary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">@ViewData["Title"]</h2>
+<div class="container">
+    <section id="bus-search-section" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Search Buses</h2>
+                <p class="text-muted">Plan your travel by selecting departure and arrival locations with date.</p>
             </div>
+            <form asp-controller="Bus" asp-action="Search" method="get" class="row g-3 justify-content-center">
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="from" placeholder="From" required />
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="to" placeholder="To" required />
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" name="date" required />
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button type="submit" class="btn btn-primary fw-bold">
+                        Search <i class="bi bi-search ms-1"></i>
+                    </button>
+                </div>
+            </form>
         </div>
-    </div>
-
-    @foreach (var bus in Model.Buses )
-    {
-        <div class="card shadow-sm border rounded mb-4">
-            <div class="card-body row align-items-center justify-content-between bg-gradient">
+    </section>
+    <section id="bus-section" class=" container mx-auto mt-1">       
+        @foreach (var bus in Model.Buses)
+        {
+            <div class="row mb-4 align-items-center bg-white p-3 rounded shadow-sm border result-card">
 
                 <!-- Bus Image -->
-                <div class="col-md-1 text-center">
-                    <img src="@bus.ImagePath" alt="@bus.OperatorName" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: contain;">
+                <div class="col-md-3 d-flex justify-content-center">
+                    <img src="@bus.ImagePath" alt="@bus.OperatorName"  class="img-fluid rounded" style="height: 180px; object-fit: cover; width: 100%;"/>
                 </div>
 
-                <!-- Bus Operator & Details -->
-                <div class="col-md-2">
-                    <h5 class="mb-1 text-dark">@bus.OperatorName</h5>
-                    <p class="mb-0 text-muted"><strong>Route:</strong> @bus.From - @bus.To</p>
-                    <p class="mb-0 text-muted"><strong>Type:</strong> @bus.BusType</p>
-                </div>
+                <!-- Bus Info -->
+                <div class="col-md-6">
+                    <h4 class="fw-bold mb-1">@bus.OperatorName</h4>
+                    <h6 class="text-muted mb-2"><i class="bi bi-geo-alt"></i> Route: @bus.From → @bus.To</h6>
+                    <h6 class="text-muted mb-2"><i class="bi bi-bus-front"></i> Type: @bus.BusType</h6>
+
 
                 <!-- Departure Time -->
                 <div class="col-md-2">
                     <p class="mb-0"><strong>Dep:</strong> <span class="text-success">@bus.DepartureTime.ToString("hh:mm tt")</span></p>
                 </div>
 
-                <div class="col-md-1">
+                <div class="col-md-1"> 
                     <hr class="border border-warning border-2">
                 </div>
 
-                <!-- Arrival Time -->
-                <div class="col-md-2">
-                    <p class="mb-0"><strong>Arr:</strong> <span class="text-success">@bus.ArrivalTime.ToString("hh:mm tt")</span></p>
+                    <div class="mb-2">
+                        <span><strong>Departure:</strong> @bus.DepartureTime.ToString("hh:mm tt")</span> |
+                        <span><strong>Arrival:</strong> @bus.ArrivalTime.ToString("hh:mm tt")</span>
+                    </div>
+
+
+                    <p class="text-muted mb-0">Enjoy a smooth journey with our reliable service.</p>
                 </div>
 
-                <!-- Price & Book Button -->
-                <div class="col-md-2 text-center">
-                    <p class="price text-primary fw-bold fs-5">৳@bus.Price</p>
-                    <a  asp-controller="Bus" asp-action="SelectSeats" asp-route-BusId="@bus.Id" class="btn btn-warning btn-sm fw-bold text-dark">Book</a>
+                <!-- Actions -->
+                <div class="col-md-3 text-md-end text-center mt-3 mt-md-0">
+                    <p class="text-primary fw-bold fs-5">৳@bus.Price</p>
+                    <a asp-controller="Bus" asp-action="SelectSeats" asp-route-BusId="@bus.Id" class="btn btn-warning btn-sm fw-bold text-dark w-100">Book Now</a>
                 </div>
-
-              
             </div>
-        </div>
-    }
+        }
+    </section>
 </div>

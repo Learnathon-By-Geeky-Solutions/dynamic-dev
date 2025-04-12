@@ -77,6 +77,18 @@ namespace EasyTravel.Application.Services
             }
         }
 
+        public async Task<IEnumerable<Car>> GetAvailableCarsAsync(string from, string to, DateTime dateTime)
+        {
+            var cars = await _applicationUnitOfWork1.CarRepository.GetAsync(car =>
+                car.From == from &&
+                car.To == to &&
+                car.DepartureTime.Date == dateTime.Date &&
+                car.IsAvailable);
+
+            return cars;
+        }
+
+
 
 
 
