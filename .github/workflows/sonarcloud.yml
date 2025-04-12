@@ -1,0 +1,52 @@
+name: SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud:
+    name: SonarCloud Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'  
+
+      - name: Install dependencies
+        run: dotnet restore dynamic-dev/project/Easy-Travel-BD/Easy-Travel-BD.sln
+
+      - name: Build the project
+        run: dotnet build dynamic-dev/project/Easy-Travel-BD/Easy-Travel-BD.sln --no-restore
+
+      - name: Run tests and collect coverage
+        run: dotnet test dynamic-dev/project/Easy-Travel-BD/Easy-Travel-BD.sln --no-build --collect:"XPlat Code Coverage"
+
+      - name: Debug - List coverage files
+        run: find . -type f -name "*.xml"
+
+      - name: Generate Coverage Report
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:coverage-report" -reporttypes:Html
+        env:
+          DOTNET_CLI_HOME: ${{ runner.temp }}
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectKey: Learnathon-By-Geeky-Solutions_dynamic-dev
+          organization: learnathon-by-geeky-solutions
+          scanner-mode: CLI
+          token: ${{ secrets.SONAR_TOKEN }}
+          extraProperties: |
+            sonar.cs.opencover.reportsPaths=**/coverage.cobertura.xml
+            sonar.cs.vstest.reportsPaths=**/*.trx
