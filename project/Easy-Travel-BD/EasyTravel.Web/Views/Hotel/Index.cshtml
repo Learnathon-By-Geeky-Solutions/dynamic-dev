@@ -1,37 +1,59 @@
-﻿@model IEnumerable<EasyTravel.Domain.Entites.Hotel>
+﻿    @model IEnumerable<EasyTravel.Domain.Entites.Hotel>
+    <div class="container">
+        <section id="search-section" class="py-5 bg-light">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">Find Your Journey</h2>
+                    <p class="text-muted">Search by location and time to plan your next trip easily.</p>
+                </div>
+                <form class="row g-3 justify-content-center">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="Enter Destination or Location" name="location" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="datetime-local" class="form-control" name="travelDateTime" required>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-primary">Search   <i class="bi bi-search"></i></button>                             
+                    </div>
+                </form>
+            </div>
+        </section>
+        <div class="container mx-auto mt-4">
+            @foreach (var hotel in Model)
+            {
+                <div class="row mb-4 align-items-center bg-white p-3 rounded shadow-sm border result-card">
+                    <!-- Image Section -->
+                    <div class="col-md-3 d-flex justify-content-center">
+                        <img src="@hotel.Image" alt="@hotel.Name" class="img-fluid rounded" style="height: 180px; object-fit: cover; width: 100%;">
+                    </div>
 
-<h1> Hotel Booking </h1>
+                    <!-- Information Section -->
+                    <div class="col-md-6">
+                        <h4 class="fw-bold mb-1">@hotel.Name</h4>
+                        <h6 class="text-muted mb-2">@hotel.Address</h6>
+                        <h6 class="text-muted mb-2"><i class="bi bi-geo-alt"></i> @hotel.City</h6>
 
- <div class="container mx-auto mt-4">
-    <div class="row">
-       @{
-     foreach(var hotel in Model)
-     {
-         <div class="col-md-4">
-             <div class="card" style="width: 18rem;">
-                 <img src="@hotel.Image" class="card-img-top" alt="...">
-                 <div class="card-body">
-                     <h5 class="card-title">
-                     @hotel.Name
-                     </h5>
-                     <h6 class="card-subtitle mb-2 text-muted">
-                         @hotel.Address
-                         </h6>
-                      <div> 
-                      <span>Ratings:  @await Html.PartialAsync("_Rating", hotel.Rating)</span>
-                    
-                      </div>
-                         <p class="card-text">
-                             @hotel.Description
-                             </p>
-                <a asp-controller="Hotel" asp-action="Details" asp-route-id="@hotel.Id" class="btn btn-success btn-sm fw-bold text-dark">Details</a>
-                <a asp-controller="Hotel" asp-action="Book" asp-route-HotelId="@hotel.Id" class="btn btn-warning btn-sm fw-bold text-dark">Book</a>
-                  </div>
-              </div>
-          </div>
- }
- }
+                        <div class="mb-2">
+                            <strong>Ratings:</strong> @await Html.PartialAsync("_Rating", hotel.Rating)
+                        </div>
+                        <p class="mb-0 text-muted" style="font-size: 0.95rem;">
+                            @hotel.Description
+                        </p>                   
+                    </div>
 
+                    <!-- Action Buttons -->
+                    <div class="col-md-3 text-md-end text-center mt-3 mt-md-0">
+                        <a asp-controller="Hotel" asp-action="Details" asp-route-id="@hotel.Id" class="btn btn-success btn-sm fw-bold text-white mb-2 w-100">Details</a>
+                        @* <a asp-controller="Hotel" asp-action="Book" asp-route-HotelId="@hotel.Id" class="btn btn-warning btn-sm fw-bold text-dark w-100">Book</a> *@
+                        <p class="text-muted">
+                            <i class="bi bi-door-open"></i>Available Rooms: @hotel.Rooms.Count
+                        </p>
+
+                    </div>
+                </div>
+            }
+        </div>
+
+   
     </div>
-</div>
-    

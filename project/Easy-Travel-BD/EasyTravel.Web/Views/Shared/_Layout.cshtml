@@ -50,9 +50,8 @@
 
                 <nav id="navmenu" class="navmenu">
                     <ul>
-                        <li><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>
-                        <li><a href="@Url.Action("Privacy", "Home")">Privacy</a></li>
-                        <li><a href="@Url.Action("List", "Bus")">Bus</a></li>
+                        <li><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>                  
+                        <li><a href="@Url.Action("Index", "Bus")">Bus</a></li>
                         <li><a href="@Url.Action("Index", "Hotel")">Hotel</a></li>
                         @{
                             var roles = new List<string>
@@ -67,11 +66,11 @@
                             {
                                 if (User.Identity?.IsAuthenticated == true && User.IsInRole(role))
                                 {
-                                    <li><a href="@Url.Action("Index", "AdminDashboard")">Dashboard</a></li>
+                                    <li><a href="@Url.Action("Index", "AdminDashboard" , new { Area = "Admin" })">Dashboard</a></li>
                                 }
                             }
                         }
-                        <li><a href="@Url.Action("List", "Car")">Car</a></li>
+                        <li><a href="@Url.Action("Index", "Car")">Car</a></li>
                         <li class="dropdown">
                             <a href="#"><span>Hire</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                             <ul>
@@ -80,11 +79,8 @@
                             </ul>
                         </li>
                         <li><a href="#contact">Contact Us</a></li>
-                    </ul>
-                    
-                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-                   
-          
+                    </ul>                   
+                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>                             
                 </nav>
                 <partial name="_LoginPartial" />
             </div>
@@ -92,7 +88,7 @@
         </div>
 
     </header>
-        <main role="main" class="pb-3">
+        <main role="main" class="py-2">
             <partial name="_Notification" />          
            @RenderBody()     
         </main>
@@ -159,6 +155,9 @@
             </div>
         </div>
     </footer>
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
