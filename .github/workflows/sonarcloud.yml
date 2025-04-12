@@ -28,18 +28,23 @@ jobs:
         run: dotnet build project/Easy-Travel-BD/Easy-Travel-BD.sln --no-restore
 
       - name: Run tests and collect coverage
-        run: dotnet test project/Easy-Travel-BD/Easy-Travel-BD.sln --no-build --collect:"XPlat Code Coverage"
+        run: |
+          dotnet test project/Easy-Travel-BD/Easy-Travel-BD.sln \
+            --no-build \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./TestResults
 
       - name: Debug - List coverage files
-        run: find . -type f -name "*.xml"
+        run: find ./TestResults -type f -name "coverage.cobertura.xml"
 
       - name: Generate Coverage Report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
           export PATH="$PATH:/home/runner/.dotnet/tools"
-          reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:coverage-report" -reporttypes:Html
-
-
+          reportgenerator \
+            -reports:TestResults/**/coverage.cobertura.xml \
+            -targetdir:coverage-report \
+            -reporttypes:Html
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
@@ -49,5 +54,5 @@ jobs:
           scanner-mode: CLI
           token: ${{ secrets.SONAR_TOKEN }}
           extraProperties: |
-            sonar.cs.opencover.reportsPaths=**/coverage.cobertura.xml
-            sonar.cs.vstest.reportsPaths=**/*.trx
+            sonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
+            sonar.cs.vstest.reportsPaths=TestResults/**/*.trx
