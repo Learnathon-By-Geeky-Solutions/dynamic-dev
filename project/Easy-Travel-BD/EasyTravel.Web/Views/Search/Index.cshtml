@@ -22,20 +22,20 @@
         <form method="post" asp-antiforgery="true" asp-action="Index" asp-controller="Search" class="row g-4 justify-content-center">
             <!-- Event Date -->
             <div class="col-md-3">
-                <label asp-for="EventDate" class="form-label fw-bold text-secondary">Event Date</label>
+                <label asp-for="EventDate" for="EventDate" class="form-label fw-bold text-secondary">Event Date</label>
                 <input asp-for="EventDate" type="date" class="form-control"
                        value="@formattedStartDate" min="@formattedStartDate" max="@formattedEndDate" />
             </div>
 
             <!-- Start Time -->
             <div class="col-md-3">
-                <label asp-for="StartTime" class="form-label fw-bold text-secondary">Start Time</label>
+                <label asp-for="StartTime" for="StartTime" class="form-label fw-bold text-secondary">Start Time</label>
                 <input asp-for="StartTime" type="time" class="form-control" id="StartTime" value="@formattedStartTime" />
             </div>
 
             <!-- Hours Selector -->
             <div class="col-md-3">
-                <label asp-for="TimeInHour" class="form-label fw-bold text-secondary">Duration (Hours)</label>
+                <label asp-for="TimeInHour" for="TimeInHour" class="form-label fw-bold text-secondary">Duration (Hours)</label>
                 <div class="input-group">
                     <button type="button" class="btn btn-outline-secondary decrement">-</button>
                     <input asp-for="TimeInHour" id="TimeInHour" class="form-control text-center" value="1" min="1" max="24" readonly />
@@ -45,7 +45,7 @@
 
             <!-- End Time (readonly) -->
             <div class="col-md-3">
-                <label asp-for="EndTime" class="form-label fw-bold text-secondary">End Time</label>
+                <label asp-for="EndTime" for="EndTime" class="form-label fw-bold text-secondary">End Time</label>
                 <input asp-for="EndTime" type="time" class="form-control" id="EndTime" readonly />
             </div>
 
@@ -55,7 +55,7 @@
                     <i class="bi bi-search me-1"></i> Search
                 </button>
             </div>
-        </form>
+        </form>       
     </div>
 </section>
 
