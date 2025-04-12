@@ -36,10 +36,9 @@ jobs:
       - name: Generate Coverage Report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
-          export PATH="$PATH:$HOME/.dotnet/tools"
+          export PATH="$PATH:/home/runner/.dotnet/tools"
           reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:coverage-report" -reporttypes:Html
-        env:
-          DOTNET_CLI_HOME: ${{ runner.temp }}
+
 
 
       - name: SonarCloud Scan
