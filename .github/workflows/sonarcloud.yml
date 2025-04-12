@@ -22,13 +22,13 @@ jobs:
           dotnet-version: '9.0.x'  
 
       - name: Install dependencies
-        run: dotnet restore dynamic-dev/project/Easy-Travel-BD/Easy-Travel-BD.sln
+        run: dotnet restore project/Easy-Travel-BD/Easy-Travel-BD.sln
 
       - name: Build the project
-        run: dotnet build dynamic-dev/project/Easy-Travel-BD/Easy-Travel-BD.sln --no-restore
+        run: dotnet build project/Easy-Travel-BD/Easy-Travel-BD.sln --no-restore
 
       - name: Run tests and collect coverage
-        run: dotnet test dynamic-dev/project/Easy-Travel-BD/Easy-Travel-BD.sln --no-build --collect:"XPlat Code Coverage"
+        run: dotnet test project/Easy-Travel-BD/Easy-Travel-BD.sln --no-build --collect:"XPlat Code Coverage"
 
       - name: Debug - List coverage files
         run: find . -type f -name "*.xml"
