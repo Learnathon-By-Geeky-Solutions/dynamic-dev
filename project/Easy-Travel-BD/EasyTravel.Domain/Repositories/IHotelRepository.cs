@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Repositories
 {
-    public interface IHotelRepository : IRepository<Hotel,Guid>
+    public interface IHotelRepository : IRepository<Hotel, Guid>
     {
-       
+        IEnumerable<Hotel> GetHotels(string location, DateTime travelDateTime);
     }
 }
