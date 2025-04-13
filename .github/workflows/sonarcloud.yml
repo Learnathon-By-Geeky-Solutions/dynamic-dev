@@ -43,15 +43,12 @@ jobs:
             -targetdir:coverage-report \
             -reporttypes:Html
 
-      - name: Install SonarScanner
-        run: |
-          dotnet tool install --global dotnet-sonarscanner
-          export PATH="$PATH:/home/runner/.dotnet/tools"
-
-      - name: Run SonarScanner
+      - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet sonarscanner begin /k:"Learnathon-By-Geeky-Solutions_dynamic-dev" /o:"learnathon-by-geeky-solutions" /d:sonar.login="${SONAR_TOKEN}" /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.cobertura.xml"
+          dotnet tool install --global dotnet-sonarscanner
+          export PATH="$PATH:/home/runner/.dotnet/tools"
+          dotnet sonarscanner begin /k:"Learnathon-By-Geeky-Solutions_dynamic-dev" /o:"learnathon-by-geeky-solutions" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
           dotnet build project/Easy-Travel-BD/Easy-Travel-BD.sln
-          dotnet sonarscanner end /d:sonar.login="${SONAR_TOKEN}"
+          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
