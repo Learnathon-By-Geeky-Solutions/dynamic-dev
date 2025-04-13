@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,10 @@ namespace EasyTravel.Application.Services
         {
             _applicationunitOfWork.HotelRepository.Edit(entity);
             _applicationunitOfWork.Save();
+        }
+        public IEnumerable<Hotel> SearchHotels(string location, DateTime travelDateTime)
+        {
+            return _applicationunitOfWork.HotelRepository.GetHotels(location,travelDateTime);
         }
     }
 }
