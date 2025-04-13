@@ -19,7 +19,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0.x'  
+          dotnet-version: '9.0.x'
 
       - name: Install dependencies
         run: dotnet restore project/Easy-Travel-BD/Easy-Travel-BD.sln
@@ -34,10 +34,7 @@ jobs:
             --collect:"XPlat Code Coverage" \
             --results-directory ./TestResults
 
-      - name: Debug - List coverage files
-        run: find ./TestResults -type f -name "coverage.cobertura.xml"
-
-      - name: Generate Coverage Report
+      - name: Generate coverage report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
           export PATH="$PATH:/home/runner/.dotnet/tools"
@@ -45,6 +42,7 @@ jobs:
             -reports:TestResults/**/coverage.cobertura.xml \
             -targetdir:coverage-report \
             -reporttypes:Html
+
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
