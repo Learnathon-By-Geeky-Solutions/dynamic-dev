@@ -45,14 +45,12 @@ jobs:
             -reports:TestResults/**/coverage.cobertura.xml \
             -targetdir:coverage-report \
             -reporttypes:Html
-
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          projectKey: Learnathon-By-Geeky-Solutions_dynamic-dev
-          organization: learnathon-by-geeky-solutions
-          scanner-mode: CLI
-          token: ${{ secrets.SONAR_TOKEN }}
-          extraProperties: |
-            sonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
-            sonar.cs.vstest.reportsPaths=TestResults/**/*.trx
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          export PATH="$PATH:/home/runner/.dotnet/tools"
+          dotnet sonarscanner begin /k:"Learnathon-By-Geeky-Solutions_dynamic-dev" /o:"learnathon-by-geeky-solutions" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
+          dotnet build project/Easy-Travel-BD/Easy-Travel-BD.sln
+          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
