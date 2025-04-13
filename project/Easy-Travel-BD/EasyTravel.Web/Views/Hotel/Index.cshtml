@@ -8,10 +8,10 @@
                 </div>
             <form class="row g-3 justify-content-center" method="get">
                 <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="Enter Destination or Location" name="location" required>
+                    <input type="text" class="form-control" placeholder="Enter Destination or Location" name="location" value="@ViewBag.Location" required>
                 </div>
                 <div class="col-md-4">
-                    <input type="datetime-local" class="form-control" name="travelDateTime" required>
+                    <input type="datetime-local" class="form-control" name="travelDateTime" value="@ViewBag.TravelDateTime?.ToString("yyyy-MM-ddTHH:mm")">
                 </div>
                 <div class="col-md-2 d-grid">
                     <button type="submit" class="btn btn-primary">Search <i class="bi bi-search"></i></button>
