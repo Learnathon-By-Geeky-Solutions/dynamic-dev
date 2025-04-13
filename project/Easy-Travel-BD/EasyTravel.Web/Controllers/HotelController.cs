@@ -21,14 +21,17 @@ namespace EasyTravel.Web.Controllers
         {
             IEnumerable<Hotel> hotels;
 
-            if (!string.IsNullOrEmpty(location) && travelDateTime.HasValue)
+            if (!string.IsNullOrEmpty(location))
             {
-                hotels = _hotelService.SearchHotels(location, travelDateTime.Value);
+                hotels = _hotelService.SearchHotels(location, travelDateTime);
             }
             else
             {
                 hotels = _hotelService.GetAll();
             }
+
+            ViewBag.Location = location;
+            ViewBag.TravelDateTime = travelDateTime;
 
             return View(hotels);
         }
