@@ -23,8 +23,8 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             return _context.Hotels
                      .Include(h => h.Rooms)
-                     .Where(h => h.City.Contains(location) && h.Rooms.Any(r => r.IsAvailable && r.CreatedAt <= travelDateTime))
-                     .ToList();
+                     .Where((h => h.City.Contains(location) || h.Name.Contains(location)  && travelDateTime>=DateTime.UtcNow )).ToList(); 
+
         }
 
         // NO NEED GetRooms but i will implement it later.
