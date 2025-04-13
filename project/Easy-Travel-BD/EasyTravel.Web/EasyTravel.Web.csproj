@@ -39,6 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Mappings\" />
+    <Folder Include="Areas\Profile\Data\" />
     <Folder Include="Data\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
