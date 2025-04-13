@@ -14,5 +14,6 @@ namespace EasyTravel.Domain.Services
         Task<IdentityResult> UpdateAsync(Guid UserId, Guid RoleId);
         Task<IdentityResult> DeleteAsync(Guid UserId, Guid RoleId);
         Task<IEnumerable<(User, Role)>> GetAllAsync();
+        Task<List<User>> GetUsersWithoutRole();
     }
 }
