@@ -18,5 +18,13 @@ namespace EasyTravel.Infrastructure.Repositories
 
             _context = context;
         }
+
+        public IEnumerable<BusBooking> GetAllBusBookings()
+        {
+            return _context.BusBookings
+                .Include(b => b.Bus)
+                .Include(b => b.User)
+                .ToList();
+        }
     }
 }
