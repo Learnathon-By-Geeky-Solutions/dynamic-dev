@@ -18,11 +18,25 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             _context=context;
         }
+
+        public IEnumerable<Hotel> GetHotels(string location, DateTime? travelDateTime)
+        {
+            var query = _context.Hotels
+                         .Include(h => h.Rooms)
+                         .Where(h => h.City.Contains(location) || h.Name.Contains(location));
+            if (travelDateTime.HasValue)
+            {
+                query = query.Where(h => h.Rooms.Any(r => r.IsAvailable && r.CreatedAt <= travelDateTime.Value));
+            }
+            return query.ToList();
+        }
+
         // NO NEED GetRooms but i will implement it later.
         public IEnumerable<Room> GetRooms()
         {
             return _context.Rooms;
         }
+
        
     }
 }

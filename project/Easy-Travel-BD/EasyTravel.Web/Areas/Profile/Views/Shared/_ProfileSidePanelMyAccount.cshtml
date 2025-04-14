@@ -1,0 +1,13 @@
+﻿@{
+    var actions = new List<string>();
+    actions.Add("PersonalInfo");
+    var length = actions.Count();
+}
+
+<div class="list-group">
+    @foreach (var action in actions)
+    {
+        <a asp-area="Profile" asp-controller="MyAccount" asp-action="@action" class="list-group-item list-group-item-action list-group-item-primary">@action</a>
+        <br />
+    }
+</div>

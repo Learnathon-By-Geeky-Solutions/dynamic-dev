@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTravel.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTravel.Web", "EasyTravel.Web\EasyTravel.Web.csproj", "{ADFBC764-2AF6-45EA-AD96-695B60A5EC4E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{C9B42FAD-DA95-46A7-BB70-ED149E0BFEC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{ADFBC764-2AF6-45EA-AD96-695B60A5EC4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADFBC764-2AF6-45EA-AD96-695B60A5EC4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADFBC764-2AF6-45EA-AD96-695B60A5EC4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9B42FAD-DA95-46A7-BB70-ED149E0BFEC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9B42FAD-DA95-46A7-BB70-ED149E0BFEC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9B42FAD-DA95-46A7-BB70-ED149E0BFEC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9B42FAD-DA95-46A7-BB70-ED149E0BFEC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

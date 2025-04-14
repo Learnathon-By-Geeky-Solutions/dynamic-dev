@@ -12,12 +12,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
     public class AdminUserController : Controller
     {
         private readonly IAdminUserService _adminUserService;
-        private readonly IAdminRoleService _adminRoleService;
         private readonly IMapper _mapper;
-        public AdminUserController(IAdminUserService adminUserService, IAdminRoleService adminRoleService,IMapper mapper)
+        public AdminUserController(IAdminUserService adminUserService,IMapper mapper)
         {
             _adminUserService = adminUserService;
-            _adminRoleService = adminRoleService;
             _mapper = mapper;
         }
         [HttpGet]
@@ -31,11 +29,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Create()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Create");
-            var roles = _adminRoleService.GetAll();
-            var user = _adminUserService.GetUserInstance();
-            var model = _mapper.Map<AdminUserViewModel>(user);
-            model.Roles = roles.ToList();
-            return View(model);
+            return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AdminUserViewModel model)
@@ -43,8 +37,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
-                user.UserName = model.Email;
-                var (success,errormessage) = await _adminUserService.CreateAsync(user,model.Password,model.Role);
+                var (success,errormessage) = await _adminUserService.CreateAsync(user,model.Password);
                 if (!success)
                 {
                     ModelState.AddModelError(string.Empty, errormessage);
@@ -52,18 +45,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 }
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
-            var roles = _adminRoleService.GetAll();
-            model.Roles = roles.ToList();
             return View(model);
         }
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Update");
-            var roles = _adminRoleService.GetAll();
             var user = await _adminUserService.GetAsync(id);
             var model = _mapper.Map<AdminUserViewModel>(user);
-            model.Roles = roles.ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -71,9 +60,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _mapper.Map<User>(model);
-                user.UserName = model.Email;
-                var (success, errormessage) = await _adminUserService.UpdateAsync(user,model.Role);
+                var user = await _adminUserService.GetAsync(model.Id);
+                if(user.Email != model.Email && await _adminUserService.IsExist(model.Email))
+                {
+                    ModelState.AddModelError(string.Empty, "User already exist");
+                    return View(model);
+                }
+                user = _mapper.Map(model,user);
+                var (success, errormessage) = await _adminUserService.UpdateAsync(user);
                 if (!success)
                 {
                     ModelState.AddModelError(string.Empty, errormessage);
@@ -81,18 +75,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 }
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
-            var roles = _adminRoleService.GetAll();
-            model.Roles = roles.ToList();
             return View(model);
         }
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Delete");
-            var roles = _adminRoleService.GetAll();
             var user = await _adminUserService.GetAsync(id);
             var model = _mapper.Map<AdminUserViewModel>(user);
-            model.Roles = roles.ToList();
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -100,12 +90,16 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _adminUserService.GetByEmailAsync(model.Email);
-                await _adminUserService.DeleteAsync(user.Id);
+                //var user = await _adminUserService.GetAsync(model.Id);
+                //if (user == null)
+                //{
+                //    ModelState.AddModelError(string.Empty, "User not found");
+                //    return View(model);
+                //}
+                //user = _mapper.Map(model, user);
+                await _adminUserService.DeleteAsync(model.Id);
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
-            var roles = _adminRoleService.GetAll();
-            model.Roles = roles.ToList();
             return View(model);
         }
     }
