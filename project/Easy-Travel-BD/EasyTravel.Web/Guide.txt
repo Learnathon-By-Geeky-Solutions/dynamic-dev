@@ -49,3 +49,13 @@ a17155f91742501e79473ae01885bdc2e5202eca
 
 organization key of sonarcloud: learnathon-by-geeky-solutions 
 project kye: Learnathon-By-Geeky-Solutions_dynamic-dev
+
+
+
+|Docker Running 
+here is docker hub repository: https://hub.docker.com/repository/docker/csenaeem/easytravelbd/general 
+Pull from Anywhere (for testing)
+Try this on another machine or environment:
+
+docker pull csenaeem/easytravelbd:v1
+docker run -d -p 8080:80 csenaeem/easytravelbd
