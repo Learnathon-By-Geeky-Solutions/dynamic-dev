@@ -30,7 +30,7 @@ namespace EasyTravel.Application.Services
         public async Task<IEnumerable<GuideBooking>> GetBookingListByFormDataAsync(GuideBooking model)
         {
             return await _applicationUnitOfWork.GuideBookingRepository.GetAsync(e =>
-            e.EventDate.Date >= model.EventDate.Date && (e.EndTime < model.StartTime || e.StartTime > model.EndTime));
+            e.EventDate == model.EventDate && e.StartTime > DateTime.Now.TimeOfDay && e.StartTime >= model.StartTime && e.StartTime <= model.EndTime || e.EndTime >= model.StartTime && e.EndTime <= model.EndTime);
         }
 
         public async Task<bool> IsBooked(GuideBooking model)
