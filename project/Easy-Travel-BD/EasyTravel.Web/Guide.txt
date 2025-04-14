@@ -41,3 +41,11 @@ For any modification: https://github.com/CodeSeven/toastr
 # Optionally, you can also include other file types if needed
 # *.js linguist-language=C#
 # *.json linguist-language=C#
+
+
+Secret for Sonar Cloude:
+SonarCloude-Dynamic-Dev
+a17155f91742501e79473ae01885bdc2e5202eca
+
+organization key of sonarcloud: learnathon-by-geeky-solutions 
+project kye: Learnathon-By-Geeky-Solutions_dynamic-dev
