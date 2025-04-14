@@ -68,12 +68,12 @@ namespace EasyTravel.Web.Controllers
             if (await _guideBookingService.IsBooked(model) == true)
             {
                 TempData["Message"] = "This guide is already booked for this time slot. Please choose another time slot.";
-                return RedirectToAction("/Guide/List");
+                return Redirect("/Guide/List");
             }
             _sessionService.SetString("GuideId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Account", new {area = string.Empty});
             }
             return RedirectToAction("Review", "Guide");
         }
