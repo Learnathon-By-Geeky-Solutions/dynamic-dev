@@ -67,6 +67,7 @@ namespace EasyTravel.Web.Controllers
         {
             var car = _carService.GetCarById(CarId);
             if (car == null) return NotFound();
+            
 
             var viewModel = new CarBookingViewModel
             {
