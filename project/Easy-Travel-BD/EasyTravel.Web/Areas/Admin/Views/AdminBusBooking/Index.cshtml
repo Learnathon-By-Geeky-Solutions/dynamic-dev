@@ -4,29 +4,41 @@
 }
 
 <div class="entity-list">
-    <h2>Bus booking List</h2>
-    <div class="entity-row">
-        <span class="name"></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+    <h2>Bus Booking List</h2>
+
+    <!-- Header Row -->
+    <div class="entity-row font-weight-bold">
+        <span class="name">Passenger Name</span>
+        <span>Phone Number</span>
+        <span>Booking Date</span>
+        <span>Total Amount</span>
+        <span>Selected Seats</span>
+        <span>Bus Name</span>
+        <span>DepartureTime</span>
 
         <!-- Buttons Section -->
-        <div class="actions">
-        </div>
+        <div class="actions">Actions</div>
     </div>
+
+    <!-- Data Rows -->
     @foreach (var busBooking in Model)
     {
         <div class="entity-row">
-            <span class="name"></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+            <span class="name">@busBooking.PassengerName</span>
+            <span>@busBooking.PhoneNumber</span>
+            <span>@busBooking.BookingDate.ToString("yyyy-MM-dd hh:mm tt")</span>
+            <span>৳@busBooking.TotalAmount.ToString("N2")</span>
+            <span>@string.Join(", ", busBooking.SelectedSeats ?? new List<string>())</span>
+            <span>@busBooking.Bus.OperatorName</span>
+            <span>@busBooking.Bus?.DepartureTime.ToString("yyyy-MM-dd hh:mm tt")</span>
+
             <!-- Buttons Section -->
             <div class="actions">
-                <a asp-area="Admin" asp-controller="AdminBusBooking" asp-action="Delete" asp-route-id="@busBooking.Id" class="delete-btn">Delete</a>
+                <a asp-area="Admin"
+                   asp-controller="AdminBusBooking"
+                   asp-action="Delete"
+                   asp-route-id="@busBooking.Id"
+                   class="delete-btn">Delete</a>
             </div>
         </div>
     }
