@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IAdminBusBookingService : IGetService<BusBooking,Guid>
+    public interface IAdminBusBookingService
     {
+        IEnumerable<BusBooking> GetAllBusBookings();
+        void DeleteBusBooking(Guid Id);
     }
+
+
 }

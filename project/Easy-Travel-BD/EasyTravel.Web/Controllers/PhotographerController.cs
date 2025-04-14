@@ -74,7 +74,7 @@ namespace EasyTravel.Web.Controllers
             _sessionService.SetString("PhotographerId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
-                return RedirectToAction("BookingForm", "Booking");
+                return RedirectToAction("Login", "Account", new {string.Empty});
             }
             return RedirectToAction("Review", "Photographer");
         }
@@ -106,19 +106,8 @@ namespace EasyTravel.Web.Controllers
             }
             _sessionService.SetString("LastVisitedPage", "/Photographer/Review");
             var pgBooking = new PhotographerBookingViewModel();
-            if (User.Identity?.IsAuthenticated == false)
-            {
-                pgBooking.FirstName = _sessionService.GetString("FirstName");
-                pgBooking.LastName = _sessionService.GetString("LastName");
-                pgBooking.Email = _sessionService.GetString("Email");
-                pgBooking.PhoneNumber = _sessionService.GetString("PhoneNumber");
-                pgBooking.Gender = _sessionService.GetString("Gender");
-            }
-            else
-            {
-                var user = await _userManager.GetUserAsync(User);
-                pgBooking = _mapper.Map<PhotographerBookingViewModel>(user);
-            }
+            var user = await _userManager.GetUserAsync(User);
+            pgBooking = _mapper.Map<PhotographerBookingViewModel>(user);
             var photographer = _photographerService.Get(Guid.Parse(pgId));
             pgBooking.Photographer = photographer;
             var agency = _agencyService.Get(photographer.AgencyId);
