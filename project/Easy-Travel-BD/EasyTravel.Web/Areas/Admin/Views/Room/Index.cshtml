@@ -33,8 +33,8 @@
                     <td>@room.MaxOccupancy</td>
                     <td>@(room.IsAvailable ? "Yes" : "No")</td>
                     <td>
-                        <a asp-area="Admin" asp-controller="Room" asp-action="Update" asp-route-id="@room.Id" class="btn btn-warning">Update</a>
-                        <a asp-area="Admin" asp-controller="Room" asp-action="Delete" asp-route-id="@room.Id" class="btn btn-danger">Delete</a>
+                        <a asp-area="Admin" asp-controller="AdminRoom" asp-action="Update" asp-route-id="@room.Id" class="btn btn-warning">Update</a>
+                        <a asp-area="Admin" asp-controller="AdminRoom" asp-action="Delete" asp-route-id="@room.Id" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             }
