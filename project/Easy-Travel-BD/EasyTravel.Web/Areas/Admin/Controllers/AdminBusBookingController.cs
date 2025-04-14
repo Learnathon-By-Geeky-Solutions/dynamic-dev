@@ -1,4 +1,5 @@
-﻿using EasyTravel.Domain.Services;
+﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,21 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _adminBusBookingService = adminBusBookingService;
         }
+        [HttpGet]
         public IActionResult Index()
         {
             var list = _adminBusBookingService.GetAllBusBookings();
             return View(list);
         }
+        [HttpPost]
+        public IActionResult Delete (Guid Id)
+        {
+
+            _adminBusBookingService.DeleteBusBooking(Id);
+
+            return RedirectToAction("Index", "AdminBusBooking");
+        }
+
+
     }
 }

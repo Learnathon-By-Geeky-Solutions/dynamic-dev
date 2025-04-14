@@ -10,5 +10,8 @@ namespace EasyTravel.Domain.Services
     public interface IAdminBusBookingService
     {
         IEnumerable<BusBooking> GetAllBusBookings();
+        void DeleteBusBooking(Guid Id);
     }
+
+
 }

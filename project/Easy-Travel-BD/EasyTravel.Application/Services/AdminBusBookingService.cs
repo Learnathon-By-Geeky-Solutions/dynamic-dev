@@ -17,10 +17,12 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork = applicationUnitOfWork;
         }
 
-  
+        public void DeleteBusBooking(Guid Id)
+        {
+            _applicationUnitOfWork.BusBookingRepository.DeleteBusBooking(Id);
+        }
 
-
-         public IEnumerable<BusBooking> GetAllBusBookings()
+        public IEnumerable<BusBooking> GetAllBusBookings()
         {
             return _applicationUnitOfWork.BusBookingRepository.GetAllBusBookings();
         }
