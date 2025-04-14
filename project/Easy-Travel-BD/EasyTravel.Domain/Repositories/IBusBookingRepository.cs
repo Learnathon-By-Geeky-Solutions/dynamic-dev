@@ -10,6 +10,8 @@ namespace EasyTravel.Domain.Repositories
     public interface IBusBookingRepository: IRepository<BusBooking, Guid>
     {
 
+        IEnumerable<BusBooking> GetAllBusBookings();
+
 
     }
 }

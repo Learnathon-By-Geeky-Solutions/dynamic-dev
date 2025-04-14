@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin"),Authorize(Roles ="admin,agencyManager")]
+    [Area("Admin"),Authorize(Roles ="admin,busManager")]
     public class AdminBusBookingController : Controller
     {
         private readonly IAdminBusBookingService _adminBusBookingService;
@@ -14,7 +14,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            var list = _adminBusBookingService.GetAll();
+            var list = _adminBusBookingService.GetAllBusBookings();
             return View(list);
         }
     }
