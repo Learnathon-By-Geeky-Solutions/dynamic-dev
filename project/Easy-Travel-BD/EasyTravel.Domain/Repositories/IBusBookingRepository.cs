@@ -11,7 +11,6 @@ namespace EasyTravel.Domain.Repositories
     {
 
         IEnumerable<BusBooking> GetAllBusBookings();
-
-
+        void DeleteBusBooking(Guid Id);
     }
 }
