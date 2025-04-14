@@ -12,18 +12,19 @@
     controllers.Add("AdminHotel");
     controllers.Add("AdminRoom");
     controllers.Add("AdminBus");
-    controllers.Add("AdminSeat");
     controllers.Add("AdminCar");
     controllers.Add("AdminPhotographerBooking");
     controllers.Add("AdminGuideBooking");
     controllers.Add("AdminHotelBooking");
     controllers.Add("AdminBusBooking");
     controllers.Add("AdminCarBooking");
-
+    // Removed AdminSeat controller from the list
 
     var length = 11;
     var bookingLength = controllers.Count();
     int i = 0, j = 11;
+
+    // Role-based customization of the list length
     if (User.IsInRole("agencyManager"))
     {
         i = 3;
@@ -52,31 +53,27 @@
         length = 11;
         bookingLength = 15;
     }
-
 }
+
 <div class="list-group">
     @for (; i < length; i++)
     {
-        <a asp-area="Admin" asp-controller="@controllers[i]" asp-action="Index" class="list-group-item list-group-item-action list-group-item-primary">@controllers[i].Replace("Admin", "")</a>
+        <a asp-area="Admin" asp-controller="@controllers[i]" asp-action="Index" class="list-group-item list-group-item-action list-group-item-primary">
+            @controllers[i].Replace("Admin", "")
+        </a>
         <br />
     }
-    @* <a class="list-group-item list-group-item-action list-group-item-primary dropdown"> *@
-    @*     Booking *@
-    @*     @for (; j < bookingLength; j++) *@
-    @*     { *@
-    @*         <a asp-area="Admin" asp-controller="@controllers[j]" asp-action="Index" class="list-group-item list-group-item-action list-group-item-primary">@controllers[j].Replace("Admin", "")</a> *@
-    @*         <br /> *@
-    @*     } *@
-    @* </a> *@
-     <div class="list-group-item list-group-item-action list-group-item-primary dropdown">
+
+    <!-- Booking dropdown section -->
+    <div class="list-group-item list-group-item-action list-group-item-primary dropdown">
         <a class="dropdown-toggle list-group-item list-group-item-action list-group-item-primary" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
-            Booking 
-         </a> 
-         <ul class="dropdown-menu dropdown-menu-dark"> 
-             @for (; j < bookingLength; j++) 
-             {
+            Booking
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark">
+            @for (; j < bookingLength; j++)
+            {
                 <li><a class="dropdown-item list-group-item list-group-item-action list-group-item-primary" asp-area="Admin" asp-controller="@controllers[j]" asp-action="Index">@controllers[j].Replace("Admin", "")</a></li>
-            } 
-         </ul> 
-     </div> 
+            }
+        </ul>
+    </div>
 </div>
