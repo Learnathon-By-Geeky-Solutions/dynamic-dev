@@ -19,6 +19,17 @@ namespace EasyTravel.Infrastructure.Repositories
             _context = context;
         }
 
+    public void DeleteBusBooking(Guid Id)
+{
+    var busbooking = _context.BusBookings.FirstOrDefault(x => x.Id == Id);
+    if (busbooking != null)
+    {
+        _context.BusBookings.Remove(busbooking);
+        _context.SaveChanges();
+    }
+}
+
+
         public IEnumerable<BusBooking> GetAllBusBookings()
         {
             return _context.BusBookings
