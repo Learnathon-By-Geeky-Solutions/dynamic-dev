@@ -1899,10 +1899,3 @@ section,
 .starter-section {
   /* Add your styles here */
 }
-
-/*------Result Card Design-------------*/
-
-.result-card :hover{
-    cursor:pointer;
-
-}
