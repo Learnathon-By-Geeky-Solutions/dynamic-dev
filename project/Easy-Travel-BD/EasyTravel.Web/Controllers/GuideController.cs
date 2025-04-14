@@ -73,7 +73,7 @@ namespace EasyTravel.Web.Controllers
             _sessionService.SetString("GuideId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
-                return RedirectToAction("BookingForm", "User");
+                return RedirectToAction("Login", "Account");
             }
             return RedirectToAction("Review", "Guide");
         }
@@ -104,19 +104,8 @@ namespace EasyTravel.Web.Controllers
             }
             _sessionService.SetString("LastVisitedPage", "/Guide/Review");
             var guideBooking = new GuideBookingViewModel();
-            if (User.Identity?.IsAuthenticated == false)
-            {
-                guideBooking.FirstName = _sessionService.GetString("FirstName");
-                guideBooking.LastName = _sessionService.GetString("LastName");
-                guideBooking.Email = _sessionService.GetString("Email");
-                guideBooking.PhoneNumber = _sessionService.GetString("PhoneNumber");
-                guideBooking.Gender = _sessionService.GetString("Gender");
-            }
-            else
-            {
-                var user = await _userManager.GetUserAsync(User);
-                guideBooking = _mapper.Map<GuideBookingViewModel>(user);
-            }
+            var user = await _userManager.GetUserAsync(User);
+            guideBooking = _mapper.Map<GuideBookingViewModel>(user);
             var guide = _guideService.Get(Guid.Parse(guideId));
             guideBooking.Guide = guide;
             var agency = _agencyService.Get(guide.AgencyId);

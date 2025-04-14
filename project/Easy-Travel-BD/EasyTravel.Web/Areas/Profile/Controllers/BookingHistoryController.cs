@@ -50,7 +50,7 @@ namespace EasyTravel.Web.Areas.Profile.Controllers
         }
         private Guid GetId()
         {
-            return GetId();
+            return Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
     }
 }
