@@ -17,12 +17,25 @@ namespace EasyTravel.Web.Controllers
             _hotelBookingService = hotelBooking;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string location, DateTime? travelDateTime)
         {
-            var hotels = _hotelService.GetAll();
+            IEnumerable<Hotel> hotels;
+
+            if (!string.IsNullOrEmpty(location))
+            {
+                hotels = _hotelService.SearchHotels(location, travelDateTime);
+            }
+            else
+            {
+                hotels = _hotelService.GetAll();
+            }
+
+            ViewBag.Location = location;
+            ViewBag.TravelDateTime = travelDateTime;
+
             return View(hotels);
-            //return View();
         }
+
         [HttpGet]
         public IActionResult Details(Guid id)
         {

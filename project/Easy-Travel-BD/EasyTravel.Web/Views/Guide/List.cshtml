@@ -2,26 +2,26 @@
 @{
     ViewData["Title"] = "Guide List";
 }
-@section GuideStyles {
-    <style>
-        .guide-card {
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
-        }
 
-        .guide-card:hover {
-        transform: translateY(-5px);
-        }
+<section id="guide-search-section" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Available Tour Guides</h2>
+            <p class="text-muted">Find the best tour guides based on experience, rating, and availability.</p>
+        </div>
+    </div>
+</section>
 
-        .profile-picture {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        object-fit: cover;
-        }
-    </style>
-}
+<section id="guide-result-section" class="container my-4">
+    @foreach (var guide in Model.Guides)
+    {
+        var totalPrice = guide.HourlyRate * Model.SearchFormModel?.TimeInHour;
+
+        <div class="row mb-4 align-items-center bg-white p-3 rounded shadow-sm border result-card">
+
+            <!-- Guide Image -->
+            <div class="col-md-3 d-flex justify-content-center">
+                <img src="@guide.ProfilePicture" alt="@guide.FirstName" class="img-fluid rounded-circle" style="height: 150px; width: 150px; object-fit: cover;" />
 
 <div class="row shadow-sm rounded-2 ps-5 mt-5">
     <div class="mx-auto col-lg-8">
@@ -65,7 +65,29 @@
                         </a>
                     </div>
                 </div>
+
             </div>
-        }
-    </div>
-</div>
+
+            <!-- Guide Info -->
+            <div class="col-md-6">
+                <h4 class="fw-bold mb-1">@guide.FirstName @guide.LastName</h4>
+                <p class="text-muted mb-2">
+                    <i class="bi bi-envelope"></i> @guide.Email
+                </p>
+                <p class="text-muted mb-0">Reliable guide to help you explore and enjoy your destinations safely and memorably.</p>
+            </div>
+
+            <!-- Stats and Action -->
+            <div class="col-md-3 text-md-end text-center mt-3 mt-md-0">
+                <p class="mb-1">
+                    <strong>⭐ Rating:</strong> @guide.Rating
+                </p>
+                <p class="mb-1">
+                    <strong>Experience:</strong> @guide.YearsOfExperience years
+                </p>
+                <p class="text-primary fw-bold fs-5">৳@totalPrice</p>
+                <a asp-controller="Guide" asp-action="Book" asp-route-id="@guide.Id" class="btn btn-success btn-sm fw-bold text-white w-100">Book Now</a>
+            </div>
+        </div>
+    }
+</section>

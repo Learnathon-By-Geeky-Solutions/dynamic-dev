@@ -1,0 +1,33 @@
+﻿@model IEnumerable<CarBooking>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="entity-list">
+    <h2>Car booking List</h2>
+    <div class="entity-row">
+        <span class="name"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <!-- Buttons Section -->
+        <div class="actions">
+        </div>
+    </div>
+    @foreach (var carBooking in Model)
+    {
+        <div class="entity-row">
+            <span class="name"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <!-- Buttons Section -->
+            <div class="actions">
+                <a asp-area="Admin" asp-controller="AdminCarBooking" asp-action="Delete" asp-route-id="@carBooking.Id" class="delete-btn">Delete</a>
+            </div>
+        </div>
+    }
+</div>

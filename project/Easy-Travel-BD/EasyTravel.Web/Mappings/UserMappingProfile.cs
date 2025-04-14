@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Web.Areas.Admin.Models;
 using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;
 
@@ -9,6 +10,9 @@ namespace EasyTravel.Web.Mappings
     {
         public UserMappingProfile()
         {
+            CreateMap<AdminUserViewModel, User>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+            .ReverseMap();
             CreateMap<RegisterViewModel, User>().ReverseMap();
             CreateMap<SearchFormModel, PhotographerBooking>().ReverseMap();
             CreateMap<SearchFormModel, GuideBooking>().ReverseMap();

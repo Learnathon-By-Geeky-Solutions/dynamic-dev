@@ -54,6 +54,20 @@ namespace EasyTravel.Application.Services
             return await CreateAsync(userId, roleId);
         }
 
+        public async Task<List<User>> GetUsersWithoutRole()
+        {
+            var users = _userManager.Users.ToList();
+            var usersWithoutRole = new List<User>();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Count == 0)
+                {
+                    usersWithoutRole.Add(user);
+                }
+            }
+            return usersWithoutRole;
+        }
         public async Task<IdentityResult> CreateAsync(Guid userId, Guid roleId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
