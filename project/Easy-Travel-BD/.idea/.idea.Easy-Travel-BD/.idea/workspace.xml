@@ -9,15 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="747709ab-e6fc-4ec3-b853-6d637fd7631f" name="Changes" comment="Nullable removed and make readonly some variable">
-      <change afterPath="$PROJECT_DIR$/EasyTravel.Web/wwwroot/photo/default-image.jpg" afterDir="false" />
+    <list default="true" id="747709ab-e6fc-4ec3-b853-6d637fd7631f" name="Changes" comment="Hotel Booking nullable removed">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Easy-Travel-BD/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Easy-Travel-BD/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyTravel.Application/Services/AdminUserRoleService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Application/Services/AdminUserRoleService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyTravel.Infrastructure/Repositories/AgencyRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Infrastructure/Repositories/AgencyRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyTravel.Infrastructure/Repositories/RoomRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Infrastructure/Repositories/RoomRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyTravel.Web/Views/Hotel/HotelBookingRoomDetails.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Web/Views/Hotel/HotelBookingRoomDetails.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Web/Areas/Profile/Views/Shared/_ProfileLayout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Web/Areas/Profile/Views/Shared/_ProfileLayout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Web/Views/Photographer/List.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Web/Views/Photographer/List.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EasyTravel.Web/wwwroot/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Web/wwwroot/assets/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTest/BusServiceTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTest/BusServiceTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +68,11 @@
     <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/AdminAgencyService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/AdminGuideService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/AdminUserRoleService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/AdminUserRoleService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Infrastructure/Repositories/AgencyRepository.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Infrastructure/Repositories/RoomRepository.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Profile/Views/Shared/_ProfileLayout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Views/Photographer/List.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
     <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/UnitTest/BusServiceTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/UnitTest/BusServiceTests.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -173,7 +173,7 @@
       <workItem from="1742628903887" duration="2546000" />
       <workItem from="1742632044748" duration="760000" />
       <workItem from="1744695860595" duration="1163000" />
-      <workItem from="1744697138310" duration="11390000" />
+      <workItem from="1744697138310" duration="15368000" />
     </task>
     <task id="LOCAL-00001" summary="Nullable removed and make readonly some variable">
       <option name="closed" value="true" />
@@ -183,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744699309955</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Hotel Booking nullable removed">
+      <option name="closed" value="true" />
+      <created>1744716051263</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1744716051263</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,6 +225,7 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Nullable removed and make readonly some variable" />
-    <option name="LAST_COMMIT_MESSAGE" value="Nullable removed and make readonly some variable" />
+    <MESSAGE value="Hotel Booking nullable removed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hotel Booking nullable removed" />
   </component>
 </project>
