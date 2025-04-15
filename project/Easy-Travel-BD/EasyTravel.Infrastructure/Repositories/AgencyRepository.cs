@@ -11,11 +11,10 @@ using System.Threading.Tasks;
 namespace EasyTravel.Infrastructure.Repositories
 {
     public class AgencyRepository : Repository<Agency, Guid>, IAgencyRepository
-    {
-        private readonly ApplicationDbContext _context;
+    {   
         public AgencyRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context;
+            
         }
     }
 }

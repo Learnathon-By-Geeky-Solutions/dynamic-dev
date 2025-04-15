@@ -1906,3 +1906,8 @@ section,
     cursor:pointer;
 
 }
+.hover-zoom {
+  transition: transform 0.5s ease;
+}
+.hover-zoom:hover {
+  transform: scale(1.2);}
