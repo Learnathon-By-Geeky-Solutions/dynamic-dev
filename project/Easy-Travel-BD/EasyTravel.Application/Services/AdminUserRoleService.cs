@@ -11,7 +11,6 @@ namespace EasyTravel.Application.Services
 {
     public class AdminUserRoleService : IAdminUserRoleService
     {
-        //private readonly IdentityUserRole<Guid> _identityUserRole;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IAdminRoleService _adminRoleService;

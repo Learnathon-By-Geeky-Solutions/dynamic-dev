@@ -9,17 +9,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="747709ab-e6fc-4ec3-b853-6d637fd7631f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/global.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Easy-Travel-BD/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Easy-Travel-BD/.idea/projectSettingsUpdater.xml" afterDir="false" />
+    <list default="true" id="747709ab-e6fc-4ec3-b853-6d637fd7631f" name="Changes" comment="Nullable removed and make readonly some variable">
+      <change afterPath="$PROJECT_DIR$/EasyTravel.Web/wwwroot/photo/default-image.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Easy-Travel-BD/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Easy-Travel-BD/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyTravel.Web/Controllers/CarSearchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Web/Controllers/CarSearchController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyTravel.Web/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Web/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Application/Services/AdminUserRoleService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Application/Services/AdminUserRoleService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Infrastructure/Repositories/AgencyRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Infrastructure/Repositories/AgencyRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Infrastructure/Repositories/RoomRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Infrastructure/Repositories/RoomRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Web/Views/Hotel/HotelBookingRoomDetails.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Web/Views/Hotel/HotelBookingRoomDetails.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Web/wwwroot/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Web/wwwroot/assets/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTest/BusServiceTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTest/BusServiceTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="autoShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -48,8 +54,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Learnathon-By-Geeky-Solutions/dynamic-dev&quot;,
-    &quot;accountId&quot;: &quot;00cb1c53-646d-4f50-9c57-b903c20db8f6&quot;
+    &quot;url&quot;: &quot;https://github.com/Learnathon-By-Geeky-Solutions/dynamic-dev.git&quot;,
+    &quot;accountId&quot;: &quot;cfe26449-b9f5-431d-8d06-87d0aaf0091d&quot;
   },
   &quot;recentNewPullRequestHead&quot;: {
     &quot;server&quot;: {
@@ -63,65 +69,53 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/HotelBookingService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/HotelBookingService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/HotelBookingService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/HotelBookingService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Domain/Entites/HotelBooking.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Domain/Entites/HotelBooking.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Domain/Entites/HotelBooking.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Domain/Entites/HotelBooking.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Infrastructure/Data/ApplicationDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Infrastructure/Data/ApplicationDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Infrastructure/Data/ApplicationDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Infrastructure/Data/ApplicationDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Controllers/AdminAgencyController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Controllers/AdminAgencyController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Controllers/AdminAgencyController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Controllers/AdminAgencyController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Controllers/AdminBusController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Controllers/AdminBusController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Controllers/HotelController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Controllers/HotelController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Views/Shared/_AdminLayout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Areas/Admin/Views/Shared/_AdminLayout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Program.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/Web Devolopment 2023/AspDotnet/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Web/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/AdminAgencyService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/AdminGuideService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Application/Services/AdminUserRoleService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/EasyTravel.Infrastructure/Repositories/AgencyRepository.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/UnitTest/BusServiceTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/C#/Learnathon/Project/dynamic-dev/project/Easy-Travel-BD/UnitTest/BusServiceTests.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="2uf9jnyyR5pujuYOHSW2WNFePct" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "sonarcloud-improver",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.EasyTravel.Web: IIS Express.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.EasyTravel.Web: http.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;sonarcloud-improver&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\Naeeem's PC\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Naeeem's PC\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\Naeeem's PC\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\Naeeem's PC\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\Naeeem's PC\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\Naeeem's PC\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.EasyTravel.Web: http">
+}</component>
+  <component name="RunManager" selected=".NET Launch Settings Profile.EasyTravel.Web: IIS Express">
     <configuration name="EasyTravel.Web: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/EasyTravel.Web/EasyTravel.Web.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
@@ -179,19 +173,25 @@
       <workItem from="1742628903887" duration="2546000" />
       <workItem from="1742632044748" duration="760000" />
       <workItem from="1744695860595" duration="1163000" />
+      <workItem from="1744697138310" duration="11390000" />
     </task>
+    <task id="LOCAL-00001" summary="Nullable removed and make readonly some variable">
+      <option name="closed" value="true" />
+      <created>1744699309955</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1744699309955</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="dc57b22f-f013-43d5-ae29-013f66eda2d6" value="EDITOR" />
-      </map>
-    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -211,15 +211,12 @@
             </State>
           </value>
         </entry>
-        <entry key="dc57b22f-f013-43d5-ae29-013f66eda2d6">
-          <value>
-            <State />
-          </value>
-        </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Nullable removed and make readonly some variable" />
+    <option name="LAST_COMMIT_MESSAGE" value="Nullable removed and make readonly some variable" />
   </component>
 </project>
