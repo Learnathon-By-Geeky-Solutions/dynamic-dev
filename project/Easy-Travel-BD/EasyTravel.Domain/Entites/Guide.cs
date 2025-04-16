@@ -68,6 +68,8 @@ namespace EasyTravel.Domain.Entites
 
         [NotMapped]
         public List<Agency>? Agencies { get; set; }
+        [NotMapped]
+        public List<GuideBooking>? GuideBookings { get; set; } 
 
     }
 
