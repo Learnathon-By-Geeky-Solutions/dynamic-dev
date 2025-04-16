@@ -87,7 +87,7 @@ namespace EasyTravel.Web.Controllers
                 var pgBooking = _mapper.Map<PhotographerBooking>(model);
                 if (User.Identity.IsAuthenticated == true)
                 {
-                    pgBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    //pgBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 }
                 pgBooking.PhotographerId = Guid.Parse(_sessionService.GetString("PhotographerId"));
                 _sessionService.Remove("PhotographerId");
