@@ -86,7 +86,7 @@ namespace EasyTravel.Web.Controllers
                 var guideBooking = _mapper.Map<GuideBooking>(model);
                 if (User.Identity.IsAuthenticated == true)
                 {
-                    guideBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    //guideBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 }
                 guideBooking.GuideId = Guid.Parse(_sessionService.GetString("GuideId"));
                 _guideBookingService.AddBooking(guideBooking);

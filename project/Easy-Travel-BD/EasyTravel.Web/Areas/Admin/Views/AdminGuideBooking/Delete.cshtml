@@ -68,24 +68,6 @@
             </label>
         </div>
         <div class="form-group">
-            <label for="TotalAmount" style="width:100%">
-                Total Amount:
-                <input asp-for="TotalAmount" class="form-input" disabled />
-            </label>
-        </div>
-        <div class="form-group">
-            <label for="CreatedAt" style="width:100%">
-                Created At:
-                <input asp-for="CreatedAt" type="datetime-local" class="form-input" disabled />
-            </label>
-        </div>
-        @* <div class="form-group"> *@
-        @*     <label for="UserId" style="width:100%"> *@
-        @*         User ID: *@
-        @*         <input asp-for="UserId" class="form-input" disabled /> *@
-        @*     </label> *@
-        @* </div> *@
-        <div class="form-group">
             <button type="submit" class="btn btn-primary me-2">Delete</button>
             <a asp-area="Admin" asp-controller="AdminGuideBooking" asp-action="Index" class="btn btn-secondary">Back to List</a>
         </div>
