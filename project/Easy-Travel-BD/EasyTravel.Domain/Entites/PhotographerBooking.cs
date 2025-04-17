@@ -24,6 +24,6 @@ namespace EasyTravel.Domain.Entites
         public int TimeInHour { get; set; }
         public Guid PhotographerId { get; set; }
         public Photographer? Photographer { get; set; }
-        public Booking? Booking { get; set; }
+        public Booking Booking { get; set; }
     }
 }

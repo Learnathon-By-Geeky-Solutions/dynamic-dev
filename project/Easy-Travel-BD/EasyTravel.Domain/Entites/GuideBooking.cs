@@ -23,7 +23,7 @@ namespace EasyTravel.Domain.Entites
         public TimeSpan EndTime { get; set; }
         public int TimeInHour { get; set; }
         public Guid GuideId { get; set; }
-        public Guide? Guide { get; set; }
+        public Guide Guide { get; set; }
         public Booking? Booking { get; set; }
     }
 }
