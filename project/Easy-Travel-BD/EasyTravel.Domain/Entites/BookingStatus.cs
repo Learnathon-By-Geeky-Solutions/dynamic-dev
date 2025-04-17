@@ -10,7 +10,7 @@ namespace EasyTravel.Domain.Entites
     {
         Pending,
         Cancelled,
-        Completed,
+        Confirmed,
         Refunded
     }
 }
