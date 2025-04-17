@@ -42,7 +42,7 @@
                     <strong>Experience:</strong> @guide.YearsOfExperience years
                 </p>
                 <p class="text-primary fw-bold fs-5">৳@totalPrice</p>
-                <a asp-controller="Guide" asp-action="Book" asp-route-id="@guide.Id" class="btn btn-success btn-sm fw-bold text-white w-100">Book Now</a>
+                <a asp-controller="Booking" asp-action="Guide" asp-route-id="@guide.Id" class="btn btn-success btn-sm fw-bold text-white w-100">Book Now</a>
             </div>
         </div>
     }
