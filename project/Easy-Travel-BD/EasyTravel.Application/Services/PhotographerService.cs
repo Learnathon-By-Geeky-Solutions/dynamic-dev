@@ -32,21 +32,24 @@ namespace EasyTravel.Application.Services
 
         public async Task<IEnumerable<Photographer>> GetPhotographerListAsync(PhotographerBooking photographerBooking)
         {
-            var bookings = await _photographerBookingService.GetBookingListByFormDataAsync(photographerBooking);
-            var photographers = await _applicationUnitOfWork.PhotographerRepository.GetAsync(e => e.Availability == true);
-            if (bookings.ToList().Count() == 0)
+            var difference = photographerBooking.StartTime - DateTime.Now.TimeOfDay;
+            if (difference < TimeSpan.FromHours(6))
             {
-                return photographers;
+                return new List<Photographer>();
             }
-            var pglist = new List<Photographer>();
-            foreach (var photographer in photographers)
-            {
-                if (bookings.Any(e => e.PhotographerId != photographer.Id))
-                {
-                    pglist.Add(photographer);
-                }
-            }
-            return pglist;
+            return await _applicationUnitOfWork.PhotographerRepository.GetAsync(
+                e => e.Availability &&
+                    !e.PhotographerBookings.Any() ||
+                     e.PhotographerBookings.Any(
+                         p => p.Booking.BookingStatus != BookingStatus.Confirmed && p.Booking.BookingStatus != BookingStatus.Pending &&
+                             p.EventDate >= photographerBooking.EventDate &&
+                              p.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
+                 (
+                     (p.StartTime >= photographerBooking.StartTime && p.EventDate >= photographerBooking.EventDate) ||
+                     (p.EndTime >= photographerBooking.StartTime && p.EventDate >= photographerBooking.EventDate)
+                 )
+                            )
+            );
         }
     }
 }

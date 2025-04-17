@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyTravel.Domain.Services
+namespace EasyTravel.Domain.Repositories
 {
-    public interface IGuideBookingService : IBookingService<GuideBooking,Booking>
+    public interface IBookingRepository : IRepository<Booking,Guid>
     {
     }
 }
