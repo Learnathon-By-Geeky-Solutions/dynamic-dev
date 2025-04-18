@@ -44,7 +44,7 @@
                     <strong>Experience:</strong> @photographer.YearsOfExperience years
                 </p>
                 <p class="text-primary fw-bold fs-5">৳@totalPrice</p>
-                <a asp-controller="Photographer" asp-action="Book" asp-route-id="@photographer.Id" class="btn btn-warning btn-sm fw-bold text-dark w-100">Book Now</a>
+                <a asp-controller="Booking" asp-action="Photographer" asp-route-id="@photographer.Id" class="btn btn-warning btn-sm fw-bold text-dark w-100">Book Now</a>
             </div>
         </div>
     }

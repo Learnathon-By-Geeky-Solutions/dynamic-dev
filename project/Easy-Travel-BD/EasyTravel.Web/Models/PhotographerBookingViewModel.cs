@@ -22,6 +22,7 @@ namespace EasyTravel.Web.Models
         public int TimeInHour { get; set; }
         public decimal TotalAmount { get; set; }
         public string? AgencyName { get; set; }
+        public Guid PhotographerId { get; set; }
         public Photographer? Photographer { get; set; }
 
     }

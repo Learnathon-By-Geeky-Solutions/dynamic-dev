@@ -36,8 +36,8 @@ namespace EasyTravel.Domain.Entites
 
         public bool IsAvailable { get; set; } = true;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         [ForeignKey("Hotel")]
         public Guid HotelId { get; set; }

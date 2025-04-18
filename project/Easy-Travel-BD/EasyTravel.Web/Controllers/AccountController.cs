@@ -80,6 +80,7 @@ namespace EasyTravel.Web.Controllers
             }
             var user = _mapper.Map<User>(model);
             user.UserName = model.Email;
+            user.ProfilePicture = string.Empty;
             var (success, errorMessage) = await _authService.RegisterService.RegisterUserAsync(user, model.Password);
 
             if (!success)
