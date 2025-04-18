@@ -26,5 +26,6 @@ namespace EasyTravel.Domain
         public IBusBookingRepository BusBookingRepository { get; }
         public ISeatRepository SeatRepository { get; }
         public ICarBookingRepository CarBookingRepository { get; }
+        public IPaymentRepository PaymentRepository { get; }
     }
 }

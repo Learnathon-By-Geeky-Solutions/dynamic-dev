@@ -51,10 +51,6 @@ namespace EasyTravel.Web.Controllers
                     TotalAmount = model.TotalAmount,
                     BookingTypes = BookingTypes.Photographer,
                     BookingStatus = BookingStatus.Pending,
-                    //HotelBooking = new HotelBooking
-                    //{
-                    //    RoomIdsJson = string.Empty,
-                    //},
                 };
                 if (User?.Identity?.IsAuthenticated == true)
                 {
