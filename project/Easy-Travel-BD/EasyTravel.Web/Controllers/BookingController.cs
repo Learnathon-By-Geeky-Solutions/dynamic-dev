@@ -32,20 +32,6 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Photographer(Guid id)
         {
-            var model = new PhotographerBooking()
-            {
-                EventDate = DateTime.Parse(_sessionService.GetString("EventDate"), CultureInfo.InvariantCulture),
-                StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"), CultureInfo.InvariantCulture),
-                TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"), CultureInfo.InvariantCulture),
-                EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"), CultureInfo.InvariantCulture),
-                PhotographerId = id,
-            };
-
-            //if (await _photographerBookingService.IsBooked(model))
-            //{
-            //    TempData["Message"] = "This photographer is already booked for this time slot. Please choose another time slot.";
-            //    return RedirectToAction("/Photographer/List");
-            //}
             _sessionService.SetString("PhotographerId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
@@ -64,7 +50,11 @@ namespace EasyTravel.Web.Controllers
                 {
                     TotalAmount = model.TotalAmount,
                     BookingTypes = BookingTypes.Photographer,
-                    BookingStatus = BookingStatus.Pending
+                    BookingStatus = BookingStatus.Pending,
+                    //HotelBooking = new HotelBooking
+                    //{
+                    //    RoomIdsJson = string.Empty,
+                    //},
                 };
                 if (User?.Identity?.IsAuthenticated == true)
                 {
@@ -80,20 +70,6 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Guide(Guid id)
         {
-            var model = new GuideBooking()
-            {
-                EventDate = DateTime.Parse(_sessionService.GetString("EventDate")),
-                StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime")),
-                TimeInHour = int.Parse(_sessionService.GetString("TimeInHour")),
-                EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime")),
-                GuideId = id,
-            };
-
-            //if (await _guideBookingService.IsBooked(model) == true)
-            //{
-            //    TempData["Message"] = "This guide is already booked for this time slot. Please choose another time slot.";
-            //    return Redirect("/Guide/List");
-            //}
             _sessionService.SetString("GuideId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {

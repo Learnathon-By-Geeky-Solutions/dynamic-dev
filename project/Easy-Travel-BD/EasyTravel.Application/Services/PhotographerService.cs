@@ -32,11 +32,14 @@ namespace EasyTravel.Application.Services
 
         public async Task<IEnumerable<Photographer>> GetPhotographerListAsync(PhotographerBooking photographerBooking)
         {
-            var difference = photographerBooking.StartTime - DateTime.Now.TimeOfDay;
-            if (difference < TimeSpan.FromHours(6))
+            DateTime now = DateTime.Now;
+            DateTime selectedDateTime = photographerBooking.EventDate.Add(photographerBooking.StartTime);
+            TimeSpan difference = selectedDateTime - now;
+            if (selectedDateTime < now || difference < TimeSpan.FromHours(6))
             {
-                return new List<Photographer>();
+                return new List<Photographer>(); 
             }
+
             return await _applicationUnitOfWork.PhotographerRepository.GetAsync(
                 e => e.Availability &&
                     !e.PhotographerBookings.Any() ||

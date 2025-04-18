@@ -54,6 +54,7 @@ namespace EasyTravel.Web.Controllers
             pgBooking.EventType = _sessionService.GetString("EventType");
             pgBooking.EventLocation = _sessionService.GetString("EventLocation");
             pgBooking.TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour;
+            pgBooking.PhotographerId = photographer.Id;
             return View(pgBooking);
         }
         [HttpGet]
@@ -78,6 +79,7 @@ namespace EasyTravel.Web.Controllers
             guideBooking.EventType = _sessionService.GetString("EventType");
             guideBooking.EventLocation = _sessionService.GetString("EventLocation");
             guideBooking.TotalAmount = guide.HourlyRate * guideBooking.TimeInHour;
+            guideBooking.GuideId = guide.Id;
             return View(guideBooking);
         }
     }
