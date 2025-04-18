@@ -11,16 +11,14 @@ namespace EasyTravel.Domain.Entites
 {
     public class HotelBooking:IEntity<Guid>
     {
-        [Key]
+        [Key, ForeignKey("Booking")]
         public Guid Id { get; set; }
 
-        [Required]
-        public Guid UserId { get; set; }
         //public User User { get; set; }
 
         [Required]
         public Guid HotelId { get; set; }
-        //public Hotel Hotel { get; set; }
+        public Hotel? Hotel { get; set; }
 
         [Required]
         public DateTime CheckInDate { get; set; }
@@ -28,12 +26,9 @@ namespace EasyTravel.Domain.Entites
         [Required]
         public DateTime CheckOutDate { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
         [Required]
         public string RoomIdsJson { get; set; }
+        public Booking? Booking { get; set; }
 
-       
     }
 }
