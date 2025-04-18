@@ -59,7 +59,6 @@ namespace EasyTravel.Domain.Entites
 
         public DateTime UpdatedAt { get; set; }
 
-
         public string? Status { get; set; }
 
         public required Guid AgencyId { get; set; } // Foreign Key

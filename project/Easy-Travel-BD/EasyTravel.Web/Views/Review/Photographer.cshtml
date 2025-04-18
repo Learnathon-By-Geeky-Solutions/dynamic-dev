@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <form asp-antiforgery=true id="dynamicForm" method="post">
+                <form asp-antiforgery=true asp-action="Photographer" asp-controller="Booking" asp-area="" method="post">
                     <input asp-for="FirstName" hidden/>
                     <input asp-for="LastName" hidden/>
                     <input asp-for="Email" hidden/>
@@ -68,22 +68,10 @@
                     <input asp-for="EndTime" hidden/>
                     <input asp-for="TimeInHour" hidden/>
                     <input asp-for="TotalAmount" hidden/>
-                    <button type="submit" onclick="setFormAction('Photographer')" class="btn btn-danger">Book</button>
-                    <button type="submit" onclick="setFormAction('PayAction')" class="btn btn-secondary">Pay</button>
+                    <button type="submit" class="btn btn-danger">Book</button>
+                    <a asp-area="" asp-controller="Payment" asp-action="Pay" asp-route-id="@Model.PhotographerId" class="btn btn-secondary">Pay</a>
                 </form>
         </div>
     </div>
     <div></div>
 </div>
-
-@section Scripts{
-    <script>
-        function setFormAction(action) {
-            var form = document.getElementById('dynamicForm');
-            form.action = '@Url.Action("Photographer", "Booking")';
-            if (action === 'PayAction') {
-                form.action = '@Url.Action("Photographer", "Payment")';
-            }
-        }
-    </script>
-}
