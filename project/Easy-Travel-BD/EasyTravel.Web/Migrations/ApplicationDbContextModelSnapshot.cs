@@ -70,6 +70,43 @@ namespace EasyTravel.Web.Migrations
                         });
                 });
 
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Booking", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BookingStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BookingTypes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bookings");
+                });
+
             modelBuilder.Entity("EasyTravel.Domain.Entites.Bus", b =>
                 {
                     b.Property<Guid>("Id")
@@ -119,7 +156,6 @@ namespace EasyTravel.Web.Migrations
             modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("BookingDate")
@@ -149,17 +185,9 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BusId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("BusBookings", (string)null);
                 });
@@ -213,7 +241,6 @@ namespace EasyTravel.Web.Migrations
             modelBuilder.Entity("EasyTravel.Domain.Entites.CarBooking", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("BookingDate")
@@ -235,17 +262,9 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("CarBookings");
                 });
@@ -355,7 +374,7 @@ namespace EasyTravel.Web.Migrations
                             Availability = true,
                             Bio = "Experienced professional with a background in various fields.",
                             ContactNumber = "+1234567890",
-                            DateOfBirth = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc),
                             Email = "irfan.mahmud@example.com",
                             FirstName = "Irfan",
                             HireDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -380,11 +399,6 @@ namespace EasyTravel.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -418,12 +432,6 @@ namespace EasyTravel.Web.Migrations
                     b.Property<int>("TimeInHour")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -431,8 +439,6 @@ namespace EasyTravel.Web.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GuideId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("GuideBookings");
                 });
@@ -530,7 +536,6 @@ namespace EasyTravel.Web.Migrations
             modelBuilder.Entity("EasyTravel.Domain.Entites.HotelBooking", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CheckInDate")
@@ -539,11 +544,6 @@ namespace EasyTravel.Web.Migrations
                     b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
                     b.Property<Guid>("HotelId")
                         .HasColumnType("uniqueidentifier");
 
@@ -551,21 +551,44 @@ namespace EasyTravel.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("HotelId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("HotelBookings", (string)null);
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("BookingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TransactionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Photographer", b =>
@@ -675,7 +698,7 @@ namespace EasyTravel.Web.Migrations
                             Availability = true,
                             Bio = "Experienced photographer with a passion for Nature photography.",
                             ContactNumber = "123-456-7890",
-                            DateOfBirth = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2025, 2, 16, 19, 31, 26, 0, DateTimeKind.Utc),
                             Email = "irfan.mahmud@example.com",
                             FirstName = "Irfan",
                             HireDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -701,11 +724,6 @@ namespace EasyTravel.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -739,12 +757,6 @@ namespace EasyTravel.Web.Migrations
                     b.Property<int>("TimeInHour")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -752,8 +764,6 @@ namespace EasyTravel.Web.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PhotographerId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PhotographerBookings");
                 });
@@ -975,6 +985,9 @@ namespace EasyTravel.Web.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -1103,6 +1116,17 @@ namespace EasyTravel.Web.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Booking", b =>
+                {
+                    b.HasOne("EasyTravel.Domain.Entites.User", "User")
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EasyTravel.Domain.Entites.BusBooking", b =>
                 {
                     b.HasOne("EasyTravel.Domain.Entites.Bus", "Bus")
@@ -1111,34 +1135,34 @@ namespace EasyTravel.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EasyTravel.Domain.Entites.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("EasyTravel.Domain.Entites.Booking", "Booking")
+                        .WithOne("BusBooking")
+                        .HasForeignKey("EasyTravel.Domain.Entites.BusBooking", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Bus");
+                    b.Navigation("Booking");
 
-                    b.Navigation("User");
+                    b.Navigation("Bus");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.CarBooking", b =>
                 {
                     b.HasOne("EasyTravel.Domain.Entites.Car", "Car")
-                        .WithMany()
+                        .WithMany("CarBookings")
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EasyTravel.Domain.Entites.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("EasyTravel.Domain.Entites.Booking", "Booking")
+                        .WithOne("CarBooking")
+                        .HasForeignKey("EasyTravel.Domain.Entites.CarBooking", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Car");
+                    b.Navigation("Booking");
 
-                    b.Navigation("User");
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
@@ -1155,33 +1179,50 @@ namespace EasyTravel.Web.Migrations
             modelBuilder.Entity("EasyTravel.Domain.Entites.GuideBooking", b =>
                 {
                     b.HasOne("EasyTravel.Domain.Entites.Guide", "Guide")
-                        .WithMany()
+                        .WithMany("GuideBookings")
                         .HasForeignKey("GuideId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EasyTravel.Domain.Entites.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("EasyTravel.Domain.Entites.Booking", "Booking")
+                        .WithOne("GuideBooking")
+                        .HasForeignKey("EasyTravel.Domain.Entites.GuideBooking", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
 
                     b.Navigation("Guide");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.HotelBooking", b =>
                 {
-                    b.HasOne("EasyTravel.Domain.Entites.Hotel", null)
+                    b.HasOne("EasyTravel.Domain.Entites.Hotel", "Hotel")
                         .WithMany("HotelBookings")
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EasyTravel.Domain.Entites.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("EasyTravel.Domain.Entites.Booking", "Booking")
+                        .WithOne("HotelBooking")
+                        .HasForeignKey("EasyTravel.Domain.Entites.HotelBooking", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Payment", b =>
+                {
+                    b.HasOne("EasyTravel.Domain.Entites.Booking", "Booking")
+                        .WithMany("Payments")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Photographer", b =>
@@ -1197,19 +1238,21 @@ namespace EasyTravel.Web.Migrations
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.PhotographerBooking", b =>
                 {
+                    b.HasOne("EasyTravel.Domain.Entites.Booking", "Booking")
+                        .WithOne("PhotographerBooking")
+                        .HasForeignKey("EasyTravel.Domain.Entites.PhotographerBooking", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EasyTravel.Domain.Entites.Photographer", "Photographer")
-                        .WithMany()
+                        .WithMany("PhotographerBookings")
                         .HasForeignKey("PhotographerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EasyTravel.Domain.Entites.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.Navigation("Booking");
 
                     b.Navigation("Photographer");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EasyTravel.Domain.Entites.Room", b =>
@@ -1292,6 +1335,21 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("Photographers");
                 });
 
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Booking", b =>
+                {
+                    b.Navigation("BusBooking");
+
+                    b.Navigation("CarBooking");
+
+                    b.Navigation("GuideBooking");
+
+                    b.Navigation("HotelBooking");
+
+                    b.Navigation("Payments");
+
+                    b.Navigation("PhotographerBooking");
+                });
+
             modelBuilder.Entity("EasyTravel.Domain.Entites.Bus", b =>
                 {
                     b.Navigation("BusBookings");
@@ -1299,11 +1357,31 @@ namespace EasyTravel.Web.Migrations
                     b.Navigation("Seats");
                 });
 
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Car", b =>
+                {
+                    b.Navigation("CarBookings");
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Guide", b =>
+                {
+                    b.Navigation("GuideBookings");
+                });
+
             modelBuilder.Entity("EasyTravel.Domain.Entites.Hotel", b =>
                 {
                     b.Navigation("HotelBookings");
 
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.Photographer", b =>
+                {
+                    b.Navigation("PhotographerBookings");
+                });
+
+            modelBuilder.Entity("EasyTravel.Domain.Entites.User", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

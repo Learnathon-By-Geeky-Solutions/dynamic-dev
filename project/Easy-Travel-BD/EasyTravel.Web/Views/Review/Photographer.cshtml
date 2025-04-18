@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <form asp-antiforgery=true method="post" asp-action="Book" asp-controller="Photographer">
+                <form asp-antiforgery=true asp-action="Photographer" asp-controller="Booking" asp-area="" method="post">
                     <input asp-for="FirstName" hidden/>
                     <input asp-for="LastName" hidden/>
                     <input asp-for="Email" hidden/>
@@ -69,6 +69,7 @@
                     <input asp-for="TimeInHour" hidden/>
                     <input asp-for="TotalAmount" hidden/>
                     <button type="submit" class="btn btn-danger">Book</button>
+                    <a asp-area="" asp-controller="Payment" asp-action="Pay" asp-route-id="@Model.PhotographerId" class="btn btn-secondary">Pay</a>
                 </form>
         </div>
     </div>

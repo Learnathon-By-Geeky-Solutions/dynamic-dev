@@ -45,9 +45,9 @@ namespace EasyTravel.Domain.Entites
 
         public bool IsAvailable { get; set; } = true;
         public string? ImagePath { get; set; }
-        
 
-
+        [NotMapped]
+        public List<CarBooking>? CarBookings { get; set; }
 
     }
 }

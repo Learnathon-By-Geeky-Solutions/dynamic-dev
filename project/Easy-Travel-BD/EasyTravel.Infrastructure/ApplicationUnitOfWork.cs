@@ -2,6 +2,7 @@
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
 using EasyTravel.Infrastructure.Data;
+using EasyTravel.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace EasyTravel.Infrastructure
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public ApplicationUnitOfWork(ApplicationDbContext context, IUserRepository userRepository, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IBusBookingRepository busBookingRepository,ISeatRepository seatRepository,ICarBookingRepository carbookingRepository,IPhotographerBookingRepository photographerBookingRepository,IGuideBookingRepository guideBookingRepository)
+        public ApplicationUnitOfWork(ApplicationDbContext context, IUserRepository userRepository, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IBusBookingRepository busBookingRepository,ISeatRepository seatRepository,ICarBookingRepository carbookingRepository,IPhotographerBookingRepository photographerBookingRepository,IGuideBookingRepository guideBookingRepository, IBookingRepository bookingRepository)
            : base(context)
         {
             UserRepository = userRepository;
@@ -29,6 +30,7 @@ namespace EasyTravel.Infrastructure
             BusBookingRepository = busBookingRepository;
             SeatRepository = seatRepository;
             CarBookingRepository = carbookingRepository;
+            BookingRepository = bookingRepository;
         }
 
         public IUserRepository UserRepository { get; private set; } 
@@ -45,5 +47,7 @@ namespace EasyTravel.Infrastructure
         public IBusBookingRepository BusBookingRepository { get; private set; }
         public ISeatRepository SeatRepository { get; private set; }
         public ICarBookingRepository CarBookingRepository { get; private set; }
+        public IBookingRepository BookingRepository{ get; private set; }
+        public IPaymentRepository PaymentRepository { get; private set; }
     }
 }

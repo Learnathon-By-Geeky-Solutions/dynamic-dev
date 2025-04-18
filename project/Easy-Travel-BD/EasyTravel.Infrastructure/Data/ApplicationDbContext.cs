@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EasyTravel.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User,Role,Guid>
+    public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
     {
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
@@ -22,121 +22,194 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<HotelBooking> HotelBookings { get; set; }
-        public DbSet<PhotographerBooking> PhotographerBookings {  get; set; }
-        public DbSet<GuideBooking> GuideBookings {  get; set; }
+        public DbSet<PhotographerBooking> PhotographerBookings { get; set; }
+        public DbSet<GuideBooking> GuideBookings { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<BusBooking> BusBookings { get; set; }
         public DbSet<CarBooking> CarBookings { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            // Payment 
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.Property(e => e.PaymentMethod)
+                .HasConversion<string>();
+                entity.Property(e => e.PaymentStatus)
+                .HasConversion<string>();
+                entity.HasOne(p => p.Booking)
+                 .WithMany(b => b.Payments)
+                 .HasForeignKey(p => p.BookingId)
+                 .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Booking
+            modelBuilder.Entity<Booking>(entity =>
+            {
+                entity.Property(e => e.BookingStatus)
+                    .HasConversion<string>();
+                entity.Property(e => e.BookingTypes)
+                    .HasConversion<string>();
+                entity.Property(e => e.CreatedAt)
+                   .ValueGeneratedOnAdd()
+                   .HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.UpdatedAt)
+                   .ValueGeneratedOnAdd()
+                   .HasDefaultValueSql("GETDATE()");
+                entity.Property(b => b.TotalAmount)
+                .HasColumnType("decimal(18,2)");
+                entity.HasOne(u => u.User)
+                    .WithMany(b => b.Bookings)
+                    .HasForeignKey(b => b.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // BusBooking
+            modelBuilder.Entity<BusBooking>(entity =>
+            {
+                entity.HasOne(p => p.Bus)
+                .WithMany(b => b.BusBookings)
+                .HasForeignKey(p => p.BusId)
+                .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(c => c.Booking)
+               .WithOne(b => b.BusBooking)
+               .HasForeignKey<BusBooking>(c => c.Id)
+               .OnDelete(DeleteBehavior.Cascade);
+                entity.ToTable("BusBookings");
+            });
+
+            // GuideBooking
+            modelBuilder.Entity<GuideBooking>(entity =>
+            {
+                entity.Property(a => a.Id)
+                   .ValueGeneratedOnAdd()
+                   .HasDefaultValueSql("NEWID()");
+                entity.HasOne(p => p.Booking)
+                 .WithOne(b => b.GuideBooking)
+                 .HasForeignKey<GuideBooking>(p => p.Id)
+                 .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(p => p.Guide)
+                 .WithMany(b => b.GuideBookings)
+                 .HasForeignKey(p => p.GuideId)
+                 .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // PhotographerBooking
+            modelBuilder.Entity<PhotographerBooking>(entity =>
+            {
+                entity.Property(a => a.Id)
+                   .ValueGeneratedOnAdd()
+                   .HasDefaultValueSql("NEWID()");
+                entity.HasOne(p => p.Booking)
+                    .WithOne(b => b.PhotographerBooking)
+                    .HasForeignKey<PhotographerBooking>(p => p.Id)
+                    .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(p => p.Photographer)
+                      .WithMany(b => b.PhotographerBookings)
+                      .HasForeignKey(p => p.PhotographerId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // CarBooking
+            modelBuilder.Entity<CarBooking>(entity =>
+            {
+                entity.HasOne(p => p.Car)
+                  .WithMany(b => b.CarBookings)
+                  .HasForeignKey(p => p.CarId)
+                  .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(c => c.Booking)
+                .WithOne(b => b.CarBooking)
+                .HasForeignKey<CarBooking>(c => c.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Seat
             modelBuilder.Entity<Seat>()
                 .ToTable("Seats");
-            modelBuilder.Entity<BusBooking>()
-               .ToTable("BusBookings");
-            modelBuilder.Entity<Bus>()
-              .Property(b => b.Price)
-              .HasColumnType("decimal(18,2)");
 
-            modelBuilder.Entity<Bus>()
-       .HasMany(b => b.Seats)
-       .WithOne(s => s.Bus)
-       .HasForeignKey(s => s.BusId)
-       .OnDelete(DeleteBehavior.Cascade);
+            // Bus
+            modelBuilder.Entity<Bus>(entity =>
+            {
+                entity.HasMany(b => b.Seats)
+                   .WithOne(s => s.Bus)
+                   .HasForeignKey(s => s.BusId)
+                   .OnDelete(DeleteBehavior.Cascade);
+                entity.HasMany(b => b.BusBookings)
+                    .WithOne(bb => bb.Bus)
+                    .HasForeignKey(bb => bb.BusId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                entity.Property(b => b.Price)
+                    .HasColumnType("decimal(18,2)");
+            });
 
-            modelBuilder.Entity<Bus>()
-                .HasMany(b => b.BusBookings)
-                .WithOne(bb => bb.Bus)
-                .HasForeignKey(bb => bb.BusId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // Agency
+            modelBuilder.Entity<Agency>(entity =>
+            {
+                entity.Property(a => a.AddDate)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("GETDATE()");
+                entity.Property(a => a.Id)
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("NEWID()");
+                entity.HasMany(b => b.Photographers)
+                    .WithOne(bb => bb.Agency)
+                    .HasForeignKey(bb => bb.AgencyId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
-            modelBuilder.Entity<Agency>()
-                .Property(a => a.AddDate)
+            // Photographer
+            modelBuilder.Entity<Photographer>(entity =>
+            {
+                entity.ToTable("Photographers");
+                entity.Property(a => a.HireDate)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<Agency>()
-                .Property(a => a.Id)
+                entity.Property(a => a.Id)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWID()");
-
-
-            modelBuilder.Entity<Photographer>()
-                .ToTable("Photographers");
-            modelBuilder.Entity<Photographer>()
-                .Property(a => a.HireDate)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<Photographer>()
-                .Property(a => a.Id)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("NEWID()");
-            modelBuilder.Entity<Photographer>()
-              .Property(b => b.Rating)
+                entity.Property(b => b.Rating)
               .HasColumnType("decimal(3,2)");
-            modelBuilder.Entity<Photographer>()
-               .Property(a => a.Status)
+                entity.Property(a => a.Status)
                .HasDefaultValue("Active");
-            modelBuilder.Entity<Photographer>()
-              .Property(p => p.HourlyRate)
+                entity.Property(p => p.HourlyRate)
               .HasColumnType("decimal(18,2)");
+            });
 
-            modelBuilder.Entity<Agency>()
-           .HasMany(b => b.Photographers)
-           .WithOne(bb => bb.Agency)
-           .HasForeignKey(bb => bb.AgencyId)
-           .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Guide>()
-               .ToTable("Guides");
-            modelBuilder.Entity<Guide>()
-           .Property(a => a.HireDate)
-           .ValueGeneratedOnAdd()
-           .HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<Guide>()
-                .Property(a => a.Id)
+            // Guide
+            modelBuilder.Entity<Guide>(entity =>
+            {
+                entity.ToTable("Guides");
+                entity.Property(a => a.HireDate)
+                   .ValueGeneratedOnAdd()
+                   .HasDefaultValueSql("GETDATE()");
+                entity.Property(a => a.Id)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWID()");
-            modelBuilder.Entity<Guide>()
-              .Property(b => b.Rating)
+                entity.Property(b => b.Rating)
               .HasColumnType("decimal(3,2)");
-            modelBuilder.Entity<Guide>()
-                .Property(a => a.Status)
+                entity.Property(a => a.Status)
                 .HasDefaultValue("Active");
-            modelBuilder.Entity<Guide>()
-                .Property(g => g.HourlyRate)
+                entity.Property(g => g.HourlyRate)
                 .HasColumnType("decimal(18,2)");
-            modelBuilder.Entity<GuideBooking>()
-            .Property(a => a.Id)
-            .ValueGeneratedOnAdd()
-            .HasDefaultValueSql("NEWID()");
-            modelBuilder.Entity<GuideBooking>()
-                .Property(pg => pg.CreatedAt)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<GuideBooking>()
-             .Property(b => b.TotalAmount)
-             .HasColumnType("decimal(18,2)");
-            modelBuilder.Entity<PhotographerBooking>()
-               .Property(a => a.Id)
+
+            });
+                
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(a => a.CreatedAt)
                .ValueGeneratedOnAdd()
-               .HasDefaultValueSql("NEWID()");
-            modelBuilder.Entity<PhotographerBooking>()
-                .Property(pg => pg.CreatedAt)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<PhotographerBooking>()
-             .Property(b => b.TotalAmount)
-             .HasColumnType("decimal(18,2)");
+               .HasDefaultValueSql("GETDATE()");
+            });
 
-
-            modelBuilder.Entity<User>()
-                .Property(a => a.CreatedAt)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
+            // UserRole
             modelBuilder.Entity<IdentityUserRole<Guid>>()
                 .Property(a => a.RoleId)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValue(new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"));
 
+            // Roles
             modelBuilder.Entity<Role>()
                 .HasData(
                 new Role
@@ -176,6 +249,8 @@ namespace EasyTravel.Infrastructure.Data
                        NormalizedName = "hotelManager"
                    }
                 );
+
+
             modelBuilder.Entity<Agency>().HasData(
             new Agency
             {
@@ -198,7 +273,7 @@ namespace EasyTravel.Infrastructure.Data
                Address = "123 Main St, Anytown, USA",
                ProfilePicture = "profile.jpg",
                Bio = "Experienced photographer with a passion for Nature photography.",
-               DateOfBirth = new DateTime(1985, 5, 15),
+               DateOfBirth = new DateTime(2025, 2, 16, 19, 31, 26, DateTimeKind.Utc),
                Specialization = "Communication,Hiking,Swimming,Skydive",
                YearsOfExperience = 5,
                Availability = true,
@@ -224,7 +299,7 @@ namespace EasyTravel.Infrastructure.Data
                Address = "1234 Main St, City, Country",
                ProfilePicture = "profile-pic.jpg",
                Bio = "Experienced professional with a background in various fields.",
-               DateOfBirth = new DateTime(1985, 5, 15),
+               DateOfBirth = new DateTime(2025, 2, 16, 19, 31, 26, DateTimeKind.Utc),
                LanguagesSpoken = "English, Spanish",
                Specialization = "Communication,Hiking,Swimming,Skydive",
                PreferredLocations = "dhaka,sylhet",
@@ -347,16 +422,12 @@ namespace EasyTravel.Infrastructure.Data
 
             modelBuilder.Entity<HotelBooking>(entity =>
             {
-                // Configure primary key
-                entity.HasKey(e => e.Id);
+                entity.HasOne(p => p.Booking)
+                 .WithOne(b => b.HotelBooking)
+                 .HasForeignKey<HotelBooking>(p => p.Id)
+                 .OnDelete(DeleteBehavior.Cascade);
 
-                // Configure relationships
-                entity.HasOne<User>()
-                      .WithMany()
-                      .HasForeignKey(e => e.UserId)
-                      .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne<Hotel>()
+                entity.HasOne(e => e.Hotel)
                       .WithMany(h => h.HotelBookings)
                       .HasForeignKey(e => e.HotelId)
                       .OnDelete(DeleteBehavior.Cascade);
@@ -367,12 +438,6 @@ namespace EasyTravel.Infrastructure.Data
 
                 entity.Property(e => e.CheckOutDate)
                       .IsRequired();
-
-                entity.Property(e => e.CreatedAt)
-                      .HasDefaultValueSql("GETDATE()");
-
-                entity.Property(e => e.UpdatedAt)
-                      .HasDefaultValueSql("GETDATE()");
 
                 entity.Property(e => e.RoomIdsJson)
                       .IsRequired();

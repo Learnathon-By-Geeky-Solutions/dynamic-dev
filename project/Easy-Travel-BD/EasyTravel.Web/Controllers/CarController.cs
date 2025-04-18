@@ -89,14 +89,14 @@ namespace EasyTravel.Web.Controllers
                 PassengerName = model.BookingForm.PassengerName,
                 Email = model.BookingForm.Email,
                 PhoneNumber = model.BookingForm.PhoneNumber,
-                TotalAmount = model.BookingForm.TotalAmount,
+                //TotalAmount = model.BookingForm.TotalAmount,
                 BookingDate = DateTime.Now,
             };
 
             // Adding UserId to the CarBooking if the user is authenticated
             if (User.Identity.IsAuthenticated)
             {
-                carBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                //carBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             }
 
             _carService.SaveBooking(carBooking, model.CarId);

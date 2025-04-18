@@ -86,7 +86,7 @@
                 </div>              
                 <input type="hidden" asp-for="@Model.hotelBooking.HotelId" value="@Model.hotel.Id" />
                 <input type="hidden" asp-for="@Model.hotelBooking.RoomIdsJson" value="@Model.room.Id" />
-                <input type="hidden" asp-for="@Model.hotelBooking.UserId" value="D56560DB-3290-4C91-BE5F-08DD59579E67" />
+                @* <input type="hidden" asp-for="@Model.hotelBooking.UserId" value="D56560DB-3290-4C91-BE5F-08DD59579E67" /> *@
                 <button type="submit" class="btn btn-success w-100" id="submitButton">
                     PROCEED TO PAYMENT || Confirm Booking
                 </button>

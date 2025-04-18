@@ -11,10 +11,8 @@ namespace EasyTravel.Infrastructure.Repositories
 {
     public class GuideRepository : Repository<Guide,Guid>,IGuideRepository
     {
-        private readonly ApplicationDbContext _context;
         public GuideRepository(ApplicationDbContext context) : base(context) 
         {
-            _context = context;
         }
     }
 }

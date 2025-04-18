@@ -113,7 +113,7 @@ namespace EasyTravel.Web.Controllers
                 PassengerName = model.BookingForm.PassengerName,
                 Email = model.BookingForm.Email,
                 PhoneNumber = model.BookingForm.PhoneNumber,
-                TotalAmount = model.TotalAmount, // Using model.TotalAmount directly instead of BookingForm.TotalAmount
+                //TotalAmount = model.TotalAmount, // Using model.TotalAmount directly instead of BookingForm.TotalAmount
                 BookingDate = DateTime.Now,
                 SelectedSeats = model.SelectedSeatNumbers,
                 SelectedSeatIds = model.SelectedSeatIds,
@@ -122,7 +122,7 @@ namespace EasyTravel.Web.Controllers
             // Adding UserId to the BusBooking if the user is authenticated
             if (User.Identity.IsAuthenticated)
             {
-                busbooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                //busbooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             }
 
             _busService.SaveBooking(busbooking, model.SelectedSeatIds);
