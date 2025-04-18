@@ -30,8 +30,10 @@ namespace EasyTravel.Application.Services
 
         public async Task<IEnumerable<Guide>> GetGuideListAsync(GuideBooking guideBooking)
         {
-            var difference = guideBooking.StartTime -  DateTime.Now.TimeOfDay;
-            if (difference < TimeSpan.FromHours(6))
+            DateTime now = DateTime.Now;
+            DateTime selectedDateTime = guideBooking.EventDate.Add(guideBooking.StartTime);
+            TimeSpan difference = selectedDateTime - now;
+            if (selectedDateTime < now || difference < TimeSpan.FromHours(6))
             {
                 return new List<Guide>();
             }
