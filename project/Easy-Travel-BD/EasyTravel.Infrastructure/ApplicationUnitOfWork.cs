@@ -48,5 +48,6 @@ namespace EasyTravel.Infrastructure
         public ISeatRepository SeatRepository { get; private set; }
         public ICarBookingRepository CarBookingRepository { get; private set; }
         public IBookingRepository BookingRepository{ get; private set; }
+        public IPaymentRepository PaymentRepository { get; private set; }
     }
 }
