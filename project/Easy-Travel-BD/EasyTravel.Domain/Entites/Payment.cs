@@ -14,6 +14,7 @@ namespace EasyTravel.Domain.Entites
         public DateTime PaymentDate { get; set; }
         public PaymentStatus PaymentStatus { get; set; } // e.g., Completed, Pending, Failed
         public Guid BookingId { get; set; } // Foreign key to the booking entity
+        public Guid TransactionId { get; set; } // Unique identifier for the payment transaction
         public Booking? Booking { get; set; } // Navigation property to the booking entity
     }
 }

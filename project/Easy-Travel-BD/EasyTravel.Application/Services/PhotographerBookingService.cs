@@ -19,10 +19,10 @@ namespace EasyTravel.Application.Services
         }
         public void AddBooking(PhotographerBooking model, Booking booking)
         {
-            _applicationUnitOfWork.PhotographerBookingRepository.Add(model);
-            _applicationUnitOfWork.Save();
-            booking.Id = model.Id;
             _applicationUnitOfWork.BookingRepository.Add(booking);
+            _applicationUnitOfWork.Save();
+            model.Id = booking.Id;
+            _applicationUnitOfWork.PhotographerBookingRepository.Add(model);
             _applicationUnitOfWork.Save();
         }
 

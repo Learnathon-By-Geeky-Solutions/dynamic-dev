@@ -17,10 +17,10 @@ namespace EasyTravel.Domain.Entites
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; } 
         public List<Payment>? Payments { get; set; } // List of payments associated with the booking
-        public HotelBooking HotelBooking { get; set; } = new HotelBooking();// Navigation property to the hotel booking entity
+        public HotelBooking? HotelBooking { get; set; } // Navigation property to the hotel booking entity
         public BusBooking? BusBooking { get; set; }// Navigation property to the bus booking entity
-        public PhotographerBooking PhotographerBooking { get; set; } // Navigation property to the photographer booking entity
-        public GuideBooking GuideBooking { get; set; } = new GuideBooking(); // Navigation property to the guide booking entity
-        public CarBooking CarBooking { get; set; } // Navigation property to the car booking entity
+        public PhotographerBooking? PhotographerBooking { get; set; } // Navigation property to the photographer booking entity
+        public GuideBooking? GuideBooking { get; set; } // Navigation property to the guide booking entity
+        public CarBooking? CarBooking { get; set; } // Navigation property to the car booking entity
     }
 }
