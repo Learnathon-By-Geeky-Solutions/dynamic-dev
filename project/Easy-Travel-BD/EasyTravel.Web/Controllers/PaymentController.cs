@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Identity.Client;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace EasyTravel.Web.Controllers
@@ -22,8 +23,14 @@ namespace EasyTravel.Web.Controllers
         private readonly IBusService _busService;
         private readonly ICarService _carService;
         private readonly IHotelService _hotelService;
+        private readonly IPaymentBookingService<PhotographerBooking, Booking, Guid> _photographerPaymentService;
+        private readonly IPaymentBookingService<GuideBooking, Booking, Guid> _guidePaymentService;
+        private readonly IPaymentBookingService<BusBooking, Booking, Guid> _busPaymentService;
+        private readonly IPaymentBookingService<CarBooking, Booking, Guid> _carPaymentService;
+        private readonly IPaymentBookingService<HotelBooking, Booking, Guid> _hotelPaymentService;
         private readonly ILogger _logger;
-        public PaymentController(IGetService<Booking, Guid> bookingService, UserManager<User> userManager, ISessionService sessionService, IPhotographerService photographerService, IGuideService guideService, IBusService busService, ICarService carService, IHotelService hotelService, ILogger logger)
+        private readonly IPaymentOnlyService _paymentOnlyService;
+        public PaymentController(IGetService<Booking, Guid> bookingService, UserManager<User> userManager, ISessionService sessionService, IPhotographerService photographerService, IGuideService guideService, IBusService busService, ICarService carService, IHotelService hotelService, ILogger logger, IPaymentBookingService<PhotographerBooking, Booking, Guid> photographerPaymentService, IPaymentBookingService<GuideBooking, Booking, Guid> guidePaymentService, IPaymentBookingService<BusBooking, Booking, Guid> busPaymentService, IPaymentBookingService<CarBooking, Booking, Guid> carPaymentService, IPaymentBookingService<HotelBooking, Booking, Guid> hotelPaymentService, IPaymentOnlyService paymentOnlyService)
         {
             _bookingService = bookingService;
             _userManager = userManager;
@@ -34,6 +41,12 @@ namespace EasyTravel.Web.Controllers
             _carService = carService;
             _hotelService = hotelService;
             _logger = logger;
+            _photographerPaymentService = photographerPaymentService;
+            _guidePaymentService = guidePaymentService;
+            _busPaymentService = busPaymentService;
+            _carPaymentService = carPaymentService;
+            _hotelPaymentService = hotelPaymentService;
+            _paymentOnlyService = paymentOnlyService;
         }
         public IActionResult Index()
         {
@@ -90,12 +103,20 @@ namespace EasyTravel.Web.Controllers
             SSLCommerzGatewayProcessor sslcz = new SSLCommerzGatewayProcessor(storeId, storePassword, isSandboxMood);
 
             string response = sslcz.InitiateTransaction(PostData);
-
-            return RedirectToAction(response, "Payment", new {id});
+            if(string.IsNullOrEmpty(_sessionService.GetString("EventDate")))
+            {
+                _logger.LogError($"PaymentController:Pay: EventDate is empty. Redirecting to Expired action");
+                return RedirectToAction("Redirect");
+            }
+            if (response.Contains("Confirmation"))
+            {
+                return RedirectToAction(response, "Payment", new { id });
+            }
+            return RedirectToAction(response);
 
         }
 
-        public IActionResult Confirmation(Guid id)
+        public async Task<IActionResult> Confirmation(Guid id)
         {
             if (!(!String.IsNullOrEmpty(Request.Form["status"]) && Request.Form["status"] == "VALID"))
             {
@@ -107,32 +128,6 @@ namespace EasyTravel.Web.Controllers
             {
                 _logger.LogError($"PaymentController:Confirmation: id is empty. Redirecting to Expired action");
                 return RedirectToAction("Expired", "Payment", new { id });
-            }
-            var bookingmodel = _bookingService.Get(id);
-            var bookingId = Guid.Empty;
-            if (bookingmodel == null)
-            {
-                var photogrpaher = _photographerService.Get(id);
-                var guide = _guideService.Get(id);
-                var bus = _busService.GetBusById(id);
-                var car = _carService.GetCarById(id);
-                var hotel = _hotelService.Get(id);
-                if (photogrpaher != null)
-                {
-                    //bookingId = GetPhotographerBookingId(id);
-                }
-                else if (guide != null)
-                {
-                }
-                else if (bus != null)
-                {
-                }
-                else if (car != null)
-                {
-                }
-                else if (hotel != null)
-                {
-                }
             }
 
             string TrxID = Request.Form["tran_id"];
@@ -148,6 +143,38 @@ namespace EasyTravel.Web.Controllers
             var successInfo = $"Validation Response: {resonse}";
             ViewBag.SuccessInfo = successInfo;
 
+            var user = await _userManager.GetUserAsync(User);
+            var bookingmodel = _bookingService.Get(id);
+            var bookingId = Guid.Empty;
+            if (bookingmodel == null)
+            {
+                var photogrpaher = _photographerService.Get(id);
+                var guide = _guideService.Get(id);
+                var bus = _busService.GetBusById(id);
+                var car = _carService.GetCarById(id);
+                var hotel = _hotelService.Get(id);
+                if (photogrpaher != null)
+                {
+                    bookingId = BookPhotographer(photogrpaher,user);
+                }
+                else if (guide != null)
+                {
+                    bookingId = BookGuide(guide, user);
+                }
+                else if (bus != null)
+                {
+                    bookingId = BookBus(bus, user);
+                }
+                else if (car != null)
+                {
+                    bookingId = BookCar(car, user);
+                }
+                else if (hotel != null)
+                {
+                    bookingId = BookHotel(hotel, user);
+                }
+            }
+            AddPayment(bookingId, Guid.Parse(TrxID));
             return View();
         }
         public IActionResult Fail()
@@ -165,50 +192,105 @@ namespace EasyTravel.Web.Controllers
             ViewBag.CancelInfo = "Your payment session has expired";
             return View();
         }
-        public PhotographerBooking BookPhotographer(Guid id)
+        public void AddPayment(Guid bookingId, Guid transactionId)
         {
-            var booking = _bookingService.Get(id);
-            if (booking != null && booking.BookingTypes == BookingTypes.Photographer)
+            _paymentOnlyService.AddPaymentOnly(new Payment
             {
-                return booking.PhotographerBooking;
-            }
-            return null;
+                BookingId = bookingId,
+                TransactionId = transactionId,
+                PaymentStatus = PaymentStatus.Completed,
+                PaymentMethod = PaymentMethods.SSLCommerz,
+            });
         }
-        public GuideBooking BookGuide(Guid id)
+        public Guid BookPhotographer(Photographer photographer,User user)
         {
-            var booking = _bookingService.Get(id);
-            if (booking != null && booking.BookingTypes == BookingTypes.Guide)
+            var pgBooking = new PhotographerBooking
             {
-                return booking.GuideBooking;
-            }
-            return null;
+                UserName = $"{user.FirstName} {user.LastName}",
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                EventDate = DateTime.Parse(_sessionService.GetString("EventDate"), CultureInfo.InvariantCulture),
+                StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"), CultureInfo.InvariantCulture),
+                EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"), CultureInfo.InvariantCulture),
+                TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"), CultureInfo.InvariantCulture),
+                PhotographerId = photographer.Id,
+            };
+            var booking = new Booking
+            {
+                BookingStatus = BookingStatus.Confirmed,
+                BookingTypes = BookingTypes.Photographer,
+                TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour,
+                UserId = user.Id,
+            };
+            return _photographerPaymentService.AddPayment(pgBooking,booking);
         }
-        public BusBooking BookBus(Guid id)
+        public Guid BookGuide(Guide guide, User user)
         {
-            var booking = _bookingService.Get(id);
-            if (booking != null && booking.BookingTypes == BookingTypes.Bus)
+            var gdBooking = new GuideBooking
             {
-                return booking.BusBooking;
-            }
-            return null;
+                UserName = $"{user.FirstName} {user.LastName}",
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                EventDate = DateTime.Parse(_sessionService.GetString("EventDate"), CultureInfo.InvariantCulture),
+                StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"), CultureInfo.InvariantCulture),
+                EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"), CultureInfo.InvariantCulture),
+                TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"), CultureInfo.InvariantCulture),
+                GuideId = guide.Id,
+            };
+            var booking = new Booking
+            {
+                BookingStatus = BookingStatus.Confirmed,
+                BookingTypes = BookingTypes.Photographer,
+                TotalAmount = guide.HourlyRate * gdBooking.TimeInHour,
+                UserId = user.Id,
+            };
+            return _guidePaymentService.AddPayment(gdBooking, booking);
         }
-        public CarBooking BookCar(Guid id)
+        public Guid BookBus(Bus bus, User user)
         {
-            var booking = _bookingService.Get(id);
-            if (booking != null && booking.BookingTypes == BookingTypes.Car)
+            var booking = new Booking
             {
-                return booking.CarBooking;
-            }
-            return null;
+                BookingStatus = BookingStatus.Confirmed,
+                BookingTypes = BookingTypes.Photographer,
+                //TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour,
+                UserId = user.Id,
+            };
+            //return _photographerPaymentService.AddPayment(pgBooking, booking);
+            return Guid.Empty;
         }
-        public HotelBooking BookHotel(Guid id)
+        public Guid BookCar(Car car, User user)
         {
-            var booking = _bookingService.Get(id);
-            if (booking != null && booking.BookingTypes == BookingTypes.Hotel)
+            var pgBooking = new PhotographerBooking
             {
-                return booking.HotelBooking;
-            }
-            return null;
+                UserName = $"{user.FirstName} {user.LastName}",
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                EventDate = DateTime.Parse(_sessionService.GetString("EventDate"), CultureInfo.InvariantCulture),
+                StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"), CultureInfo.InvariantCulture),
+                EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"), CultureInfo.InvariantCulture),
+                TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"), CultureInfo.InvariantCulture),
+                PhotographerId = car.Id,
+            };
+            var booking = new Booking
+            {
+                BookingStatus = BookingStatus.Confirmed,
+                BookingTypes = BookingTypes.Photographer,
+                //TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour,
+                UserId = user.Id,
+            };
+            return _photographerPaymentService.AddPayment(pgBooking, booking);
+        }
+        public Guid BookHotel(Hotel hotel, User user)
+        {
+            //var booking = _bookingService.Get(id);
+            //if (booking != null && booking.BookingTypes == BookingTypes.Hotel)
+            //{
+            //}
+            //return null;
+            return Guid.Empty;
         }
     }
 }
