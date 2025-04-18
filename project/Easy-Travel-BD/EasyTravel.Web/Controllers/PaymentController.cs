@@ -62,7 +62,7 @@ namespace EasyTravel.Web.Controllers
             NameValueCollection PostData = new NameValueCollection();
 
             PostData.Add("total_amount", $"{bookingmodel.TotalAmount}");
-            PostData.Add("tran_id", "TESTASPNET1234");
+            PostData.Add("tran_id", Guid.NewGuid().ToString());
             PostData.Add("success_url", baseUrl + "/Payment/Confirmation");
             PostData.Add("fail_url", baseUrl + "/Payment/Fail");
             PostData.Add("cancel_url", baseUrl + "/Payment/Cancel");
@@ -96,8 +96,8 @@ namespace EasyTravel.Web.Controllers
             PostData.Add("product_category", $"{bookingmodel.BookingTypes}");
 
             //we can get from email notificaton
-            var storeId = "musli67128c564e147";
-            var storePassword = "musli67128c564e147@ssl";
+            var storeId = "dynam680284d88fcf0";
+            var storePassword = "dynam680284d88fcf0@ssl";
             var isSandboxMood = true;
 
             SSLCommerzGatewayProcessor sslcz = new SSLCommerzGatewayProcessor(storeId, storePassword, isSandboxMood);
