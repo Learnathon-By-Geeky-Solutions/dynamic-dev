@@ -18,27 +18,32 @@ namespace EasyTravel.Application.Services
         }
         public async Task<IEnumerable<BusBooking>> GetBusBookingsAsync(Guid id)
         {
-            return await _applicationUnitOfWork.BusBookingRepository.GetAsync(e => e.UserId == id);
+            throw new NotImplementedException();
+            //return await _applicationUnitOfWork.BusBookingRepository.GetAsync(e => e.UserId == id);
         }
 
         public async Task<IEnumerable<CarBooking>> GetCarBookingsAsync(Guid id)
         {
-            return await _applicationUnitOfWork.CarBookingRepository.GetAsync(e => e.UserId == id);
+            throw new NotImplementedException();
+            //return await _applicationUnitOfWork.CarBookingRepository.GetAsync(e => e.UserId == id);
         }
 
         public async Task<IEnumerable<GuideBooking>> GetGuideBookingsAsync(Guid id)
         {
-            return await _applicationUnitOfWork.GuideBookingRepository.GetAsync(e => e.UserId == id);
+            throw new NotImplementedException();
+            //return await _applicationUnitOfWork.GuideBookingRepository.GetAsync(e => e.UserId == id);
         }
 
         public async Task<IEnumerable<HotelBooking>> GetHotelBookingsAsync(Guid id)
         {
-            return await _applicationUnitOfWork.HotelBookingRepository.GetAsync(e => e.UserId == id);
+            throw new NotImplementedException();
+            //return await _applicationUnitOfWork.HotelBookingRepository.GetAsync(e => e.UserId == id);
         }
 
         public async Task<IEnumerable<PhotographerBooking>> GetPhotographerBookingsAsync(Guid id)
         {
-            return await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e => e.UserId == id);
+            throw new NotImplementedException();
+            //return await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e => e.UserId == id);
         }
     }
 }

@@ -1,15 +1,9 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyTravel.Infrastructure.Repositories
 {
-
     public class RoomRepository : Repository<Room, Guid>, IRoomRepository
     {
         private readonly ApplicationDbContext _context;
@@ -18,9 +12,9 @@ namespace EasyTravel.Infrastructure.Repositories
             _context = context;
         }
 
-        public IEnumerable<Room> GetRooms(Guid hotelId)
+        public IEnumerable<Room> GetRooms(Guid id)
         {
-            return _context.Rooms.Where(r => r.HotelId == hotelId).ToList();
+            return _context.Rooms.Where(r => r.HotelId == id).ToList();
         }
 
     }

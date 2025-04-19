@@ -32,7 +32,7 @@ namespace EasyTravel.Application.Factories
                 HourlyRate = 0,
                 Rating = 0,
                 Status = null,
-                AgencyId = default
+                AgencyId = Guid.NewGuid()
             };
         }
     }

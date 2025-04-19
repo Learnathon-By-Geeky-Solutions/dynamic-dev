@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ namespace EasyTravel.Domain.Entites
 {
     public class PhotographerBooking : IEntity<Guid>
     {
+        [Key,ForeignKey("Booking")]
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
@@ -19,11 +22,8 @@ namespace EasyTravel.Domain.Entites
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public int TimeInHour { get; set; }
-        public decimal TotalAmount { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public Guid? UserId { get; set; }
-        public User? User { get; set; }
         public Guid PhotographerId { get; set; }
         public Photographer? Photographer { get; set; }
+        public Booking Booking { get; set; }
     }
 }
