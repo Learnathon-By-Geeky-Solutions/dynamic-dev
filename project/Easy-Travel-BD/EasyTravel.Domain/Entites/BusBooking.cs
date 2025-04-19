@@ -8,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Entites
 {
-    public class BusBooking:IEntity<Guid>
+    public class BusBooking : IEntity<Guid>
     {
-        [Key]
+        [Key, ForeignKey("Booking")]
         public Guid Id { get; set; }
-
         [Required]
         public Guid BusId { get; set; }
-        public Guid UserId { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -29,20 +27,14 @@ namespace EasyTravel.Domain.Entites
         [Phone]
         public required string PhoneNumber { get; set; }
 
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal TotalAmount { get; set; }
-
         public DateTime BookingDate { get; set; }
 
         [Required]
         public List<String>? SelectedSeats { get; set; }
         [Required]
         public List<Guid>? SelectedSeatIds { get; set; }
-        public User? User { get; set; }
         public Bus? Bus { get; set; }
-
-       
+        public Booking? Booking { get; set; }
 
 
 

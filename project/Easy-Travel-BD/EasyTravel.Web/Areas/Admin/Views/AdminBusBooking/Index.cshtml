@@ -27,7 +27,7 @@
             <span class="name">@busBooking.PassengerName</span>
             <span>@busBooking.PhoneNumber</span>
             <span>@busBooking.BookingDate.ToString("yyyy-MM-dd hh:mm tt")</span>
-            <span>৳@busBooking.TotalAmount.ToString("N2")</span>
+            @* <span>৳@busBooking.TotalAmount.ToString("N2")</span> *@
             <span>@string.Join(", ", busBooking.SelectedSeats ?? new List<string>())</span>
             <span>@busBooking.Bus.OperatorName</span>
             <span>@busBooking.Bus?.DepartureTime.ToString("yyyy-MM-dd hh:mm tt")</span>

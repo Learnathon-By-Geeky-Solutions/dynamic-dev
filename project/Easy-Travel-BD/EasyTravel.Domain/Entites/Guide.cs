@@ -59,7 +59,6 @@ namespace EasyTravel.Domain.Entites
 
         public DateTime UpdatedAt { get; set; }
 
-
         public string? Status { get; set; }
 
         public required Guid AgencyId { get; set; } // Foreign Key
@@ -68,6 +67,8 @@ namespace EasyTravel.Domain.Entites
 
         [NotMapped]
         public List<Agency>? Agencies { get; set; }
+        [NotMapped]
+        public List<GuideBooking> GuideBookings { get; set; } 
 
     }
 
