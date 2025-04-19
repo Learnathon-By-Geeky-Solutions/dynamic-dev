@@ -6,26 +6,19 @@ namespace EasyTravel.Web.Controllers
 {
     public class CarSearchController : Controller
     {
-        private ISessionService _sessionService;
-        private IBusService _busService;
-
-        public CarSearchController(IBusService busservice, ISessionService sessionService)
+        private readonly ISessionService _sessionService;
+        
+        public CarSearchController( ISessionService sessionService)
         {
             _sessionService = sessionService;
-            _busService = busservice;
         }
-
-
-
         [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
-
-
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Index(BusSearchFormModel model)
+        public IActionResult Index(CarSearchFormModel model)
         {
             if (ModelState.IsValid)
             {
@@ -33,12 +26,10 @@ namespace EasyTravel.Web.Controllers
                 _sessionService.SetString("From", model.From);
                 _sessionService.SetString("To", model.To);
                 _sessionService.SetString("DateTime", model.DepartureTime.ToString());
-
                 // Redirect to the List method of BusController
                 return RedirectToAction("List", "Car");
             }
-
-            return View(model);
+            return View();
         }
     }
 

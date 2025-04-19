@@ -17,7 +17,7 @@
     {
         var totalPrice = photographer.HourlyRate * Model.SearchFormModel?.TimeInHour;
 
-        <div class="row mb-4 align-items-center bg-white p-3 rounded shadow-sm border result-card">
+        <div class="row mb-4 align-items-center bg-white p-3 rounded shadow-sm border result-card hover-zoom">
 
             <!-- Photographer Image -->
             <div class="col-md-3 d-flex justify-content-center">
@@ -44,7 +44,7 @@
                     <strong>Experience:</strong> @photographer.YearsOfExperience years
                 </p>
                 <p class="text-primary fw-bold fs-5">৳@totalPrice</p>
-                <a asp-controller="Photographer" asp-action="Book" asp-route-id="@photographer.Id" class="btn btn-warning btn-sm fw-bold text-dark w-100">Book Now</a>
+                <a asp-controller="Booking" asp-action="Photographer" asp-route-id="@photographer.Id" class="btn btn-warning btn-sm fw-bold text-dark w-100">Book Now</a>
             </div>
         </div>
     }

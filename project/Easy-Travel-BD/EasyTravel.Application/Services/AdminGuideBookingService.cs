@@ -17,6 +17,12 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork = applicationUnitOfWork;
         }
 
+        public void Delete(Guid id)
+        {
+            _applicationUnitOfWork.GuideBookingRepository.Remove(id);
+            _applicationUnitOfWork.Save();
+        }
+
         public GuideBooking Get(Guid id)
         {
             return _applicationUnitOfWork.GuideBookingRepository.GetById(id);
