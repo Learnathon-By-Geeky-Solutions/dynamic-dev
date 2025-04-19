@@ -1,8 +1,20 @@
 ﻿@model EasyTravel.Web.Models.BusSearchFormModel
+@{
+    var recommendedHotels = new List<dynamic>
+    {
+        new { ImageUrl = "https://example.com/hotel1.jpg", Title = "Hotel Sonargaon", Location = "Dhaka, Kawran Bazar", Rating = 5, Description = "Luxurious stay with premium facilities." },
+        new { ImageUrl = "https://example.com/hotel2.jpg", Title = "Hotel Radisson", Location = "Dhaka, Airport Road", Rating = 4, Description = "Comfortable and convenient." }
+    };
 
+    var bestBusServices = new List<dynamic>
+    {
+        new { ImageUrl = "https://example.com/bus1.jpg", Title = "Hanif Bus Service", Location = "Dhaka, Kawran Bazar", Rating = 5, Description = "Reliable and comfortable travel." },
+        new { ImageUrl = "https://example.com/bus2.jpg", Title = "Green Line", Location = "Dhaka, Gabtoli", Rating = 4, Description = "Affordable and safe." }
+    };
+}
 <div class="container">
     <h2 class="text-center mb-4">Bus Search</h2>
-
+    <!--SearchBox -->
     <form method="post" asp-action="Index">
         <div class="row">
             <!-- From Field -->
@@ -32,4 +44,12 @@
             <button type="submit" class="btn btn-primary btn-lg">Search</button>
         </div>
     </form>
+    <!--Carosol -->
+
+    <h2>Recommended Hotels</h2>
+    @await Html.PartialAsync("_CarouselPartial", recommendedHotels)
+   
+    <h2>Best Bus Services</h2>
+    @await Html.PartialAsync("_CarouselPartial", bestBusServices)
+
 </div>
