@@ -3,17 +3,11 @@ using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using Moq;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 
 
-namespace EasyTravel.Tests
+namespace UnitTest
 {
     [TestFixture]
     public class BusServiceTests
@@ -54,8 +48,9 @@ namespace EasyTravel.Tests
             // Assert
             _mockBusRepository.Verify(r => r.Addbus(bus), Times.Once);
             _mockUnitOfWork.Verify(u => u.Save(), Times.Once);
-            Assert.That(bus.Seats.Count, Is.EqualTo(28));
+            Assert.That(bus.Seats, Has.Count.EqualTo(28));
         }
+        
 
         [Test]
         public void GetAllBuses_ShouldReturnAllBuses()

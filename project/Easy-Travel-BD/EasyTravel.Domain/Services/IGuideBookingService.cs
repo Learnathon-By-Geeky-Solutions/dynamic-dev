@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IGuideBookingService : IBookingService<GuideBooking>
+    public interface IGuideBookingService : IBookingService<GuideBooking,Booking>
     {
     }
 }

@@ -13,7 +13,7 @@ namespace EasyTravel.Application.Services
 {
     public class AdminGuideService : IAdminGuideService
     {
-        private IApplicationUnitOfWork _applicationUnitOfWork;
+        private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly IAdminAgencyService _agencyService;
         private readonly IGuideFactory _guideFactory;
         public AdminGuideService(IApplicationUnitOfWork applicationUnitOfWork,IAdminAgencyService agencyService,IGuideFactory guideFactory)

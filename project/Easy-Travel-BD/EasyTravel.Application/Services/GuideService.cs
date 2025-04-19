@@ -30,22 +30,26 @@ namespace EasyTravel.Application.Services
 
         public async Task<IEnumerable<Guide>> GetGuideListAsync(GuideBooking guideBooking)
         {
-            var bookings = await _applicationUnitOfWork.GuideBookingRepository.GetAsync(e =>
-            e.EventDate == guideBooking.EventDate && e.StartTime > DateTime.Now.TimeOfDay && e.StartTime >= guideBooking.StartTime && e.StartTime <= guideBooking.EndTime || e.EndTime >= guideBooking.StartTime && e.EndTime <= guideBooking.EndTime);
-            var guides = await _applicationUnitOfWork.GuideRepository.GetAsync(e => e.Availability == true);
-            if (bookings.ToList().Count() == 0)
+            DateTime now = DateTime.Now;
+            DateTime selectedDateTime = guideBooking.EventDate.Add(guideBooking.StartTime);
+            TimeSpan difference = selectedDateTime - now;
+            if (selectedDateTime < now || difference < TimeSpan.FromHours(6))
             {
-                return guides;
+                return new List<Guide>();
             }
-            var guideList = new List<Guide>();
-            foreach (var guide in guides)
-            {
-                if (bookings.Any(e => e.GuideId != guide.Id))
-                {
-                    guideList.Add(guide);
-                }
-            }
-            return guideList;
+            return await _applicationUnitOfWork.GuideRepository.GetAsync(
+                e => e.Availability &&
+                    !e.GuideBookings.Any() ||
+                     e.GuideBookings.Any(
+                         p => p.Booking.BookingStatus != BookingStatus.Confirmed && p.Booking.BookingStatus != BookingStatus.Pending &&
+                             p.EventDate >= guideBooking.EventDate &&
+                              p.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
+                 (
+                     (p.StartTime >= guideBooking.StartTime && p.EventDate >= guideBooking.EventDate) ||
+                     (p.EndTime >= guideBooking.StartTime && p.EventDate >= guideBooking.EventDate)
+                 )
+                            )
+            );
         }
     }
 }
