@@ -34,7 +34,7 @@ namespace EasyTravel.Application.Factories
                 Rating = 0,
                 SocialMediaLinks = null,
                 Status = null,
-                AgencyId = default
+                AgencyId = Guid.NewGuid()
             };
         }
     }
