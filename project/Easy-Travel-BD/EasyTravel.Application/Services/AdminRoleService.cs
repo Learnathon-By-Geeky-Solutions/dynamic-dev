@@ -32,7 +32,12 @@ namespace EasyTravel.Application.Services
 
         public async Task<Role> GetAsync(Guid id)
         {
-            return await _roleManager.FindByIdAsync(id.ToString());
+            var role = await _roleManager.FindByIdAsync(id.ToString());
+            if (role == null)
+            {
+                throw new KeyNotFoundException($"Role with ID {id} was not found.");
+            }
+            return role;
         }
 
         public IEnumerable<Role> GetAll()

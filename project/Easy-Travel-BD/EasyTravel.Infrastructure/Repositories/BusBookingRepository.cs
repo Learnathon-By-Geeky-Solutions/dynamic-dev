@@ -34,7 +34,7 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             return _context.BusBookings
                 .Include(b => b.Bus)
-                .Include(b => b.User)
+                //.Include(b => b.User)
                 .ToList();
         }
     }
