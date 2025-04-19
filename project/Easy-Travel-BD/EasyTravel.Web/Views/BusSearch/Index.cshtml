@@ -2,14 +2,18 @@
 @{
     var recommendedHotels = new List<dynamic>
     {
-        new { ImageUrl = "https://example.com/hotel1.jpg", Title = "Hotel Sonargaon", Location = "Dhaka, Kawran Bazar", Rating = 5, Description = "Luxurious stay with premium facilities." },
-        new { ImageUrl = "https://example.com/hotel2.jpg", Title = "Hotel Radisson", Location = "Dhaka, Airport Road", Rating = 4, Description = "Comfortable and convenient." }
+        new { ImageUrl = "https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D", Title = "Hotel Sonargaon", Location = "Dhaka, Kawran Bazar", Rating = 5, Description = "Luxurious stay with premium facilities." },
+        new { ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQf5JbWUQApKbde0mcDHJ-DxU3llLO1070PA&s", Title = "Hotel Radisson", Location = "Dhaka, Airport Road", Rating = 4, Description = "Comfortable and convenient." },
+        new { ImageUrl = "https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D", Title = "Hotel Sonargaon", Location = "Dhaka, Kawran Bazar", Rating = 5, Description = "Luxurious stay with premium facilities." },
+        new { ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQf5JbWUQApKbde0mcDHJ-DxU3llLO1070PA&s", Title = "Hotel Radisson", Location = "Dhaka, Airport Road", Rating = 4, Description = "Comfortable and convenient." }
     };
 
     var bestBusServices = new List<dynamic>
     {
         new { ImageUrl = "https://example.com/bus1.jpg", Title = "Hanif Bus Service", Location = "Dhaka, Kawran Bazar", Rating = 5, Description = "Reliable and comfortable travel." },
-        new { ImageUrl = "https://example.com/bus2.jpg", Title = "Green Line", Location = "Dhaka, Gabtoli", Rating = 4, Description = "Affordable and safe." }
+        new { ImageUrl = "https://example.com/bus2.jpg", Title = "Green Line", Location = "Dhaka, Gabtoli", Rating = 4, Description = "Affordable and safe." },
+        new { ImageUrl = "https://example.com/bus2.jpg", Title = "Green Line", Location = "Dhaka, Gabtoli", Rating = 4, Description = "Affordable and safe." },
+        new { ImageUrl = "https://example.com/bus2.jpg", Title = "Green Line", Location = "Dhaka, Gabtoli", Rating = 4, Description = "Affordable and safe." },
     };
 }
 <div class="container">
@@ -53,3 +57,36 @@
     @await Html.PartialAsync("_CarouselPartial", bestBusServices)
 
 </div>
+@section Scripts {
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            loop: true,
+            grabCursor: true,
+            spaceBetween: 30,
+            centeredSlides: true,
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 1,
+                },
+                992: {
+                    slidesPerView: 2,
+                },
+                1200: {
+                    slidesPerView: 3,
+                }
+            }
+        });
+    </script>
+}
