@@ -16,8 +16,11 @@ namespace EasyTravel.Application.Services
         {
             _applicationUnitOfWork = applicationUnitOfWork;
         }
-        public void AddBooking(GuideBooking model)
+        public void AddBooking(GuideBooking model,Booking booking)
         {
+            _applicationUnitOfWork.BookingRepository.Add(booking);
+            _applicationUnitOfWork.Save();
+            model.Id = booking.Id;
             _applicationUnitOfWork.GuideBookingRepository.Add(model);
             _applicationUnitOfWork.Save();
         }
@@ -29,8 +32,21 @@ namespace EasyTravel.Application.Services
 
         public async Task<IEnumerable<GuideBooking>> GetBookingListByFormDataAsync(GuideBooking model)
         {
+            var difference = DateTime.Now.TimeOfDay - model.StartTime;
+            if (difference < TimeSpan.FromHours(3))
+            {
+                return new List<GuideBooking>();
+            }
             return await _applicationUnitOfWork.GuideBookingRepository.GetAsync(e =>
-            e.EventDate == model.EventDate && e.StartTime > DateTime.Now.TimeOfDay && e.StartTime >= model.StartTime && e.StartTime <= model.EndTime || e.EndTime >= model.StartTime && e.EndTime <= model.EndTime);
+                    e.EventDate == model.EventDate &&
+                    e.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
+                    (e.Booking.BookingStatus == BookingStatus.Confirmed || e.Booking.BookingStatus == BookingStatus.Pending) &&
+                    (
+                        (e.StartTime >= model.StartTime && e.StartTime <= model.EndTime) ||
+                        (e.EndTime >= model.StartTime && e.EndTime <= model.EndTime)
+                    )
+                );
+
         }
 
         public async Task<bool> IsBooked(GuideBooking model)
