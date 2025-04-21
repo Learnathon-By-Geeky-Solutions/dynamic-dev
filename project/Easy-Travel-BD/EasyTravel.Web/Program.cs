@@ -62,10 +62,12 @@ try
     .MinimumLevel.Debug()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .Enrich.FromLogContext()
-    .ReadFrom.Configuration(builder.Configuration)
+    .ReadFrom.Configuration(builder.Configuration));
 
+    #region Docker IP Correction
+    builder.WebHost.UseUrls("http://*:80");
+    #endregion
 
-    );
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(connectionString, (x) => x.MigrationsAssembly(migrationAssembly)));
