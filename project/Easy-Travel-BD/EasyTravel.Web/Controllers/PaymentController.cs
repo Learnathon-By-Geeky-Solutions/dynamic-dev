@@ -1,14 +1,11 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
-using EasyTravel.Web.PaymentGateway;
+using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.Identity.Client;
-using System.Collections.Specialized;
 using System.Globalization;
-using System.Security.Claims;
+using System.Text.Json;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -28,9 +25,11 @@ namespace EasyTravel.Web.Controllers
         private readonly IPaymentBookingService<BusBooking, Booking, Guid> _busPaymentService;
         private readonly IPaymentBookingService<CarBooking, Booking, Guid> _carPaymentService;
         private readonly IPaymentBookingService<HotelBooking, Booking, Guid> _hotelPaymentService;
-        private readonly ILogger _logger;
+        private readonly ILogger<PaymentController> _logger;
         private readonly IPaymentOnlyService _paymentOnlyService;
-        public PaymentController(IGetService<Booking, Guid> bookingService, UserManager<User> userManager, ISessionService sessionService, IPhotographerService photographerService, IGuideService guideService, IBusService busService, ICarService carService, IHotelService hotelService, ILogger logger, IPaymentBookingService<PhotographerBooking, Booking, Guid> photographerPaymentService, IPaymentBookingService<GuideBooking, Booking, Guid> guidePaymentService, IPaymentBookingService<BusBooking, Booking, Guid> busPaymentService, IPaymentBookingService<CarBooking, Booking, Guid> carPaymentService, IPaymentBookingService<HotelBooking, Booking, Guid> hotelPaymentService, IPaymentOnlyService paymentOnlyService)
+        private readonly IConfiguration _config;
+        private readonly IWebHostEnvironment _env;
+        public PaymentController(IGetService<Booking, Guid> bookingService, UserManager<User> userManager, ISessionService sessionService, IPhotographerService photographerService, IGuideService guideService, IBusService busService, ICarService carService, IHotelService hotelService, ILogger<PaymentController> logger, IPaymentBookingService<PhotographerBooking, Booking, Guid> photographerPaymentService, IPaymentBookingService<GuideBooking, Booking, Guid> guidePaymentService, IPaymentBookingService<BusBooking, Booking, Guid> busPaymentService, IPaymentBookingService<CarBooking, Booking, Guid> carPaymentService, IPaymentBookingService<HotelBooking, Booking, Guid> hotelPaymentService, IPaymentOnlyService paymentOnlyService, IConfiguration config, IWebHostEnvironment env)
         {
             _bookingService = bookingService;
             _userManager = userManager;
@@ -47,149 +46,166 @@ namespace EasyTravel.Web.Controllers
             _carPaymentService = carPaymentService;
             _hotelPaymentService = hotelPaymentService;
             _paymentOnlyService = paymentOnlyService;
+            _config = config;
+            _env = env;
         }
         public IActionResult Index()
         {
             return View();
         }
-        public async Task<IActionResult> Pay(Guid id)
+        [HttpPost]
+        public async Task<IActionResult> Pay(double amount)
         {
-            var bookingmodel = _bookingService.Get(id);
+            var totalAmount = _sessionService.GetString("TotalAmount");
+            var bookingType = _sessionService.GetString("BookingType");
+            //var bookingmodel = _bookingService.Get(model.IdForBooking);
+
+            //if (bookingmodel != null)
+            //{
+            //    var booking = await _paymentOnlyService.IsExist(model.IdForBooking);
+            //    if (booking)
+            //    {
+            //        _logger.LogError($"PaymentController:Pay: Booking already exists. Redirecting to Expired action");
+            //        return RedirectToAction("Expired", "Payment");
+            //    }
+            //    totalAmount = bookingmodel.TotalAmount.ToString();
+            //    bookingType = bookingmodel.BookingTypes.ToString();
+            //}
+            //var photographer = _photographerService.Get(model.IdForBooking);
+            //var guide = _guideService.Get(model.IdForBooking);
+            //var hotel = _hotelService.Get(model.IdForBooking);
+            //var bus = _busService.GetBusById(model.IdForBooking);
+            //var car = _carService.GetCarById(model.IdForBooking);
+            //if (photographer == null && guide == null && hotel == null && bus == null && car == null)
+            //{
+            //    _logger.LogError($"PaymentController:Pay: BookingType is null. Redirecting to Expired action");
+            //    return RedirectToAction("Expired", "Payment");
+            //}
+            //_sessionService.SetString("BookingId", model.IdForBooking.ToString());
             var user = await _userManager.GetUserAsync(User);
-            var baseUrl = Request.Scheme + "://" + Request.Host;
 
-            // CREATING LIST OF POST DATA
-            NameValueCollection PostData = new NameValueCollection();
+            var configSection = _config.GetSection("SSLCommerz");
 
-            PostData.Add("total_amount", $"{bookingmodel.TotalAmount}");
-            PostData.Add("tran_id", Guid.NewGuid().ToString());
-            PostData.Add("success_url", baseUrl + "/Payment/Confirmation");
-            PostData.Add("fail_url", baseUrl + "/Payment/Fail");
-            PostData.Add("cancel_url", baseUrl + "/Payment/Cancel");
-
-            PostData.Add("version", "3.00");
-            PostData.Add("cus_name", $"{user?.FirstName},{user?.LastName}");
-            PostData.Add("cus_email", $"{user?.Email}");
-            PostData.Add("cus_add1", "Mirpur");
-            PostData.Add("cus_add2", "Address Line Tw");
-            PostData.Add("cus_city", "Dhaka");
-            PostData.Add("cus_state", "Dhaka");
-            PostData.Add("cus_postcode", "1216");
-            PostData.Add("cus_country", "Bangladesh");
-            PostData.Add("cus_phone", $"{user?.PhoneNumber}");
-            PostData.Add("cus_fax", "0171111111");
-            PostData.Add("ship_name", "ABC XY");
-            PostData.Add("ship_add1", "Address Line On");
-            PostData.Add("ship_add2", "Address Line Tw");
-            PostData.Add("ship_city", "City Nam");
-            PostData.Add("ship_state", "State Nam");
-            PostData.Add("ship_postcode", "Post Cod");
-            PostData.Add("ship_country", "Countr");
-            PostData.Add("value_a", "ref00");
-            PostData.Add("value_b", "ref00");
-            PostData.Add("value_c", "ref00");
-            PostData.Add("value_d", "ref00");
-            PostData.Add("shipping_method", "NO");
-            PostData.Add("num_of_item", "1");
-            PostData.Add("product_name", $"{bookingmodel.BookingTypes}");
-            PostData.Add("product_profile", "general");
-            PostData.Add("product_category", $"{bookingmodel.BookingTypes}");
-
-            //we can get from email notificaton
-            var storeId = "dynam680284d88fcf0";
-            var storePassword = "dynam680284d88fcf0@ssl";
-            var isSandboxMood = true;
-
-            SSLCommerzGatewayProcessor sslcz = new SSLCommerzGatewayProcessor(storeId, storePassword, isSandboxMood);
-
-            string response = sslcz.InitiateTransaction(PostData);
-            if(string.IsNullOrEmpty(_sessionService.GetString("EventDate")))
+            var request = new SSLCommerzRequest
             {
-                _logger.LogError($"PaymentController:Pay: EventDate is empty. Redirecting to Expired action");
-                return RedirectToAction("Redirect");
-            }
-            if (response.Contains("Confirmation"))
-            {
-                return RedirectToAction(response, "Payment", new { id });
-            }
-            return RedirectToAction(response);
+                StoreId = configSection["StoreId"],
+                StorePassword = configSection["StorePassword"],
+                TotalAmount = totalAmount.ToString(),
+                TranId = Guid.NewGuid().ToString("N"),
+                SuccessUrl = Url.Action("Success", "Payment", null, Request.Scheme),
+                FailUrl = Url.Action("Fail", "Payment", null, Request.Scheme),
+                CancelUrl = Url.Action("Cancel", "Payment", null, Request.Scheme),
+                CusName = $"{user?.FirstName},{user?.LastName}",
+                CusEmail = $"{user.Email}",
+                CusPhone = $"{user.PhoneNumber}",
+                CusAdd1 = "Dhaka",
+                CusCity = "Dhaka",
+            };
 
+            string gatewayUrl = configSection.GetValue<bool>("IsSandbox")
+                ? "https://sandbox.sslcommerz.com/gwprocess/v4/api.php"
+                : "https://securepay.sslcommerz.com/gwprocess/v4/api.php";
+
+            using var client = new HttpClient();
+            var content = new FormUrlEncodedContent(new Dictionary<string, string>
+    {
+        { "store_id", request.StoreId },
+        { "store_passwd", request.StorePassword },
+        { "total_amount", request.TotalAmount },
+        { "currency", request.Currency },
+        { "tran_id", request.TranId },
+        { "success_url", request.SuccessUrl },
+        { "fail_url", request.FailUrl },
+        { "cancel_url", request.CancelUrl },
+        { "cus_name", request.CusName },
+        { "cus_email", request.CusEmail },
+        { "cus_add1", request.CusAdd1 },
+        { "cus_city", request.CusCity },
+        { "cus_country", request.CusCountry },
+        { "cus_phone", request.CusPhone },
+
+        // ✅ Required for Payment Initialization
+        { "shipping_method", "NO" },         // No physical shipping
+        { "num_of_item", "1" },              // Just send 1 if unsure
+        { "product_name", "Test Product" },
+        { "product_category", $"{bookingType}" },
+        { "product_profile", "general" },
+    });
+
+            var response = await client.PostAsync(gatewayUrl, content);
+            var json = await response.Content.ReadAsStringAsync();
+
+            try
+            {
+                var result = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+
+                if (result != null && result.TryGetValue("GatewayPageURL", out var url) && !string.IsNullOrEmpty(url?.ToString()))
+                {
+                    return Redirect(url.ToString());
+                }
+
+                return Content($"Payment initialization failed. Response: {json}");
+            }
+            catch (Exception ex)
+            {
+                return Content($"Exception occurred: {ex.Message}\nRaw Response: {json}");
+            }
         }
-
-        public async Task<IActionResult> Confirmation(Guid id)
+        public IActionResult Success()
         {
-            if (!(!String.IsNullOrEmpty(Request.Form["status"]) && Request.Form["status"] == "VALID"))
-            {
-                ViewBag.SuccessInfo = "There some error while processing your payment. Please try again.";
-                return View();
-            }
-
-            if (Guid.Empty == id)
-            {
-                _logger.LogError($"PaymentController:Confirmation: id is empty. Redirecting to Expired action");
-                return RedirectToAction("Expired", "Payment", new { id });
-            }
-
-            string TrxID = Request.Form["tran_id"];
-            // AMOUNT and Currency FROM DB FOR THIS TRANSACTION
-            string amount = Request.Form["total_amount"];
-            string currency = "BDT";
-
-            var storeId = "musli67128c564e147";
-            var storePassword = "musli67128c564e147@ssl";
-
-            SSLCommerzGatewayProcessor sslcz = new SSLCommerzGatewayProcessor(storeId, storePassword, true);
-            var resonse = sslcz.OrderValidate(TrxID, amount, currency, Request);
-            var successInfo = $"Validation Response: {resonse}";
-            ViewBag.SuccessInfo = successInfo;
-
-            var user = await _userManager.GetUserAsync(User);
-            var bookingmodel = _bookingService.Get(id);
-            var bookingId = Guid.Empty;
-            if (bookingmodel == null)
-            {
-                var photogrpaher = _photographerService.Get(id);
-                var guide = _guideService.Get(id);
-                var bus = _busService.GetBusById(id);
-                var car = _carService.GetCarById(id);
-                var hotel = _hotelService.Get(id);
-                if (photogrpaher != null)
-                {
-                    bookingId = BookPhotographer(photogrpaher,user);
-                }
-                else if (guide != null)
-                {
-                    bookingId = BookGuide(guide, user);
-                }
-                else if (bus != null)
-                {
-                    bookingId = BookBus(bus, user);
-                }
-                else if (car != null)
-                {
-                    bookingId = BookCar(car, user);
-                }
-                else if (hotel != null)
-                {
-                    bookingId = BookHotel(hotel, user);
-                }
-            }
-            AddPayment(bookingId, Guid.Parse(TrxID));
+            //var id = _sessionService.GetString("BookingId");
+            //if (id == null)
+            //{
+            //    _logger.LogError($"PaymentController:Success: id is empty. Redirecting to Expired action");
+            //    return RedirectToAction("Expired", "Payment");
+            //}
+            //var bookingId = Guid.Parse(id);
+            //var transactionId = Request.Form["tran_id"];
+            //var photographer = _photographerService.Get(bookingId);
+            //var guide = _guideService.Get(bookingId);
+            //var hotel = _hotelService.Get(bookingId);
+            //var bus = _busService.GetBusById(bookingId);
+            //var car = _carService.GetCarById(bookingId);
+            //var user = _userManager.GetUserAsync(User).Result;
+            //if (photographer != null && user != null)
+            //{
+            //    bookingId = BookPhotographer(photographer, user);
+            //}
+            //else if (guide != null && user != null)
+            //{
+            //    bookingId = BookGuide(guide, user);
+            //}
+            //else if (hotel != null && user != null)
+            //{
+            //    bookingId = BookHotel(hotel, user);
+            //}
+            //else if (bus != null && user != null)
+            //{
+            //    bookingId = BookBus(bus, user);
+            //}
+            //else if (car != null && user != null)
+            //{
+            //    bookingId = BookCar(car, user);
+            //}
+            //AddPayment(bookingId, Guid.Parse(transactionId));
+            ViewBag.SuccessInfo = "Your payment was successful. Thank you for your booking!";
             return View();
         }
+
         public IActionResult Fail()
         {
-            ViewBag.FailInfo = "There some error while processing your payment. Please try again.";
+            ViewBag.FailInfo = "Your payment was not successful. Please try again.";
             return View();
         }
+
         public IActionResult Cancel()
         {
-            ViewBag.CancelInfo = "Your payment has been cancel";
+            ViewBag.CancelInfo = "Your payment was cancelled. Please try again.";
             return View();
         }
         public IActionResult Expired()
         {
-            ViewBag.CancelInfo = "Your payment session has expired";
+            ViewBag.ExpireInfo = "Your payment session has expired";
             return View();
         }
         public void AddPayment(Guid bookingId, Guid transactionId)
@@ -202,7 +218,7 @@ namespace EasyTravel.Web.Controllers
                 PaymentMethod = PaymentMethods.SSLCommerz,
             });
         }
-        public Guid BookPhotographer(Photographer photographer,User user)
+        public Guid BookPhotographer(Photographer photographer, User user)
         {
             var pgBooking = new PhotographerBooking
             {
@@ -223,7 +239,7 @@ namespace EasyTravel.Web.Controllers
                 TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour,
                 UserId = user.Id,
             };
-            return _photographerPaymentService.AddPayment(pgBooking,booking);
+            return _photographerPaymentService.AddPayment(pgBooking, booking);
         }
         public Guid BookGuide(Guide guide, User user)
         {
@@ -253,7 +269,7 @@ namespace EasyTravel.Web.Controllers
             var booking = new Booking
             {
                 BookingStatus = BookingStatus.Confirmed,
-                BookingTypes = BookingTypes.Photographer,
+                BookingTypes = BookingTypes.Bus,
                 //TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour,
                 UserId = user.Id,
             };
@@ -285,11 +301,10 @@ namespace EasyTravel.Web.Controllers
         }
         public Guid BookHotel(Hotel hotel, User user)
         {
-            //var booking = _bookingService.Get(id);
-            //if (booking != null && booking.BookingTypes == BookingTypes.Hotel)
-            //{
-            //}
-            //return null;
+            var hotelbooking = new HotelBooking
+            {
+                HotelId = hotel.Id,
+            };
             return Guid.Empty;
         }
     }
