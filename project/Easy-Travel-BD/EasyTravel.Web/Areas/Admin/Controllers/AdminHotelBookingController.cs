@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
-    [Area("Admin"),Authorize(Roles ="admin,agencyManager")]
+    [Area("Admin"),Authorize(Roles ="admin,hotelManager")]
     public class AdminHotelBookingController : Controller
     {
         private readonly IAdminHotelBookingService _adminHotelBookingService;
