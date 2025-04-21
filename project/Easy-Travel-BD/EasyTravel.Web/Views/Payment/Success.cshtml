@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Confirmation";
+}
+
+<div class="text-center">
+    <h1 class="display-4"> @ViewBag.SuccessInfo</h1>    
+</div>
+
+<script type="text/javascript">
+    // This function is required by SSLCommerz sandbox for the fake success redirect
+    function submitForm() {
+        console.log("✅ Dummy submitForm called by SSLCommerz sandbox");
+        // If you had a form to submit, you'd trigger it here.
+        // But you can leave this empty for sandbox compatibility.
+    }
+</script>

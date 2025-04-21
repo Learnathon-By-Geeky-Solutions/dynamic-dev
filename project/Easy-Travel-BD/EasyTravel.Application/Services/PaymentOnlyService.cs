@@ -21,5 +21,10 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork.PaymentRepository.Add(payment);
             _applicationUnitOfWork.Save();
         }
+
+        public async Task<bool> IsExist(Guid bookingId)
+        {
+            return await _applicationUnitOfWork.PaymentRepository.GetAsync(d => d.BookingId == bookingId) != null;
+        }
     }
 }
