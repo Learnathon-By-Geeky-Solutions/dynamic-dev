@@ -68,6 +68,7 @@
                 <input asp-for="EndTime" hidden />
                 <input asp-for="TimeInHour" hidden />
                 <input asp-for="TotalAmount" hidden />
+                <input asp-for="GuideId" hidden />
                 <button type="submit" class="btn btn-danger">Book</button>
                 <a asp-area="" asp-controller="Payment" asp-action="Pay" asp-route-id="@Model.GuideId" class="btn btn-secondary">Pay</a>
             </form>
