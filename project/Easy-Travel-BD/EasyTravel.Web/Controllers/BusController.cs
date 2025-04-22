@@ -25,7 +25,7 @@ namespace EasyTravel.Web.Controllers
         {
             try
             {
-                return RedirectToAction("Index", "BusSearch");
+                return RedirectToAction("Bus", "Search");
             }
             catch (Exception ex)
             {
@@ -78,75 +78,6 @@ namespace EasyTravel.Web.Controllers
 
             return View(model);
         }
-
-
-
-        [HttpPost]
-        public IActionResult BusBooking(Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
-        {
-            var bus = _busService.GetseatBusById(busId);
-            if (bus == null) return NotFound();
-
-            var viewModel = new BusBookingViewModel
-            {
-                BusId=busId,
-                Bus = bus,
-                BookingForm = new BookingForm(),
-                SelectedSeatNumbers = string.IsNullOrEmpty(selectedSeats)
-                    ? new List<string>()
-                    : selectedSeats.Split(',').ToList(),
-                SelectedSeatIds = string.IsNullOrEmpty(selectedSeatIds)
-                    ? new List<Guid>()
-                    : selectedSeatIds.Split(',').Select(id => Guid.Parse(id)).ToList(),
-                TotalAmount = totalAmount
-            };
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public IActionResult BusConfirmBooking(BusBookingViewModel model)
-        {
-            var busbooking = new BusBooking
-            {
-                Id = Guid.NewGuid(),
-                BusId = model.BusId,
-                PassengerName = model.BookingForm.PassengerName,
-                Email = model.BookingForm.Email,
-                PhoneNumber = model.BookingForm.PhoneNumber,
-                //TotalAmount = model.TotalAmount, // Using model.TotalAmount directly instead of BookingForm.TotalAmount
-                BookingDate = DateTime.Now,
-                SelectedSeats = model.SelectedSeatNumbers,
-                SelectedSeatIds = model.SelectedSeatIds,
-            };
-
-            // Adding UserId to the BusBooking if the user is authenticated
-            if (User.Identity.IsAuthenticated)
-            {
-                //busbooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            }
-
-            _busService.SaveBooking(busbooking, model.SelectedSeatIds);
-            return RedirectToAction("BusConfirmBooking");
-        }
-
-
-        [HttpGet]
-
-        public IActionResult BusConfirmBooking()
-        {
-
-            return View();
-        }
-
-
-
-
-
-
-    
-
-
-
 
     }
 }

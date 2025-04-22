@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using EasyTravel.Application.Services;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
+using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +20,9 @@ namespace EasyTravel.Web.Controllers
         private readonly IPhotographerService _photographerService;
         private readonly IAgencyService _agencyService;
         private readonly IGuideService _guideService;
+        private readonly IBusService _busService;
         public ReviewController(ISessionService sessionService, IPhotographerService photographerService,
-            UserManager<User> userManager,IMapper mapper, IAgencyService agencyService, IGuideService guideService)
+            UserManager<User> userManager,IMapper mapper, IAgencyService agencyService, IGuideService guideService, IBusService busService)
         {
             _sessionService = sessionService;
             _photographerService = photographerService;
@@ -27,20 +30,21 @@ namespace EasyTravel.Web.Controllers
             _mapper = mapper;
             _agencyService = agencyService;
             _guideService = guideService;
+            _busService = busService;
         }
         public IActionResult Index()
         {
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Photographer()
+        public async Task<IActionResult> PhotographerBooking()
         {
             var pgId = _sessionService.GetString("PhotographerId");
             if (string.IsNullOrEmpty(pgId))
             {
                 return Redirect("/Photographer/List");
             }
-            _sessionService.SetString("LastVisitedPage", "/Review/Photographer");
+            _sessionService.SetString("LastVisitedPage", "/Review/PhotographerBooking");
             var user = await _userManager.GetUserAsync(User);
             var pgBooking = _mapper.Map<PhotographerBookingViewModel>(user);
             var photographer = _photographerService.Get(Guid.Parse(pgId));
@@ -60,14 +64,14 @@ namespace EasyTravel.Web.Controllers
             return View(pgBooking);
         }
         [HttpGet]
-        public async Task<IActionResult> Guide()
+        public async Task<IActionResult> GuideBooking()
         {
             var guideId = _sessionService.GetString("GuideId");
             if (string.IsNullOrEmpty(guideId))
             {
                 return Redirect("/Guide/List");
             }
-            _sessionService.SetString("LastVisitedPage", "/Review/Guide");
+            _sessionService.SetString("LastVisitedPage", "/Review/GuideBooking");
             var user = await _userManager.GetUserAsync(User);
             var guideBooking = _mapper.Map<GuideBookingViewModel>(user);
             var guide = _guideService.Get(Guid.Parse(guideId));
@@ -83,8 +87,30 @@ namespace EasyTravel.Web.Controllers
             guideBooking.TotalAmount = guide.HourlyRate * guideBooking.TimeInHour;
             _sessionService.SetString("TotalAmount", guideBooking.TotalAmount.ToString(CultureInfo.InvariantCulture));
             _sessionService.SetString("BookingType", "Guide");
+            _sessionService.SetString("BookingId", guide.Id.ToString());
             guideBooking.GuideId = guide.Id;
             return View(guideBooking);
+        }
+        [HttpPost]
+        public IActionResult BusBooking(Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
+        {
+            var bus = _busService.GetseatBusById(busId);
+            if (bus == null) return NotFound();
+
+            var viewModel = new BusBookingViewModel
+            {
+                BusId = busId,
+                Bus = bus,
+                BookingForm = new BookingForm(),
+                SelectedSeatNumbers = string.IsNullOrEmpty(selectedSeats)
+                    ? new List<string>()
+                    : selectedSeats.Split(',').ToList(),
+                SelectedSeatIds = string.IsNullOrEmpty(selectedSeatIds)
+                    ? new List<Guid>()
+                    : selectedSeatIds.Split(',').Select(id => Guid.Parse(id)).ToList(),
+                TotalAmount = totalAmount
+            };
+            return View(viewModel);
         }
     }
 }
