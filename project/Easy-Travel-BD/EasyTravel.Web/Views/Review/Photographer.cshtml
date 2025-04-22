@@ -55,25 +55,27 @@
                     </div>
                 </div>
             </div>
-            <form asp-antiforgery=true asp-controller="Booking" asp-action="Photographer" method="post">
-                <input asp-for="FirstName" hidden />
-                <input asp-for="LastName" hidden />
-                <input asp-for="Email" hidden />
-                <input asp-for="PhoneNumber" hidden />
-                <input asp-for="Gender" hidden />
-                <input asp-for="EventDate" hidden />
-                <input asp-for="EventType" hidden />
-                <input asp-for="EventLocation" hidden />
-                <input asp-for="StartTime" hidden />
-                <input asp-for="EndTime" hidden />
-                <input asp-for="TimeInHour" hidden />
-                <input asp-for="TimeInHour" hidden />
-                <input asp-for="PhotographerId" hidden />
-                <button type="submit" class="btn btn-danger">Book</button>
-            </form>
-            <form asp-antiforgery=true asp-controller="Payment" asp-action="Pay" method="post">
-                <button type="submit" class="btn btn-secondary">Pay</button>
-            </form>
+            <div class="d-inline-flex">
+                <form asp-antiforgery=true asp-controller="Booking" asp-action="Photographer" method="post">
+                    <input asp-for="FirstName" hidden />
+                    <input asp-for="LastName" hidden />
+                    <input asp-for="Email" hidden />
+                    <input asp-for="PhoneNumber" hidden />
+                    <input asp-for="Gender" hidden />
+                    <input asp-for="EventDate" hidden />
+                    <input asp-for="EventType" hidden />
+                    <input asp-for="EventLocation" hidden />
+                    <input asp-for="StartTime" hidden />
+                    <input asp-for="EndTime" hidden />
+                    <input asp-for="TimeInHour" hidden />
+                    <input asp-for="TimeInHour" hidden />
+                    <input asp-for="PhotographerId" hidden />
+                    <button type="submit" class="btn btn-danger">Book</button>
+                </form>
+                <form asp-controller="Payment" asp-action="Pay" method="post">
+                    <button type="submit" name="Id" value="@Model.PhotographerId" class="btn btn-danger">Pay</button>
+                </form>
+            </div>
         </div>
     </div>
     <div></div>
