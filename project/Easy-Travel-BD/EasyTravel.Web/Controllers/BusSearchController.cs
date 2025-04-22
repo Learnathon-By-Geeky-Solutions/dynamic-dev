@@ -15,29 +15,7 @@ namespace EasyTravel.Web.Controllers
             _busService = busservice;
         }
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Index(BusSearchFormModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Storing search parameters in session
-                _sessionService.SetString("From", model.From);
-                _sessionService.SetString("To", model.To);
-                _sessionService.SetString("DateTime", model.DepartureTime.ToString());
-
-                // Redirect to the List method of BusController
-                return RedirectToAction("List", "Bus");
-            }
-
-            return View(model);
-        }
+      
     }
 
 }

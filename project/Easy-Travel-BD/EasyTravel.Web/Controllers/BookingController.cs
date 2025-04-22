@@ -3,6 +3,7 @@ using EasyTravel.Application.Services;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
+using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,14 @@ namespace EasyTravel.Web.Controllers
         private readonly ISessionService _sessionService;
         private readonly IPhotographerBookingService _photographerBookingService;
         private readonly IGuideBookingService _guideBookingService;
-        public BookingController(IMapper mapper,ISessionService sessionService,IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService)
+        private readonly IBusService _busService;
+        public BookingController(IMapper mapper,ISessionService sessionService,IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService,IBusService busService)
         {
             _mapper = mapper;
             _sessionService = sessionService;
             _photographerBookingService = photographerBookingService;
             _guideBookingService = guideBookingService;
+            _busService = busService;
         }
         public IActionResult Index()
         {
@@ -37,7 +40,7 @@ namespace EasyTravel.Web.Controllers
             {
                 return RedirectToAction("Login", "Account", new { string.Empty });
             }
-            return RedirectToAction("Photographer", "Review");
+            return RedirectToAction("PhotographerBooking", "Review");
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
@@ -71,7 +74,7 @@ namespace EasyTravel.Web.Controllers
             {
                 return RedirectToAction("Login", "Account", new { area = string.Empty });
             }
-            return RedirectToAction("Guide", "Review");
+            return RedirectToAction("GuideBooking", "Review");
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
@@ -88,13 +91,51 @@ namespace EasyTravel.Web.Controllers
                 };
                 if (User.Identity.IsAuthenticated == true)
                 {
-                    //guideBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    booking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 }
                 guideBooking.GuideId = Guid.Parse(_sessionService.GetString("GuideId"));
                 _guideBookingService.AddBooking(guideBooking,booking);
                 return View("Success");
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Bus(Guid id)
+        {
+            _sessionService.SetString("BusId", id.ToString());
+            if (User.Identity?.IsAuthenticated == false)
+            {
+                return RedirectToAction("Login", "Account", new { string.Empty });
+            }
+            return RedirectToAction("SelectSeats", "Bus", id);
+        }
+
+        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Bus(BusBookingViewModel model)
+        {
+            var busbooking = new BusBooking
+            {
+                Id = Guid.NewGuid(),
+                BusId = model.BusId,
+                PassengerName = model.BookingForm.PassengerName,
+                Email = model.BookingForm.Email,
+                PhoneNumber = model.BookingForm.PhoneNumber,
+                //TotalAmount = model.TotalAmount, // Using model.TotalAmount directly instead of BookingForm.TotalAmount
+                BookingDate = DateTime.Now,
+                SelectedSeats = model.SelectedSeatNumbers,
+                SelectedSeatIds = model.SelectedSeatIds,
+            };
+
+            // Adding UserId to the BusBooking if the user is authenticated
+            if (User.Identity.IsAuthenticated)
+            {
+                //busbooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            }
+
+            _busService.SaveBooking(busbooking, model.SelectedSeatIds);
+            return View("Success");
         }
     }
 }
