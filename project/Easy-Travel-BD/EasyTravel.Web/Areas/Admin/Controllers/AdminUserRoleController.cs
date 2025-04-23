@@ -58,11 +58,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUserRole/Update");
             var ids = id.Split(",");
+            var user = await _adminUserService.GetAsync(Guid.Parse(ids[0]));
             var model = new AdminUserRoleModel()
             {
                 UserId = Guid.Parse(ids[0]),
                 RoleId = Guid.Parse(ids[1]),
-                Users = new List<User> { await _adminUserService.GetAsync(Guid.Parse(ids[0])) },
+                Users = new List<User> { user! },
                 Roles = _adminRoleService.GetAll().ToList(),
             };
             return View(model);
@@ -85,11 +86,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUserRole/Delete");
             var ids = id.Split(",");
+            var user = await _adminUserService.GetAsync(Guid.Parse(ids[0]));
             var model = new AdminUserRoleModel()
             {
                 UserId = Guid.Parse(ids[0]),
                 RoleId = Guid.Parse(ids[1]),
-                Users = new List<User> { await _adminUserService.GetAsync(Guid.Parse(ids[0])) },
+                Users = new List<User> { user!},
                 Roles = new List<Role>{await _adminRoleService.GetAsync(Guid.Parse(ids[1]))},
             };
             return View(model);

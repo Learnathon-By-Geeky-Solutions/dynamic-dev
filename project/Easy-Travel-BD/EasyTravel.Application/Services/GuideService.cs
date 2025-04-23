@@ -12,11 +12,9 @@ namespace EasyTravel.Application.Services
     public class GuideService : IGuideService
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
-        private readonly IGuideBookingService _guideBookingService;
-        public GuideService(IApplicationUnitOfWork applicationUnitOfWork, IGuideBookingService guideBookingService)
+        public GuideService(IApplicationUnitOfWork applicationUnitOfWork)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
-            _guideBookingService = guideBookingService;
         }
         public Guide Get(Guid id)
         {
@@ -39,9 +37,9 @@ namespace EasyTravel.Application.Services
             }
             return await _applicationUnitOfWork.GuideRepository.GetAsync(
                 e => e.Availability &&
-                    !e.GuideBookings.Any() ||
-                     e.GuideBookings.Any(
-                         p => p.Booking.BookingStatus != BookingStatus.Confirmed && p.Booking.BookingStatus != BookingStatus.Pending &&
+                    !e.GuideBookings!.Any() ||
+                     e.GuideBookings!.Any(
+                         p => p.Booking!.BookingStatus != BookingStatus.Confirmed && p.Booking.BookingStatus != BookingStatus.Pending &&
                              p.EventDate >= guideBooking.EventDate &&
                               p.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
                  (

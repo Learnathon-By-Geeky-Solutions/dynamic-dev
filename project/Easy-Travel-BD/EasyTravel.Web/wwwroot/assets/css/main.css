@@ -1912,3 +1912,33 @@ section,
 .hover-zoom:hover {
   transform: scale(1.1);}
 /*Card Hover used in carosol*/
+
+
+/*Admin layout and centered form*/
+/* Full-page wrapper */
+.centered-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f8f9fa;
+  
+}
+
+/* Inner card wrapper */
+.centered-card {
+    width: 100%;
+    max-width: 800px;
+    
+}
+
+/* Card container */
+.card-container {
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+

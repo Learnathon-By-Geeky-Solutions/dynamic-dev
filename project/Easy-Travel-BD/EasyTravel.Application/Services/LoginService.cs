@@ -35,7 +35,7 @@ namespace EasyTravel.Application.Services
             return (true, "User role is not defined", null);
         }
 
-        private bool IsAdminRole(string role)
+        private static bool IsAdminRole(string role)
         {
             var adminRoles = new HashSet<string> { "admin", "agencyManager", "hotelManager", "busManager", "carManager" };
             return adminRoles.Contains(role);
