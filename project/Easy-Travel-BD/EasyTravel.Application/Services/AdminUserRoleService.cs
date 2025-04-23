@@ -29,10 +29,10 @@ namespace EasyTravel.Application.Services
                 return IdentityResult.Failed(new IdentityError { Description = "Role not found." });
 
             // Check if the user is in the role
-            if (!await _userManager.IsInRoleAsync(user, role.Name))
+            if (!await _userManager.IsInRoleAsync(user, role.Name!))
                 return IdentityResult.Success; // No need to remove if not in role
 
-            return await _userManager.RemoveFromRoleAsync(user, role.Name);
+            return await _userManager.RemoveFromRoleAsync(user, role.Name!);
         }
 
         public async Task<IdentityResult> UpdateAsync(Guid UserId, Guid RoleId)
@@ -76,10 +76,10 @@ namespace EasyTravel.Application.Services
                 return IdentityResult.Failed(new IdentityError { Description = "Role not found." });
 
             // Check if already in role to avoid duplicate assignment
-            if (await _userManager.IsInRoleAsync(user, role.Name))
+            if (await _userManager.IsInRoleAsync(user, role.Name!))
                 return IdentityResult.Success;
 
-            return await _userManager.AddToRoleAsync(user, role.Name);
+            return await _userManager.AddToRoleAsync(user, role.Name!);
         }
 
 
@@ -91,37 +91,37 @@ namespace EasyTravel.Application.Services
             var adminRole = await _roleManager.FindByNameAsync("admin");
             foreach (var user in adminUsers)
             {
-                userRoles.Add((user, adminRole));
+                userRoles.Add((user, adminRole!));
             }
             var clientUsers = await _userManager.GetUsersInRoleAsync("client");
             var clientRole = await _roleManager.FindByNameAsync("client");
             foreach (var user in clientUsers)
             {
-                userRoles.Add((user, clientRole));
+                userRoles.Add((user, clientRole!));
             }
             var agencyManager = await _userManager.GetUsersInRoleAsync("agencyManager");
             var agencyRole = await _roleManager.FindByNameAsync("agencyManager");
             foreach (var user in agencyManager)
             {
-                userRoles.Add((user, agencyRole));
+                userRoles.Add((user, agencyRole!));
             }
             var busManager = await _userManager.GetUsersInRoleAsync("busManager");
             var busRole = await _roleManager.FindByNameAsync("busManager");
             foreach (var user in busManager)
             {
-                userRoles.Add((user, busRole));
+                userRoles.Add((user, busRole!));
             }
             var carManager = await _userManager.GetUsersInRoleAsync("carManager");
             var carRole = await _roleManager.FindByNameAsync("carManager");
             foreach (var user in carManager)
             {
-                userRoles.Add((user, carRole));
+                userRoles.Add((user, carRole!));
             }
             var hotelManager = await _userManager.GetUsersInRoleAsync("hotelManager");
             var hotelRole = await _roleManager.FindByNameAsync("hotelManager");
             foreach (var user in hotelManager)
             {
-                userRoles.Add((user, hotelRole));
+                userRoles.Add((user, hotelRole!));
             }
             return userRoles;
         }

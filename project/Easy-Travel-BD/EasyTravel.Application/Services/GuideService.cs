@@ -39,7 +39,7 @@ namespace EasyTravel.Application.Services
                 e => e.Availability &&
                     !e.GuideBookings.Any() ||
                      e.GuideBookings.Any(
-                         p => p.Booking.BookingStatus != BookingStatus.Confirmed && p.Booking.BookingStatus != BookingStatus.Pending &&
+                         p => p.Booking!.BookingStatus != BookingStatus.Confirmed && p.Booking.BookingStatus != BookingStatus.Pending &&
                              p.EventDate >= guideBooking.EventDate &&
                               p.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
                  (
