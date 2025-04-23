@@ -10,8 +10,6 @@ namespace EasyTravel.Domain
 {
     public interface IApplicationUnitOfWork: IUnitOfWork
     {
-
-        public IUserRepository UserRepository { get; }
         public IBusRepository BusRepository { get; }
         public IAgencyRepository AgencyRepository { get; }
         public IPhotographerRepository PhotographerRepository { get; }
