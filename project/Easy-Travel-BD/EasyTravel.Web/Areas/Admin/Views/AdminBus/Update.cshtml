@@ -4,8 +4,9 @@
     ViewData["Title"] = "Update Bus";
 }
 
-<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
-    <div class="card-header bg-primary bg-gradient ml-0 py-3">
+<div class="centered-card">
+    <div class="card-container">
+        <div class="card-header bg-primary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="text-white py-2">@ViewData["Title"]</h2>
@@ -20,4 +21,5 @@
             <a asp-area="Admin" asp-controller="AdminBus" asp-action="Index" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
+</div>
 </div>
