@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Confirmation";
+}
+
+<div class="text-center">
+    <form asp-controller="Payment" asp-action="Pay" method="post">
+        <input type="hidden" name="amount" value="1000" />
+        <button type="submit">Pay</button>
+    </form>
+</div>
+
+
