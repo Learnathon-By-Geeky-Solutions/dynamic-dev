@@ -13,7 +13,7 @@ namespace EasyTravel.Infrastructure
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public ApplicationUnitOfWork(ApplicationDbContext context, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IBusBookingRepository busBookingRepository,ISeatRepository seatRepository,ICarBookingRepository carbookingRepository,IPhotographerBookingRepository photographerBookingRepository,IGuideBookingRepository guideBookingRepository, IBookingRepository bookingRepository)
+        public ApplicationUnitOfWork(ApplicationDbContext context, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IBusBookingRepository busBookingRepository,ISeatRepository seatRepository,ICarBookingRepository carbookingRepository,IPhotographerBookingRepository photographerBookingRepository,IGuideBookingRepository guideBookingRepository, IBookingRepository bookingRepository,IRecommendationRepository recommendationRepository,IPaymentRepository paymentRepository)
            : base(context)
         {
             CarRepository = carRepository;
@@ -30,6 +30,8 @@ namespace EasyTravel.Infrastructure
             SeatRepository = seatRepository;
             CarBookingRepository = carbookingRepository;
             BookingRepository = bookingRepository;
+            PaymentRepository = paymentRepository;
+            RecommendationRepository = recommendationRepository;
         }
         public IBusRepository BusRepository { get; private set; }
         public ICarRepository CarRepository { get; private set; }
@@ -46,5 +48,6 @@ namespace EasyTravel.Infrastructure
         public ICarBookingRepository CarBookingRepository { get; private set; }
         public IBookingRepository BookingRepository{ get; private set; }
         public IPaymentRepository PaymentRepository { get; private set; }
+        public IRecommendationRepository RecommendationRepository { get; private set; }
     }
 }
