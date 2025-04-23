@@ -9,7 +9,6 @@ namespace EasyTravel.Domain.Repositories
 {
     public interface ICarRepository:IRepository<Car, Guid>
     {
-
         void AddCar(Car bus);
         IEnumerable<Car> GetAllCars();
     }

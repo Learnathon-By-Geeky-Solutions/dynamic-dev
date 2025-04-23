@@ -22,12 +22,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Delete (Guid Id)
         {
-
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             _adminBusBookingService.DeleteBusBooking(Id);
 
             return RedirectToAction("Index", "AdminBusBooking");
         }
-
-
     }
 }
