@@ -19,14 +19,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             var hotels = _hotelService.GetAll();
             return View(hotels);
-            //return View();
         }
-       /* public IActionResult HotelWithroom()
-        {
-            var hotels = _hotelService.GetAllHotelsWithRooms(); // Fetch hotels with rooms
-            return View(hotels);
-        }*/
-
 
         [HttpGet]
         public IActionResult Create()
@@ -47,6 +40,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Update(Guid id)
         {
+            if (ModelState.IsValid)
+            {
+                //
+            }
             if(id==Guid.Empty)
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             var hotel = _hotelService.Get(id);
@@ -67,6 +64,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
+            if (ModelState.IsValid)
+            {
+                //
+            }
             if (id == Guid.Empty)
             {
                 TempData["error"] = "The hotel not found";
@@ -79,6 +80,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Delete(Hotel model)
         {
+            if (ModelState.IsValid)
+            {
+                //
+            }
             if (model.Id == Guid.Empty)
             {
                 TempData["error"] = "The hotel not found";
@@ -90,6 +95,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
 
         public IActionResult HotelDetails(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             if (id == Guid.Empty)
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
             var hotel = _hotelService.Get(id);
