@@ -20,11 +20,11 @@ namespace EasyTravel.Domain.Repositories
         IList<TEntity> GetAll();
         Task<IList<TEntity>> GetAllAsync();
         Task<IList<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter,
-           Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
+           Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null);
         TEntity GetById(TKey id);
-        Task<TEntity> GetByIdAsync(TKey id);
-        int GetCount(Expression<Func<TEntity, bool>> filter = null);
-        Task<int> GetCountAsync(Expression<Func<TEntity, bool>> filter = null);
+        Task<TEntity?> GetByIdAsync(TKey id);
+        int GetCount(Expression<Func<TEntity, bool>>? filter = null);
+        Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null);
         void Remove(Expression<Func<TEntity, bool>> filter);
         void Remove(TEntity entityToDelete);
         void Remove(TKey id);
