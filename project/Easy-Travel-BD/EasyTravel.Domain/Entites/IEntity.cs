@@ -9,8 +9,5 @@ namespace EasyTravel.Domain.Entites
     public interface IEntity<TKey>
     {
         TKey Id { get; set; }
-
-
-
     }
 }
