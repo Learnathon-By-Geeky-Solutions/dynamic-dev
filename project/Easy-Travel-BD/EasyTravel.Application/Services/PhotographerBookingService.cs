@@ -62,7 +62,7 @@ namespace EasyTravel.Application.Services
             return await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e =>
                  e.EventDate >= model.EventDate &&
                  e.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
-                 (e.Booking.BookingStatus == BookingStatus.Confirmed || e.Booking.BookingStatus == BookingStatus.Pending) &&
+                 (e.Booking!.BookingStatus == BookingStatus.Confirmed || e.Booking.BookingStatus == BookingStatus.Pending) &&
                  (
                      (e.StartTime >= model.StartTime && e.StartTime <= model.EndTime) ||
                      (e.EndTime >= model.StartTime && e.EndTime <= model.EndTime)
