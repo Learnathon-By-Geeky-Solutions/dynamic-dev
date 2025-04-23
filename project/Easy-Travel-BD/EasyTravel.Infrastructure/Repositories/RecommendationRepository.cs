@@ -18,12 +18,7 @@ namespace EasyTravel.Infrastructure.Repositories
         {
             _context = context;
         }
-
-        public void Get(string type, int count)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public async Task<IEnumerable<RecommendationDto>> GetRecommendationsAsync(string type, int count = 5)
         {
             switch (type.ToLower())
