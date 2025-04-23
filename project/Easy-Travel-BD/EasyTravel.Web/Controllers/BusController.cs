@@ -3,8 +3,10 @@ using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Claims;
 
 namespace EasyTravel.Web.Controllers
@@ -13,11 +15,12 @@ namespace EasyTravel.Web.Controllers
     {
         private readonly IBusService _busService;
         private readonly ISessionService _sessionService;
-
-        public BusController(IBusService busService, ISessionService sessionService)
+        private readonly UserManager<User> _userManager;
+        public BusController(IBusService busService, ISessionService sessionService, UserManager<User> userManager)
         {
             _busService = busService;
             _sessionService = sessionService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -25,7 +28,7 @@ namespace EasyTravel.Web.Controllers
         {
             try
             {
-                return RedirectToAction("Index", "BusSearch");
+                return RedirectToAction("Bus", "Search");
             }
             catch (Exception ex)
             {
@@ -78,20 +81,24 @@ namespace EasyTravel.Web.Controllers
 
             return View(model);
         }
-
-
-
         [HttpPost]
-        public IActionResult BusBooking(Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
+        public async Task<IActionResult> PassengerDetails(Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
         {
+            var user = await _userManager.GetUserAsync(User);
             var bus = _busService.GetseatBusById(busId);
             if (bus == null) return NotFound();
 
             var viewModel = new BusBookingViewModel
             {
-                BusId=busId,
+                BusId = busId,
                 Bus = bus,
-                BookingForm = new BookingForm(),
+                BookingForm = new BookingForm
+                {
+                    PassengerName = $"{user.FirstName},{user.LastName}",
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    TotalAmount = bus.Price
+                },
                 SelectedSeatNumbers = string.IsNullOrEmpty(selectedSeats)
                     ? new List<string>()
                     : selectedSeats.Split(',').ToList(),
@@ -102,50 +109,6 @@ namespace EasyTravel.Web.Controllers
             };
             return View(viewModel);
         }
-
-        [HttpPost]
-        public IActionResult BusConfirmBooking(BusBookingViewModel model)
-        {
-            var busbooking = new BusBooking
-            {
-                Id = Guid.NewGuid(),
-                BusId = model.BusId,
-                PassengerName = model.BookingForm.PassengerName,
-                Email = model.BookingForm.Email,
-                PhoneNumber = model.BookingForm.PhoneNumber,
-                //TotalAmount = model.TotalAmount, // Using model.TotalAmount directly instead of BookingForm.TotalAmount
-                BookingDate = DateTime.Now,
-                SelectedSeats = model.SelectedSeatNumbers,
-                SelectedSeatIds = model.SelectedSeatIds,
-            };
-
-            // Adding UserId to the BusBooking if the user is authenticated
-            if (User.Identity.IsAuthenticated)
-            {
-                //busbooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            }
-
-            _busService.SaveBooking(busbooking, model.SelectedSeatIds);
-            return RedirectToAction("BusConfirmBooking");
-        }
-
-
-        [HttpGet]
-
-        public IActionResult BusConfirmBooking()
-        {
-
-            return View();
-        }
-
-
-
-
-
-
-    
-
-
 
 
     }

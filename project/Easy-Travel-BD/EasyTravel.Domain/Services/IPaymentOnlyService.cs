@@ -10,5 +10,6 @@ namespace EasyTravel.Domain.Services
     public interface IPaymentOnlyService
     {
         void AddPaymentOnly(Payment payment);
+        Task<bool> IsExist(Guid bookingId);
     }
 }
