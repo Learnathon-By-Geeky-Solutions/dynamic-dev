@@ -1912,3 +1912,23 @@ section,
 .hover-zoom:hover {
   transform: scale(1.1);}
 /*Card Hover used in carosol*/
+
+
+/*Admin layout and centered form*/
+.centered-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Optional: Adjust background color */
+    margin: 0; /* Remove any default margin */
+}
+
+.card-container {
+    width: 100%;
+    max-width: 800px; /* Adjust max width as needed */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better appearance */
+    background-color: #fff; /* Ensure the card has a white background */
+}

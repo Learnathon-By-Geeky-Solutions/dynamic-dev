@@ -8,8 +8,9 @@
     }
 
 }
-<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
-    <h2 class="card-title text-center">@action Agency</h2>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #f8f9fa;">
+    <div class="card shadow-sm" style="width: 100%; max-width: 800px; padding: 20px; border-radius: 10px;">
+        <h2 class="card-title text-center">@action Agency</h2>
     <form asp-antiforgery=true method="post" asp-action="@action">
         <div class="form-group">
             <label for="Name" style="width:100%">
@@ -65,4 +66,5 @@
             <a asp-area="Admin" asp-controller="AdminAgency" asp-action="Index" class="btn btn-secondary">Back to List</a>
         </div>
     </form>
+</div>
 </div>
