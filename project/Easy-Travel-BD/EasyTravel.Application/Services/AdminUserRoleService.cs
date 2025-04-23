@@ -13,10 +13,8 @@ namespace EasyTravel.Application.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
-        private readonly IAdminRoleService _adminRoleService;
-        public AdminUserRoleService(UserManager<User> userManager,RoleManager<Role> roleManager,IAdminRoleService adminRoleService)
+        public AdminUserRoleService(UserManager<User> userManager,RoleManager<Role> roleManager)
         {
-            _adminRoleService = adminRoleService;
             _userManager = userManager;
             _roleManager = roleManager;
         }
