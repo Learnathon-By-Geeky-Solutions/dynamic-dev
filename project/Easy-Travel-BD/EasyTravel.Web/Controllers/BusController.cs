@@ -6,6 +6,7 @@ using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Globalization;
 using System.Runtime.ConstrainedExecution;
 using System.Security.Claims;
 
@@ -26,16 +27,8 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            try
-            {
-                return RedirectToAction("Bus", "Search");
-            }
-            catch (Exception ex)
-            {
-                // Log the error
-                Console.WriteLine(ex.Message);
-                return NotFound(); 
-            }
+            HttpContext.Session.SetString("LastVisitedPage", "/Bus/Index");
+            return RedirectToAction("Bus", "Search");
         }
 
 
@@ -46,7 +39,7 @@ namespace EasyTravel.Web.Controllers
             // Retrieve search parameters from session
             var from = _sessionService.GetString("From");
             var to = _sessionService.GetString("To");
-            var dateTime = DateTime.Parse(_sessionService.GetString("DateTime"));
+            var dateTime = DateTime.Parse(_sessionService.GetString("DateTime"),CultureInfo.InvariantCulture);
 
             // Create the model to pass to the view
             var model = new SearchBusResultViewModel
@@ -68,6 +61,8 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult SelectSeats(Guid busId)
         {
+            if(!ModelState.IsValid)
+                return View();
             var bus = _busService.GetseatBusById(busId);
             if (bus == null)
                 return NotFound();
@@ -84,6 +79,8 @@ namespace EasyTravel.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> PassengerDetails(Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
         {
+            if (!ModelState.IsValid)
+                return View();
             var user = await _userManager.GetUserAsync(User);
             var bus = _busService.GetseatBusById(busId);
             if (bus == null) return NotFound();
@@ -94,9 +91,9 @@ namespace EasyTravel.Web.Controllers
                 Bus = bus,
                 BookingForm = new BookingForm
                 {
-                    PassengerName = $"{user.FirstName},{user.LastName}",
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
+                    PassengerName = $"{user?.FirstName},{user?.LastName}",
+                    Email = user?.Email!,
+                    PhoneNumber = user?.PhoneNumber!,
                     TotalAmount = bus.Price
                 },
                 SelectedSeatNumbers = string.IsNullOrEmpty(selectedSeats)
