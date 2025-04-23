@@ -53,13 +53,12 @@
     </form>
     <!--Carosol -->
 
-    <h2>Recommended Hotels</h2>
-    @await Html.PartialAsync("_CarouselPartial", recommendedHotels)
-   
+    
+  
     <h2>Best Bus Services</h2>
-    @await Html.PartialAsync("_CarouselPartial", bestBusServices)
-    @await Html.PartialAsync("_CarouselPartial", bestBusServices)
-    <h2>Personalized Recommended Hotels</h2>
+    @await Component.InvokeAsync("RecommendationCarousel", new { type = "buses", count = 5 })
+
+    <h2>Best Hotels</h2>
      @await Component.InvokeAsync("RecommendationCarousel", new { type = "hotels", count = 5 }) 
 
 
@@ -99,20 +98,3 @@
         });
     </script>
 }
-
-@* 
-@code {
-    private IEnumerable<dynamic>
-    ? recommendedHotels;
-    private IEnumerable<dynamic>
-        ? bestBusServices;
-
-        protected override async Task OnInitializedAsync()
-        {
-        // Fetch recommended hotels
-        recommendedHotels = await Http.GetFromJsonAsync<IEnumerable<dynamic>>("/api/recommendation/hotels?count=4");
-
-        // Fetch best bus services
-        bestBusServices = await Http.GetFromJsonAsync<IEnumerable<dynamic>>("/api/recommendation/buses?count=4");
-    }
-} *@
