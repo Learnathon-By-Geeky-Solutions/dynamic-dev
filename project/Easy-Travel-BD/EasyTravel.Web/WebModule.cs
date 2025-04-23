@@ -13,7 +13,7 @@ using System.ComponentModel;
 
 namespace EasyTravel.Web
 {
-    public class WebModule: Module
+    public class WebModule : Module
     {
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
@@ -45,7 +45,6 @@ namespace EasyTravel.Web
 
             builder.RegisterType<CarBookingRepository>().As<ICarBookingRepository>()
          .InstancePerLifetimeScope();
-
             builder.RegisterType<AgencyRepository>().As<IAgencyRepository>()
             .InstancePerLifetimeScope();
             builder.RegisterType<PhotographerRepository>().As<IPhotographerRepository>()
@@ -109,7 +108,7 @@ namespace EasyTravel.Web
             builder.RegisterType<AdminUserRoleService>().As<IAdminUserRoleService>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<AdminGuideBookingService>().As<IAdminGuideBookingService>()
-                .InstancePerLifetimeScope(); 
+                .InstancePerLifetimeScope();
             builder.RegisterType<AdminPhotographerBookingService>().As<IAdminPhotographerBookingService>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<AdminHotelBookingService>().As<IAdminHotelBookingService>()
@@ -126,7 +125,7 @@ namespace EasyTravel.Web
              .InstancePerLifetimeScope();
             builder.RegisterType<PaymentOnlyService>().As<IPaymentOnlyService>()
              .InstancePerLifetimeScope();
-            builder.RegisterType<PhotographerPaymentService>().As<IPaymentBookingService<PhotographerBooking,Booking, Guid>>()
+            builder.RegisterType<PhotographerPaymentService>().As<IPaymentBookingService<PhotographerBooking, Booking, Guid>>()
              .InstancePerLifetimeScope();
             builder.RegisterType<BookingService>().As<IGetService<Booking, Guid>>()
              .InstancePerLifetimeScope();
@@ -138,6 +137,10 @@ namespace EasyTravel.Web
              .InstancePerLifetimeScope();
             builder.RegisterType<HotelPaymentService>().As<IPaymentBookingService<HotelBooking, Booking, Guid>>()
              .InstancePerLifetimeScope();
+            builder.RegisterType<RecommendationRepository>().As<IRecommendationRepository>()
+.InstancePerLifetimeScope();
+            builder.RegisterType<PaymentRepository>().As<IPaymentRepository>()
+            .InstancePerLifetimeScope();
             base.Load(builder);
         }
 
