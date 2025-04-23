@@ -9,8 +9,11 @@
         isDisabled = true;
     }
 }
-<div class="card shadow-sm" style="max-width: 600px; padding: 20px; border-radius: 10px;">
-    <h2 class="card-title text-center">@action User</h2>
+
+<div class="centered-wrapper">
+    <div class="centered-card">
+        <div class="card-container">
+            <h2 class="card-title text-center">@action User</h2>
     <form asp-antiforgery=true method="post" asp-action="@action">
         <!-- Name Input -->
         <div class="form-group mb-3">
@@ -104,6 +107,8 @@
         <button type="submit" class="btn btn-primary btn-block">@action</button>
         <a asp-area="Admin" asp-controller="AdminUser" asp-action="Index" class="btn btn-secondary">Back to List</a>
     </form>
+</div>
+</div>
 </div>
 
 @section scripts
