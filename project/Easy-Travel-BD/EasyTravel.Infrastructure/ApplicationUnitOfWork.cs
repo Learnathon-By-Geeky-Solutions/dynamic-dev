@@ -13,7 +13,7 @@ namespace EasyTravel.Infrastructure
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public ApplicationUnitOfWork(ApplicationDbContext context, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IBusBookingRepository busBookingRepository,ISeatRepository seatRepository,ICarBookingRepository carbookingRepository,IPhotographerBookingRepository photographerBookingRepository,IGuideBookingRepository guideBookingRepository, IBookingRepository bookingRepository,IRecommendationRepository recommendationRepository,IPaymentRepository paymentRepository)
+        public ApplicationUnitOfWork(ApplicationDbContext context, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IBusBookingRepository busBookingRepository,ISeatRepository seatRepository,ICarBookingRepository carbookingRepository,IPhotographerBookingRepository photographerBookingRepository,IGuideBookingRepository guideBookingRepository, IBookingRepository bookingRepository ,IRecommendationRepository recommendationRepository,IPaymentRepository paymentRepository)
            : base(context)
         {
             CarRepository = carRepository;
