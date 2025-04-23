@@ -11,13 +11,11 @@ namespace EasyTravel.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-
         private readonly ApplicationDbContext _dbContext;
         public UnitOfWork(ApplicationDbContext context)
         {
             _dbContext = context;
         }
-
         public void Save()
         {
             _dbContext.SaveChanges();

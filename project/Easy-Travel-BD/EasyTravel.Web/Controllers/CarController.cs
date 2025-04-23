@@ -26,16 +26,8 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            try
-            {
-                return RedirectToAction("Index", "CarSearch");
-            }
-            catch (Exception ex)
-            {
-                
-                Console.WriteLine(ex.Message);
-                return NotFound();
-            }
+            HttpContext.Session.SetString("LastVisitedPage", "/Car/Index");
+            return RedirectToAction("Car", "Search");
         }
 
 
