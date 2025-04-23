@@ -13,15 +13,10 @@ namespace EasyTravel.Infrastructure
     {
 
         private readonly ApplicationDbContext _dbContext;
-
-
         public UnitOfWork(ApplicationDbContext context)
         {
             _dbContext = context;
         }
-
-
-
 
         public void Save()
         {
