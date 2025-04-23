@@ -4,22 +4,40 @@
     ViewData["Title"] = "Update Bus";
 }
 
-<div class="centered-card">
-    <div class="card-container">
-        <div class="card-header bg-primary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">@ViewData["Title"]</h2>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminBus" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active">Update Bus</li>
+                    </ol>
+                </div>
             </div>
         </div>
-    </div>
-    <form method="post" asp-area="Admin" asp-controller="AdminBus" asp-action="Update">
-        <input type="hidden" asp-for="Id" />
-        <partial name="_BusForm" />
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Update Bus</button>
-            <a asp-area="Admin" asp-controller="AdminBus" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Update Bus</h3>
+                </div>
+                <form method="post" asp-area="Admin" asp-controller="AdminBus" asp-action="Update">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="card-body">
+                        <partial name="_BusForm" />
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Update Bus</button>
+                        <a asp-area="Admin" asp-controller="AdminBus" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
-</div>
+    </section>
 </div>
