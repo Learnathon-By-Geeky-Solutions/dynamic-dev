@@ -20,8 +20,7 @@ namespace EasyTravel.Application.Services
 
         public void GetRecommendation(string type, int count = 5)
         {
-            _applicationUnitOfWork.RecommendationRepository.Get(type, count);        
-
+            _applicationUnitOfWork.RecommendationRepository.GetRecommendationsAsync(type, count);        
         }
 
         public Task<IEnumerable<RecommendationDto>> GetRecommendationsAsync(string type, int count = 5)
