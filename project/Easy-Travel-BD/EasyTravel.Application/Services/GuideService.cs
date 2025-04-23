@@ -12,11 +12,9 @@ namespace EasyTravel.Application.Services
     public class GuideService : IGuideService
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
-        private readonly IGuideBookingService _guideBookingService;
-        public GuideService(IApplicationUnitOfWork applicationUnitOfWork, IGuideBookingService guideBookingService)
+        public GuideService(IApplicationUnitOfWork applicationUnitOfWork)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
-            _guideBookingService = guideBookingService;
         }
         public Guide Get(Guid id)
         {

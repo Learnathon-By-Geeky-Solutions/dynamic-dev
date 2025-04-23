@@ -13,11 +13,9 @@ namespace EasyTravel.Application.Services
     public class PhotographerService : IPhotographerService
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
-        private readonly IPhotographerBookingService _photographerBookingService;
-        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork, IPhotographerBookingService photographerBookingService)
+        public PhotographerService(IApplicationUnitOfWork applicationUnitOfWork)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
-            _photographerBookingService = photographerBookingService;
         }
 
         public Photographer Get(Guid id)

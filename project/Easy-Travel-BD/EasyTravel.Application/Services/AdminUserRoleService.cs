@@ -18,13 +18,13 @@ namespace EasyTravel.Application.Services
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task<IdentityResult> DeleteAsync(Guid userId, Guid roleId)
+        public async Task<IdentityResult> DeleteAsync(Guid UserId, Guid RoleId)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.FindByIdAsync(UserId.ToString());
             if (user == null)
                 return IdentityResult.Failed(new IdentityError { Description = "User not found." });
 
-            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+            var role = await _roleManager.FindByIdAsync(RoleId.ToString());
             if (role == null)
                 return IdentityResult.Failed(new IdentityError { Description = "Role not found." });
 
@@ -35,9 +35,9 @@ namespace EasyTravel.Application.Services
             return await _userManager.RemoveFromRoleAsync(user, role.Name);
         }
 
-        public async Task<IdentityResult> UpdateAsync(Guid userId, Guid roleId)
+        public async Task<IdentityResult> UpdateAsync(Guid UserId, Guid RoleId)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.FindByIdAsync(UserId.ToString());
             if (user == null)
                 return IdentityResult.Failed(new IdentityError { Description = "User not found." });
 
@@ -48,7 +48,7 @@ namespace EasyTravel.Application.Services
             if (!removeResult.Succeeded)
                 return removeResult;
 
-            return await CreateAsync(userId, roleId);
+            return await CreateAsync(UserId, RoleId);
         }
 
         public async Task<List<User>> GetUsersWithoutRole()
@@ -65,13 +65,13 @@ namespace EasyTravel.Application.Services
             }
             return usersWithoutRole;
         }
-        public async Task<IdentityResult> CreateAsync(Guid userId, Guid roleId)
+        public async Task<IdentityResult> CreateAsync(Guid UserId, Guid RoleId)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.FindByIdAsync(UserId.ToString());
             if (user == null)
                 return IdentityResult.Failed(new IdentityError { Description = "User not found." });
 
-            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+            var role = await _roleManager.FindByIdAsync(RoleId.ToString());
             if (role == null)
                 return IdentityResult.Failed(new IdentityError { Description = "Role not found." });
 
