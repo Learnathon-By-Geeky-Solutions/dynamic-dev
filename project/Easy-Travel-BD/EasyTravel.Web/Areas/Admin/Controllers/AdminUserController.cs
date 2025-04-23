@@ -19,14 +19,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Index");
             var roles =  _adminUserService.GetAll();
             return View(roles);
         }
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Create");
             return View();
@@ -50,6 +50,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Update");
             var user = await _adminUserService.GetAsync(id);
             var model = _mapper.Map<AdminUserViewModel>(user);
@@ -58,16 +62,20 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(AdminUserViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             if (ModelState.IsValid)
             {
                 var user = await _adminUserService.GetAsync(model.Id);
-                if(user.Email != model.Email && await _adminUserService.IsExist(model.Email))
+                if(user?.Email != model.Email && await _adminUserService.IsExist(model.Email!))
                 {
                     ModelState.AddModelError(string.Empty, "User already exist");
                     return View(model);
                 }
                 user = _mapper.Map(model,user);
-                var (success, errormessage) = await _adminUserService.UpdateAsync(user);
+                var (success, errormessage) = await _adminUserService.UpdateAsync(user!);
                 if (!success)
                 {
                     ModelState.AddModelError(string.Empty, errormessage);
@@ -80,6 +88,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Delete");
             var user = await _adminUserService.GetAsync(id);
             var model = _mapper.Map<AdminUserViewModel>(user);
@@ -90,13 +102,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var user = await _adminUserService.GetAsync(model.Id);
-                //if (user == null)
-                //{
-                //    ModelState.AddModelError(string.Empty, "User not found");
-                //    return View(model);
-                //}
-                //user = _mapper.Map(model, user);
                 await _adminUserService.DeleteAsync(model.Id);
                 return RedirectToAction("Index", "AdminUser", new { area = "Admin" });
             }
