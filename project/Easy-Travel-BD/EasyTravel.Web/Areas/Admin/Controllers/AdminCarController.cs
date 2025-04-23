@@ -40,17 +40,17 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Update(Guid CarId)
         {
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             var bus = _carService.GetCarById(CarId);
             if (bus == null)
             {
                 return NotFound();
             }
-
-
             return View(bus);
-
         }
-
 
         [HttpPost]
         public IActionResult Update(Car car)
@@ -67,15 +67,16 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(Guid CarId)
         {
+            if (ModelState.IsValid)
+            {
+                //
+            }
             var bus = _carService.GetCarById(CarId);
             if (bus == null)
             {
                 return NotFound();
             }
-
-
             return View(bus);
-
         }
 
         [HttpPost]
