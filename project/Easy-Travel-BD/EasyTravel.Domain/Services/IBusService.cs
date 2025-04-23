@@ -14,7 +14,7 @@ namespace EasyTravel.Domain.Services
         Bus GetBusById(Guid BusId);
         void UpdateBus(Bus bus);
         void DeleteBus(Bus bus);
-        void SaveBooking(BusBooking booking, List<Guid> seatIds);
+        void SaveBooking(BusBooking model,List<Guid> seatIds, Booking booking, Payment? payment = null);
         Bus GetseatBusById(Guid busId);
         Task<IEnumerable<Bus>> GetAvailableBusesAsync(string from, string to, DateTime dateTime);
     }

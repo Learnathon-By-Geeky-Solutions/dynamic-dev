@@ -1,17 +1,18 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using Microsoft.Extensions.Logging;
 using System.Transactions;
 namespace EasyTravel.Application.Services
 {
     public class CarService : ICarService
     {
-
+        private readonly ILogger<CarService> _logger;
         private readonly IApplicationUnitOfWork _applicationUnitOfWork1;
-        public CarService(IApplicationUnitOfWork applicationUnitOfWork)
+        public CarService(IApplicationUnitOfWork applicationUnitOfWork,ILogger<CarService> logger )
         {
             _applicationUnitOfWork1 = applicationUnitOfWork;
-
+            _logger = logger;
         }
         public void CreateCar(Car car)
         {
@@ -45,7 +46,7 @@ namespace EasyTravel.Application.Services
 
         }
 
-        public void SaveBooking(CarBooking booking, Guid CarId)
+        public void SaveBooking(CarBooking model, Guid CarId,Booking booking,Payment? payment = null)
         {
             // Start a transaction to ensure both operations succeed or fail together
             using (var transaction = new TransactionScope())
@@ -53,7 +54,9 @@ namespace EasyTravel.Application.Services
                 try
                 {
                     // Save the booking
-                    _applicationUnitOfWork1.CarBookingRepository.Add(booking);
+                    _applicationUnitOfWork1.BookingRepository.Add(booking);
+                    _applicationUnitOfWork1.Save();
+                    _applicationUnitOfWork1.CarBookingRepository.Add(model);
                     _applicationUnitOfWork1.Save();
 
                    
@@ -69,10 +72,10 @@ namespace EasyTravel.Application.Services
                     // Commit the transaction
                     transaction.Complete();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Transaction will automatically roll back if an exception occurs
-                    throw;
+                    // Handle exception (e.g., log it)
+                    _logger.LogError(ex, "Error saving booking");
                 }
             }
         }
