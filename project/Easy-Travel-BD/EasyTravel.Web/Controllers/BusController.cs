@@ -3,8 +3,10 @@ using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Claims;
 
 namespace EasyTravel.Web.Controllers
@@ -13,11 +15,12 @@ namespace EasyTravel.Web.Controllers
     {
         private readonly IBusService _busService;
         private readonly ISessionService _sessionService;
-
-        public BusController(IBusService busService, ISessionService sessionService)
+        private readonly UserManager<User> _userManager;
+        public BusController(IBusService busService, ISessionService sessionService, UserManager<User> userManager)
         {
             _busService = busService;
             _sessionService = sessionService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -78,6 +81,35 @@ namespace EasyTravel.Web.Controllers
 
             return View(model);
         }
+        [HttpPost]
+        public async Task<IActionResult> PassengerDetails(Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var bus = _busService.GetseatBusById(busId);
+            if (bus == null) return NotFound();
+
+            var viewModel = new BusBookingViewModel
+            {
+                BusId = busId,
+                Bus = bus,
+                BookingForm = new BookingForm
+                {
+                    PassengerName = $"{user.FirstName},{user.LastName}",
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    TotalAmount = bus.Price
+                },
+                SelectedSeatNumbers = string.IsNullOrEmpty(selectedSeats)
+                    ? new List<string>()
+                    : selectedSeats.Split(',').ToList(),
+                SelectedSeatIds = string.IsNullOrEmpty(selectedSeatIds)
+                    ? new List<Guid>()
+                    : selectedSeatIds.Split(',').Select(id => Guid.Parse(id)).ToList(),
+                TotalAmount = totalAmount
+            };
+            return View(viewModel);
+        }
+
 
     }
 }
