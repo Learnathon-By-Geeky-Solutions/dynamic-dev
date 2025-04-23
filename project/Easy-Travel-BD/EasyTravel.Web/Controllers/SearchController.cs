@@ -28,7 +28,7 @@ namespace EasyTravel.Web.Controllers
                 _sessionService.SetString("EventType", "");
                 _sessionService.SetString("EventLocation", "");
                 var lastPage = _sessionService.GetString("LastVisitedPage");
-                if (lastPage.Contains("Photographer") == true)
+                if (lastPage.Contains("Photographer"))
                 {
                     return RedirectToAction("List", "Photographer");
                 }
@@ -36,7 +36,32 @@ namespace EasyTravel.Web.Controllers
             }
             return View(model);
         }
-
+        [HttpGet]
+        public IActionResult Guide()
+        {
+            return View();
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Guide(SearchFormModel model)
+        {
+            var guide = model;
+            if (ModelState.IsValid)
+            {
+                _sessionService.SetString("EventDate", guide.EventDate.ToString());
+                _sessionService.SetString("StartTime", guide.StartTime.ToString());
+                _sessionService.SetString("TimeInHour", guide.TimeInHour.ToString());
+                _sessionService.SetString("EndTime", guide.EndTime.ToString());
+                _sessionService.SetString("EventType", "");
+                _sessionService.SetString("EventLocation", "");
+                var lastPage = _sessionService.GetString("LastVisitedPage");
+                if (lastPage.Contains("Photographer"))
+                {
+                    return RedirectToAction("List", "Photographer");
+                }
+                return RedirectToAction("List", "Guide");
+            }
+            return View(model);
+        }
         [HttpGet]
         public IActionResult Bus()
         {
@@ -59,6 +84,26 @@ namespace EasyTravel.Web.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Car()
+        {
+            return View();
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Car(CarSearchFormModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Storing search parameters in session
+                _sessionService.SetString("From", model.From);
+                _sessionService.SetString("To", model.To);
+                _sessionService.SetString("DateTime", model.DepartureTime.ToString());
+                // Redirect to the List method of BusController
+                return RedirectToAction("List", "Car");
+            }
+            return View();
         }
     }
 }

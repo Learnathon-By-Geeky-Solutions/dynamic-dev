@@ -15,11 +15,11 @@ namespace EasyTravel.Domain.Entites
 
         [Required]
         [StringLength(100)]
-        public string RoomNumber { get; set; }
+        public required string RoomNumber { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string RoomType { get; set; }
+        public required string RoomType { get; set; }
 
         [Required]
         public decimal PricePerNight { get; set; }
@@ -27,7 +27,7 @@ namespace EasyTravel.Domain.Entites
         [Required]
         public int MaxOccupancy { get; set; }
 
-        public string Description { get; set; }
+        public required string Description { get; set; }
 
         public string? Image1 { get; set; }
         public string? Image2 { get; set; }
