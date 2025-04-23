@@ -30,8 +30,8 @@ namespace EasyTravel.Infrastructure
             SeatRepository = seatRepository;
             CarBookingRepository = carbookingRepository;
             BookingRepository = bookingRepository;
-            RecommendationRepository = recommendationRepository;
             PaymentRepository = paymentRepository;
+            RecommendationRepository = recommendationRepository;
         }
         public IBusRepository BusRepository { get; private set; }
         public ICarRepository CarRepository { get; private set; }
