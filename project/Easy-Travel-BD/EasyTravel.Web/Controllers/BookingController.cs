@@ -19,13 +19,15 @@ namespace EasyTravel.Web.Controllers
         private readonly IPhotographerBookingService _photographerBookingService;
         private readonly IGuideBookingService _guideBookingService;
         private readonly IBusService _busService;
-        public BookingController(IMapper mapper,ISessionService sessionService,IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService,IBusService busService)
+        private readonly ICarService _carService;
+        public BookingController(IMapper mapper,ISessionService sessionService,IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService,IBusService busService,ICarService carService)
         {
             _mapper = mapper;
             _sessionService = sessionService;
             _photographerBookingService = photographerBookingService;
             _guideBookingService = guideBookingService;
             _busService = busService;
+            _carService = carService;
         }
         public IActionResult Index()
         {
@@ -40,7 +42,7 @@ namespace EasyTravel.Web.Controllers
             {
                 return RedirectToAction("Login", "Account", new { string.Empty });
             }
-            return RedirectToAction("PhotographerBooking", "Review");
+            return RedirectToAction("PhotographerBooking", "Review",id);
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
@@ -51,6 +53,7 @@ namespace EasyTravel.Web.Controllers
                 var pgBooking = _mapper.Map<PhotographerBooking>(model);
                 var booking = new Booking
                 {
+                    Id = Guid.NewGuid(),
                     TotalAmount = model.TotalAmount,
                     BookingTypes = BookingTypes.Photographer,
                     BookingStatus = BookingStatus.Pending,
@@ -59,9 +62,10 @@ namespace EasyTravel.Web.Controllers
                 {
                     booking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 }
-                pgBooking.PhotographerId = Guid.Parse(_sessionService.GetString("PhotographerId"));
+                pgBooking.Id = booking.Id;
+                pgBooking.PhotographerId = model.PhotographerId;
                 _sessionService.Remove("PhotographerId");
-                _photographerBookingService.AddBooking(pgBooking,booking);
+                _photographerBookingService.SaveBooking(pgBooking,booking);
                 return View("Success");
             }
             return View(model);
@@ -74,7 +78,7 @@ namespace EasyTravel.Web.Controllers
             {
                 return RedirectToAction("Login", "Account", new { area = string.Empty });
             }
-            return RedirectToAction("GuideBooking", "Review");
+            return RedirectToAction("GuideBooking", "Review",id);
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
@@ -85,6 +89,7 @@ namespace EasyTravel.Web.Controllers
                 var guideBooking = _mapper.Map<GuideBooking>(model);
                 var booking = new Booking
                 {
+                    Id = Guid.NewGuid(),
                     TotalAmount = model.TotalAmount,
                     BookingTypes = BookingTypes.Guide,
                     BookingStatus = BookingStatus.Pending
@@ -93,8 +98,9 @@ namespace EasyTravel.Web.Controllers
                 {
                     booking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 }
-                guideBooking.GuideId = Guid.Parse(_sessionService.GetString("GuideId"));
-                _guideBookingService.AddBooking(guideBooking,booking);
+                guideBooking.Id = booking.Id;
+                guideBooking.GuideId = model.GuideId;
+                _guideBookingService.SaveBooking(guideBooking,booking);
                 return View("Success");
             }
             return View(model);
@@ -115,26 +121,61 @@ namespace EasyTravel.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Bus(BusBookingViewModel model)
         {
-            var busbooking = new BusBooking
+            var booking = new Booking
             {
                 Id = Guid.NewGuid(),
+                TotalAmount = model.TotalAmount,
+                BookingTypes = BookingTypes.Bus,
+                BookingStatus = BookingStatus.Pending,
+            };
+            var busbooking = new BusBooking
+            {
+                Id = booking.Id,
                 BusId = model.BusId,
                 PassengerName = model.BookingForm.PassengerName,
                 Email = model.BookingForm.Email,
                 PhoneNumber = model.BookingForm.PhoneNumber,
-                //TotalAmount = model.TotalAmount, // Using model.TotalAmount directly instead of BookingForm.TotalAmount
                 BookingDate = DateTime.Now,
                 SelectedSeats = model.SelectedSeatNumbers,
                 SelectedSeatIds = model.SelectedSeatIds,
             };
+            _busService.SaveBooking(busbooking, model.SelectedSeatIds!,booking);
+            return View("Success");
+        }
 
-            // Adding UserId to the BusBooking if the user is authenticated
-            if (User.Identity.IsAuthenticated)
+        public IActionResult Car(Guid id)
+        {
+            _sessionService.SetString("BusId", id.ToString());
+            if (User.Identity?.IsAuthenticated == false)
             {
-                //busbooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return RedirectToAction("Login", "Account", new { string.Empty });
             }
+            return RedirectToAction("PassengerDetails", "Car", new { id });
+        }
 
-            _busService.SaveBooking(busbooking, model.SelectedSeatIds);
+
+        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Car(CarBookingViewModel model)
+        {
+            var booking = new Booking
+            {
+                Id = Guid.NewGuid(),
+                TotalAmount = model.BookingForm.TotalAmount,
+                BookingTypes = BookingTypes.Bus,
+                BookingStatus = BookingStatus.Pending,
+            };
+            var carBooking = new CarBooking
+            {
+                Id = booking.Id,
+                CarId = model.CarId,
+                PassengerName = model.BookingForm.PassengerName,
+                Email = model.BookingForm.Email,
+                PhoneNumber = model.BookingForm.PhoneNumber,
+                BookingDate = DateTime.Now,
+            };
+            _carService.SaveBooking(carBooking,model.CarId,booking);
+
             return View("Success");
         }
     }

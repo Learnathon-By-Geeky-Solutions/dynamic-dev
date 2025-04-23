@@ -72,14 +72,14 @@
                             <div class="col-md-12 mb-3">
                                 <label asp-for="BookingForm.PassengerName">
                                     Passenger Name
-                                    <input asp-for="BookingForm.PassengerName" class="form-control" readonly />
+                                    <input asp-for="BookingForm.PassengerName" class="form-control" />
                                 </label>
                                 <span asp-validation-for="BookingForm.PassengerName" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label asp-for="BookingForm.Email">
                                     Email
-                                    <input asp-for="BookingForm.Email" class="form-control" readonly />
+                                    <input asp-for="BookingForm.Email" class="form-control" />
                                 </label>
 
                                 <span asp-validation-for="BookingForm.Email" class="text-danger"></span>
@@ -88,7 +88,7 @@
                                 <label asp-for="BookingForm.PhoneNumber">
                                     Phone Number
 
-                                    <input asp-for="BookingForm.PhoneNumber" class="form-control" readonly />
+                                    <input asp-for="BookingForm.PhoneNumber" class="form-control" />
                                 </label>
 
                                 <span asp-validation-for="BookingForm.PhoneNumber" class="text-danger"></span>
@@ -98,23 +98,27 @@
                 </div>
 
 
-               
+
                 @foreach (var seat in Model.SelectedSeatNumbers)
                 {
-                    <input type="hidden" name="SelectedSeatNumbers" value="@seat" readonly />
+                    <input type="hidden" name="SelectedSeatNumbers" value="@seat" />
                 }
 
                 @foreach (var seatId in Model.SelectedSeatIds)
                 {
-                    <input type="hidden" name="SelectedSeatIds" value="@seatId" readonly />
+                    <input type="hidden" name="SelectedSeatIds" value="@seatId" />
                 }
 
-                <input type="hidden" name="BusId" value="@Model.BusId" readonly />
-                <input type="hidden" name="BookingForm.TotalAmount" value="@Model.TotalAmount" readonly />
-                <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" readonly/>
-            </form>
-            <form asp-controller="Payment" asp-action="Pay" method="post">
-                <button type="submit" name="Id" value="@Model.BusId" class="btn btn-danger">Pay</button>
+                <input type="hidden" name="BusId" value="@Model.BusId" />
+                <input type="hidden" name="BookingForm.TotalAmount" value="@Model.TotalAmount" />
+                <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" />
+
+                <button type="submit" onclick="formSubmit('/Booking/Bus',event)" class="btn btn-success w-100">
+                    Confirm Booking
+                </button>
+                <button type="submit" onclick="formSubmit('/Review/BusBooking',event)" class="btn btn-primary w-100">
+                    Continue To Pay
+                </button>
             </form>
         </div>
 
@@ -147,6 +151,12 @@
     </div>
 </div>
 @section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+           function formSubmit(actionUrl, event) {
+            event.preventDefault(); // Stop the form from submitting the normal way
+            const form = document.getElementById('bookingForm');
+            form.action = actionUrl;
+            form.submit(); // Now submit the form manually
+        }
+    </script>
 }

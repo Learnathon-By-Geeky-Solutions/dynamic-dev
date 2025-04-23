@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using System.Text.Json;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -21,8 +22,9 @@ namespace EasyTravel.Web.Controllers
         private readonly IAgencyService _agencyService;
         private readonly IGuideService _guideService;
         private readonly IBusService _busService;
+        private readonly ICarService _carService;
         public ReviewController(ISessionService sessionService, IPhotographerService photographerService,
-            UserManager<User> userManager,IMapper mapper, IAgencyService agencyService, IGuideService guideService, IBusService busService)
+            UserManager<User> userManager,IMapper mapper, IAgencyService agencyService, IGuideService guideService, IBusService busService, ICarService carService)
         {
             _sessionService = sessionService;
             _photographerService = photographerService;
@@ -31,6 +33,7 @@ namespace EasyTravel.Web.Controllers
             _agencyService = agencyService;
             _guideService = guideService;
             _busService = busService;
+            _carService = carService;
         }
         public IActionResult Index()
         {
@@ -58,13 +61,14 @@ namespace EasyTravel.Web.Controllers
             pgBooking.EventType = _sessionService.GetString("EventType");
             pgBooking.EventLocation = _sessionService.GetString("EventLocation");
             pgBooking.TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour;
-            _sessionService.SetString("TotalAmount", pgBooking.TotalAmount.ToString(CultureInfo.InvariantCulture));
-            _sessionService.SetString("BookingType", "Photographer");
+            //_sessionService.SetString("TotalAmount", pgBooking.TotalAmount.ToString(CultureInfo.InvariantCulture));
+            //_sessionService.SetString("BookingType", "Photographer");
             pgBooking.PhotographerId = photographer.Id;
+            _sessionService.SetString("photographerBookingObj", JsonSerializer.Serialize(pgBooking));
             return View(pgBooking);
         }
         [HttpGet]
-        public async Task<IActionResult> GuideBooking()
+        public async Task<IActionResult> GuideBooking(Guid id)
         {
             var guideId = _sessionService.GetString("GuideId");
             if (string.IsNullOrEmpty(guideId))
@@ -85,32 +89,27 @@ namespace EasyTravel.Web.Controllers
             guideBooking.EventType = _sessionService.GetString("EventType");
             guideBooking.EventLocation = _sessionService.GetString("EventLocation");
             guideBooking.TotalAmount = guide.HourlyRate * guideBooking.TimeInHour;
-            _sessionService.SetString("TotalAmount", guideBooking.TotalAmount.ToString(CultureInfo.InvariantCulture));
-            _sessionService.SetString("BookingType", "Guide");
-            _sessionService.SetString("BookingId", guide.Id.ToString());
+            //_sessionService.SetString("TotalAmount", guideBooking.TotalAmount.ToString(CultureInfo.InvariantCulture));
+            //_sessionService.SetString("BookingType", "Guide");
+            //_sessionService.SetString("BookingId", guide.Id.ToString());
             guideBooking.GuideId = guide.Id;
+            _sessionService.SetString("guideBookingObj", JsonSerializer.Serialize(guideBooking));
             return View(guideBooking);
         }
         [HttpPost]
-        public IActionResult BusBooking(Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
+        public IActionResult BusBooking(BusBookingViewModel model)
         {
-            var bus = _busService.GetseatBusById(busId);
-            if (bus == null) return NotFound();
+            _sessionService.SetString("busBookingObj",JsonSerializer.Serialize(model));
+            return View(model);
+        }
 
-            var viewModel = new BusBookingViewModel
-            {
-                BusId = busId,
-                Bus = bus,
-                BookingForm = new BookingForm(),
-                SelectedSeatNumbers = string.IsNullOrEmpty(selectedSeats)
-                    ? new List<string>()
-                    : selectedSeats.Split(',').ToList(),
-                SelectedSeatIds = string.IsNullOrEmpty(selectedSeatIds)
-                    ? new List<Guid>()
-                    : selectedSeatIds.Split(',').Select(id => Guid.Parse(id)).ToList(),
-                TotalAmount = totalAmount
-            };
-            return View(viewModel);
+        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult CarBooking(CarBookingViewModel model)
+        {
+            model.Car = _carService.GetCarById(model.CarId);
+            _sessionService.SetString("carBookingObj", JsonSerializer.Serialize(model));
+            return View(model);
         }
     }
 }
