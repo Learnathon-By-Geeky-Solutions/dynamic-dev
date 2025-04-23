@@ -51,7 +51,7 @@
                     <p class="price text-primary fw-bold fs-5">৳@car.Price</p>
                     @{
                         if(car.IsAvailable==true){
-                        <a asp-controller="Car" asp-action="CarBooking" asp-route-CarId="@car.Id" class="btn btn-warning btn-sm fw-bold text-dark">BOOK</a>
+                        <a asp-controller="Booking" asp-action="Car" asp-route-id="@car.Id" class="btn btn-warning btn-sm fw-bold text-dark">BOOK</a>
 
                     }
                     else{

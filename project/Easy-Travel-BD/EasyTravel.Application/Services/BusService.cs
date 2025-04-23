@@ -4,6 +4,7 @@ using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,12 @@ namespace EasyTravel.Application.Services
 {
     public class BusService : IBusService
     {
-
+        private readonly ILogger<BusService> _logger;
         private readonly IApplicationUnitOfWork _applicationUnitOfWork1;
-        public BusService(IApplicationUnitOfWork applicationUnitOfWork)
+        public BusService(IApplicationUnitOfWork applicationUnitOfWork, ILogger<BusService> logger)
         {
             _applicationUnitOfWork1 = applicationUnitOfWork;
-
+            _logger = logger;
         }
         public void CreateBus(Bus bus)
         {
@@ -102,7 +103,7 @@ namespace EasyTravel.Application.Services
 
         }
 
-        public void SaveBooking(BusBooking booking, List<Guid> seatIds)
+        public void SaveBooking(BusBooking model,List<Guid> seatIds,Booking booking,Payment? payment = null)
         {
             // Start a transaction to ensure both operations succeed or fail together
             using (var transaction = new TransactionScope())
@@ -110,7 +111,9 @@ namespace EasyTravel.Application.Services
                 try
                 {
                     // Save the booking
-                    _applicationUnitOfWork1.BusBookingRepository.Add(booking);
+                    _applicationUnitOfWork1.BookingRepository.Add(booking);
+                    _applicationUnitOfWork1.Save();
+                    _applicationUnitOfWork1.BusBookingRepository.Add(model);
                     _applicationUnitOfWork1.Save();
 
                     // Update the seat availability
@@ -124,14 +127,19 @@ namespace EasyTravel.Application.Services
                             _applicationUnitOfWork1.Save();
                         }
                     }
+                    if (payment != null)
+                    {
+                        _applicationUnitOfWork1.PaymentRepository.Add(payment);
+                        _applicationUnitOfWork1.Save();
+                    }
 
                     // Commit the transaction
                     transaction.Complete();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Transaction will automatically roll back if an exception occurs
-                    throw;
+                    // Handle exception (e.g., log it)
+                    _logger.LogError(ex, "Error saving booking");
                 }
             }
         }
