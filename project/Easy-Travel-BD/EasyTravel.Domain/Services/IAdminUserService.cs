@@ -13,9 +13,9 @@ namespace EasyTravel.Domain.Services
         Task<(bool Success, string ErrorMessage)> CreateAsync(User user,string password);
         Task<(bool Success, string ErrorMessage)> UpdateAsync(User user);
         Task DeleteAsync(Guid id);
-        Task<User> GetAsync(Guid id);
+        Task<User?> GetAsync(Guid id);
         IEnumerable<User> GetAll();
-        Task<User> GetByEmailAsync(string email);
+        Task<User?> GetByEmailAsync(string email);
         Task<bool> IsExist(string email);
     }
 }
