@@ -13,10 +13,8 @@ namespace EasyTravel.Infrastructure.Repositories
 {
     public class PhotographerBookingRepository : Repository<PhotographerBooking,Guid>,IPhotographerBookingRepository
     {
-        private readonly ApplicationDbContext _context;
         public PhotographerBookingRepository(ApplicationDbContext context) : base(context) 
         {
-            _context = context;
         }
     }
 }

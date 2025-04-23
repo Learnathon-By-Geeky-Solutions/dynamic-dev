@@ -17,12 +17,10 @@ namespace EasyTravel.Application.Services
 {
     public class AdminUserService : IAdminUserService
     {
-        private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly UserManager<User> _userManager;
-        public AdminUserService(UserManager<User> userManager, IApplicationUnitOfWork applicationUnitOfWork)
+        public AdminUserService(UserManager<User> userManager)
         {
             _userManager = userManager;
-            _applicationUnitOfWork = applicationUnitOfWork;
         }
         public async Task<(bool Success,string ErrorMessage)> CreateAsync(User user,string password)
         {
