@@ -1915,20 +1915,30 @@ section,
 
 
 /*Admin layout and centered form*/
-.centered-card {
+/* Full-page wrapper */
+.centered-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f8f9fa; /* Optional: Adjust background color */
-    margin: 0; /* Remove any default margin */
+    padding: 20px;
+    background-color: #f8f9fa;
+  
 }
 
+/* Inner card wrapper */
+.centered-card {
+    width: 100%;
+    max-width: 800px;
+    
+}
+
+/* Card container */
 .card-container {
     width: 100%;
-    max-width: 800px; /* Adjust max width as needed */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better appearance */
-    background-color: #fff; /* Ensure the card has a white background */
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+
