@@ -17,8 +17,15 @@ namespace EasyTravel.Web.Controllers
         [HttpGet("{type}")]
         public async Task<IActionResult> Get(string type, int count = 5)
         {
-            var result = await _recommendationService.GetRecommendationsAsync(type, count);
-            return Ok(result);
+            try
+            {
+                var recommendations = await _recommendationService.GetRecommendationsAsync(type, count);
+                return Ok(recommendations);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
     }
