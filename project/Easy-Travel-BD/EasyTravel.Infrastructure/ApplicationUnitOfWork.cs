@@ -13,7 +13,7 @@ namespace EasyTravel.Infrastructure
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public ApplicationUnitOfWork(ApplicationDbContext context, IUserRepository userRepository, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IBusBookingRepository busBookingRepository,ISeatRepository seatRepository,ICarBookingRepository carbookingRepository,IPhotographerBookingRepository photographerBookingRepository,IGuideBookingRepository guideBookingRepository, IBookingRepository bookingRepository)
+        public ApplicationUnitOfWork(ApplicationDbContext context, IUserRepository userRepository, IBusRepository busRepository, IAgencyRepository agencyRepository, IPhotographerRepository photographerRepository,IGuideRepository guideRepository, ICarRepository carRepository, IHotelRepository hotelRepository, IRoomRepository roomRepository, IHotelBookingRepository hotelBookingRepository,IBusBookingRepository busBookingRepository,ISeatRepository seatRepository,ICarBookingRepository carbookingRepository,IPhotographerBookingRepository photographerBookingRepository,IGuideBookingRepository guideBookingRepository, IBookingRepository bookingRepository ,IRecommendationRepository recommendationRepository)
            : base(context)
         {
             UserRepository = userRepository;
@@ -31,6 +31,7 @@ namespace EasyTravel.Infrastructure
             SeatRepository = seatRepository;
             CarBookingRepository = carbookingRepository;
             BookingRepository = bookingRepository;
+            RecommendationRepository = recommendationRepository;
         }
 
         public IUserRepository UserRepository { get; private set; } 
@@ -49,5 +50,6 @@ namespace EasyTravel.Infrastructure
         public ICarBookingRepository CarBookingRepository { get; private set; }
         public IBookingRepository BookingRepository{ get; private set; }
         public IPaymentRepository PaymentRepository { get; private set; }
+        public IRecommendationRepository RecommendationRepository { get; private set; }
     }
 }
