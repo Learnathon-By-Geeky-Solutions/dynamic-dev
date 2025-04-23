@@ -1,20 +1,20 @@
-﻿@model GuideBookingViewModel
+﻿@model PhotographerBookingViewModel
 @{
 
 }
 <div class="d-flex justify-content-center gap-lg-3">
     <div>
         <div>
-            <h3 class="text-danger">Guide details</h3>
+            <h3 class="text-danger">Photographer details</h3>
             <hr>
             <div class="d-flex justify-content-between">
                 <div class="d-flex justify-content-start gap-lg-2">
                     <div>
-                        <img src="" alt="Guide">
+                        <img src="" alt="Cameraman">
                     </div>
                     <div>
-                        <p>@Model.Guide?.FirstName @Model.Guide?.LastName</p>
-                        <p>@Model.Guide?.Rating</p>
+                        <p>@Model.Photographer?.FirstName @Model.Photographer?.LastName</p>
+                        <p>@Model.Photographer?.Rating</p>
                         <p>@Model.AgencyName</p>
                     </div>
                 </div>
@@ -55,23 +55,27 @@
                     </div>
                 </div>
             </div>
-            <form asp-antiforgery=true method="post" asp-action="Book" asp-controller="Guide">
-                <input asp-for="FirstName" hidden />
-                <input asp-for="LastName" hidden />
-                <input asp-for="Email" hidden />
-                <input asp-for="PhoneNumber" hidden />
-                <input asp-for="Gender" hidden />
-                <input asp-for="EventDate" hidden />
-                <input asp-for="EventType" hidden />
-                <input asp-for="EventLocation" hidden />
-                <input asp-for="StartTime" hidden />
-                <input asp-for="EndTime" hidden />
-                <input asp-for="TimeInHour" hidden />
-                <input asp-for="TotalAmount" hidden />
-                <input asp-for="GuideId" hidden />
-                <button type="submit" class="btn btn-danger">Book</button>
-                <a asp-area="" asp-controller="Payment" asp-action="Pay" asp-route-id="@Model.GuideId" class="btn btn-secondary">Pay</a>
-            </form>
+            <div class="d-inline-flex">
+                <form asp-antiforgery=true asp-controller="Booking" asp-action="Photographer" method="post">
+                    <input asp-for="FirstName" hidden />
+                    <input asp-for="LastName" hidden />
+                    <input asp-for="Email" hidden />
+                    <input asp-for="PhoneNumber" hidden />
+                    <input asp-for="Gender" hidden />
+                    <input asp-for="EventDate" hidden />
+                    <input asp-for="EventType" hidden />
+                    <input asp-for="EventLocation" hidden />
+                    <input asp-for="StartTime" hidden />
+                    <input asp-for="EndTime" hidden />
+                    <input asp-for="TimeInHour" hidden />
+                    <input asp-for="TimeInHour" hidden />
+                    <input asp-for="PhotographerId" hidden />
+                    <button type="submit" class="btn btn-danger">Book</button>
+                </form>
+                <form asp-controller="Payment" asp-action="Pay" method="post">
+                    <button type="submit" name="Id" value="@Model.PhotographerId" class="btn btn-danger">Pay</button>
+                </form>
+            </div>
         </div>
     </div>
     <div></div>

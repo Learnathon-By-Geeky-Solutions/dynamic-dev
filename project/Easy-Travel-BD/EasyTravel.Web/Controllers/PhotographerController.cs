@@ -33,7 +33,7 @@ namespace EasyTravel.Web.Controllers
         public IActionResult Index()
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Photographer/Index");
-            return RedirectToAction("Index", "Search");
+            return RedirectToAction("Photographer", "Search");
         }
         [HttpGet]
         public async Task<IActionResult> List()

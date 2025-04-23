@@ -12,12 +12,12 @@ namespace EasyTravel.Web.Controllers
             _sessionService = sessionService;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Photographer()
         {
             return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Index(SearchFormModel model)
+        public IActionResult Photographer(SearchFormModel model)
         {
             if (ModelState.IsValid)
             {
@@ -34,6 +34,30 @@ namespace EasyTravel.Web.Controllers
                 }
                 return RedirectToAction("List", "Guide");
             }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Bus()
+        {
+            return View();
+        }
+
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Bus(BusSearchFormModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Storing search parameters in session
+                _sessionService.SetString("From", model.From);
+                _sessionService.SetString("To", model.To);
+                _sessionService.SetString("DateTime", model.DepartureTime.ToString());
+
+                // Redirect to the List method of BusController
+                return RedirectToAction("List", "Bus");
+            }
+
             return View(model);
         }
     }
