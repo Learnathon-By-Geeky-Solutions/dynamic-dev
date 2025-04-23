@@ -15,3 +15,4 @@ namespace EasyTravel.Domain.Entites
         public string? Location { get; set; }
     }
 }
+
