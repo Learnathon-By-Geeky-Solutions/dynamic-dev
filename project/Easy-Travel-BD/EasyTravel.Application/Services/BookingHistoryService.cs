@@ -43,7 +43,7 @@ namespace EasyTravel.Application.Services
         public async Task<IEnumerable<PhotographerBooking>> GetPhotographerBookingsAsync(Guid id)
         {
             
-            return await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e => e.Booking.UserId == id);
+            return await _applicationUnitOfWork.PhotographerBookingRepository.GetAsync(e => e.Booking!.UserId == id);
         }
     }
 }
