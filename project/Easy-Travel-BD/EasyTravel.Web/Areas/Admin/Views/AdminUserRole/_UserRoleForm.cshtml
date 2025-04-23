@@ -18,7 +18,7 @@
                     Select User
                     <select asp-for="UserId" class="form-control" required="@(isDisabled ? null : "required")"
                             disabled="@(isDisabled ? "disabled" : null)">
-                        @if (action == "Create")
+                        @if ((string)action == "Create")
                         {
                             <option value="">-- Select ID --</option>
                         }
@@ -28,7 +28,7 @@
                         }
                         <!-- Add more options dynamically if needed -->
                     </select>
-                    @if (action == "Delete")
+                    @if ((string)action == "Delete")
                     {
                         <input asp-for="UserId" hidden />
                     }
@@ -39,7 +39,7 @@
                     Select Role
                     <select asp-for="RoleId" class="form-control" required="@(isDisabled ? null : "required")"
                             disabled="@(isDisabled ? "disabled" : null)">
-                        @if (action == "Create")
+                        @if ((string)action == "Create")
                         {
                             <option value="">-- Select ID --</option>
                         }
@@ -49,7 +49,7 @@
                         }
                         <!-- Add more options dynamically if needed -->
                     </select>
-                    @if (action == "Delete")
+                    @if ((string)action == "Delete")
                     {
                         <input asp-for="RoleId" hidden />
                     }

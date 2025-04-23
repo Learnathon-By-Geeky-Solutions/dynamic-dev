@@ -26,7 +26,7 @@ namespace EasyTravel.Web.Areas.Profile.Controllers
         [HttpGet(Name = "personal-info")]
         public async Task<IActionResult> PersonalInfo()
         {
-            var user = await _adminUserService.GetAsync(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+            var user = await _adminUserService.GetAsync(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value));
             var model = _mapper.Map<ProfileUserModel>(user);
             return View(model);
         }
@@ -37,7 +37,7 @@ namespace EasyTravel.Web.Areas.Profile.Controllers
             {
                 var user = await _adminUserService.GetAsync(model.Id);
                 user = _mapper.Map(model, user);
-                var (success, errorMessage) = await _adminUserService.UpdateAsync(user);
+                var (success, errorMessage) = await _adminUserService.UpdateAsync(user!);
                 if (!success)
                 {
                     ModelState.AddModelError(string.Empty, errorMessage);
