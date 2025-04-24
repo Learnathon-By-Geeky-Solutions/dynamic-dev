@@ -14,7 +14,7 @@ namespace EasyTravel.Application.Services
 
         public HotelService(IApplicationUnitOfWork unitOfWork, ILogger<HotelService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -81,11 +81,6 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogInformation("Fetching hotel with ID: {Id}", id);
                 var hotel = _unitOfWork.HotelRepository.GetById(id);
-                if (hotel == null)
-                {
-                    _logger.LogWarning("Hotel with ID: {Id} not found.", id);
-                    throw new KeyNotFoundException($"Hotel with ID: {id} not found.");
-                }
                 return hotel;
             }
             catch (Exception ex)

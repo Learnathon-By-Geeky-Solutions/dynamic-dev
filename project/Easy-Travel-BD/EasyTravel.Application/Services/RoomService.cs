@@ -14,7 +14,7 @@ namespace EasyTravel.Application.Services
 
         public RoomService(IApplicationUnitOfWork unitOfWork, ILogger<RoomService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
