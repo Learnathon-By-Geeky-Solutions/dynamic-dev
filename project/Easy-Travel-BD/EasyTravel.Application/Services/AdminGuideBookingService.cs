@@ -19,7 +19,7 @@ namespace EasyTravel.Application.Services
 
         public void Delete(Guid id)
         {
-            _applicationUnitOfWork.GuideBookingRepository.Remove(id);
+            _applicationUnitOfWork.BookingRepository.Remove(id);
             _applicationUnitOfWork.Save();
         }
 

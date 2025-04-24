@@ -9,5 +9,7 @@ namespace EasyTravel.Domain.Services
 {
     public interface IAdminCarBookingService : IGetService<CarBooking,Guid>
     {
+       void Delete(Guid id);
+        
     }
 }

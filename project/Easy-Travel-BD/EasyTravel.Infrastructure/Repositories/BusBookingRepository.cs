@@ -21,10 +21,10 @@ namespace EasyTravel.Infrastructure.Repositories
 
     public void DeleteBusBooking(Guid Id)
 {
-    var busbooking = _context.BusBookings.FirstOrDefault(x => x.Id == Id);
+    var busbooking = _context.Bookings.FirstOrDefault(x => x.Id == Id);
     if (busbooking != null)
     {
-        _context.BusBookings.Remove(busbooking);
+        _context.Bookings.Remove(busbooking);
         _context.SaveChanges();
     }
 }
