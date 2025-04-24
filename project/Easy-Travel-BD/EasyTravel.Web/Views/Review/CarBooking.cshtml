@@ -15,7 +15,7 @@
                             <i class="fas fa-car text-success me-2"></i>
                             <div>
                                 <h5 class="mb-0">Car Details</h5>
-                                <small class="text-muted">@Model.Car.OperatorName - @Model.Car.CarType</small>
+                                <small class="text-muted">@Model.Car?.OperatorName - @Model.Car?.CarType</small>
                             </div>
                         </div>
                     </div>
@@ -23,21 +23,21 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <small class="text-muted">From</small>
-                                <h6>@Model.Car.From</h6>
+                                <h6>@Model.Car?.From</h6>
                             </div>
                             <div class="col-md-6">
                                 <small class="text-muted">To</small>
-                                <h6>@Model.Car.To</h6>
+                                <h6>@Model.Car?.To</h6>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <small class="text-muted">Departure</small>
-                                <h6>@Model.Car.DepartureTime.ToString("dd MMM yyyy hh:mm tt")</h6>
+                                <h6>@Model.Car?.DepartureTime.ToString("dd MMM yyyy hh:mm tt")</h6>
                             </div>
                             <div class="col-md-6">
                                 <small class="text-muted">Arrival</small>
-                                <h6>@Model.Car.ArrivalTime.ToString("dd MMM yyyy hh:mm tt")</h6>
+                                <h6>@Model.Car?.ArrivalTime.ToString("dd MMM yyyy hh:mm tt")</h6>
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                     </div>
                 </div>
 
-                <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" value="@Model.Car.Price" readonly />
+                <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" value="@Model.Car?.Price" readonly />
                 <input type="hidden" name="CarId" value="@Model.CarId" readonly/>
             </form>
             <form asp-controller="Payment" asp-action="Pay" method="post">
@@ -99,15 +99,15 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <small class="text-muted">Car Type</small>
-                        <h6>@Model.Car.CarType</h6>
+                        <h6>@Model.Car?.CarType</h6>
                     </div>
                     <div class="mb-3">
                         <small class="text-muted">Journey</small>
-                        <h6>@Model.Car.From to @Model.Car.To</h6>
+                        <h6>@Model.Car?.From to @Model.Car?.To</h6>
                     </div>
                     <div class="total-section">
                         <small class="text-muted">Total Amount</small>
-                        <h4 class="text-success">৳@Model.Car.Price</h4>
+                        <h4 class="text-success">৳@Model.Car?.Price</h4>
                     </div>
                 </div>
             </div>

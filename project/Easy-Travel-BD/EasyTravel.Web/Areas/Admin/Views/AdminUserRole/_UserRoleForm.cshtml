@@ -37,16 +37,16 @@
                         <div class="form-group">
                             <label for="UserId">Select User</label>
                             <select asp-for="UserId" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)">
-                                @if (action == "Create")
+                                @if (action?.ToString()?.ToString() == "Create")
                                 {
                                     <option value="">-- Select User --</option>
                                 }
-                                @foreach (var user in Model.Users)
+                                @foreach (var user in Model.Users!)
                                 {
                                     <option value="@user.Id">@user.UserName</option>
                                 }
                             </select>
-                            @if (action == "Delete")
+                            @if (action?.ToString() == "Delete")
                             {
                                 <input asp-for="UserId" hidden />
                             }
@@ -55,16 +55,16 @@
                         <div class="form-group">
                             <label for="RoleId">Select Role</label>
                             <select asp-for="RoleId" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)">
-                                @if (action == "Create")
+                                @if (action?.ToString() == "Create")
                                 {
                                     <option value="">-- Select Role --</option>
                                 }
-                                @foreach (var role in Model.Roles)
+                                @foreach (var role in Model.Roles!)
                                 {
                                     <option value="@role.Id">@role.Name</option>
                                 }
                             </select>
-                            @if (action == "Delete")
+                            @if (action?.ToString() == "Delete")
                             {
                                 <input asp-for="RoleId" hidden />
                             }

@@ -51,7 +51,7 @@ try
     builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
     builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
-        containerBuilder.RegisterModule(new WebModule(connectionString, migrationAssembly?.FullName));
+        containerBuilder.RegisterModule(new WebModule(connectionString, migrationAssembly.FullName!));
         // Register HttpClient using IHttpClientFactory
         containerBuilder.Register(ctx =>
         {
