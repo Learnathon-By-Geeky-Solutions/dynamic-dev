@@ -33,16 +33,16 @@ namespace EasyTravel.Application.Services
                     var seat = new Seat
                     {
                         Id = Guid.NewGuid(),
-                        BusId = bus.Id,
+                        BusId = bus!.Id,
                         SeatNumber = $"{row}{col}", 
                         IsAvailable = true
                     };
-                    bus.Seats.Add(seat);
+                    bus?.Seats?.Add(seat);
                 }
             }
 
 
-            _applicationUnitOfWork1.BusRepository.Addbus(bus);
+            _applicationUnitOfWork1.BusRepository.Addbus(bus!);
             _applicationUnitOfWork1.Save();
         }
 
@@ -60,7 +60,7 @@ namespace EasyTravel.Application.Services
             var bus = _applicationUnitOfWork1.BusRepository
                             .GetBuses()  // Returns IQueryable<Bus>
                             .Include(b => b.Seats)  // Eagerly load Seats
-                            .FirstOrDefault(b => b.Id == busId); // Get the bus by busId
+                            .FirstOrDefault(b => b.Id == busId)!; // Get the bus by busId
 
             return bus;
         }
@@ -81,7 +81,7 @@ namespace EasyTravel.Application.Services
                 bus.From == from &&
                 bus.To == to &&
                 bus.DepartureTime.Date == dateTime.Date &&
-                bus.Seats.Any(seat => seat.IsAvailable));
+                bus.Seats!.Any(seat => seat.IsAvailable));
 
             return buses;
         }

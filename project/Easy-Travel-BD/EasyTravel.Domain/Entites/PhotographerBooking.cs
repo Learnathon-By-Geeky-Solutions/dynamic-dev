@@ -12,10 +12,10 @@ namespace EasyTravel.Domain.Entites
     {
         [Key,ForeignKey("Booking")]
         public Guid Id { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
+        public required string UserName { get; set; }
+        public required string Email { get; set; }
         public string? PhoneNumber { get; set; }
-        public string Gender { get; set; }
+        public required string Gender { get; set; }
         public string? EventType { get; set; }
         public string? EventLocation { get; set; }
         public DateTime EventDate { get; set; }
@@ -24,6 +24,6 @@ namespace EasyTravel.Domain.Entites
         public int TimeInHour { get; set; }
         public Guid PhotographerId { get; set; }
         public Photographer? Photographer { get; set; }
-        public Booking Booking { get; set; }
+        public Booking? Booking { get; set; }
     }
 }

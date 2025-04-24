@@ -1,0 +1,100 @@
+﻿@model EasyTravel.Domain.Entites.Hotel
+@{
+    var action = ViewData["Title"];
+    bool isDisabled = false;
+    if ((string?)action == "Delete")
+    {
+        isDisabled = true;
+    }
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>@ViewData["Title"] Hotel</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Hotel" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active">@ViewData["Title"] Hotel</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">@ViewData["Title"] Hotel</h3>
+                </div>
+                <form method="post" asp-action="@action" asp-controller="Hotel">
+                    <div class="card-body">
+                        <!-- Hotel Name -->
+                        <div class="form-group">
+                            <label for="Name">Hotel Name</label>
+                            <input asp-for="Name" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label for="Address">Write Address</label>
+                            <input asp-for="Address" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <!-- City -->
+                        <div class="form-group">
+                            <label for="City">City</label>
+                            <input asp-for="City" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label for="Phone">Phone</label>
+                            <input asp-for="Phone" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="Email">Email</label>
+                            <input asp-for="Email" class="form-control" type="email" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Image URL -->
+                        <div class="form-group">
+                            <label for="Image">Image URL</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                </div>
+                                <input asp-for="Image" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
+                            </div>
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">@action Hotel</button>
+                        <a asp-area="Admin" asp-controller="Hotel" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+

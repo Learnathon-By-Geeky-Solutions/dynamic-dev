@@ -17,12 +17,10 @@ namespace EasyTravel.Application.Services
 {
     public class AdminUserService : IAdminUserService
     {
-        private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly UserManager<User> _userManager;
-        public AdminUserService(UserManager<User> userManager, IApplicationUnitOfWork applicationUnitOfWork)
+        public AdminUserService(UserManager<User> userManager)
         {
             _userManager = userManager;
-            _applicationUnitOfWork = applicationUnitOfWork;
         }
         public async Task<(bool Success,string ErrorMessage)> CreateAsync(User user,string password)
         {
@@ -51,12 +49,12 @@ namespace EasyTravel.Application.Services
             return _userManager.Users;
         }
 
-        public async Task<User> GetAsync(Guid id)
+        public async Task<User?> GetAsync(Guid id)
         {
             return await _userManager.FindByIdAsync(id.ToString());
         }
 
-        public async Task<User> GetByEmailAsync(string email)
+        public async Task<User?> GetByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
         }
@@ -82,11 +80,6 @@ namespace EasyTravel.Application.Services
             }
 
             return (true, string.Empty);
-        }
-
-        public Task<(bool Success, string ErrorMessage)> UpdateAsync(User user, string role)
-        {
-            throw new NotImplementedException();
         }
     }
 }

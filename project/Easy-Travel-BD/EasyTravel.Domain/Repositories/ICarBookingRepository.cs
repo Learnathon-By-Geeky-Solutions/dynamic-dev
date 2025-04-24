@@ -9,10 +9,5 @@ namespace EasyTravel.Domain.Repositories
 {
     public interface ICarBookingRepository : IRepository<CarBooking, Guid>
     {
-
-
-
-
-
     }
 }

@@ -45,6 +45,7 @@
     <Folder Include="Data\" />
     <Folder Include="Migrations\" />
     <Folder Include="Views\BusSearch\" />
+    <Folder Include="Views\CarSearch\" />
   </ItemGroup>
 
   <ItemGroup>

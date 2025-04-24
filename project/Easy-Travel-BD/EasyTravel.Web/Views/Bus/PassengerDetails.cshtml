@@ -14,7 +14,7 @@
                             <i class="fas fa-bus text-success me-2"></i>
                             <div>
                                 <h5 class="mb-0">Bus Details</h5>
-                                <small class="text-muted">@Model.Bus.OperatorName - @Model.Bus.BusType</small>
+                                <small class="text-muted">@Model.Bus!.OperatorName - @Model.Bus.BusType</small>
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                     <div class="mb-3">
                         <small class="text-muted">Selected Seats</small>
                         <div id="selectedSeatsDisplay" class="selected-seats-tags">
-                            @foreach (var seat in Model.SelectedSeatNumbers)
+                            @foreach (var seat in Model.SelectedSeatNumbers!)
                             {
                                 <span class="seat-tag">@seat</span>
                             }
@@ -104,7 +104,7 @@
                     <input type="hidden" name="SelectedSeatNumbers" value="@seat" />
                 }
 
-                @foreach (var seatId in Model.SelectedSeatIds)
+                @foreach (var seatId in Model.SelectedSeatIds!)
                 {
                     <input type="hidden" name="SelectedSeatIds" value="@seatId" />
                 }
@@ -113,10 +113,10 @@
                 <input type="hidden" name="BookingForm.TotalAmount" value="@Model.TotalAmount" />
                 <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" />
 
-                <button type="submit" onclick="formSubmit('/Booking/Bus',event)" class="btn btn-success w-100">
+                <button type="submit" onclick="formSubmit('/Booking/Bus')" class="btn btn-success w-100">
                     Confirm Booking
                 </button>
-                <button type="submit" onclick="formSubmit('/Review/BusBooking',event)" class="btn btn-primary w-100">
+                <button type="submit" onclick="formSubmit('/Review/BusBooking')" class="btn btn-primary w-100">
                     Continue To Pay
                 </button>
             </form>
@@ -131,7 +131,7 @@
                     <div class="mb-3">
                         <small class="text-muted">Selected Seats</small>
                         <div id="selectedSeatsDisplay" class="selected-seats-tags">
-                            @foreach (var seat in Model.SelectedSeatNumbers)
+                            @foreach (var seat in Model.SelectedSeatNumbers!)
                             {
                                 <span class="seat-tag">@seat</span>
                             }
@@ -139,7 +139,7 @@
                     </div>
                     <div class="mb-3">
                         <small class="text-muted">Price per Seat</small>
-                        <h6>৳@Model.Bus.Price</h6>
+                        <h6>৳@Model.Bus!.Price</h6>
                     </div>
                     <div class="total-section">
                         <small class="text-muted">Total Amount</small>
@@ -152,8 +152,8 @@
 </div>
 @section Scripts {
     <script>
-           function formSubmit(actionUrl, event) {
-            event.preventDefault(); // Stop the form from submitting the normal way
+           function formSubmit(actionUrl) {
+             // Stop the form from submitting the normal way
             const form = document.getElementById('bookingForm');
             form.action = actionUrl;
             form.submit(); // Now submit the form manually

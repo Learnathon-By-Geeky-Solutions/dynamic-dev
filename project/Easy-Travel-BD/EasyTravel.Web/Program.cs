@@ -52,6 +52,12 @@ try
     builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
         containerBuilder.RegisterModule(new WebModule(connectionString, migrationAssembly?.FullName));
+        // Register HttpClient using IHttpClientFactory
+        containerBuilder.Register(ctx =>
+        {
+            var factory = ctx.Resolve<IHttpClientFactory>();
+            return factory.CreateClient();
+        }).As<HttpClient>().InstancePerLifetimeScope();
     });
     #endregion
 
@@ -76,16 +82,12 @@ try
     builder.Services.AddIdentity<User,Role>(
         options =>
         {
-            //options.SignIn.RequireConfirmedAccount = true;
             options.Password.RequiredLength = 6;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequireDigit = false;
             options.Password.RequireLowercase = false;
             options.Password.RequireUppercase = false;
             options.Password.RequiredUniqueChars = 0;
-            //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            //options.Lockout.MaxFailedAccessAttempts = 5;
-            //options.Lockout.AllowedForNewUsers = true;
         }
         )
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -104,7 +106,8 @@ try
     });
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddSignalR();
-
+    // Register HttpClient in the default DI container
+    builder.Services.AddHttpClient();
     var app = builder.Build();
 
 
@@ -148,7 +151,7 @@ try
         pattern: "{controller=Home}/{action=Index}/{id?}")
         .WithStaticAssets();
 
-    app.Run();
+    await app.RunAsync();
 
 }
 
@@ -161,7 +164,7 @@ catch (Exception ex)
 }
 finally
 {
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 
 }
 

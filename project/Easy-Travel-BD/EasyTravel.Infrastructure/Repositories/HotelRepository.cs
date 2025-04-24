@@ -37,6 +37,12 @@ namespace EasyTravel.Infrastructure.Repositories
             return _context.Rooms;
         }
 
-       
+        // Recommendition
+        public IEnumerable<Hotel> GetTopRatedAsync(int cnt = 5)
+        {
+            var query = _context.Hotels.Where(h => h.Rating >= 4);
+            return query.ToList();
+        }
+
     }
 }
