@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using EasyTravel.Application.Services;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
+using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using System.Text.Json;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -18,8 +21,10 @@ namespace EasyTravel.Web.Controllers
         private readonly IPhotographerService _photographerService;
         private readonly IAgencyService _agencyService;
         private readonly IGuideService _guideService;
+        private readonly IBusService _busService;
+        private readonly ICarService _carService;
         public ReviewController(ISessionService sessionService, IPhotographerService photographerService,
-            UserManager<User> userManager,IMapper mapper, IAgencyService agencyService, IGuideService guideService)
+            UserManager<User> userManager,IMapper mapper, IAgencyService agencyService, IGuideService guideService, IBusService busService, ICarService carService)
         {
             _sessionService = sessionService;
             _photographerService = photographerService;
@@ -27,20 +32,22 @@ namespace EasyTravel.Web.Controllers
             _mapper = mapper;
             _agencyService = agencyService;
             _guideService = guideService;
+            _busService = busService;
+            _carService = carService;
         }
         public IActionResult Index()
         {
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Photographer()
+        public async Task<IActionResult> PhotographerBooking()
         {
             var pgId = _sessionService.GetString("PhotographerId");
             if (string.IsNullOrEmpty(pgId))
             {
                 return Redirect("/Photographer/List");
             }
-            _sessionService.SetString("LastVisitedPage", "/Review/Photographer");
+            _sessionService.SetString("LastVisitedPage", "/Review/PhotographerBooking");
             var user = await _userManager.GetUserAsync(User);
             var pgBooking = _mapper.Map<PhotographerBookingViewModel>(user);
             var photographer = _photographerService.Get(Guid.Parse(pgId));
@@ -54,18 +61,21 @@ namespace EasyTravel.Web.Controllers
             pgBooking.EventType = _sessionService.GetString("EventType");
             pgBooking.EventLocation = _sessionService.GetString("EventLocation");
             pgBooking.TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour;
+            //_sessionService.SetString("TotalAmount", pgBooking.TotalAmount.ToString(CultureInfo.InvariantCulture));
+            //_sessionService.SetString("BookingType", "Photographer");
             pgBooking.PhotographerId = photographer.Id;
+            _sessionService.SetString("photographerBookingObj", JsonSerializer.Serialize(pgBooking));
             return View(pgBooking);
         }
         [HttpGet]
-        public async Task<IActionResult> Guide()
+        public async Task<IActionResult> GuideBooking(Guid id)
         {
             var guideId = _sessionService.GetString("GuideId");
             if (string.IsNullOrEmpty(guideId))
             {
                 return Redirect("/Guide/List");
             }
-            _sessionService.SetString("LastVisitedPage", "/Review/Guide");
+            _sessionService.SetString("LastVisitedPage", "/Review/GuideBooking");
             var user = await _userManager.GetUserAsync(User);
             var guideBooking = _mapper.Map<GuideBookingViewModel>(user);
             var guide = _guideService.Get(Guid.Parse(guideId));
@@ -79,8 +89,27 @@ namespace EasyTravel.Web.Controllers
             guideBooking.EventType = _sessionService.GetString("EventType");
             guideBooking.EventLocation = _sessionService.GetString("EventLocation");
             guideBooking.TotalAmount = guide.HourlyRate * guideBooking.TimeInHour;
+            //_sessionService.SetString("TotalAmount", guideBooking.TotalAmount.ToString(CultureInfo.InvariantCulture));
+            //_sessionService.SetString("BookingType", "Guide");
+            //_sessionService.SetString("BookingId", guide.Id.ToString());
             guideBooking.GuideId = guide.Id;
+            _sessionService.SetString("guideBookingObj", JsonSerializer.Serialize(guideBooking));
             return View(guideBooking);
+        }
+        [HttpPost]
+        public IActionResult BusBooking(BusBookingViewModel model)
+        {
+            _sessionService.SetString("busBookingObj",JsonSerializer.Serialize(model));
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult CarBooking(CarBookingViewModel model)
+        {
+            model.Car = _carService.GetCarById(model.CarId);
+            _sessionService.SetString("carBookingObj", JsonSerializer.Serialize(model));
+            return View(model);
         }
     }
 }

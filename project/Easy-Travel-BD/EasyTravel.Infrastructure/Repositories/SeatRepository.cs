@@ -12,11 +12,8 @@ namespace EasyTravel.Infrastructure.Repositories
 {
     public class SeatRepository : Repository<Seat, Guid>, ISeatRepository
     {
-        private readonly ApplicationDbContext _context;
         public SeatRepository(ApplicationDbContext context) : base(context)
         {
-
-            _context = context;
         }
 
     }

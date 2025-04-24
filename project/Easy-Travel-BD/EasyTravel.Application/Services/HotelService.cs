@@ -49,9 +49,9 @@ namespace EasyTravel.Application.Services
             _applicationunitOfWork.HotelRepository.Edit(entity);
             _applicationunitOfWork.Save();
         }
-        public IEnumerable<Hotel> SearchHotels(string location, DateTime? travelDateTime)
+        public IEnumerable<Hotel> SearchHotels(string location, DateTime? value)
         {
-            return _applicationunitOfWork.HotelRepository.GetHotels(location,travelDateTime);
+            return _applicationunitOfWork.HotelRepository.GetHotels(location, value);
         }    
     }
 }

@@ -1,0 +1,109 @@
+﻿@inject IHttpContextAccessor _httpContextAccessor
+@model SearchFormModel
+
+@{
+    var startDate = DateTime.Today;
+    var endDate = startDate.AddDays(30);
+    var formattedStartDate = startDate.ToString("yyyy-MM-dd");
+    var formattedEndDate = endDate.ToString("yyyy-MM-dd");
+    var formattedStartTime = DateTime.Now.ToString("HH:mm");
+    var type = _httpContextAccessor.HttpContext.Session.GetString("LastVisitedPage");
+
+    type = type?.Contains("Guide") == true ? "Guides" : "Photographers";
+}
+
+<section id="search-section" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Search @type</h2>
+            <p class="text-muted">Select a date, time, and duration to customize your search.</p>
+        </div>
+
+        <form method="post" asp-antiforgery="true" asp-action="Guide" asp-controller="Search" class="row g-4 justify-content-center">
+            <!-- Event Date -->
+            <div class="col-md-3">
+                <label asp-for="EventDate" for="EventDate" class="form-label fw-bold text-secondary">Event Date</label>
+                <input asp-for="EventDate" type="date" class="form-control"
+                       value="@formattedStartDate" min="@formattedStartDate" max="@formattedEndDate" />
+            </div>
+
+            <!-- Start Time -->
+            <div class="col-md-3">
+                <label asp-for="StartTime" for="StartTime" class="form-label fw-bold text-secondary">Start Time</label>
+                <input asp-for="StartTime" type="time" class="form-control" id="StartTime" value="@formattedStartTime" />
+            </div>
+
+            <!-- Hours Selector -->
+            <div class="col-md-3">
+                <label asp-for="TimeInHour" for="TimeInHour" class="form-label fw-bold text-secondary">Duration (Hours)</label>
+                <div class="input-group">
+                    <button type="button" class="btn btn-outline-secondary decrement">-</button>
+                    <input asp-for="TimeInHour" id="TimeInHour" class="form-control text-center" value="1" min="1" max="24" readonly />
+                    <button type="button" class="btn btn-outline-secondary increment">+</button>
+                </div>
+            </div>
+
+            <!-- End Time (readonly) -->
+            <div class="col-md-3">
+                <label asp-for="EndTime" for="EndTime" class="form-label fw-bold text-secondary">End Time</label>
+                <input asp-for="EndTime" type="time" class="form-control" id="EndTime" readonly />
+            </div>
+
+            <!-- Submit -->
+            <div class="col-md-12 text-center mt-3">
+                <button type="submit" class="btn btn-danger px-4 fw-bold">
+                    <i class="bi bi-search me-1"></i> Search
+                </button>
+            </div>
+        </form>       
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const incrementBtn = document.querySelector('.increment');
+            const decrementBtn = document.querySelector('.decrement');
+            const timeInHourInput = document.getElementById('TimeInHour');
+            const startTimeInput = document.getElementById('StartTime');
+            const endTimeInput = document.getElementById('EndTime');
+
+            function updateEndTime() {
+                const startTime = startTimeInput.value;
+                const hoursToAdd = parseInt(timeInHourInput.value) || 1;
+
+                if (startTime) {
+                    const [startHour, startMinute] = startTime.split(':').map(Number);
+                    const endDate = new Date();
+                    endDate.setHours(startHour + hoursToAdd);
+                    endDate.setMinutes(startMinute);
+
+                    const endHour = endDate.getHours().toString().padStart(2, '0');
+                    const endMin = endDate.getMinutes().toString().padStart(2, '0');
+
+                    endTimeInput.value = `${endHour}:${endMin}`;
+                }
+            }
+
+            incrementBtn.addEventListener('click', () => {
+                let current = parseInt(timeInHourInput.value);
+                if (current < 24) {
+                    timeInHourInput.value = current + 1;
+                    updateEndTime();
+                }
+            });
+
+            decrementBtn.addEventListener('click', () => {
+                let current = parseInt(timeInHourInput.value);
+                if (current > 1) {
+                    timeInHourInput.value = current - 1;
+                    updateEndTime();
+                }
+            });
+
+            startTimeInput.addEventListener('input', updateEndTime);
+
+            updateEndTime(); // Initial update on load
+        });
+    </script>
+}

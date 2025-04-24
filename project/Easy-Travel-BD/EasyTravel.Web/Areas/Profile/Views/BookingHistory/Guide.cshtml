@@ -33,8 +33,10 @@
 
                 <!-- Buttons Section -->
                 <div class="actions">
-                    <a asp-area="Profile" asp-controller="" asp-action="" asp-route-id="@guide.Id" class="update-btn">Pay</a>
-                    <a asp-area="Profile" asp-controller="" asp-action="" asp-route-id="@guide.Id" class="delete-btn">Cancle</a>
+                    <form asp-area="" asp-controller="Payment" asp-action="Pay" method="post">
+                        <button type="submit" name="Id" value="@guide.Id" class="btn btn-danger">Pay</button>
+                    </form>
+                    <a asp-area="" asp-controller="" asp-action="" asp-route-id="@guide.Id" class="delete-btn">Cancle</a>
                 </div>
             </div>
         }

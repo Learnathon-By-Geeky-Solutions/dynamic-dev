@@ -12,10 +12,8 @@ namespace EasyTravel.Infrastructure.Repositories
 {
     public class PhotographerRepository : Repository<Photographer, Guid>, IPhotographerRepository
     {
-        private readonly ApplicationDbContext _context;
         public PhotographerRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
     }
 }
