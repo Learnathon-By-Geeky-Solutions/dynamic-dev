@@ -34,7 +34,9 @@
 
                 <!-- Buttons Section -->
                 <div class="actions">
-                    <a asp-area="Profile" asp-controller="" asp-action="" asp-route-id="" class="update-btn">Pay</a>
+                    <form asp-area="" asp-controller="Payment" asp-action="Pay" method="post">
+                        <button type="submit" name="Id" value="@photographer.Id" class="btn btn-danger">Pay</button>
+                    </form>
                     <a asp-area="Profile" asp-controller="" asp-action="" asp-route-id="" class="delete-btn">Cancle</a>
                 </div>
             </div>

@@ -9,101 +9,126 @@
         isDisabled = true;
     }
 }
-<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
-    <h2 class="card-title text-center">@action User</h2>
-    <form asp-antiforgery=true method="post" asp-action="@action">
-        <!-- Name Input -->
-        <div class="form-group mb-3">
-            <label for="FirstName" style="width:100%">
-                First Name
-                <input asp-for="FirstName" id="FirstName" class="form-control" required="@(isDisabled ? null : "required")"
-                disabled="@(isDisabled ? "disabled" : null)" />
-            </label>
-            <span asp-validation-for="FirstName" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label for="LastName" style="width:100%">
-                Last Name
-                <input asp-for="LastName" id="LastName" class="form-control" required="@(isDisabled ? null : "required")"
-                disabled="@(isDisabled ? "disabled" : null)" />
-            </label>
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
 
-        <!-- Email Input -->
-        <div class="form-group mb-3">
-            <label for="Email" style="width:100%">
-                Email
-                <input asp-for="Email" type="email" id="Email" class="form-control" required="@(isDisabled ? null : "required")"
-                disabled="@(isDisabled ? "disabled" : null)" />
-            </label>
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-
-        <!-- PhoneNumber Input -->
-        <div class="form-group mb-3">
-            <label for="PhoneNumber" style="width:100%">
-                Phone Number
-                <input asp-for="PhoneNumber" type="number" id="Email" class="form-control" required="@(isDisabled ? null : "required")"
-                disabled="@(isDisabled ? "disabled" : null)" />
-            </label>
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div>
-
-        <!-- Date of birth Input -->
-        <div class="form-group mb-3">
-            <label for="DateOfBirth" style="width:100%">
-                Date of Birth
-                <input asp-for="DateOfBirth" type="datetime-local" id="DateOfBirth" class="form-control" required="@(isDisabled ? null : "required")"
-                disabled="@(isDisabled ? "disabled" : null)" />
-            </label>
-            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-        </div>
-
-        <!-- Gender Input-->
-        <div class="form-group mb-3">
-            <label for="Gender" style="width:100%">
-                Gender<br />
-                <input asp-for="Gender" type="radio" value="male" checked id="Gender" class="form-check-input" required="@(isDisabled ? null : "required")"
-                disabled="@(isDisabled ? "disabled" : null)" />male
-                <input asp-for="Gender" type="radio" value="female" id="Gender" class="form-check-input" required="@(isDisabled ? null : "required")"
-                disabled="@(isDisabled ? "disabled" : null)" />female
-                <input asp-for="Gender" type="radio" value="others" id="Gender" class="form-check-input" required="@(isDisabled ? null : "required")"
-                disabled="@(isDisabled ? "disabled" : null)" />others
-            </label>
-            <span asp-validation-for="Gender" class="text-danger"></span>
-        </div>
-        @if (action?.ToString() == "Update" || action?.ToString() == "Delete")
-        {
-            var pass = "password";
-            <input asp-for="Password" value="@pass" hidden/>
-            <input asp-for="ConfirmPassword" value="@pass" hidden />
-        }
-        <!-- Password Input -->
-        @if (action?.ToString() == "Create")
-        {
-            <div class="form-group mb-3">
-                <label for="Password" style="width:100%">
-                    Password
-                    <input asp-for="Password" type="password" id="Password" class="form-control" required="@(isDisabled ? null : "required")"
-                           disabled="@(isDisabled ? "disabled" : null)" />
-                </label>
-                <span asp-validation-for="Password" class="text-danger"></span>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>@action User</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminUser" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active">@action User</li>
+                    </ol>
+                </div>
             </div>
-            <div class="form-group mb-3">
-                <label for="ConfirmPassword" style="width:100%">
-                    Confirm Password
-                    <input asp-for="ConfirmPassword" type="password" id="Password" class="form-control" required="@(isDisabled ? null : "required")"
-                           disabled="@(isDisabled ? "disabled" : null)" />
-                </label>
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-        }
+        </div>
+    </section>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary btn-block">@action</button>
-        <a asp-area="Admin" asp-controller="AdminUser" asp-action="Index" class="btn btn-secondary">Back to List</a>
-    </form>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">@action User</h3>
+                </div>
+                <form asp-antiforgery="true" method="post" asp-action="@action">
+                    <div class="card-body">
+                        <!-- First Name -->
+                        <div class="form-group">
+                            <label for="FirstName">First Name</label>
+                            <input asp-for="FirstName" id="FirstName" class="form-control" required="@(isDisabled ? null : "required")"
+                                   disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="form-group">
+                            <label for="LastName">Last Name</label>
+                            <input asp-for="LastName" id="LastName" class="form-control" required="@(isDisabled ? null : "required")"
+                                   disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="Email">Email</label>
+                            <input asp-for="Email" type="email" id="Email" class="form-control" required="@(isDisabled ? null : "required")"
+                                   disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="form-group">
+                            <label for="PhoneNumber">Phone Number</label>
+                            <input asp-for="PhoneNumber" type="number" id="PhoneNumber" class="form-control" required="@(isDisabled ? null : "required")"
+                                   disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="form-group">
+                            <label for="DateOfBirth">Date of Birth</label>
+                            <input asp-for="DateOfBirth" type="datetime-local" id="DateOfBirth" class="form-control" required="@(isDisabled ? null : "required")"
+                                   disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <div class="form-check">
+                                <input asp-for="Gender" type="radio" value="male" id="GenderMale" class="form-check-input" required="@(isDisabled ? null : "required")"
+                                       disabled="@(isDisabled ? "disabled" : null)" />
+                                <label class="form-check-label" for="GenderMale">Male</label>
+                            </div>
+                            <div class="form-check">
+                                <input asp-for="Gender" type="radio" value="female" id="GenderFemale" class="form-check-input" required="@(isDisabled ? null : "required")"
+                                       disabled="@(isDisabled ? "disabled" : null)" />
+                                <label class="form-check-label" for="GenderFemale">Female</label>
+                            </div>
+                            <div class="form-check">
+                                <input asp-for="Gender" type="radio" value="others" id="GenderOthers" class="form-check-input" required="@(isDisabled ? null : "required")"
+                                       disabled="@(isDisabled ? "disabled" : null)" />
+                                <label class="form-check-label" for="GenderOthers">Others</label>
+                            </div>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+
+                        <!-- Password -->
+                        @if (action?.ToString() == "Create")
+                        {
+                            <div class="form-group">
+                                <label for="Password">Password</label>
+                                <input asp-for="Password" type="password" id="Password" class="form-control" required="@(isDisabled ? null : "required")"
+                                       disabled="@(isDisabled ? "disabled" : null)" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="ConfirmPassword">Confirm Password</label>
+                                <input asp-for="ConfirmPassword" type="password" id="ConfirmPassword" class="form-control" required="@(isDisabled ? null : "required")"
+                                       disabled="@(isDisabled ? "disabled" : null)" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        }
+
+                        @if (action?.ToString() == "Update" || action?.ToString() == "Delete")
+                        {
+                            var pass = "password";
+                            <input asp-for="Password" value="@pass" hidden />
+                            <input asp-for="ConfirmPassword" value="@pass" hidden />
+                        }
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">@action</button>
+                        <a asp-area="Admin" asp-controller="AdminUser" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 </div>
 
 @section scripts
