@@ -15,7 +15,7 @@ namespace EasyTravel.Domain.Services
         Car GetCarById(Guid CarId);
         void UpdateCar(Car car);
         void DeleteBus(Car car);
-        void SaveBooking(CarBooking booking, Guid CarId);
+        void SaveBooking(CarBooking model,Guid CarId, Booking booking, Payment? payment = null);
         Task<IEnumerable<Car>> GetAvailableCarsAsync(string from, string to, DateTime dateTime);
     }
 }

@@ -1,33 +1,81 @@
 ﻿@model IEnumerable<CarBooking>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Car Booking Management";
 }
 
-<div class="entity-list">
-    <h2>Car booking List</h2>
-    <div class="entity-row">
-        <span class="name"></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-
-        <!-- Buttons Section -->
-        <div class="actions">
-        </div>
-    </div>
-    @foreach (var carBooking in Model)
-    {
-        <div class="entity-row">
-            <span class="name"></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <!-- Buttons Section -->
-            <div class="actions">
-                <a asp-area="Admin" asp-controller="AdminCarBooking" asp-action="Delete" asp-route-id="@carBooking.Id" class="delete-btn">Delete</a>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active">Car Bookings</li>
+                    </ol>
+                </div>
             </div>
         </div>
-    }
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Car Booking List</h3>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    @if (!Model.Any())
+                    {
+                        <div class="alert alert-info m-3">No car bookings found.</div>
+                    }
+                    else
+                    {
+                        <table class="table table-bordered table-hover text-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Passenger Name</th>
+                                    <th>Email</th>
+                                    <th>Phone Number</th>
+                                    <th>Booking Date</th>
+                                    <th>Car Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var carBooking in Model)
+                                {
+                                    <tr>
+                                        <td>@carBooking.PassengerName</td>
+                                        <td>@carBooking.Email</td>
+                                        <td>@carBooking.PhoneNumber</td>
+                                        <td>@carBooking.BookingDate.ToString("yyyy-MM-dd hh:mm tt")</td>
+                                        <td>@carBooking.Car?.OperatorName ?? "N/A"</td>
+                                        <td>
+                                            <form asp-area="Admin"
+                                                  asp-controller="AdminCarBooking"
+                                                  asp-action="Delete"
+                                                  method="post"
+                                                  style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@carBooking.Id" />
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="card-footer text-muted">
+                    Total Bookings: @Model.Count()
+                </div>
+            </div>
+        </div>
+    </section>
 </div>

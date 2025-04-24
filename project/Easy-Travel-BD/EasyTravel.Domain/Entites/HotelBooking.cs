@@ -14,8 +14,6 @@ namespace EasyTravel.Domain.Entites
         [Key, ForeignKey("Booking")]
         public Guid Id { get; set; }
 
-        //public User User { get; set; }
-
         [Required]
         public Guid HotelId { get; set; }
         public Hotel? Hotel { get; set; }
@@ -27,7 +25,7 @@ namespace EasyTravel.Domain.Entites
         public DateTime CheckOutDate { get; set; }
 
         [Required]
-        public string RoomIdsJson { get; set; }
+        public required string RoomIdsJson { get; set; }
         public Booking? Booking { get; set; }
 
     }

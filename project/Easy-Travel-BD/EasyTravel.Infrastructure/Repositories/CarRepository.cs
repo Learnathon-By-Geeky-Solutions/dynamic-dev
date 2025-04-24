@@ -19,10 +19,10 @@ namespace EasyTravel.Infrastructure.Repositories
             _context = context;
         }
 
-        public void AddCar(Car car)
+        public void AddCar(Car bus)
         {
 
-            _context.Cars.Add(car);
+            _context.Cars.Add(bus);
         }
 
         public IEnumerable<Car> GetAllCars()

@@ -5,6 +5,8 @@ using EasyTravel.Domain.Repositories;
 using Moq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Logging;
+using NUnit.Framework;
 
 
 namespace UnitTest
@@ -14,15 +16,18 @@ namespace UnitTest
     {
         private Mock<IApplicationUnitOfWork> _mockUnitOfWork;
         private Mock<IBusRepository> _mockBusRepository;
+        private  Mock<ILogger<BusService>> _mockLogger;
         private BusService _busService;
+
 
         [SetUp]
         public void SetUp()
         {
             _mockUnitOfWork = new Mock<IApplicationUnitOfWork>();
             _mockBusRepository = new Mock<IBusRepository>();
+            _mockLogger = new Mock<ILogger<BusService>>(); // FIX: Initialize this before using it
             _mockUnitOfWork.Setup(u => u.BusRepository).Returns(_mockBusRepository.Object);
-            _busService = new BusService(_mockUnitOfWork.Object);
+            _busService = new BusService(_mockUnitOfWork.Object, _mockLogger.Object);
         }
 
         [Test]

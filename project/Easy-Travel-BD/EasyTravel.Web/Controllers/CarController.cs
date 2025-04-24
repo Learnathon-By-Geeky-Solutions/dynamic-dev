@@ -3,6 +3,7 @@ using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Claims;
@@ -11,29 +12,22 @@ namespace EasyTravel.Web.Controllers
 {
     public class CarController : Controller
     {
-
+        private readonly UserManager<User> _userManager;
         private readonly ICarService _carService;
         private readonly ISessionService _sessionService;
-        public CarController(ICarService carService,ISessionService sessionService)
+        public CarController(ICarService carService,ISessionService sessionService, UserManager<User> userManager)
         {
 
             _carService = carService;
             _sessionService = sessionService;
+            _userManager = userManager;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            try
-            {
-                return RedirectToAction("Index", "CarSearch");
-            }
-            catch (Exception ex)
-            {
-                
-                Console.WriteLine(ex.Message);
-                return NotFound();
-            }
+            HttpContext.Session.SetString("LastVisitedPage", "/Car/Index");
+            return RedirectToAction("Car", "Search");
         }
 
 
@@ -62,58 +56,26 @@ namespace EasyTravel.Web.Controllers
 
             return View(model);
         }
-
-        public IActionResult CarBooking(Guid CarId)
+        [HttpGet]
+        public async Task<IActionResult> PassengerDetails(Guid id)
         {
-            var car = _carService.GetCarById(CarId);
+            var user = await _userManager.GetUserAsync(User);
+            var car = _carService.GetCarById(id);
             if (car == null) return NotFound();
 
             var viewModel = new CarBookingViewModel
             {
                 Car = car,
-                CarId = CarId,
-                BookingForm = new BookingForm()
+                CarId = id,
+                BookingForm = new BookingForm
+                {
+                    PassengerName = $"{user.FirstName},{user.LastName}",
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    TotalAmount = car.Price
+                }
             };
-
             return View(viewModel);
         }
-
-
-        [HttpPost]
-        public IActionResult CarBooking(CarBookingViewModel model)
-        {
-            var carBooking = new CarBooking
-            {
-                Id = Guid.NewGuid(),
-                CarId = model.CarId,
-                PassengerName = model.BookingForm.PassengerName,
-                Email = model.BookingForm.Email,
-                PhoneNumber = model.BookingForm.PhoneNumber,
-                //TotalAmount = model.BookingForm.TotalAmount,
-                BookingDate = DateTime.Now,
-            };
-
-            // Adding UserId to the CarBooking if the user is authenticated
-            if (User.Identity.IsAuthenticated)
-            {
-                //carBooking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            }
-
-            _carService.SaveBooking(carBooking, model.CarId);
-
-            return RedirectToAction("CarConfirmBooking");
-        }
-
-
-        [HttpGet]
-
-        public IActionResult CarConfirmBooking()
-        {
-
-            return View();
-        }
-
-
-      
     }
 }

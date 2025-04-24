@@ -22,7 +22,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
-
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             if (id == Guid.Empty)
             {
                 TempData["error"] = "The photographer booking not found";
@@ -34,7 +37,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(PhotographerBooking model)
         {
-
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             if (model.Id == Guid.Empty)
             {
                 TempData["error"] = "The photographer booking not found";
