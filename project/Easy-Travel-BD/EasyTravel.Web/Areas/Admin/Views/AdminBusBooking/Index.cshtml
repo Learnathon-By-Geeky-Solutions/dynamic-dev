@@ -1,47 +1,86 @@
 ﻿@model IEnumerable<BusBooking>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bus Booking Management";
 }
 
-<div class="entity-list">
-    <h2>Bus Booking List</h2>
-
-    <!-- Header Row -->
-    <div class="entity-row font-weight-bold">
-        <span class="name">Passenger Name</span>
-        <span>Phone Number</span>
-        <span>Booking Date</span>
-        <span>Total Amount</span>
-        <span>Selected Seats</span>
-        <span>Bus Name</span>
-        <span>DepartureTime</span>
-
-        <!-- Buttons Section -->
-        <div class="actions">Actions</div>
-    </div>
-
-    <!-- Data Rows -->
-    @foreach (var busBooking in Model)
-    {
-        <div class="entity-row">
-            <span class="name">@busBooking.PassengerName</span>
-            <span>@busBooking.PhoneNumber</span>
-            <span>@busBooking.BookingDate.ToString("yyyy-MM-dd hh:mm tt")</span>
-            @* <span>৳@busBooking.TotalAmount.ToString("N2")</span> *@
-            <span>@string.Join(", ", busBooking.SelectedSeats ?? new List<string>())</span>
-            <span>@busBooking.Bus.OperatorName</span>
-            <span>@busBooking.Bus?.DepartureTime.ToString("yyyy-MM-dd hh:mm tt")</span>
-
-            <form asp-area="Admin"
-                  asp-controller="AdminBusBooking"
-                  asp-action="Delete"
-                  method="post"
-                  style="display:inline;">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="id" value="@busBooking.Id" />
-                <button type="submit" class="delete-btn">Delete</button>
-            </form>
-
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active">Bus Bookings</li>
+                    </ol>
+                </div>
+            </div>
         </div>
-    }
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Bus Booking List</h3>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    @if (!Model.Any())
+                    {
+                        <div class="alert alert-info m-3">No bus bookings found.</div>
+                    }
+                    else
+                    {
+                        <table class="table table-bordered table-hover text-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Passenger Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Booking Date</th>
+                                    <th>Total Amount</th>
+                                    <th>Selected Seats</th>
+                                    <th>Bus Name</th>
+                                    <th>Departure Time</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var busBooking in Model)
+                                {
+                                    <tr>
+                                        <td>@busBooking.PassengerName</td>
+                                        <td>@busBooking.PhoneNumber</td>
+                                        <td>@busBooking.BookingDate.ToString("yyyy-MM-dd hh:mm tt")</td>
+                                        <td>৳</td>
+                                        <td>@string.Join(", ", busBooking.SelectedSeats ?? new List<string>())</td>
+                                        <td>@busBooking.Bus?.OperatorName</td>
+                                        <td>@busBooking.Bus?.DepartureTime.ToString("yyyy-MM-dd hh:mm tt")</td>
+                                        <td>
+                                            <form asp-area="Admin"
+                                                  asp-controller="AdminBusBooking"
+                                                  asp-action="Delete"
+                                                  method="post"
+                                                  style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@busBooking.Id" />
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="card-footer text-muted">
+                    Total Bookings: @Model.Count()
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
+

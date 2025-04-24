@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IPaymentService
+    public interface IRecommendationService
     {
-        void AddPayment(Payment payment,Guid trnId,Guid bookingId);
+        Task<IEnumerable<RecommendationDto>> GetRecommendationsAsync(string type, int count = 5);
     }
 }

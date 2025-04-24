@@ -1,4 +1,7 @@
-﻿@model EasyTravel.Web.Models.BusSearchFormModel
+﻿@using EasyTravel.Domain.Entites
+@inject HttpClient Http
+@model EasyTravel.Web.Models.BusSearchFormModel
+@using EasyTravel.Web.Views.Shared.Components.RecommendationCarousel
 @{
     var recommendedHotels = new List<dynamic>
     {
@@ -19,7 +22,7 @@
 <div class="container">
     <h2 class="text-center mb-4">Bus Search</h2>
     <!--SearchBox -->
-    <form method="post" asp-action="Index">
+    <form method="post" asp-action="Bus">
         <div class="row">
             <!-- From Field -->
             <div class="col-md-4 form-group">
@@ -50,13 +53,18 @@
     </form>
     <!--Carosol -->
 
-    <h2>Recommended Hotels</h2>
-    @await Html.PartialAsync("_CarouselPartial", recommendedHotels)
-   
+    
+  
     <h2>Best Bus Services</h2>
-    @await Html.PartialAsync("_CarouselPartial", bestBusServices)
+    @await Component.InvokeAsync("RecommendationCarousel", new { type = "buses", count = 5 })
+
+    <h2>Best Hotels</h2>
+     @await Component.InvokeAsync("RecommendationCarousel", new { type = "hotels", count = 5 })
+
+
 
 </div>
+
 @section Scripts {
     <script>
         var swiper = new Swiper(".mySwiper", {
