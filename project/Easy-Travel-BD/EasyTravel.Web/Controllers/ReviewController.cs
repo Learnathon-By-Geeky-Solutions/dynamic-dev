@@ -21,10 +21,9 @@ namespace EasyTravel.Web.Controllers
         private readonly IPhotographerService _photographerService;
         private readonly IAgencyService _agencyService;
         private readonly IGuideService _guideService;
-        private readonly IBusService _busService;
         private readonly ICarService _carService;
         public ReviewController(ISessionService sessionService, IPhotographerService photographerService,
-            UserManager<User> userManager,IMapper mapper, IAgencyService agencyService, IGuideService guideService, IBusService busService, ICarService carService)
+            UserManager<User> userManager,IMapper mapper, IAgencyService agencyService, IGuideService guideService, ICarService carService)
         {
             _sessionService = sessionService;
             _photographerService = photographerService;
@@ -32,7 +31,6 @@ namespace EasyTravel.Web.Controllers
             _mapper = mapper;
             _agencyService = agencyService;
             _guideService = guideService;
-            _busService = busService;
             _carService = carService;
         }
         public IActionResult Index()
@@ -40,8 +38,12 @@ namespace EasyTravel.Web.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> PhotographerBooking()
+        public async Task<IActionResult> PhotographerBooking(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return Redirect("/Guide/List");
+            }
             var pgId = _sessionService.GetString("PhotographerId");
             if (string.IsNullOrEmpty(pgId))
             {
@@ -61,8 +63,6 @@ namespace EasyTravel.Web.Controllers
             pgBooking.EventType = _sessionService.GetString("EventType");
             pgBooking.EventLocation = _sessionService.GetString("EventLocation");
             pgBooking.TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour;
-            //_sessionService.SetString("TotalAmount", pgBooking.TotalAmount.ToString(CultureInfo.InvariantCulture));
-            //_sessionService.SetString("BookingType", "Photographer");
             pgBooking.PhotographerId = photographer.Id;
             _sessionService.SetString("photographerBookingObj", JsonSerializer.Serialize(pgBooking));
             return View(pgBooking);
@@ -70,6 +70,10 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GuideBooking(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return Redirect("/Guide/List");
+            }
             var guideId = _sessionService.GetString("GuideId");
             if (string.IsNullOrEmpty(guideId))
             {
@@ -89,9 +93,6 @@ namespace EasyTravel.Web.Controllers
             guideBooking.EventType = _sessionService.GetString("EventType");
             guideBooking.EventLocation = _sessionService.GetString("EventLocation");
             guideBooking.TotalAmount = guide.HourlyRate * guideBooking.TimeInHour;
-            //_sessionService.SetString("TotalAmount", guideBooking.TotalAmount.ToString(CultureInfo.InvariantCulture));
-            //_sessionService.SetString("BookingType", "Guide");
-            //_sessionService.SetString("BookingId", guide.Id.ToString());
             guideBooking.GuideId = guide.Id;
             _sessionService.SetString("guideBookingObj", JsonSerializer.Serialize(guideBooking));
             return View(guideBooking);
@@ -99,7 +100,10 @@ namespace EasyTravel.Web.Controllers
         [HttpPost]
         public IActionResult BusBooking(BusBookingViewModel model)
         {
-            _sessionService.SetString("busBookingObj",JsonSerializer.Serialize(model));
+            if (ModelState.IsValid)
+            {
+                _sessionService.SetString("busBookingObj", JsonSerializer.Serialize(model));
+            }
             return View(model);
         }
 
@@ -107,8 +111,11 @@ namespace EasyTravel.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult CarBooking(CarBookingViewModel model)
         {
-            model.Car = _carService.GetCarById(model.CarId);
-            _sessionService.SetString("carBookingObj", JsonSerializer.Serialize(model));
+            if (ModelState.IsValid)
+            {
+                model.Car = _carService.GetCarById(model.CarId);
+                _sessionService.SetString("carBookingObj", JsonSerializer.Serialize(model));
+            }
             return View(model);
         }
     }
