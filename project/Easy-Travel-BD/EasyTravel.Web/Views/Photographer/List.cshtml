@@ -13,7 +13,7 @@
 </section>
 
 <section id="photographer-result-section" class="container my-4">
-    @foreach (var photographer in Model.Photographers)
+    @foreach (var photographer in Model.Photographers!)
     {
         var totalPrice = photographer.HourlyRate * Model.SearchFormModel?.TimeInHour;
 

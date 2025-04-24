@@ -1,4 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Booking History";
-    TempData["Header"] = "Booking History";
+    Layout = "~/Areas/Profile/Views/Shared/_ProfileLayout.cshtml"; // Specify the child layout
 }
+<section class="container">
+
+    <div class="row mt-3 gap-5 justify-content-center">
+        <div class="border border-primary rounded bg-white">
+            <div class="pt-3">
+                <h2>Booking History</h2>
+                <hr />
+            </div>
+            <div class="my-4">
+                <partial name="_ProfileSidePanelBookingHistory" />
+            </div>
+        </div>
+       
+    </div>
+</section>
