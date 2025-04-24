@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 namespace EasyTravel.Web.Areas.Admin.Controllers
 {
     [Area("Admin"), Authorize(Roles = "admin,hotelManager")]
-    public class RoomController : Controller
+    public class AdminRoomController : Controller
     {
         private readonly IHotelService _hotelService;
         private readonly IRoomService _roomService;
-        public RoomController(IRoomService roomService, IHotelService hotelService)
+        public AdminRoomController(IRoomService roomService, IHotelService hotelService)
         {
             _roomService = roomService;
             _hotelService = hotelService;
