@@ -18,11 +18,11 @@ namespace EasyTravel.Application.Services
         }
         public string GetString(string key)
         {
-            if (_httpContextAccessor.HttpContext.Session.TryGetValue(key, out byte[] bytes) == true)
+            if (_httpContextAccessor.HttpContext.Session.TryGetValue(key, out byte[] bytes))
             {
                 return System.Text.Encoding.UTF8.GetString(bytes);
             }
-            return null; 
+            return string.Empty; 
         }
 
         public void Remove(string key)

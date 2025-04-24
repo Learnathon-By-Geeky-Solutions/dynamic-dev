@@ -26,5 +26,10 @@ namespace EasyTravel.Application.Services
         {
             return _applicationUnitOfWork.HotelBookingRepository.GetAll();
         }
+        public void Delete(Guid id)
+        {
+            _applicationUnitOfWork.BookingRepository.Remove(id);
+            _applicationUnitOfWork.Save();
+        }
     }
 }

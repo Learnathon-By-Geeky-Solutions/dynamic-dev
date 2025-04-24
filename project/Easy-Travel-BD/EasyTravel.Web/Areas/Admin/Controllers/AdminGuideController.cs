@@ -21,7 +21,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            
             var guides = _guideService.GetAll();
             return View(guides);
         }
@@ -34,7 +33,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(Guide model)
         {
-            
             if (ModelState.IsValid)
             {
                 _guideService.Create(model);
@@ -46,7 +44,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Update(Guid id)
         {
-            
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             if (id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
@@ -58,7 +59,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Update(Guide model)
         {
-            
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             if (ModelState.IsValid)
             {
                 model.UpdatedAt = DateTime.Now;
@@ -71,7 +75,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
-            
+            if (ModelState.IsValid)
+            {
+                //
+            }
             if (id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
@@ -83,7 +90,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Guide model)
         {
-            
+            if (!ModelState.IsValid)
+            {
+                //
+            }
             if (model.Id == Guid.Empty)
             {
                 return RedirectToAction("Error", "Home", new { area = "Admin" });
