@@ -9,8 +9,8 @@
     controllers.Add("AdminAgency");
     controllers.Add("AdminPhotographer");
     controllers.Add("AdminGuide");
-    controllers.Add("Hotel");
-    controllers.Add("Room");
+    controllers.Add("AdminHotel");
+    controllers.Add("AdminRoom");
     controllers.Add("AdminBus");
     controllers.Add("AdminCar");
     controllers.Add("AdminPhotographerBooking");
@@ -20,38 +20,38 @@
     controllers.Add("AdminCarBooking");
     // Removed AdminSeat controller from the list
 
-    var length = 11;
-    var bookingLength = controllers.Count();
-    int i = 0, j = 11;
+    var length = 10;
+    var bookingLength = controllers.Count;
+    int i = 0, j = 10;
 
     // Role-based customization of the list length
     if (User.IsInRole("agencyManager"))
     {
         i = 3;
-        j = 11;
+        j = 10;
         length = 6;
-        bookingLength = 12;
+        bookingLength = 11;
     }
     else if (User.IsInRole("hotelManager"))
     {
         i = 6;
-        j = 12;
+        j = 11;
         length = 8;
-        bookingLength = 13;
+        bookingLength = 12;
     }
     else if (User.IsInRole("busManager"))
     {
         i = 8;
-        j = 13;
+        j = 12;
         length = 10;
-        bookingLength = 14;
+        bookingLength = 13;
     }
     else if (User.IsInRole("carManager"))
     {
         i = 10;
-        j = 14;
+        j = 13;
         length = 11;
-        bookingLength = 15;
+        bookingLength = 14;
     }
 }
 

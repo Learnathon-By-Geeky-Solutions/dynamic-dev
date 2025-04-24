@@ -115,7 +115,7 @@
                             <label for="AgencyId">Select Agency</label>
                             <select asp-for="AgencyId" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)">
                                 <option value="">-- Select Agency --</option>
-                                @foreach (var agency in Model.Agencies)
+                                @foreach (var agency in Model.Agencies!)
                                 {
                                     <option value="@agency.Id">@agency.Name</option>
                                 }

@@ -54,7 +54,7 @@
                                 // Find the seat in the model to determine availability
 
 
-                                var seat = Model.Seats.FirstOrDefault(s => s.SeatNumber == seatNumber);
+                                var seat = Model.Seats?.FirstOrDefault(s => s.SeatNumber == seatNumber);
 
                                 var statusClass = seat == null || seat.IsAvailable ? "available" : "booked";
 
@@ -84,7 +84,7 @@
     <input type="hidden" id="selectedSeatsInput" name="selectedSeats" />
     <input type="hidden" id="selectedSeatIdsInput" name="selectedSeatIds" />
     <input type="hidden" id="totalAmountInput" name="totalAmount" />
-    <input type="hidden" name="busId" value="@Model.Bus.Id" />
+    <input type="hidden" name="busId" value="@Model.Bus?.Id" />
 </form>
 
 <style>
@@ -202,8 +202,8 @@
         let selectedSeats = new Set();
         let selectedSeatIds = new Set();
         const maxSeats = 4;
-        const pricePerSeat = @Model.Bus.Price;
-        const busId = '@Model.Bus.Id';
+        const pricePerSeat = '@Model.Bus?.Price';
+        const busId = '@Model.Bus?.Id';
         let connection;
 
         // Initialize SignalR connection

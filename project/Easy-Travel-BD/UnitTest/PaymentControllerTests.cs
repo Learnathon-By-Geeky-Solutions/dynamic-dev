@@ -38,7 +38,7 @@ namespace UnitTest
         {
             _mockBookingService = new Mock<IGetService<Booking, Guid>>();
             _mockUserManager = new Mock<UserManager<User>>(
-                Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+                Mock.Of<IUserStore<User>>(), null!, null!, null!, null!, null!, null!, null!, null!);
             _mockSessionService = new Mock<ISessionService>();
             _mockPhotographerService = new Mock<IPhotographerService>();
             _mockGuideService = new Mock<IGuideService>();
@@ -92,7 +92,7 @@ namespace UnitTest
             // Assert
             Assert.That(result, Is.InstanceOf<RedirectToActionResult>());
             var redirectResult = result as RedirectToActionResult;
-            Assert.That(redirectResult.ActionName, Is.EqualTo("Expired"));
+            Assert.That(redirectResult?.ActionName, Is.EqualTo("Expired"));
         }
 
 
