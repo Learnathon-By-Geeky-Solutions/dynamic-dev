@@ -17,17 +17,13 @@ namespace EasyTravel.Web.Controllers
     public class PhotographerController : Controller
     {
         private readonly IPhotographerService _photographerService;
-        private readonly IAgencyService _agencyService;
-        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly ISessionService _sessionService;
-        public PhotographerController(IPhotographerService photographerService, UserManager<User> userManager, IMapper mapper, ISessionService sessionService, IAgencyService agencyService)
+        public PhotographerController(IPhotographerService photographerService, IMapper mapper, ISessionService sessionService)
         {
             _photographerService = photographerService;
-            _userManager = userManager;
             _mapper = mapper;
             _sessionService = sessionService;
-            _agencyService = agencyService;
         }
         [HttpGet]
         public IActionResult Index()
