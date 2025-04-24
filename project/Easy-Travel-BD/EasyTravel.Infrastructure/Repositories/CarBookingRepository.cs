@@ -12,11 +12,8 @@ namespace EasyTravel.Infrastructure.Repositories
 {
     public class CarBookingRepository : Repository<CarBooking, Guid>, ICarBookingRepository
     {
-        private readonly ApplicationDbContext _context;
         public CarBookingRepository(ApplicationDbContext context) : base(context)
         {
-
-            _context = context;
         }
     }
 }

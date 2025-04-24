@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <form asp-controller="Car" asp-action="CarBooking" method="post" id="bookingForm">
+            <form method="post" id="bookingForm">
                 <div class="card mb-4">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
@@ -85,9 +85,14 @@
 
                 <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" value="@Model.Car.Price" />
                 <input type="hidden" name="CarId" value="@Model.CarId" />
-                <button type="submit" class="btn btn-success w-100">
+                <button type="submit" onclick="formSubmit('/Booking/Car', event)" class="btn btn-success w-100">
                     Confirm Booking
                 </button>
+
+                <button type="submit" onclick="formSubmit('/Review/CarBooking', event)" class="btn btn-primary w-100">
+                    Continue To Pay
+                </button>
+
             </form>
         </div>
 
@@ -121,4 +126,12 @@
 @section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function formSubmit(actionUrl, event) {
+            event.preventDefault(); // Stop the form from submitting the normal way
+            const form = document.getElementById('bookingForm');
+            form.action = actionUrl;
+            form.submit(); // Now submit the form manually
+        }
+    </script>
 }

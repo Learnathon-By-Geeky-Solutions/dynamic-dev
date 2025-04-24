@@ -3,42 +3,67 @@
 @{
     var action = ViewData["Title"];
     bool isDisabled = false;
-    if((string?)action == "Delete")
+    if ((string?)action == "Delete")
     {
         isDisabled = true;
     }
-
 }
-<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
-    <h2 class="card-title text-center">@action Role</h2>
-    <form asp-antiforgery=true method="post" asp-action="@action">
-        <div class="form-group">
-            <label for="Name" style="width:100%">
-                Name
-                <input asp-for="Name" class="form-control" required="@(isDisabled ? null : "required")"
-                       disabled="@(isDisabled ? "disabled" : null)" />
-            </label>
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label for="NormalizedName" style="width:100%">
-                NormalizedName
-                <input asp-for="NormalizedName" class="form-control" required="@(isDisabled ? null : "required")"
-                       disabled="@(isDisabled ? "disabled" : null)" />
-            </label>
-            <span asp-validation-for="NormalizedName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label for="ConcurrencyStamp" style="width:100%">
-                ConcurrencyStamp
-                <input asp-for="ConcurrencyStamp" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
-            </label>
-            <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
-        </div>
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary me-2">@action</button>
-            <a asp-area="Admin" asp-controller="AdminRole" asp-action="Index" class="btn btn-secondary">Back to List</a>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>@ViewData["Title"] Role</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active">@ViewData["Title"] Role</li>
+                    </ol>
+                </div>
+            </div>
         </div>
-    </form>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">@ViewData["Title"] Role</h3>
+                </div>
+                <form method="post" asp-action="@action" asp-controller="AdminRole">
+                    <div class="card-body">
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label for="Name">Name</label>
+                            <input asp-for="Name" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <!-- Normalized Name -->
+                        <div class="form-group">
+                            <label for="NormalizedName">Normalized Name</label>
+                            <input asp-for="NormalizedName" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="NormalizedName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Concurrency Stamp -->
+                        <div class="form-group">
+                            <label for="ConcurrencyStamp">Concurrency Stamp</label>
+                            <input asp-for="ConcurrencyStamp" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
+                            <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">@action Role</button>
+                        <a asp-area="Admin" asp-controller="AdminRole" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 </div>
+
+
