@@ -7,7 +7,7 @@
     {
         <li class="dropdown">
             <a class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                @User.Identity?.Name.Remove(User.Identity.Name.IndexOf('@'))
+                @User.Identity?.Name?.Remove(User.Identity.Name.IndexOf('@'))
             </a>
             <ul class="dropdown-menu dropdown-menu-dark justify-content-center">
                 <li><a class="dropdown-item" asp-area="Profile" asp-controller="BookingHistory" asp-action="Index">Booking History</a></li>
