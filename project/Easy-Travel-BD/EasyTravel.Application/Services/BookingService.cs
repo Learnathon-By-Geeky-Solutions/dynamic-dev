@@ -1,29 +1,63 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
     public class BookingService : IGetService<Booking, Guid>
     {
-        private readonly IApplicationUnitOfWork _applicationUnitOfWork;
-        public BookingService(IApplicationUnitOfWork applicationUnitOfWork)
+        private readonly IApplicationUnitOfWork _unitOfWork;
+        private readonly ILogger<BookingService> _logger;
+
+        public BookingService(IApplicationUnitOfWork unitOfWork, ILogger<BookingService> logger)
         {
-            _applicationUnitOfWork = applicationUnitOfWork;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
         public Booking Get(Guid id)
         {
-            return _applicationUnitOfWork.BookingRepository.GetById(id);
+            if (id == Guid.Empty)
+            {
+                _logger.LogWarning("Invalid booking ID provided for retrieval.");
+                throw new ArgumentException("Booking ID cannot be empty.", nameof(id));
+            }
+
+            try
+            {
+                _logger.LogInformation("Fetching booking with ID: {Id}", id);
+                var booking = _unitOfWork.BookingRepository.GetById(id);
+                if (booking == null)
+                {
+                    _logger.LogWarning("Booking with ID: {Id} not found.", id);
+                    throw new KeyNotFoundException($"Booking with ID: {id} not found.");
+                }
+                return booking;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching the booking with ID: {Id}", id);
+                throw new InvalidOperationException($"An error occurred while fetching the booking with ID: {id}.", ex);
+            }
         }
 
         public IEnumerable<Booking> GetAll()
         {
-            return _applicationUnitOfWork.BookingRepository.GetAll();
+            try
+            {
+                _logger.LogInformation("Fetching all bookings.");
+                return _unitOfWork.BookingRepository.GetAll();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all bookings.");
+                throw new InvalidOperationException("An error occurred while fetching all bookings.", ex);
+            }
         }
     }
 }
+
+

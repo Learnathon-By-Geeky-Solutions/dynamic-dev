@@ -43,7 +43,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             if (id == Guid.Empty)
             {
@@ -55,7 +55,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Update(Agency model)
         {
-            
             if (ModelState.IsValid)
             {
                 _agencyService.Update(model);
@@ -70,7 +69,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             if (id == Guid.Empty)
             {
@@ -85,7 +84,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View(model);
             }
             if (model.Id == Guid.Empty)
             {

@@ -75,9 +75,9 @@ namespace EasyTravel.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Storing search parameters in session
-                _sessionService.SetString("From", model.From);
-                _sessionService.SetString("To", model.To);
-                _sessionService.SetString("DateTime", model.DepartureTime.ToString());
+                _sessionService.SetString("From", model.From!);
+                _sessionService.SetString("To", model.To!);
+                _sessionService.SetString("DateTime", model.DepartureTime.ToString()!);
 
                 // Redirect to the List method of BusController
                 return RedirectToAction("List", "Bus");
@@ -97,8 +97,8 @@ namespace EasyTravel.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Storing search parameters in session
-                _sessionService.SetString("From", model.From);
-                _sessionService.SetString("To", model.To);
+                _sessionService.SetString("From", model.From!);
+                _sessionService.SetString("To", model.To!);
                 _sessionService.SetString("DateTime", model.DepartureTime.ToString());
                 // Redirect to the List method of BusController
                 return RedirectToAction("List", "Car");
