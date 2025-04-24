@@ -1,121 +1,33 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Easy_Travel_BD</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Easy-Travel-BD.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-</head>
-<body class="bg-secondary">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Easy_Travel_BD</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Bus" asp-action="List">Bus</a>
-                        </li>
-                        <li class="nav-item">
-
-                            <a class="nav-link text-dark" asp-controller="Hotel" asp-action="Index">Hotel</a>
-                        </li> 
-                        @{
-                            var roles = new List<string>
-                            {
-                                "admin",
-                                "busManager",
-                                "agencyManager",
-                                "carManager",
-                                "hotelManager",
-                            };
-                            foreach (var role in roles)
-                            {
-                                if (User.Identity!.IsAuthenticated && User.IsInRole(role))
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-controller="AdminDashboard" asp-action="Index">Dashboard</a>
-                                    </li>
-                                }
-                            }
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="List">Car</a>
-                        </li>
-
-
-                        <li class="nav-item dropdown">
-                            <a class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Hire
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark justify-content-center">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Photographer" asp-action="Index">Photographer</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Guide" asp-action="Index">Guide</a></li>
-                            </ul>
-                        </li>
-
-                    </ul>
-                    <partial name="_LoginPartial" />
-
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Specify the base layout
+    ViewData["Title"] = "My Account";
+}
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4 col-lg-4">
+            <div class="card shadow-sm border-0 rounded-4 bg-light">
+                <div class="card-body p-4">
+                    <h4 class="card-title text-center mb-4 text-primary">My Order</h4>
+                    <partial name="_ProfileSidePanelBookingHistory" />
+                </div>
+                <div class="card-body p-4">
+                    <h4 class="card-title text-center mb-4 text-primary">My Account</h4>
+                    <hr class="mb-4" />
+                    <partial name="_ProfileSidePanelMyAccount" />
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            <partial name="_Notification" />
-            <div class="row mt-3 gap-5 justify-content-center">
-                <div class="col-2 border border-primary rounded bg-white">
-                    <div class="pt-3">
-                        <h2>@TempData["Header"]</h2>
-                        <hr />
-                    </div>
-                    <div class="my-4">
-                        @if (TempData["Header"]!.ToString() == "MyAccount")
-                        {
-                            <partial name="_ProfileSidePanelMyAccount" />
-                        }
-                        else
-                        {
-                            <partial name="_ProfileSidePanelBookingHistory" />
-                        }
-                    </div>
-                </div>
-                <div class="col-8 border border-primary rounded pb-3 bg-white">
-                    <div class="pt-3 text-center text-secondary">
-                        <h2>Dashboard</h2>
-                        <hr />
-                    </div>
-                    @RenderBody()
-                </div>
+        </div>
+        <div class="col-md-8 col-lg-8">
+            <div class="card shadow-sm border-0 rounded-4 bg-light">
+                @RenderBody()
             </div>
-        </main>
+        </div>
     </div>
-
-    <footer class=" footer text-muted">
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-  
-</body>
-</html>
+</section>
+@section Scripts {
+    <script src="~/js/profile.js" asp-append-version="true"></script>
+}
+@{
+    IgnoreSection("Scripts"); // Ignore the section if not defined
+}

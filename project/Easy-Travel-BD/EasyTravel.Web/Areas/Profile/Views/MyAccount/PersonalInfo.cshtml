@@ -1,76 +1,82 @@
-﻿@model ProfileUserModel
+﻿@{
+    Layout = "~/Areas/Profile/Views/Shared/_ProfileLayout.cshtml"; // Specify the child layout
+}
+@model ProfileUserModel
 @{
     ViewData["Title"] = "Personal Info";
     TempData["Header"] = "MyAccount";
     var pass = "password";
 }
 
-<div class="card shadow-sm" style="max-width: 600px; margin: 20px auto; padding: 20px; border-radius: 10px;">
-    <h1 class="card-title">@Model.FirstName @Model.LastName</h1>
-    <h4 class="card-title">@Model.Email</h4>
-    <form asp-antiforgery=true method="post" asp-action="PersonalInfo">
-        <input asp-for="Id" hidden/>
-        <input asp-for="Email" hidden/>
-        <input asp-for="Password" value="@pass" hidden />
-        <input asp-for="ConfirmPassword" value="@pass" hidden />
-        <!-- Name Input -->
-        <div class="form-group mb-3">
-            <label for="FirstName" style="width:100%">
-                First Name
-                <input asp-for="FirstName" id="FirstName" class="form-control" 
-                        />
-            </label>
-            <span asp-validation-for="FirstName" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label for="LastName" style="width:100%">
-                Last Name
-                <input asp-for="LastName" id="LastName" class="form-control" 
-                        />
-            </label>
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4 mx-auto" style="max-width: 700px;">
+        <div class="card-body p-5">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-primary">@Model.FirstName @Model.LastName</h2>
+                <p class="text-muted mb-1">@Model.Email</p>
+                <hr />
+            </div>
 
-        <!-- PhoneNumber Input -->
-        <div class="form-group mb-3">
-            <label for="PhoneNumber" style="width:100%">
-                Phone Number
-                <input asp-for="PhoneNumber" type="number" id="Email" class="form-control" 
-                        />
-            </label>
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div>
+            <form asp-antiforgery="true" method="post" asp-action="PersonalInfo">
+                <input asp-for="Id" hidden />
+                <input asp-for="Email" hidden />
+                <input asp-for="Password" value="@pass" hidden />
+                <input asp-for="ConfirmPassword" value="@pass" hidden />
 
-        <!-- Date of birth Input -->
-        <div class="form-group mb-3">
-            <label for="DateOfBirth" style="width:100%">
-                Date of Birth
-                <input asp-for="DateOfBirth" type="datetime-local" id="DateOfBirth" class="form-control" 
-                        />
-            </label>
-            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-        </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="FirstName" class="form-label fw-semibold">First Name</label>
+                        <input asp-for="FirstName" class="form-control form-control-lg" placeholder="Enter first name" />
+                        <span asp-validation-for="FirstName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="LastName" class="form-label fw-semibold">Last Name</label>
+                        <input asp-for="LastName" class="form-control form-control-lg" placeholder="Enter last name" />
+                        <span asp-validation-for="LastName" class="text-danger small"></span>
+                    </div>
+                </div>
 
-        <!-- Gender Input-->
-        <div class="form-group mb-3">
-            <label for="Gender" style="width:100%">
-                Gender<br />
-                <input asp-for="Gender" type="radio" value="male" checked id="Gender" class="form-check-input" 
-                        />male
-                <input asp-for="Gender" type="radio" value="female" id="Gender" class="form-check-input" 
-                        />female
-                <input asp-for="Gender" type="radio" value="others" id="Gender" class="form-check-input" 
-                        />others
-            </label>
-            <span asp-validation-for="Gender" class="text-danger"></span>
-        </div>
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label fw-semibold">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control form-control-lg" placeholder="Enter phone number" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary btn-block">Save</button>
-    </form>
+                <div class="mb-3">
+                    <label asp-for="DateOfBirth" class="form-label fw-semibold">Date of Birth</label>
+                    <input asp-for="DateOfBirth" type="datetime-local" class="form-control form-control-lg" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold d-block mb-2">Gender</label>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="Gender" class="form-check-input" type="radio" value="male" id="male" checked />
+                        <label class="form-check-label" for="male">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="Gender" class="form-check-input" type="radio" value="female" id="female" />
+                        <label class="form-check-label" for="female">Female</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="Gender" class="form-check-input" type="radio" value="others" id="others" />
+                        <label class="form-check-label" for="others">Others</label>
+                    </div>
+                    <div>
+                        <span asp-validation-for="Gender" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-gradient btn-lg text-white" style="background: linear-gradient(135deg, #4f46e5, #3b82f6); border: none;">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-@section scripts
-{
+@section scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
