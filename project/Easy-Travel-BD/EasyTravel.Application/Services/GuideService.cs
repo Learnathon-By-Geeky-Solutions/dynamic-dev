@@ -16,7 +16,7 @@ namespace EasyTravel.Application.Services
 
         public GuideService(IApplicationUnitOfWork unitOfWork, ILogger<GuideService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -32,11 +32,6 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogInformation("Fetching guide with ID: {Id}", id);
                 var guide = _unitOfWork.GuideRepository.GetById(id);
-                if (guide == null)
-                {
-                    _logger.LogWarning("Guide with ID: {Id} not found.", id);
-                    throw new KeyNotFoundException($"Guide with ID: {id} not found.");
-                }
                 return guide;
             }
             catch (Exception ex)

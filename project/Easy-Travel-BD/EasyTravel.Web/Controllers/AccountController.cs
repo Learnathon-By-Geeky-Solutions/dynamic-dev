@@ -62,6 +62,10 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            if (ModelState.IsValid)
+            {
+                return View();
+            }
             if (_signInManager.IsSignedIn(User))
             {
                 var refererUrl = HttpContext.Session.GetString("LastVisitedPage");
@@ -81,7 +85,7 @@ namespace EasyTravel.Web.Controllers
             var user = _mapper.Map<User>(model);
             user.UserName = model.Email;
             user.ProfilePicture = string.Empty;
-            var (success, errorMessage) = await _authService.RegisterService.RegisterUserAsync(user, model.Password);
+            var (success, errorMessage) = await _authService.RegisterService.RegisterUserAsync(user, model.Password!);
 
             if (!success)
             {
