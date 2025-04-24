@@ -15,7 +15,7 @@ namespace EasyTravel.Application.Services
 
         public BookingHistoryService(IApplicationUnitOfWork unitOfWork, ILogger<BookingHistoryService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -30,7 +30,7 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching bus bookings for user with ID: {Id}", id);
-                return await _unitOfWork.BusBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.BusBookingRepository.GetAsync(e =>e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching car bookings for user with ID: {Id}", id);
-                return await _unitOfWork.CarBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.CarBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {
@@ -70,7 +70,7 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching guide bookings for user with ID: {Id}", id);
-                return await _unitOfWork.GuideBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.GuideBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {
@@ -90,7 +90,7 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching hotel bookings for user with ID: {Id}", id);
-                return await _unitOfWork.HotelBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.HotelBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching photographer bookings for user with ID: {Id}", id);
-                return await _unitOfWork.PhotographerBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.PhotographerBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {

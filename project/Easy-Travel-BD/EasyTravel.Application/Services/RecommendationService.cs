@@ -15,7 +15,7 @@ namespace EasyTravel.Application.Services
 
         public RecommendationService(IApplicationUnitOfWork unitOfWork, ILogger<RecommendationService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 

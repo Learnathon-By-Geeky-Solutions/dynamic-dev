@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -64,7 +65,9 @@ namespace EasyTravel.Web.Controllers
             pgBooking.EventLocation = _sessionService.GetString("EventLocation");
             pgBooking.TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour;
             pgBooking.PhotographerId = photographer.Id;
-            _sessionService.SetString("photographerBookingObj", JsonSerializer.Serialize(pgBooking));
+            var options = new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.Preserve };
+            _sessionService.SetString("photographerBookingObj", JsonSerializer.Serialize(pgBooking, options));
+
             return View(pgBooking);
         }
         [HttpGet]

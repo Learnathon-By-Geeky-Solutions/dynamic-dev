@@ -14,7 +14,7 @@ namespace EasyTravel.Application.Services
 
         public HotelBookingService(IApplicationUnitOfWork unitOfWork, ILogger<HotelBookingService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
