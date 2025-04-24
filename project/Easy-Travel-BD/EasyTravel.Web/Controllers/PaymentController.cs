@@ -118,9 +118,9 @@ namespace EasyTravel.Web.Controllers
             var baseUrl = Request.Scheme + "://" + Request.Host;
             var request = new SSLCommerzRequest
             {
-                StoreId = configSection["StoreId"],
-                StorePassword = configSection["StorePassword"],
-                TotalAmount = totalAmount.ToString(),
+                StoreId = configSection["StoreId"]!,
+                StorePassword = configSection["StorePassword"]!,
+                TotalAmount = totalAmount!.ToString(),
                 TranId = Guid.NewGuid().ToString("N"),
                 SuccessUrl = baseUrl + "/Payment/Success",
                 FailUrl = baseUrl + "/Payment/Fail",
