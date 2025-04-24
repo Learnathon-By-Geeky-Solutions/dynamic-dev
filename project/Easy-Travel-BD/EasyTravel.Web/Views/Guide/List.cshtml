@@ -13,7 +13,7 @@
 </section>
 
 <section id="guide-result-section" class="container my-4">
-    @foreach (var guide in Model.Guides)
+    @foreach (var guide in Model.Guides!)
     {
         var totalPrice = guide.HourlyRate * Model.SearchFormModel?.TimeInHour;
 
