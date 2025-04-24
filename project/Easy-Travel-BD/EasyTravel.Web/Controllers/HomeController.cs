@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -44,5 +45,16 @@ namespace EasyTravel.Web.Controllers
         {
             return View();
         }
+        
+        [AllowAnonymous]
+        public async Task<IActionResult> RecommendedPhotographers()
+        {
+            using var client = new HttpClient();
+            var response = await client.GetStringAsync("https://localhost:{port}/api/recommendation/photographers?count=3");
+            var photographers = JsonConvert.DeserializeObject<List<Photographer>>(response);
+
+            return PartialView("_RecommendedPhotographers", photographers);
+        }
+
     }
 }

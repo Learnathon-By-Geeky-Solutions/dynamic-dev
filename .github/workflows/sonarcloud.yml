@@ -6,6 +6,7 @@ on:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 jobs:
   sonarcloud:
@@ -15,14 +16,60 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
 
-      - name: Install dependencies
+      - name: Set up JDK 17 for SonarCloud
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: "zulu"
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v3
+        with:
+          path: ./.sonar/scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Restore dependencies
         run: dotnet restore project/Easy-Travel-BD/Easy-Travel-BD.sln
+
+      - name: Begin SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner begin \
+            /k:"Learnathon-By-Geeky-Solutions_dynamic-dev" \
+            /o:"learnathon-by-geeky-solutions" \
+            /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.opencover.xml" \
+            /d:sonar.inclusions="project/Easy-Travel-BD/EasyTravel.Application/**" \
+            /d:sonar.test.inclusions="project/Easy-Travel-BD/UnitTest/**" \
+            /d:sonar.exclusions="**/Migrations/**,coverage-report/**,**/*.Designer.cs" \
+            /d:sonar.sourceEncoding="UTF-8" \
+            /d:sonar.qualitygate.wait=true \
+            /d:sonar.scm.provider=git \
+            /d:sonar.alm.github.api.url=https://api.github.com \
+            /d:sonar.analytics.ci=github-actions
 
       - name: Build the project
         run: dotnet build project/Easy-Travel-BD/Easy-Travel-BD.sln --no-restore
@@ -32,23 +79,10 @@ jobs:
           dotnet test project/Easy-Travel-BD/Easy-Travel-BD.sln \
             --no-build \
             --collect:"XPlat Code Coverage" \
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover \
             --results-directory ./TestResults
 
-      - name: Generate coverage report
-        run: |
-          dotnet tool install --global dotnet-reportgenerator-globaltool
-          export PATH="$PATH:/home/runner/.dotnet/tools"
-          reportgenerator \
-            -reports:TestResults/**/coverage.cobertura.xml \
-            -targetdir:coverage-report \
-            -reporttypes:Html
-      - name: SonarCloud Scan
+      - name: End SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          dotnet tool install --global dotnet-sonarscanner
-          export PATH="$PATH:/home/runner/.dotnet/tools"
-          dotnet sonarscanner begin /k:"Learnathon-By-Geeky-Solutions_dynamic-dev" /o:"learnathon-by-geeky-solutions" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="TestResults/**/*.cobertura.xml" /d:sonar.exclusions="coverage-report/**/*"
-          dotnet build project/Easy-Travel-BD/Easy-Travel-BD.sln
-          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-
+        run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

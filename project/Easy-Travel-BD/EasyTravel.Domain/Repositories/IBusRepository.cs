@@ -14,9 +14,5 @@ namespace EasyTravel.Domain.Repositories
         IEnumerable<Bus> GetAllBuses();
 
         public IQueryable<Bus> GetBuses();
-      
-
-
-
     }
 }

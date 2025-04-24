@@ -1,40 +1,80 @@
 ﻿@model IEnumerable<Photographer>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Photographer Management";
 }
 
-<div class="entity-list">
-    <h2>Photographer List</h2>
-    <div class="create-btn">
-        <a asp-area="Admin" asp-controller="AdminPhotographer" asp-action="Create">Create Photographer</a>
-    </div>
-    <div class="entity-row">
-        <span class="name">FirstName</span>
-        <span>Email</span>
-        <span>ContactNumber</span>
-        <span>DateOfBirth</span>
-        <span>Address</span>
-        <span>ProfilePicture</span>
-
-        <!-- Buttons Section -->
-        <div class="actions">
-        </div>
-    </div>
-    @foreach (var photographer in Model)
-    {
-        <div class="entity-row">
-            <span class="name">@photographer.FirstName</span>
-            <span>@photographer.Email</span>
-            <span>@photographer.ContactNumber</span>
-            <span>@photographer.DateOfBirth</span>
-            <span>@photographer.Address</span>
-            <span>@photographer.ProfilePicture</span>
-
-            <!-- Buttons Section -->
-            <div class="actions">
-                <a asp-area="Admin" asp-controller="AdminPhotographer" asp-action="Update" asp-route-id="@photographer.Id" class="update-btn">Update</a>
-                <a asp-area="Admin" asp-controller="AdminPhotographer" asp-action="Delete" asp-route-id="@photographer.Id" class="delete-btn">Delete</a>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active">Photographers</li>
+                    </ol>
+                </div>
             </div>
         </div>
-    }
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">Photographer List</h3>
+                    <a asp-area="Admin" asp-controller="AdminPhotographer" asp-action="Create" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus"></i> Create Photographer
+                    </a>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    @if (!Model.Any())
+                    {
+                        <div class="alert alert-info m-3">No photographers found.</div>
+                    }
+                    else
+                    {
+                        <table class="table table-bordered table-hover text-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Email</th>
+                                    <th>Contact Number</th>
+                                    <th>Date of Birth</th>
+                                    <th>Address</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var photographer in Model)
+                                {
+                                    <tr>
+                                        <td>@photographer.FirstName</td>
+                                        <td>@photographer.Email</td>
+                                        <td>@photographer.ContactNumber</td>
+                                        <td>@photographer.DateOfBirth.ToString("dd MMM yyyy")</td>
+                                        <td>@photographer.Address</td>
+                                        <td>
+                                            <a asp-area="Admin" asp-controller="AdminPhotographer" asp-action="Update" asp-route-id="@photographer.Id" class="btn btn-sm btn-warning mr-1">
+                                                <i class="fas fa-edit"></i> Update
+                                            </a>
+                                            <a asp-area="Admin" asp-controller="AdminPhotographer" asp-action="Delete" asp-route-id="@photographer.Id" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="card-footer text-muted">
+                    Total Photographers: @Model.Count()
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
+

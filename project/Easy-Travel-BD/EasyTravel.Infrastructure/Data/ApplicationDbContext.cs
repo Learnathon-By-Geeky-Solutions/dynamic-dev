@@ -29,11 +29,11 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<CarBooking> CarBookings { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
             // Payment 
-            modelBuilder.Entity<Payment>(entity =>
+            builder.Entity<Payment>(entity =>
             {
                 entity.Property(e => e.PaymentMethod)
                 .HasConversion<string>();
@@ -46,7 +46,7 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // Booking
-            modelBuilder.Entity<Booking>(entity =>
+            builder.Entity<Booking>(entity =>
             {
                 entity.Property(e => e.BookingStatus)
                     .HasConversion<string>();
@@ -67,7 +67,7 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // BusBooking
-            modelBuilder.Entity<BusBooking>(entity =>
+            builder.Entity<BusBooking>(entity =>
             {
                 entity.HasOne(p => p.Bus)
                 .WithMany(b => b.BusBookings)
@@ -81,7 +81,7 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // GuideBooking
-            modelBuilder.Entity<GuideBooking>(entity =>
+            builder.Entity<GuideBooking>(entity =>
             {
                 entity.Property(a => a.Id)
                    .ValueGeneratedOnAdd()
@@ -97,7 +97,7 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // PhotographerBooking
-            modelBuilder.Entity<PhotographerBooking>(entity =>
+            builder.Entity<PhotographerBooking>(entity =>
             {
                 entity.Property(a => a.Id)
                    .ValueGeneratedOnAdd()
@@ -113,7 +113,7 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // CarBooking
-            modelBuilder.Entity<CarBooking>(entity =>
+            builder.Entity<CarBooking>(entity =>
             {
                 entity.HasOne(p => p.Car)
                   .WithMany(b => b.CarBookings)
@@ -126,11 +126,11 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // Seat
-            modelBuilder.Entity<Seat>()
+            builder.Entity<Seat>()
                 .ToTable("Seats");
 
             // Bus
-            modelBuilder.Entity<Bus>(entity =>
+            builder.Entity<Bus>(entity =>
             {
                 entity.HasMany(b => b.Seats)
                    .WithOne(s => s.Bus)
@@ -145,7 +145,7 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // Agency
-            modelBuilder.Entity<Agency>(entity =>
+            builder.Entity<Agency>(entity =>
             {
                 entity.Property(a => a.AddDate)
                   .ValueGeneratedOnAdd()
@@ -160,7 +160,7 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // Photographer
-            modelBuilder.Entity<Photographer>(entity =>
+            builder.Entity<Photographer>(entity =>
             {
                 entity.ToTable("Photographers");
                 entity.Property(a => a.HireDate)
@@ -178,7 +178,7 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // Guide
-            modelBuilder.Entity<Guide>(entity =>
+            builder.Entity<Guide>(entity =>
             {
                 entity.ToTable("Guides");
                 entity.Property(a => a.HireDate)
@@ -196,7 +196,7 @@ namespace EasyTravel.Infrastructure.Data
 
             });
                 
-            modelBuilder.Entity<User>(entity =>
+            builder.Entity<User>(entity =>
             {
                 entity.Property(a => a.CreatedAt)
                .ValueGeneratedOnAdd()
@@ -204,13 +204,13 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // UserRole
-            modelBuilder.Entity<IdentityUserRole<Guid>>()
+            builder.Entity<IdentityUserRole<Guid>>()
                 .Property(a => a.RoleId)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValue(new Guid("f7e6d5c4-b3a2-1f0e-9d8c-7b6a5c4d3e2f"));
 
             // Roles
-            modelBuilder.Entity<Role>()
+            builder.Entity<Role>()
                 .HasData(
                 new Role
                 {
@@ -251,7 +251,7 @@ namespace EasyTravel.Infrastructure.Data
                 );
 
 
-            modelBuilder.Entity<Agency>().HasData(
+            builder.Entity<Agency>().HasData(
             new Agency
             {
                 Id = new Guid("b8a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
@@ -262,7 +262,7 @@ namespace EasyTravel.Infrastructure.Data
                 LicenseNumber = "365981"
             });
 
-            modelBuilder.Entity<Photographer>().HasData(
+            builder.Entity<Photographer>().HasData(
            new Photographer
            {
                Id = new Guid("2a3d2f79-4f8e-4f87-8a38-41c70f4284b6"),
@@ -288,7 +288,7 @@ namespace EasyTravel.Infrastructure.Data
                AgencyId = new Guid("b8a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b")
            });
 
-            modelBuilder.Entity<Guide>().HasData(
+            builder.Entity<Guide>().HasData(
            new Guide
            {
                Id = new Guid("8a9c56d0-8be6-4d34-8e0f-8a7c0a7d9637"),
@@ -314,11 +314,11 @@ namespace EasyTravel.Infrastructure.Data
            });
 
             #region Hotel Booking Realated 
-            modelBuilder.Entity<HotelBooking>()
+            builder.Entity<HotelBooking>()
                 .ToTable("HotelBookings");
-            modelBuilder.Entity<Room>()
+            builder.Entity<Room>()
              .ToTable("Rooms");
-            modelBuilder.Entity<Hotel>(entity =>
+            builder.Entity<Hotel>(entity =>
             {
                 // Configure primary key
                 entity.HasKey(e => e.Id);
@@ -368,7 +368,7 @@ namespace EasyTravel.Infrastructure.Data
             });
 
             // Room
-            modelBuilder.Entity<Room>(entity =>
+            builder.Entity<Room>(entity =>
             {
                 // Configure primary key
                 entity.HasKey(e => e.Id);
@@ -420,7 +420,7 @@ namespace EasyTravel.Infrastructure.Data
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<HotelBooking>(entity =>
+            builder.Entity<HotelBooking>(entity =>
             {
                 entity.HasOne(p => p.Booking)
                  .WithOne(b => b.HotelBooking)
@@ -447,7 +447,7 @@ namespace EasyTravel.Infrastructure.Data
             #endregion Hotel Booking
             // Seed data for Hotel
 
-            modelBuilder.Entity<Hotel>().HasData(
+            builder.Entity<Hotel>().HasData(
        new Hotel
        {
            Id = new Guid("e2a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b"),
