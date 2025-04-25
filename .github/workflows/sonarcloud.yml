@@ -46,8 +46,10 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar-scanner
 
       - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        run: dotnet tool install --global dotnet-sonarscanner
+        run: dotnet tool restore
+
+      - name: Clean up test results
+        run: rm -rf ./TestResults
 
       - name: Restore dependencies
         run: dotnet restore project/Easy-Travel-BD/Easy-Travel-BD.sln
@@ -61,9 +63,9 @@ jobs:
             /o:"learnathon-by-geeky-solutions" \
             /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.opencover.xml" \
-            /d:sonar.inclusions="project/Easy-Travel-BD/EasyTravel.Application/**" \
-            /d:sonar.test.inclusions="project/Easy-Travel-BD/UnitTest/**" \
+            /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/*.opencover.xml" \
+            /d:sonar.inclusions="**/*.cs" \
+            /d:sonar.test.inclusions="**/EasyTravel.Test/**/*.cs" \
             /d:sonar.exclusions="**/Migrations/**,coverage-report/**,**/*.Designer.cs" \
             /d:sonar.sourceEncoding="UTF-8" \
             /d:sonar.qualitygate.wait=true \
@@ -76,13 +78,25 @@ jobs:
 
       - name: Run tests and collect coverage
         run: |
-          dotnet test project/Easy-Travel-BD/Easy-Travel-BD.sln \
+          dotnet test project/Easy-Travel-BD/EasyTravel.Test/EasyTravel.Test.csproj \
             --no-build \
             --collect:"XPlat Code Coverage" \
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover \
             --results-directory ./TestResults
 
+      - name: Verify code coverage file
+        run: |
+          if [ ! -f "./TestResults/**/coverage.opencover.xml" ]; then
+            echo "Code coverage file not found!"
+            exit 1
+          fi
+
       - name: End SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+      - name: Notify on Quality Gate Failure
+        if: failure()
+        run: |
+          echo "Quality Gate failed. Please check the SonarCloud report."
