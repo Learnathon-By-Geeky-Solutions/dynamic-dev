@@ -65,7 +65,7 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/*.opencover.xml" \
             /d:sonar.inclusions="**/*.cs" \
-            /d:sonar.test.inclusions="**/UnitTest/**/*.cs" \
+            /d:sonar.test.inclusions="**/EasyTravel.Test/**/*.cs" \
             /d:sonar.exclusions="**/Migrations/**,coverage-report/**,**/*.Designer.cs" \
             /d:sonar.sourceEncoding="UTF-8" \
             /d:sonar.qualitygate.wait=true \
@@ -78,7 +78,7 @@ jobs:
 
       - name: Run tests and collect coverage
         run: |
-          dotnet test project/Easy-Travel-BD/Easy-Travel-BD.sln \
+          dotnet test project/Easy-Travel-BD/EasyTravel.Test/EasyTravel.Test.csproj \
             --no-build \
             --collect:"XPlat Code Coverage" \
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover \
