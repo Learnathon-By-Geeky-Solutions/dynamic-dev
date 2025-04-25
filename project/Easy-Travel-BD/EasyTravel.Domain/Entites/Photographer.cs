@@ -36,7 +36,6 @@ namespace EasyTravel.Domain.Entites
         [MaxLength(500)]
         public required string Bio { get; set; }
 
-        [DataType(DataType.Date)]
         public required DateTime DateOfBirth { get; set; }
 
         public required string Skills { get; set; }
