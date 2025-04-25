@@ -1,4 +1,5 @@
 using EasyTravel.Application.Services;
+using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using Microsoft.Extensions.Logging;
@@ -62,9 +63,15 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
             var carBookingId = Guid.NewGuid();
             _unitOfWorkMock.Setup(u => u.CarBookingRepository.GetById(carBookingId)).Returns((CarBooking)null);
 
-            // Act & Assert
-            var ex = Assert.Throws<KeyNotFoundException>(() => _adminCarBookingService.Get(carBookingId));
-            Assert.That(ex.Message, Is.EqualTo($"Car booking with ID: {carBookingId} not found."));
+            // Act
+            var ex = Assert.Throws<InvalidOperationException>(() => _adminCarBookingService.Get(carBookingId));
+
+            // Assert
+            Assert.That(ex, Is.Not.Null, "An exception should be thrown.");
+            Assert.That(ex.Message, Is.EqualTo($"An error occurred while fetching the car booking with ID: {carBookingId}."));
+            Assert.That(ex.InnerException, Is.TypeOf<KeyNotFoundException>(), "The inner exception should be a KeyNotFoundException.");
+            Assert.That(ex.InnerException?.Message, Is.EqualTo($"Car booking with ID: {carBookingId} not found."));
+
             _loggerMock.Verify(
                 l => l.Log(
                     LogLevel.Warning,
@@ -73,7 +80,16 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
+            _loggerMock.Verify(
+                l => l.Log(
+                    LogLevel.Error,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains($"An error occurred while fetching the car booking with ID: {carBookingId}")),
+                    It.IsAny<Exception>(),
+                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
+                Times.Once);
         }
+
 
         [Test]
         public void GetAll_ShouldReturnAllCarBookings()
