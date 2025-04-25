@@ -5,7 +5,7 @@ on:
     branches:
       - main
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened]    
   workflow_dispatch:
 
 jobs:
@@ -46,8 +46,10 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar-scanner
 
       - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        run: dotnet tool install --global dotnet-sonarscanner
+        run: dotnet tool restore
+
+      - name: Clean up test results
+        run: rm -rf ./TestResults
 
       - name: Restore dependencies
         run: dotnet restore project/Easy-Travel-BD/Easy-Travel-BD.sln
@@ -82,7 +84,19 @@ jobs:
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover \
             --results-directory ./TestResults
 
+      - name: Verify code coverage file
+        run: |
+          if [ ! -f "./TestResults/**/coverage.opencover.xml" ]; then
+            echo "Code coverage file not found!"
+            exit 1
+          fi
+
       - name: End SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+      - name: Notify on Quality Gate Failure
+        if: failure()
+        run: |
+          echo "Quality Gate failed. Please check the SonarCloud report."
