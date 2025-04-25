@@ -82,15 +82,15 @@ jobs:
         run: |
           dotnet test project/Easy-Travel-BD/EasyTravel.Test/EasyTravel.Test.csproj \
             --no-build \
-            --collect:"XPlat Code Coverage" \
+            --collect: "XPlat Code Coverage" \
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover \
             --results-directory ./TestResults
 
       - name: Verify code coverage file
         run: |
-          if [ ! -f "./TestResults/**/coverage.opencover.xml" ]; then
-            echo "Code coverage file not found!"
-            exit 1
+          if ! find ./TestResults -name "coverage.opencover.xml" | grep -q .; then
+          echo "Code coverage file not found!"
+          exit 1
           fi
 
       - name: End SonarCloud analysis
