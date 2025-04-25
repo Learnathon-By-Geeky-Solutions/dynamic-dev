@@ -46,13 +46,13 @@
                 <a href="index.html" class="logo d-flex align-items-center">
                     <!-- Uncomment the line below if you also wish to use an image logo -->
                     <img src="~/photo/easytravelLogoNav.png" alt="logo">               
-                </a>
-
+                </a>           
                 <nav id="navmenu" class="navmenu">
                     <ul>
-                        <li><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>                  
-                        <li><a href="@Url.Action("Index", "Bus")">Bus</a></li>
-                        <li><a href="@Url.Action("Index", "Hotel")">Hotel</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index" class="active">Home</a></li>
+                        <li><a asp-area="" asp-controller="Bus" asp-action="Index">Bus</a></li>
+                        <li><a asp-area="" asp-controller="Hotel" asp-action="Index">Hotel</a></li>
+                        @* Role-based Dashboard Link *@
                         @{
                             var roles = new List<string>
                         {
@@ -66,22 +66,23 @@
                             {
                                 if (User.Identity?.IsAuthenticated == true && User.IsInRole(role))
                                 {
-                                    <li><a href="@Url.Action("Index", "AdminDashboard" , new { Area = "Admin" })">Dashboard</a></li>
+                                    <li><a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">Dashboard</a></li>
                                 }
                             }
                         }
-                        <li><a href="@Url.Action("Index", "Car")">Car</a></li>
+                        <li><a asp-area="" asp-controller="Car" asp-action="Index">Car</a></li>
                         <li class="dropdown">
                             <a href="#"><span>Hire</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                             <ul>
-                                <li><a href="@Url.Action("Index", "Photographer")">Photographer</a></li>
-                                <li><a href="@Url.Action("Index", "Guide")">Guide</a></li>
+                                <li><a asp-area="" asp-controller="Photographer" asp-action="Index">Photographer</a></li>
+                                <li><a asp-area="" asp-controller="Guide" asp-action="Index">Guide</a></li>
                             </ul>
                         </li>
                         <li><a href="#contact">Contact Us</a></li>
-                    </ul>                   
-                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>                             
+                    </ul>
+                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
                 </nav>
+
                 <partial name="_LoginPartial" />
             </div>
 
