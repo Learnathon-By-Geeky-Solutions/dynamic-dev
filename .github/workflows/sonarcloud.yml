@@ -45,8 +45,12 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
-      - name: Install SonarCloud scanner
-        run: dotnet tool restore
+      - name: Install global tools
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          dotnet tool install --global coverlet.console
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Clean up test results
         run: rm -rf ./TestResults
@@ -63,7 +67,7 @@ jobs:
             /o:"learnathon-by-geeky-solutions" \
             /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/*.opencover.xml" \
+            /d:sonar.cs.opencover.reportsPaths="${{ github.workspace }}/coverage.xml" \
             /d:sonar.inclusions="**/*.cs" \
             /d:sonar.test.inclusions="**/EasyTravel.Test/**/*.cs" \
             /d:sonar.exclusions="**/Migrations/**,coverage-report/**,**/*.Designer.cs" \
@@ -74,22 +78,27 @@ jobs:
             /d:sonar.analytics.ci=github-actions
 
       - name: Build the project
-        run: dotnet build project/Easy-Travel-BD/Easy-Travel-BD.sln --no-restore
+        run: dotnet build project/Easy-Travel-BD/Easy-Travel-BD.sln --no-restore --configuration Release
 
-      - name: Run tests and collect coverage
+      - name: Find test DLL path
+        id: test-dll
         run: |
-          dotnet test project/Easy-Travel-BD/EasyTravel.Test/EasyTravel.Test.csproj \
-            --no-build \
-            --collect:"XPlat Code Coverage" \
-            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover \
-            --results-directory ./TestResults
+          TEST_DLL_PATH=$(find . -path "*/bin/Release/*/EasyTravel.Test.dll" | head -1)
+          echo "TEST_DLL_PATH=$TEST_DLL_PATH" >> $GITHUB_ENV
+          echo "Found test DLL at: $TEST_DLL_PATH"
 
-      - name: Verify code coverage file
+      - name: Run tests and collect coverage using coverlet
         run: |
-          if [ ! -f "./TestResults/**/coverage.opencover.xml" ]; then
-            echo "Code coverage file not found!"
-            exit 1
-          fi
+          coverlet "$TEST_DLL_PATH" \
+            --target "dotnet" \
+            --targetargs "test project/Easy-Travel-BD/Easy-Travel-BD.sln --no-build --configuration Release" \
+            --include "[EasyTravel.*]*" \
+            --exclude "[*]*.Migrations.*" \
+            -f opencover \
+            -o "${{ github.workspace }}/coverage.xml"
+
+      - name: Verify coverage file
+        run: ls -la "${{ github.workspace }}/coverage.xml"
 
       - name: End SonarCloud analysis
         env:
@@ -98,5 +107,4 @@ jobs:
 
       - name: Notify on Quality Gate Failure
         if: failure()
-        run: |
-          echo "Quality Gate failed. Please check the SonarCloud report."
+        run: echo "Quality Gate failed. Please check the SonarCloud report."
