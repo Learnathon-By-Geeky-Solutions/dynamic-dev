@@ -14,21 +14,21 @@ namespace EasyTravel.Infrastructure.Data
     {
         private readonly string _connectionString;
         private readonly string _migrationAssembly;
-        public DbSet<Bus> Buses { get; set; }
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<Agency> Agencies { get; set; }
-        public DbSet<Photographer> Photographers { get; set; }
-        public DbSet<Guide> Guides { get; set; }
-        public DbSet<Hotel> Hotels { get; set; }
-        public DbSet<Room> Rooms { get; set; }
-        public DbSet<HotelBooking> HotelBookings { get; set; }
-        public DbSet<PhotographerBooking> PhotographerBookings { get; set; }
-        public DbSet<GuideBooking> GuideBookings { get; set; }
-        public DbSet<Seat> Seats { get; set; }
-        public DbSet<BusBooking> BusBookings { get; set; }
-        public DbSet<CarBooking> CarBookings { get; set; }
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<Booking> Bookings { get; set; }
+        public virtual DbSet<Bus> Buses { get; set; }
+        public virtual DbSet<Car> Cars { get; set; }
+        public virtual DbSet<Agency> Agencies { get; set; }
+        public virtual DbSet<Photographer> Photographers { get; set; }
+        public virtual DbSet<Guide> Guides { get; set; }
+        public virtual DbSet<Hotel> Hotels { get; set; }
+        public virtual DbSet<Room> Rooms { get; set; }
+        public virtual DbSet<HotelBooking> HotelBookings { get; set; }
+        public virtual DbSet<PhotographerBooking> PhotographerBookings { get; set; }
+        public virtual DbSet<GuideBooking> GuideBookings { get; set; }
+        public virtual DbSet<Seat> Seats { get; set; }
+        public virtual DbSet<BusBooking> BusBookings { get; set; }
+        public virtual DbSet<CarBooking> CarBookings { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<Booking> Bookings { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -484,7 +484,14 @@ namespace EasyTravel.Infrastructure.Data
             _connectionString = connectionString;
             _migrationAssembly = migrationAssembly;
         }
-
+        // New constructor for testing
+        /// <summary>
+        /// Constructor for configuring the DbContext using dependency injection.
+        /// This is essential for testing scenarios and production configurations.
+        /// </summary>
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
