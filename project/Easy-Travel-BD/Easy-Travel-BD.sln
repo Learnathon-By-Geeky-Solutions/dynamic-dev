@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTravel.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTravel.Web", "EasyTravel.Web\EasyTravel.Web.csproj", "{ADFBC764-2AF6-45EA-AD96-695B60A5EC4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{C9B42FAD-DA95-46A7-BB70-ED149E0BFEC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTravel.Test", "UnitTest\EasyTravel.Test.csproj", "{C9B42FAD-DA95-46A7-BB70-ED149E0BFEC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
