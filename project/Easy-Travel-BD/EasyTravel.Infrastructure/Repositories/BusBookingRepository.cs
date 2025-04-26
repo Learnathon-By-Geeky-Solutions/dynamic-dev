@@ -19,23 +19,24 @@ namespace EasyTravel.Infrastructure.Repositories
             _context = context;
         }
 
-    public void DeleteBusBooking(Guid Id)
-{
-    var busbooking = _context.Bookings.FirstOrDefault(x => x.Id == Id);
-    if (busbooking != null)
-    {
-        _context.Bookings.Remove(busbooking);
-        _context.SaveChanges();
-    }
-}
+        public void DeleteBusBooking(Guid Id)
+        {
+            var busbooking = _context.BusBookings.FirstOrDefault(x => x.Id == Id); // Correct DbSet
+            if (busbooking != null)
+            {
+                _context.BusBookings.Remove(busbooking); // Correct DbSet
+                _context.SaveChanges();
+            }
+        }
+
 
 
         public IEnumerable<BusBooking> GetAllBusBookings()
         {
             return _context.BusBookings
                 .Include(b => b.Bus)
-                //.Include(b => b.User)
                 .ToList();
+                //.Include(b => b.User)
         }
     }
 }
