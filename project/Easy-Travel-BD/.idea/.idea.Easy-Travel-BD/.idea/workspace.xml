@@ -9,7 +9,49 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="747709ab-e6fc-4ec3-b853-6d637fd7631f" name="Changes" comment="" />
+    <list default="true" id="747709ab-e6fc-4ec3-b853-6d637fd7631f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Easy-Travel-BD/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Easy-Travel-BD/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/GuideFactoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/GuideFactoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/PhotographerFactoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/PhotographerFactoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/ServiceTests/AdminAgencyServiceTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/ServiceTests/AdminAgencyServiceTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/ServiceTests/AdminCarBookingServiceTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/ServiceTests/AdminCarBookingServiceTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/ServiceTests/AdminGuideBookingServiceTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/ApplicationsTests/ServiceTests/AdminGuideBookingServiceTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/BusServiceTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/BusServiceTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/BookingTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/BookingTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/BusBookingTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/BusBookingTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/CarBookingTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/CarBookingTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/GuideBookingTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/GuideBookingTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/GuideTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/GuideTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/HotelBookingTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/HotelBookingTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/HotelTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/HotelTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/PaymentTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/PaymentTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/PhotographerBookingTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/PhotographerBookingTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/PhotographerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/PhotographerTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/RoomTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/RoomTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/UserTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/DomainTests/EntityTests/UserTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/ApplicationDbContextTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/ApplicationDbContextTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/ApplicationUnitOfWorkTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/ApplicationUnitOfWorkTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/AgencyRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/AgencyRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/BookingRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/BookingRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/BusBookingRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/BusBookingRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/BusRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/BusRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/CarBookingRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/CarBookingRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/CarRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/CarRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/GuideBookingRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/GuideBookingRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/GuideRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/GuideRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/HotelBookingRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/HotelBookingRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/PaymentRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/PaymentRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/PhotographerBookingRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/PhotographerBookingRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/PhotographerRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/PhotographerRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/RecommendationRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/RecommendationRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/RepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/RepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/RoomRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/RoomRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/SeatRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/RepositoryTests/SeatRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/UnitOfWorkTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/InfrastructureTests/UnitOfWorkTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/IntegrationTest1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/PaymentControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/PaymentControllerTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyTravel.Test/RecommendationControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EasyTravel.Test/RecommendationControllerTests.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,6 +118,9 @@
   &quot;isMigrated&quot;: true
 }</component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -87,29 +132,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.EasyTravel.Web: IIS Express.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.EasyTravel.Web: http.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;sonarcloud-improver&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.EasyTravel.Web: IIS Express.executor": "Run",
+    ".NET Launch Settings Profile.EasyTravel.Web: http.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "git-widget-placeholder": "unit-test",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "settings.qodana",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\Naeeem's PC\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\Naeeem's PC\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\Naeeem's PC\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\Naeeem's PC\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\Naeeem's PC\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\Naeeem's PC\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.EasyTravel.Web: IIS Express">
     <configuration name="EasyTravel.Web: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/EasyTravel.Web/EasyTravel.Web.csproj" />
@@ -169,6 +214,7 @@
       <workItem from="1742632044748" duration="760000" />
       <workItem from="1744695860595" duration="1163000" />
       <workItem from="1744697138310" duration="15424000" />
+      <workItem from="1745640291169" duration="7772000" />
     </task>
     <task id="LOCAL-00001" summary="Nullable removed and make readonly some variable">
       <option name="closed" value="true" />
@@ -231,5 +277,9 @@
     <MESSAGE value="Hotel Booking nullable removed" />
     <MESSAGE value="hover.zoom is modified." />
     <option name="LAST_COMMIT_MESSAGE" value="hover.zoom is modified." />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

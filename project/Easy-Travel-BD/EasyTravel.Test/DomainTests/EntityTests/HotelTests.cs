@@ -24,21 +24,24 @@ namespace UnitTest.Entities
             };
 
             // Assert
-            Assert.That(hotel.Id, Is.EqualTo(Guid.Empty));
-            Assert.That(hotel.Name, Is.EqualTo("Default Hotel"));
-            Assert.That(hotel.Address, Is.EqualTo("Default Address"));
-            Assert.That(hotel.Description, Is.EqualTo("Default Description"));
-            Assert.That(hotel.City, Is.EqualTo("Default City"));
-            Assert.That(hotel.Phone, Is.EqualTo("123-456-7890"));
-            Assert.That(hotel.Email, Is.EqualTo("default@hotel.com"));
-            Assert.That(hotel.Rating, Is.EqualTo(3)); // Default rating
-            Assert.That(hotel.Image, Is.EqualTo("default.jpg"));
-            Assert.That(hotel.CreatedAt, Is.EqualTo(default(DateTime)));
-            Assert.That(hotel.UpdatedAt, Is.EqualTo(default(DateTime)));
-            Assert.That(hotel.Rooms, Is.Not.Null);
-            Assert.That(hotel.Rooms, Is.Empty);
-            Assert.That(hotel.HotelBookings, Is.Not.Null);
-            Assert.That(hotel.HotelBookings, Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(hotel.Id, Is.EqualTo(Guid.Empty));
+                Assert.That(hotel.Name, Is.EqualTo("Default Hotel"));
+                Assert.That(hotel.Address, Is.EqualTo("Default Address"));
+                Assert.That(hotel.Description, Is.EqualTo("Default Description"));
+                Assert.That(hotel.City, Is.EqualTo("Default City"));
+                Assert.That(hotel.Phone, Is.EqualTo("123-456-7890"));
+                Assert.That(hotel.Email, Is.EqualTo("default@hotel.com"));
+                Assert.That(hotel.Rating, Is.EqualTo(3)); // Default rating
+                Assert.That(hotel.Image, Is.EqualTo("default.jpg"));
+                Assert.That(hotel.CreatedAt, Is.EqualTo(default(DateTime)));
+                Assert.That(hotel.UpdatedAt, Is.EqualTo(default(DateTime)));
+                Assert.That(hotel.Rooms, Is.Not.Null);
+                Assert.That(hotel.Rooms, Is.Empty);
+                Assert.That(hotel.HotelBookings, Is.Not.Null);
+                Assert.That(hotel.HotelBookings, Is.Empty);
+            });
         }
 
         [Test]
@@ -66,17 +69,20 @@ namespace UnitTest.Entities
             hotel.UpdatedAt = updatedAt;
 
             // Assert
-            Assert.That(hotel.Id, Is.Not.EqualTo(Guid.Empty));
-            Assert.That(hotel.Name, Is.EqualTo("Grand Hotel"));
-            Assert.That(hotel.Address, Is.EqualTo("123 Main St, Anytown, USA"));
-            Assert.That(hotel.Description, Is.EqualTo("A luxurious hotel with all modern amenities."));
-            Assert.That(hotel.City, Is.EqualTo("Anytown"));
-            Assert.That(hotel.Phone, Is.EqualTo("123-456-7890"));
-            Assert.That(hotel.Email, Is.EqualTo("info@grandhotel.com"));
-            Assert.That(hotel.Rating, Is.EqualTo(5));
-            Assert.That(hotel.Image, Is.EqualTo("hotel.jpg"));
-            Assert.That(hotel.CreatedAt, Is.EqualTo(createdAt));
-            Assert.That(hotel.UpdatedAt, Is.EqualTo(updatedAt));
+            Assert.Multiple(() =>
+            {
+                Assert.That(hotel.Id, Is.Not.EqualTo(Guid.Empty));
+                Assert.That(hotel.Name, Is.EqualTo("Grand Hotel"));
+                Assert.That(hotel.Address, Is.EqualTo("123 Main St, Anytown, USA"));
+                Assert.That(hotel.Description, Is.EqualTo("A luxurious hotel with all modern amenities."));
+                Assert.That(hotel.City, Is.EqualTo("Anytown"));
+                Assert.That(hotel.Phone, Is.EqualTo("123-456-7890"));
+                Assert.That(hotel.Email, Is.EqualTo("info@grandhotel.com"));
+                Assert.That(hotel.Rating, Is.EqualTo(5));
+                Assert.That(hotel.Image, Is.EqualTo("hotel.jpg"));
+                Assert.That(hotel.CreatedAt, Is.EqualTo(createdAt));
+                Assert.That(hotel.UpdatedAt, Is.EqualTo(updatedAt));
+            });
         }
 
         [Test]
@@ -109,9 +115,12 @@ namespace UnitTest.Entities
             hotel.Rooms.Add(room);
 
             // Assert
-            Assert.That(hotel.Rooms, Is.Not.Empty);
-            Assert.That(hotel.Rooms.Count, Is.EqualTo(1));
-            Assert.That(hotel.Rooms, Does.Contain(room));
+            Assert.Multiple(() =>
+            {
+                Assert.That(hotel.Rooms, Is.Not.Empty);
+                Assert.That(hotel.Rooms.Count, Is.EqualTo(1));
+                Assert.That(hotel.Rooms, Does.Contain(room));
+            });
         }
 
         [Test]
@@ -142,9 +151,12 @@ namespace UnitTest.Entities
             hotel.HotelBookings.Add(booking);
 
             // Assert
-            Assert.That(hotel.HotelBookings, Is.Not.Empty);
-            Assert.That(hotel.HotelBookings.Count, Is.EqualTo(1));
-            Assert.That(hotel.HotelBookings, Does.Contain(booking));
+            Assert.Multiple(() =>
+            {
+                Assert.That(hotel.HotelBookings, Is.Not.Empty);
+                Assert.That(hotel.HotelBookings.Count, Is.EqualTo(1));
+                Assert.That(hotel.HotelBookings, Does.Contain(booking));
+            });
         }
 
        

@@ -8,120 +8,135 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.InMemory; // Add this using directive
 
-[TestFixture]
-public class AgencyRepositoryTests
+namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
 {
-    private ApplicationDbContext _context;
-    private AgencyRepository _repository;
 
-    [SetUp]
-    public void SetUp()
+
+    [TestFixture]
+    public class AgencyRepositoryTests
     {
-        // Use an in-memory database for testing
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
-            .Options;
+        private ApplicationDbContext _context;
+        private AgencyRepository _repository;
 
-        // Use the new constructor for testing
-        _context = new ApplicationDbContext(options);
-        _repository = new AgencyRepository(_context);
+        [SetUp]
+        public void SetUp()
+        {
+            // Use an in-memory database for testing
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
 
-        // Seed data
-        _context.Agencies.AddRange(new List<Agency>
-    {
-        new Agency
-        {
-            Id = Guid.NewGuid(),
-            Name = "Agency 1",
-            Address = "123 Main St, New York, NY",
-            ContactNumber = "123-456-7890",
-            LicenseNumber = "LICENSE123"
-        },
-        new Agency
-        {
-            Id = Guid.NewGuid(),
-            Name = "Agency 2",
-            Address = "456 Elm St, Los Angeles, CA",
-            ContactNumber = "987-654-3210",
-            LicenseNumber = "LICENSE456"
+            // Use the new constructor for testing
+            _context = new ApplicationDbContext(options);
+            _repository = new AgencyRepository(_context);
+
+            // Seed data
+            _context.Agencies.AddRange(new List<Agency>
+            {
+                new Agency
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Agency 1",
+                    Address = "123 Main St, New York, NY",
+                    ContactNumber = "123-456-7890",
+                    LicenseNumber = "LICENSE123"
+                },
+                new Agency
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Agency 2",
+                    Address = "456 Elm St, Los Angeles, CA",
+                    ContactNumber = "987-654-3210",
+                    LicenseNumber = "LICENSE456"
+                }
+            });
+            _context.SaveChanges();
         }
-    });
-        _context.SaveChanges();
-    }
 
 
 
-    [TearDown]
-    public void TearDown()
-    {
-        // Clean up the in-memory database after each test
-        _context.Database.EnsureDeleted();
-        _context.Dispose();
-    }
-
-    [Test]
-    public void Add_ShouldAddAgency()
-    {
-        // Arrange
-        var agency = new Agency
+        [TearDown]
+        public void TearDown()
         {
-            Id = Guid.NewGuid(),
-            Name = "Test Agency",
-            Address = "789 Oak St, Chicago, IL",
-            ContactNumber = "654-321-0987",
-            LicenseNumber = "LICENSE789"
-        };
+            // Clean up the in-memory database after each test
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+        }
 
-        // Act
-        _repository.Add(agency);
-        _context.SaveChanges();
+        [Test]
+        public void Add_ShouldAddAgency()
+        {
+            // Arrange
+            var agency = new Agency
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Agency",
+                Address = "789 Oak St, Chicago, IL",
+                ContactNumber = "654-321-0987",
+                LicenseNumber = "LICENSE789"
+            };
 
-        // Assert
-        var result = _repository.GetAll();
-        Assert.That(result.Count(), Is.EqualTo(3)); // 2 seeded + 1 added
-        Assert.That(result.Any(a => a.Name == "Test Agency"), Is.True);
-    }
+            // Act
+            _repository.Add(agency);
+            _context.SaveChanges();
 
-    [Test]
-    public void GetAll_ShouldReturnAllAgencies()
-    {
-        // Act
-        var result = _repository.GetAll();
+            // Assert
+            var result = _repository.GetAll();
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Count, Is.EqualTo(3)); // 2 seeded + 1 added
+                Assert.That(result.Any(a => a.Name == "Test Agency"), Is.True);
+            });
+            
+        }
 
-        // Assert
-        Assert.That(result.Count(), Is.EqualTo(2)); // 2 seeded agencies
-        Assert.That(result.First().Name, Is.EqualTo("Agency 1"));
-    }
+        [Test]
+        public void GetAll_ShouldReturnAllAgencies()
+        {
+            // Act
+            var result = _repository.GetAll();
 
-    [Test]
-    public void Remove_ShouldRemoveAgency()
-    {
-        // Arrange
-        var agencyToRemove = _context.Agencies.First();
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Count, Is.EqualTo(2)); // 2 seeded agencies
+                Assert.That(result[0].Name, Is.EqualTo("Agency 1")); // Use indexing instead of First()
+            });
+        }
 
-        // Act
-        _repository.Remove(agencyToRemove);
-        _context.SaveChanges();
+        [Test]
+        public void Remove_ShouldRemoveAgency()
+        {
+            // Arrange
+            var agencyToRemove = _context.Agencies.First();
 
-        // Assert
-        var result = _repository.GetAll();
-        Assert.That(result.Count(), Is.EqualTo(1)); // 1 remaining after removal
-        Assert.That(result.Any(a => a.Id == agencyToRemove.Id), Is.False);
-    }
+            // Act
+            _repository.Remove(agencyToRemove);
+            _context.SaveChanges();
 
-    [Test]
-    public void Edit_ShouldUpdateAgency()
-    {
-        // Arrange
-        var agencyToEdit = _context.Agencies.First();
-        agencyToEdit.Name = "Updated Agency";
+            // Assert
+            var result = _repository.GetAll();
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Count, Is.EqualTo(1)); // 1 remaining after removal
+                Assert.That(result.Any(a => a.Id == agencyToRemove.Id), Is.False);
+            });
+        }
 
-        // Act
-        _repository.Edit(agencyToEdit);
-        _context.SaveChanges();
+        [Test]
+        public void Edit_ShouldUpdateAgency()
+        {
+            // Arrange
+            var agencyToEdit = _context.Agencies.First();
+            agencyToEdit.Name = "Updated Agency";
 
-        // Assert
-        var updatedAgency = _repository.GetAll().First(a => a.Id == agencyToEdit.Id);
-        Assert.That(updatedAgency.Name, Is.EqualTo("Updated Agency"));
+            // Act
+            _repository.Edit(agencyToEdit);
+            _context.SaveChanges();
+
+            // Assert
+            var updatedAgency = _repository.GetAll().First(a => a.Id == agencyToEdit.Id);
+            Assert.That(updatedAgency.Name, Is.EqualTo("Updated Agency"));
+        }
     }
 }

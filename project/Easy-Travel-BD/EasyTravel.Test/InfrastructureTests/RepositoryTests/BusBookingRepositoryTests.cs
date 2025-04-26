@@ -7,14 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EasyTravel.Test.Repositories
+namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
 {
     [TestFixture]
     public class BusBookingRepositoryTests
     {
         private ApplicationDbContext _context;
         private BusBookingRepository _repository;
-
 
         [SetUp]
         public void SetUp()
@@ -58,28 +57,28 @@ namespace EasyTravel.Test.Repositories
 
             // Seed bus bookings
             _context.BusBookings.AddRange(new List<BusBooking>
-    {
-        new BusBooking
-        {
-            Id = Guid.NewGuid(),
-            PassengerName = "John Doe",
-            Email = "john.doe@example.com",
-            PhoneNumber = "123-456-7890",
-            BusId = bus1.Id,
-            SelectedSeats = new List<string> { "A1", "A2" },
-            SelectedSeatIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }
-        },
-        new BusBooking
-        {
-            Id = Guid.NewGuid(),
-            PassengerName = "Jane Doe",
-            Email = "jane.doe@example.com",
-            PhoneNumber = "987-654-3210",
-            BusId = bus2.Id,
-            SelectedSeats = new List<string> { "B1", "B2" },
-            SelectedSeatIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }
-        }
-    });
+            {
+                new BusBooking
+                {
+                    Id = Guid.NewGuid(),
+                    PassengerName = "John Doe",
+                    Email = "john.doe@example.com",
+                    PhoneNumber = "123-456-7890",
+                    BusId = bus1.Id,
+                    SelectedSeats = new List<string> { "A1", "A2" },
+                    SelectedSeatIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }
+                },
+                new BusBooking
+                {
+                    Id = Guid.NewGuid(),
+                    PassengerName = "Jane Doe",
+                    Email = "jane.doe@example.com",
+                    PhoneNumber = "987-654-3210",
+                    BusId = bus2.Id,
+                    SelectedSeats = new List<string> { "B1", "B2" },
+                    SelectedSeatIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }
+                }
+            });
 
             _context.SaveChanges();
         }
@@ -96,14 +95,16 @@ namespace EasyTravel.Test.Repositories
         public void GetAllBusBookings_ShouldReturnAllBusBookings()
         {
             // Act
-            var result = _repository.GetAllBusBookings();
+            var result = _repository.GetAllBusBookings().ToList(); // Convert to List
 
             // Assert
-            Assert.That(result.Count(), Is.EqualTo(2)); // 2 seeded bus bookings
-            Assert.That(result.First().PassengerName, Is.EqualTo("John Doe"));
-            Assert.That(result.First().Email, Is.EqualTo("john.doe@example.com"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Count, Is.EqualTo(2)); // 2 seeded bus bookings
+                Assert.That(result[0].PassengerName, Is.EqualTo("John Doe")); // Use indexing
+                Assert.That(result[0].Email, Is.EqualTo("john.doe@example.com"));
+            });
         }
-
         [Test]
         public void DeleteBusBooking_ShouldRemoveBusBooking_WhenBusBookingExists()
         {
@@ -112,11 +113,15 @@ namespace EasyTravel.Test.Repositories
 
             // Act
             _repository.DeleteBusBooking(busBookingToDelete.Id);
+            _context.SaveChanges();
 
             // Assert
             var result = _repository.GetAllBusBookings();
-            Assert.That(result.Count(), Is.EqualTo(1)); // 1 remaining after deletion
-            Assert.That(result.Any(b => b.Id == busBookingToDelete.Id), Is.False);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Count, Is.EqualTo(1)); // 1 remaining after deletion
+                Assert.That(result.Any(b => b.Id == busBookingToDelete.Id), Is.False);
+            });
         }
     }
 }
