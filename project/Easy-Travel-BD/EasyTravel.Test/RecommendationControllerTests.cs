@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyTravel.Web.Controllers;
 
-namespace UnitTest
+namespace EasyTravel.Test
 {
     [TestFixture]
     public class RecommendationControllerTests
@@ -51,11 +51,17 @@ namespace UnitTest
             var result = await _controller.Get(type, count);
 
             // Assert
+            Assert.Multiple(() =>
+            {
+                
+           
             Assert.That(result, Is.TypeOf<OkObjectResult>());
             var okResult = result as OkObjectResult;
             Assert.That(okResult, Is.Not.Null);
             Assert.That(okResult.StatusCode, Is.EqualTo(200));
             Assert.That(okResult.Value, Is.EqualTo(recommendations));
+            });
+            
         }
 
         [Test]
@@ -96,11 +102,14 @@ namespace UnitTest
             var result = await _controller.Get(type, count);
 
             // Assert
+            Assert.Multiple(() =>
+            {
             Assert.That(result, Is.TypeOf<ObjectResult>());
             var objectResult = result as ObjectResult;
             Assert.That(objectResult, Is.Not.Null);
             Assert.That(objectResult.StatusCode, Is.EqualTo(500));
             Assert.That(objectResult.Value, Is.EqualTo("Error occurred"));
+            });
         }
 
     }

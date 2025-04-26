@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using System;
 
+namespace EasyTravel.Test.InfrastructureTests;
 [TestFixture]
 public class UnitOfWorkTests
 {
@@ -48,9 +49,12 @@ public class UnitOfWorkTests
     public void Constructor_ShouldInitializeDbContext()
     {
         // Assert
+        Assert.Multiple(() =>
+        {
         Assert.That(_unitOfWork, Is.Not.Null, "UnitOfWork should be initialized.");
         Assert.That(_dbContextMock.Object, Is.Not.Null, "ApplicationDbContext should be initialized.");
-    }
+        });
+        }
 
     [Test]
     public void Save_ShouldNotCallSaveChanges_WhenNoChangesAreMade()

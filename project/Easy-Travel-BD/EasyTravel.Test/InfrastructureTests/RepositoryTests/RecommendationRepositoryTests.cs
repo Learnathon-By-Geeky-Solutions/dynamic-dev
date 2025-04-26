@@ -6,6 +6,8 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+namespace EasyTravel.Test.InfrastructureTests.RepositoryTests;
 [TestFixture]
 public class RecommendationRepositoryTests
 {
@@ -66,14 +68,17 @@ public class RecommendationRepositoryTests
     }
 
     [Test]
-    public async Task GetRecommendationsAsync_ShouldReturnTopRatedHotels()
-    {
-        // Act
-        var result = await _repository.GetRecommendationsAsync("hotels", 2);
+public async Task GetRecommendationsAsync_ShouldReturnTopRatedHotels()
+{
+    // Act
+    var result = (await _repository.GetRecommendationsAsync("hotels", 2)).ToList(); // Convert to a list for safe access
 
-        // Assert
-        Assert.That(result.Count(), Is.EqualTo(2));
-        Assert.That(result.First().Title, Is.EqualTo("Grand Hotel"));
-    }
+    // Assert
+    Assert.Multiple(() =>
+    {
+        Assert.That(result.Count, Is.EqualTo(2), "The count of recommendations is incorrect."); // Use Count property
+        Assert.That(result[0].Title, Is.EqualTo("Grand Hotel"), "The first recommendation's title is incorrect.");
+    });
+}
 }
 

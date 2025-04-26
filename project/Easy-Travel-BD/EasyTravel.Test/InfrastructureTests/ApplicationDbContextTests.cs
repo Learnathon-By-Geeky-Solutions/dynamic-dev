@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 
+namespace EasyTravel.Test.InfrastructureTests;
 [TestFixture]
 public class ApplicationDbContextTests
 {
@@ -31,66 +32,79 @@ public class ApplicationDbContextTests
     }
 
     [Test]
-    public void ShouldSeedDefaultRoles()
+public void ShouldSeedDefaultRoles()
+{
+    // Act
+    var roles = _context.Roles.ToList();
+
+    // Assert
+    Assert.Multiple(() =>
     {
-        // Act
-        var roles = _context.Roles.ToList();
+        Assert.That(roles.Count, Is.EqualTo(6), "The count of roles is incorrect.");
+        Assert.That(roles.Any(r => r.Name == "admin"), Is.True, "The 'admin' role is missing.");
+        Assert.That(roles.Any(r => r.Name == "client"), Is.True, "The 'client' role is missing.");
+        Assert.That(roles.Any(r => r.Name == "agencyManager"), Is.True, "The 'agencyManager' role is missing.");
+        Assert.That(roles.Any(r => r.Name == "busManager"), Is.True, "The 'busManager' role is missing.");
+        Assert.That(roles.Any(r => r.Name == "carManager"), Is.True, "The 'carManager' role is missing.");
+        Assert.That(roles.Any(r => r.Name == "hotelManager"), Is.True, "The 'hotelManager' role is missing.");
+    });
+}
 
-        // Assert
-        Assert.That(roles.Count, Is.EqualTo(6));
-        Assert.That(roles.Any(r => r.Name == "admin"), Is.True);
-        Assert.That(roles.Any(r => r.Name == "client"), Is.True);
-        Assert.That(roles.Any(r => r.Name == "agencyManager"), Is.True);
-        Assert.That(roles.Any(r => r.Name == "busManager"), Is.True);
-        Assert.That(roles.Any(r => r.Name == "carManager"), Is.True);
-        Assert.That(roles.Any(r => r.Name == "hotelManager"), Is.True);
-    }
+  [Test]
+public void ShouldSeedDefaultAgencies()
+{
+    // Act
+    var agencies = _context.Agencies.ToList();
 
-    [Test]
-    public void ShouldSeedDefaultAgencies()
+    // Assert
+    Assert.Multiple(() =>
     {
-        // Act
-        var agencies = _context.Agencies.ToList();
+        Assert.That(agencies.Count, Is.EqualTo(1), "The count of agencies is incorrect.");
+        Assert.That(agencies[0].Name, Is.EqualTo("Irfan"), "The agency name is incorrect.");
+    });
+}
 
-        // Assert
-        Assert.That(agencies.Count, Is.EqualTo(1));
-        Assert.That(agencies.First().Name, Is.EqualTo("Irfan"));
-    }
+   [Test]
+public void ShouldSeedDefaultPhotographers()
+{
+    // Act
+    var photographers = _context.Photographers.ToList();
 
-    [Test]
-    public void ShouldSeedDefaultPhotographers()
+    // Assert
+    Assert.Multiple(() =>
     {
-        // Act
-        var photographers = _context.Photographers.ToList();
+        Assert.That(photographers.Count, Is.EqualTo(1), "The count of photographers is incorrect.");
+        Assert.That(photographers[0].FirstName, Is.EqualTo("Irfan"), "The photographer's first name is incorrect.");
+    });
+}
+[Test]
+public void ShouldSeedDefaultGuides()
+{
+    // Act
+    var guides = _context.Guides.ToList();
 
-        // Assert
-        Assert.That(photographers.Count, Is.EqualTo(1));
-        Assert.That(photographers.First().FirstName, Is.EqualTo("Irfan"));
-    }
-
-    [Test]
-    public void ShouldSeedDefaultGuides()
+    // Assert
+    Assert.Multiple(() =>
     {
-        // Act
-        var guides = _context.Guides.ToList();
+        Assert.That(guides.Count, Is.EqualTo(1), "The count of guides is incorrect.");
+        Assert.That(guides[0].FirstName, Is.EqualTo("Irfan"), "The guide's first name is incorrect.");
+    });
+}
 
-        // Assert
-        Assert.That(guides.Count, Is.EqualTo(1));
-        Assert.That(guides.First().FirstName, Is.EqualTo("Irfan"));
-    }
+   [Test]
+public void ShouldSeedDefaultHotels()
+{
+    // Act
+    var hotels = _context.Hotels.ToList();
 
-    [Test]
-    public void ShouldSeedDefaultHotels()
+    // Assert
+    Assert.Multiple(() =>
     {
-        // Act
-        var hotels = _context.Hotels.ToList();
-
-        // Assert
-        Assert.That(hotels.Count, Is.EqualTo(2));
-        Assert.That(hotels.Any(h => h.Name == "Grand Hotel"), Is.True);
-        Assert.That(hotels.Any(h => h.Name == "Sunset Resort"), Is.True);
-    }
-
+        Assert.That(hotels.Count, Is.EqualTo(2), "The count of hotels is incorrect.");
+        Assert.That(hotels[0].Name, Is.EqualTo("Grand Hotel"), "The first hotel's name is incorrect.");
+        Assert.That(hotels[1].Name, Is.EqualTo("Sunset Resort"), "The second hotel's name is incorrect.");
+    });
+}
 
 
 }

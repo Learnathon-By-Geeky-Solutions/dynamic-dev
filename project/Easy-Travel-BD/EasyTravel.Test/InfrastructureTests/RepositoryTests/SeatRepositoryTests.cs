@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+namespace EasyTravel.Test.InfrastructureTests.RepositoryTests;
 [TestFixture]
 public class SeatRepositoryTests
 {
@@ -68,16 +69,18 @@ public class SeatRepositoryTests
         _context.Database.EnsureDeleted();
         _context.Dispose();
     }
+[Test]
+public void GetAllSeats_ShouldReturnAllSeats()
+{
+    // Act
+    var result = _repository.GetAll().ToList(); // Convert to a list for safe access
 
-    [Test]
-    public void GetAllSeats_ShouldReturnAllSeats()
+    // Assert
+    Assert.Multiple(() =>
     {
-        // Act
-        var result = _repository.GetAll();
-
-        // Assert
-        Assert.That(result.Count(), Is.EqualTo(2));
-        Assert.That(result.First().SeatNumber, Is.EqualTo("A1"));
-    }
+        Assert.That(result.Count, Is.EqualTo(2), "The count of seats is incorrect."); // Use Count property
+        Assert.That(result[0].SeatNumber, Is.EqualTo("A1"), "The first seat's number is incorrect.");
+    });
+}
 }
 
