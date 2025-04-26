@@ -100,19 +100,19 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             _context.Dispose();
         }
 
-       [Test]
-public void GetAllPhotographers_ShouldReturnAllPhotographers()
-{
-    // Act
-    var result = _repository.GetAll().ToList(); // Convert to a list for safe access
+        [Test]
+        public void GetAllPhotographers_ShouldReturnAllPhotographers()
+        {
+            // Act
+            var result = _repository.GetAll().ToList(); // Convert to a list for safe access
 
-    // Assert
-    Assert.Multiple(() =>
-    {
-        Assert.That(result.Count, Is.EqualTo(2), "The count of photographers is incorrect."); // Use Count property
-        Assert.That(result[0].FirstName, Is.EqualTo("John"), "The first photographer's first name is incorrect.");
-    });
-}
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(2), "The count of photographers is incorrect."); // Use Has.Count.EqualTo
+                Assert.That(result[0].FirstName, Is.EqualTo("John"), "The first photographer's first name is incorrect.");
+            });
+        }
 
         [Test]
         public void AddPhotographer_ShouldAddPhotographer()
@@ -147,14 +147,15 @@ public void GetAllPhotographers_ShouldReturnAllPhotographers()
             _repository.Add(photographer);
             _context.SaveChanges();
 
-           // Assert
-var result = _repository.GetAll().ToList(); // Convert to a list for safe access
+            // Assert
+            var result = _repository.GetAll().ToList(); // Convert to a list for safe access
 
-Assert.Multiple(() =>
-{
-    Assert.That(result.Count, Is.EqualTo(3), "The count of photographers is incorrect."); // Use Count property
-    Assert.That(result.Any(p => p.FirstName == "Alice"), Is.True, "The expected photographer 'Alice' was not found.");
-});
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(3), "The count of photographers is incorrect."); // Use Has.Count.EqualTo
+                Assert.That(result.Any(p => p.FirstName == "Alice"), Is.True, "The expected photographer 'Alice' was not found.");
+            });
         }
+        
     }
 }

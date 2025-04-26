@@ -61,23 +61,24 @@ public class CarRepositoryTests
         _context.Database.EnsureDeleted();
         _context.Dispose();
     }
-[Test]
-public void GetAllCars_ShouldReturnAllCars()
-{
-    // Act
-    var result = _repository.GetAllCars().ToList(); // Convert to a list for safe access
-
-    // Assert
-    Assert.Multiple(() =>
+    [Test]
+    public void GetAllCars_ShouldReturnAllCars()
     {
-        Assert.That(result.Count, Is.EqualTo(2), "The count of cars is incorrect."); // Use Count property
-        Assert.That(result[0].OperatorName, Is.EqualTo("Operator 1"), "The first car's operator name is incorrect.");
-    });
-}
+        // Act
+        var result = _repository.GetAllCars().ToList(); // Convert to a list for safe access
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result, Has.Count.EqualTo(2), "The count of cars is incorrect."); // Updated to use Has.Count.EqualTo
+            Assert.That(result[0].OperatorName, Is.EqualTo("Operator 1"), "The first car's operator name is incorrect.");
+        });
+    }
 
     [Test]
     public void AddCar_ShouldAddCar()
     {
+        // Arrange
         var car = new Car
         {
             Id = Guid.NewGuid(),
@@ -91,15 +92,16 @@ public void GetAllCars_ShouldReturnAllCars()
             IsAvailable = true
         };
 
+        // Act
         _repository.AddCar(car);
         _context.SaveChanges();
 
-       var result = _repository.GetAllCars().ToList(); // Convert to a list for safe access
-
-Assert.Multiple(() =>
-{
-    Assert.That(result.Count, Is.EqualTo(3), "The count of cars is incorrect."); // Use Count property
-    Assert.That(result.Any(c => c.OperatorName == "Operator 3"), Is.True, "The expected car was not found.");
-});
+        // Assert
+        var result = _repository.GetAllCars().ToList(); // Convert to a list for safe access
+        Assert.Multiple(() =>
+        {
+            Assert.That(result, Has.Count.EqualTo(3), "The count of cars is incorrect."); // Updated to use Has.Count.EqualTo
+            Assert.That(result.Any(c => c.OperatorName == "Operator 3"), Is.True, "The expected car was not found.");
+        });
     }
 }

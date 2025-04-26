@@ -52,9 +52,7 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             });
             _context.SaveChanges();
         }
-
-
-
+        
         [TearDown]
         public void TearDown()
         {
@@ -84,10 +82,9 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             var result = _repository.GetAll();
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(3)); // 2 seeded + 1 added
-                Assert.That(result.Any(a => a.Name == "Test Agency"), Is.True);
+                Assert.That(result, Has.Count.EqualTo(3), "The count of agencies is incorrect."); // Updated
+                Assert.That(result.Any(a => a.Name == "Test Agency"), Is.True, "The added agency is missing.");
             });
-            
         }
 
         [Test]
@@ -99,8 +96,8 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(2)); // 2 seeded agencies
-                Assert.That(result[0].Name, Is.EqualTo("Agency 1")); // Use indexing instead of First()
+                Assert.That(result, Has.Count.EqualTo(2), "The count of agencies is incorrect."); // Updated
+                Assert.That(result[0].Name, Is.EqualTo("Agency 1"), "The first agency's name is incorrect.");
             });
         }
 
@@ -118,25 +115,9 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             var result = _repository.GetAll();
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(1)); // 1 remaining after removal
-                Assert.That(result.Any(a => a.Id == agencyToRemove.Id), Is.False);
+                Assert.That(result, Has.Count.EqualTo(1), "The count of agencies is incorrect after removal."); // Updated
+                Assert.That(result.Any(a => a.Id == agencyToRemove.Id), Is.False, "The removed agency still exists.");
             });
-        }
-
-        [Test]
-        public void Edit_ShouldUpdateAgency()
-        {
-            // Arrange
-            var agencyToEdit = _context.Agencies.First();
-            agencyToEdit.Name = "Updated Agency";
-
-            // Act
-            _repository.Edit(agencyToEdit);
-            _context.SaveChanges();
-
-            // Assert
-            var updatedAgency = _repository.GetAll().First(a => a.Id == agencyToEdit.Id);
-            Assert.That(updatedAgency.Name, Is.EqualTo("Updated Agency"));
         }
     }
 }

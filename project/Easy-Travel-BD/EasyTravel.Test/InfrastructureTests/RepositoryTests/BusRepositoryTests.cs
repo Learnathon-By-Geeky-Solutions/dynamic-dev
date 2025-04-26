@@ -67,15 +67,21 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
         [Test]
         public void GetAllBuses_ShouldReturnAllBuses()
         {
-            var result = _repository.GetAllBuses().ToList(); // Convert to List
+            // Act
+            var result = _repository.GetAllBuses().ToList(); // Ensure result is a list
 
-            Assert.That(result.Count, Is.EqualTo(2));
-            Assert.That(result[0].OperatorName, Is.EqualTo("Operator 1"));
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(2), "The count of buses is incorrect."); // Updated
+                Assert.That(result[0].OperatorName, Is.EqualTo("Operator 1"), "The first operator's name is incorrect.");
+            });
         }
 
         [Test]
         public void AddBus_ShouldAddBus()
         {
+            // Arrange
             var bus = new Bus
             {
                 Id = Guid.NewGuid(),
@@ -89,16 +95,16 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
                 TotalSeats = 20
             };
 
+            // Act
             _repository.Addbus(bus);
             _context.SaveChanges();
 
-            
-            var result = _repository.GetAllBuses();
-
+            // Assert
+            var result = _repository.GetAllBuses().ToList(); // Ensure result is a list
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(3));
-                Assert.That(result.Any(b => b.OperatorName == "Operator 3"), Is.True);
+                Assert.That(result, Has.Count.EqualTo(3), "The count of buses is incorrect after addition."); // Updated
+                Assert.That(result.Any(b => b.OperatorName == "Operator 3"), Is.True, "The added bus is missing.");
             });
         }
     }

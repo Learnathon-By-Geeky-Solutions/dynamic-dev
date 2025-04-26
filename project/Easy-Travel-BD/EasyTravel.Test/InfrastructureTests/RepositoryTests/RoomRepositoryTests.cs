@@ -88,12 +88,12 @@ public void GetRooms_ShouldReturnRoomsForHotel()
     // Act
     var result = _repository.GetRooms(hotelId).ToList(); // Convert to a list for safe access
 
-    // Assert
-    Assert.Multiple(() =>
-    {
-        Assert.That(result.Count, Is.EqualTo(2), "The count of rooms is incorrect."); // Use Count property
-        Assert.That(result[0].RoomNumber, Is.EqualTo("101"), "The first room's number is incorrect.");
-    });
+   // Assert
+Assert.Multiple(() =>
+{
+    Assert.That(result, Has.Count.EqualTo(2), "The count of rooms is incorrect."); // Use Has.Count.EqualTo
+    Assert.That(result[0].RoomNumber, Is.EqualTo("101"), "The first room's number is incorrect.");
+});
 }
     }
 
