@@ -21,6 +21,8 @@
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
           rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
     <!-- Vendor CSS Files -->
     <link href="~/assets/css/main.css" rel="stylesheet" />
     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -43,16 +45,14 @@
             <div class="container position-relative d-flex align-items-center justify-content-between">
                 <a href="index.html" class="logo d-flex align-items-center">
                     <!-- Uncomment the line below if you also wish to use an image logo -->
-                    <img src="~/photo/easytravelLogoNav.png" alt="logo">
-                    @* <h1 class="sitename">Easy Travel BD</h1> *@
-                    
-                </a>
-
+                    <img src="~/photo/easytravelLogoNav.png" alt="logo">               
+                </a>           
                 <nav id="navmenu" class="navmenu">
                     <ul>
-                        <li><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>                  
-                        <li><a href="@Url.Action("Index", "Bus")">Bus</a></li>
-                        <li><a href="@Url.Action("Index", "Hotel")">Hotel</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index" class="active">Home</a></li>
+                        <li><a asp-area="" asp-controller="Bus" asp-action="Index">Bus</a></li>
+                        <li><a asp-area="" asp-controller="Hotel" asp-action="Index">Hotel</a></li>
+                        @* Role-based Dashboard Link *@
                         @{
                             var roles = new List<string>
                         {
@@ -66,29 +66,30 @@
                             {
                                 if (User.Identity?.IsAuthenticated == true && User.IsInRole(role))
                                 {
-                                    <li><a href="@Url.Action("Index", "AdminDashboard" , new { Area = "Admin" })">Dashboard</a></li>
+                                    <li><a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">Dashboard</a></li>
                                 }
                             }
                         }
-                        <li><a href="@Url.Action("Index", "Car")">Car</a></li>
+                        <li><a asp-area="" asp-controller="Car" asp-action="Index">Car</a></li>
                         <li class="dropdown">
                             <a href="#"><span>Hire</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                             <ul>
-                                <li><a href="@Url.Action("Index", "Photographer")">Photographer</a></li>
-                                <li><a href="@Url.Action("Index", "Guide")">Guide</a></li>
+                                <li><a asp-area="" asp-controller="Photographer" asp-action="Index">Photographer</a></li>
+                                <li><a asp-area="" asp-controller="Guide" asp-action="Index">Guide</a></li>
                             </ul>
                         </li>
                         <li><a href="#contact">Contact Us</a></li>
-                    </ul>                   
-                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>                             
+                    </ul>
+                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
                 </nav>
+
                 <partial name="_LoginPartial" />
             </div>
 
         </div>
 
     </header>
-        <main role="main" class="py-2">
+        <main role="main" class="" style="min-height:80vh">
             <partial name="_Notification" />          
            @RenderBody()     
         </main>
