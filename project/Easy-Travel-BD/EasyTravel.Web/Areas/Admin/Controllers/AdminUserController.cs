@@ -37,7 +37,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
-                var (success,errormessage) = await _adminUserService.CreateAsync(user,model.Password);
+                var (success,errormessage) = await _adminUserService.CreateAsync(user,model.Password!);
                 if (!success)
                 {
                     ModelState.AddModelError(string.Empty, errormessage);
