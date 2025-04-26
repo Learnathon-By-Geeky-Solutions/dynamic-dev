@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace UnitTest
+namespace EasyTravel.Test.DomainTests.EntityTests
 {
     [TestFixture]
     public class UserTests

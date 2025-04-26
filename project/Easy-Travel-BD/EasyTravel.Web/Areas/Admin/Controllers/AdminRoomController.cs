@@ -29,14 +29,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             ViewBag.Hotels = new SelectList(_hotelService.GetAll(), "Id", "Name");
             return View();
         }
-        [HttpPost]
+        [HttpPost,ValidateAntiForgeryToken]
         public IActionResult Create(Room model)
         {
             if (ModelState.IsValid)
             {
                 TempData["success"] = "The room has been created successfully";
                 _roomService.Create(model);
-                return RedirectToAction("Index", "Room", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminRoom", new { area = "Admin" });
             }
             // Log validation errors
             foreach (var state in ModelState)
@@ -49,20 +49,23 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             }
             ViewBag.Hotels = new SelectList(_hotelService.GetAll(), "Id", "Name");
             return View(model);
-          //  return View();
         }
 
         [HttpGet]
         public IActionResult Update(Guid id)
         {
-            if (id == Guid.Empty)
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
-            var room = _roomService.Get(id);
-            ViewBag.Hotels = new SelectList(_hotelService.GetAll(), "Id", "Name");
+            if (ModelState.IsValid)
+            {
+                if (id == Guid.Empty)
+                    return RedirectToAction("Error", "Home", new { area = "Admin" });
+                var room = _roomService.Get(id);
+                ViewBag.Hotels = new SelectList(_hotelService.GetAll(), "Id", "Name");
 
-            return View(room);
+                return View(room);
+            }
+            return View();
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Update(Room model)
         {
             if (ModelState.IsValid)
@@ -70,31 +73,39 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _roomService.Update(model);
                 TempData["success"] = "The room has been updated successfully";
 
-                return RedirectToAction("Index", "Room", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminRoom", new { area = "Admin" });
             }
             return View();
         }
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
-            if (id == Guid.Empty)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
+                if (id == Guid.Empty)
+                {
+                    return RedirectToAction("Error", "Home", new { area = "Admin" });
+                }
+                var room = _roomService.Get(id);
+                return View(room);
             }
-            var room = _roomService.Get(id);
-            return View(room);
+            return View();
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Room model)
         {
-            if (model.Id == Guid.Empty)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
-            }
-            _roomService.Delete(model.Id);
-            TempData["success"] = "The room has been delete successfully";
+                if (model.Id == Guid.Empty)
+                {
+                    return RedirectToAction("Error", "Home", new { area = "Admin" });
+                }
+                _roomService.Delete(model.Id);
+                TempData["success"] = "The room has been delete successfully";
 
-            return RedirectToAction("Index", "Room", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminRoom", new { area = "Admin" });
+            }
+            return View(model);
         }
 
     }
