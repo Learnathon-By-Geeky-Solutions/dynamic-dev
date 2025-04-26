@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">Home</a></li>
                         <li class="breadcrumb-item active">@ViewData["Title"] User Role</li>
                     </ol>
                 </div>
@@ -36,8 +36,8 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="UserId">Select User</label>
-                            <select asp-for="UserId" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)">
-                                @if (action?.ToString()?.ToString() == "Create")
+                            <select asp-for="UserId" id="UserId" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)">
+                                @if (action?.ToString() == "Create")
                                 {
                                     <option value="">-- Select User --</option>
                                 }
@@ -54,7 +54,7 @@
 
                         <div class="form-group">
                             <label for="RoleId">Select Role</label>
-                            <select asp-for="RoleId" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)">
+                            <select asp-for="RoleId" id="RoleId" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)">
                                 @if (action?.ToString() == "Create")
                                 {
                                     <option value="">-- Select Role --</option>
