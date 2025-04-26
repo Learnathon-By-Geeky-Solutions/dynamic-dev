@@ -6,88 +6,95 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-[TestFixture]
-public class RoomRepositoryTests
+
+namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
 {
-    private ApplicationDbContext _context;
-    private RoomRepository _repository;
-
-    [SetUp]
-    public void SetUp()
+    [TestFixture]
+    public class RoomRepositoryTests
     {
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase_Room")
-            .Options;
+        private ApplicationDbContext _context;
+        private RoomRepository _repository;
 
-        _context = new ApplicationDbContext(options);
-        _repository = new RoomRepository(_context);
-
-        // Seed data
-        var hotel = new Hotel
+        [SetUp]
+        public void SetUp()
         {
-            Id = Guid.NewGuid(),
-            Name = "Grand Hotel",
-            Address = "123 Main St",
-            City = "City A",
-            Phone = "123-456-7890",
-            Email = "info@grandhotel.com",
-            Rating = 5,
-            Image = "hotel.jpg",
-            Description = "A luxurious hotel with modern amenities.",
-            CreatedAt = DateTime.Now.AddDays(-10),
-            UpdatedAt = DateTime.Now
-        };
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase_Room")
+                .Options;
 
-        _context.Hotels.Add(hotel);
+            _context = new ApplicationDbContext(options);
+            _repository = new RoomRepository(_context);
 
-        _context.Rooms.AddRange(new List<Room>
-        {
-            new Room
+            // Seed data
+            var hotel = new Hotel
             {
                 Id = Guid.NewGuid(),
-                RoomNumber = "101",
-                RoomType = "Deluxe",
-                PricePerNight = 100.00m,
-                MaxOccupancy = 2,
-                Description = "A deluxe room with a king-size bed.",
-                IsAvailable = true,
-                HotelId = hotel.Id
-            },
-            new Room
+                Name = "Grand Hotel",
+                Address = "123 Main St",
+                City = "City A",
+                Phone = "123-456-7890",
+                Email = "info@grandhotel.com",
+                Rating = 5,
+                Image = "hotel.jpg",
+                Description = "A luxurious hotel with modern amenities.",
+                CreatedAt = DateTime.Now.AddDays(-10),
+                UpdatedAt = DateTime.Now
+            };
+
+            _context.Hotels.Add(hotel);
+
+            _context.Rooms.AddRange(new List<Room>
             {
-                Id = Guid.NewGuid(),
-                RoomNumber = "102",
-                RoomType = "Standard",
-                PricePerNight = 80.00m,
-                MaxOccupancy = 2,
-                Description = "A standard room with a queen-size bed.",
-                IsAvailable = false,
-                HotelId = hotel.Id
-            }
-        });
+                new Room
+                {
+                    Id = Guid.NewGuid(),
+                    RoomNumber = "101",
+                    RoomType = "Deluxe",
+                    PricePerNight = 100.00m,
+                    MaxOccupancy = 2,
+                    Description = "A deluxe room with a king-size bed.",
+                    IsAvailable = true,
+                    HotelId = hotel.Id
+                },
+                new Room
+                {
+                    Id = Guid.NewGuid(),
+                    RoomNumber = "102",
+                    RoomType = "Standard",
+                    PricePerNight = 80.00m,
+                    MaxOccupancy = 2,
+                    Description = "A standard room with a queen-size bed.",
+                    IsAvailable = false,
+                    HotelId = hotel.Id
+                }
+            });
 
-        _context.SaveChanges();
-    }
+            _context.SaveChanges();
+        }
 
-    [TearDown]
-    public void TearDown()
-    {
-        _context.Database.EnsureDeleted();
-        _context.Dispose();
-    }
+        [TearDown]
+        public void TearDown()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+        }
 
-    [Test]
-    public void GetRooms_ShouldReturnRoomsForHotel()
-    {
-        // Arrange
-        var hotelId = _context.Hotels.First().Id;
+       [Test]
+public void GetRooms_ShouldReturnRoomsForHotel()
+{
+    // Arrange
+    var hotelId = _context.Hotels.First().Id;
 
-        // Act
-        var result = _repository.GetRooms(hotelId);
+    // Act
+    var result = _repository.GetRooms(hotelId).ToList(); // Convert to a list for safe access
 
-        // Assert
-        Assert.That(result.Count(), Is.EqualTo(2));
-        Assert.That(result.First().RoomNumber, Is.EqualTo("101"));
-    }
+   // Assert
+Assert.Multiple(() =>
+{
+    Assert.That(result, Has.Count.EqualTo(2), "The count of rooms is incorrect."); // Use Has.Count.EqualTo
+    Assert.That(result[0].RoomNumber, Is.EqualTo("101"), "The first room's number is incorrect.");
+});
 }
+    }
 
+}
