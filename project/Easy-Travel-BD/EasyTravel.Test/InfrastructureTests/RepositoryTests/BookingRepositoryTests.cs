@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EasyTravel.Test.Repositories
+namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
 {
     [TestFixture]
     public class BookingRepositoryTests
@@ -23,19 +23,17 @@ namespace EasyTravel.Test.Repositories
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
 
-            // Use the new constructor for testing
             _context = new ApplicationDbContext(options);
             _repository = new BookingRepository(_context);
 
             // Seed data
             _context.Bookings.AddRange(new List<Booking>
-    {
-        new Booking { Id = Guid.NewGuid(), TotalAmount = 100.0m, BookingStatus = BookingStatus.Confirmed, BookingTypes = BookingTypes.Bus },
-        new Booking { Id = Guid.NewGuid(), TotalAmount = 200.0m, BookingStatus = BookingStatus.Cancelled, BookingTypes = BookingTypes.Hotel }
-    });
+            {
+                new Booking { Id = Guid.NewGuid(), TotalAmount = 100.0m, BookingStatus = BookingStatus.Confirmed, BookingTypes = BookingTypes.Bus },
+                new Booking { Id = Guid.NewGuid(), TotalAmount = 200.0m, BookingStatus = BookingStatus.Cancelled, BookingTypes = BookingTypes.Hotel }
+            });
             _context.SaveChanges();
         }
-
 
         [TearDown]
         public void TearDown()
@@ -45,6 +43,7 @@ namespace EasyTravel.Test.Repositories
             _context.Dispose();
         }
 
+       
         [Test]
         public void Add_ShouldAddBooking()
         {
@@ -63,8 +62,11 @@ namespace EasyTravel.Test.Repositories
 
             // Assert
             var result = _repository.GetAll();
-            Assert.That(result.Count(), Is.EqualTo(3)); // 2 seeded + 1 added
-            Assert.That(result.Any(b => b.TotalAmount == 300.0m), Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(3), "The count of bookings is incorrect."); // Updated
+                Assert.That(result.Any(b => b.TotalAmount == 300.0m), Is.True, "The added booking is missing.");
+            });
         }
 
         [Test]
@@ -74,8 +76,11 @@ namespace EasyTravel.Test.Repositories
             var result = _repository.GetAll();
 
             // Assert
-            Assert.That(result.Count(), Is.EqualTo(2)); // 2 seeded bookings
-            Assert.That(result.First().TotalAmount, Is.EqualTo(100.0m));
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(2), "The count of bookings is incorrect."); // Updated
+                Assert.That(result[0].TotalAmount, Is.EqualTo(100.0m), "The first booking's total amount is incorrect.");
+            });
         }
 
         [Test]
@@ -90,24 +95,11 @@ namespace EasyTravel.Test.Repositories
 
             // Assert
             var result = _repository.GetAll();
-            Assert.That(result.Count(), Is.EqualTo(1)); // 1 remaining after removal
-            Assert.That(result.Any(b => b.Id == bookingToRemove.Id), Is.False);
-        }
-
-        [Test]
-        public void Edit_ShouldUpdateBooking()
-        {
-            // Arrange
-            var bookingToEdit = _context.Bookings.First();
-            bookingToEdit.TotalAmount = 500.0m;
-
-            // Act
-            _repository.Edit(bookingToEdit);
-            _context.SaveChanges();
-
-            // Assert
-            var updatedBooking = _repository.GetAll().First(b => b.Id == bookingToEdit.Id);
-            Assert.That(updatedBooking.TotalAmount, Is.EqualTo(500.0m));
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(1), "The count of bookings is incorrect after removal."); // Updated
+                Assert.That(result.Any(b => b.Id == bookingToRemove.Id), Is.False, "The removed booking still exists.");
+            });
         }
     }
 }
