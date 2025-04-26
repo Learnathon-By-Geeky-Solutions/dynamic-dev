@@ -15,6 +15,14 @@ namespace EasyTravel.Application.Services
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginService> _logger;
 
+
+        private static string RedactEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+                return "REDACTED";
+            var parts = email.Split('@');
+            return $"{parts[0][0]}***@{parts[1]}";
+        }
         public LoginService(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<LoginService> logger)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -38,34 +46,38 @@ namespace EasyTravel.Application.Services
 
             try
             {
-                _logger.LogInformation("Attempting to authenticate user with email: {Email}", email);
+                email = email.Replace("\n", "").Replace("\r", "");
+                _logger.LogInformation("Attempting to authenticate user with email: {Email}", RedactEmail(email));
                 var user = await _userManager.FindByEmailAsync(email);
                 if (user == null)
                 {
-                    _logger.LogWarning("Authentication failed: User with email {Email} not found.", email);
+                    email = email.Replace("\n", "").Replace("\r", "");
+                    _logger.LogWarning("Authentication failed: User with email {Email} not found.", RedactEmail(email));
                     return (false, "User not found!", null);
                 }
 
                 var result = await _signInManager.PasswordSignInAsync(user, password, rememberMe, false);
                 if (!result.Succeeded)
                 {
-                    _logger.LogWarning("Authentication failed: Invalid login attempt for user with email {Email}.", email);
+                    email = email.Replace("\n", "").Replace("\r", "");
+                    _logger.LogWarning("Authentication failed: Invalid login attempt for user with email {Email}.", RedactEmail(email));
                     return (false, "Invalid login attempt!", null);
                 }
 
                 var roles = await _userManager.GetRolesAsync(user);
                 if (roles.Any(role => IsAdminRole(role)))
                 {
-                    _logger.LogInformation("Authentication successful: User with email {Email} is an admin.", email);
+                    email = email.Replace("\n", "").Replace("\r", "");
+                    _logger.LogInformation("Authentication successful: User with email {Email} is an admin.", RedactEmail(email));
                     return (true, "", "/Admin/AdminDashboard/Index");
                 }
 
-                _logger.LogInformation("Authentication successful: User with email {Email} has no defined role.", email);
+                _logger.LogInformation("Authentication successful: User with email {Email} has no defined role.", RedactEmail(email));
                 return (true, "User role is not defined", null);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while authenticating user with email: {Email}", email);
+                _logger.LogError(ex, "An error occurred while authenticating user with email: {Email}", RedactEmail(email));
                 throw new InvalidOperationException($"An error occurred while authenticating user with email: {email}.", ex);
             }
         }

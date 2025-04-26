@@ -19,7 +19,6 @@ namespace EasyTravel.Infrastructure.Services
         {
             _scopeFactory = scopeFactory;
         }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -33,36 +32,36 @@ namespace EasyTravel.Infrastructure.Services
                                 p.Booking.BookingStatus == BookingStatus.Pending &&
                                 nowTime - p.StartTime >= TimeSpan.FromHours(3))
                     .Select(p => p.Id)
-                    .ToListAsync();
+                    .ToListAsync(stoppingToken); // Forwarding stoppingToken
 
                 var expiredGuideBookingIds = await dbContext.GuideBookings
                     .Where(p => p.Booking != null &&
                                 p.Booking.BookingStatus == BookingStatus.Pending &&
                                 nowTime - p.StartTime >= TimeSpan.FromHours(3))
                     .Select(p => p.Id)
-                    .ToListAsync();
+                    .ToListAsync(stoppingToken); // Forwarding stoppingToken
 
-                if (expiredPhotographerBookingIds.Any())
+                if (expiredPhotographerBookingIds.Count > 0)
                 {
                     var bookingsToDelete = await dbContext.Bookings
                         .Where(b => expiredPhotographerBookingIds.Contains(b.Id))
-                        .ToListAsync();
+                        .ToListAsync(stoppingToken); // Forwarding stoppingToken
 
                     dbContext.Bookings.RemoveRange(bookingsToDelete);
-                    await dbContext.SaveChangesAsync();
+                    await dbContext.SaveChangesAsync(stoppingToken); // Forwarding stoppingToken
                 }
-                if (expiredGuideBookingIds.Any())
+                if (expiredGuideBookingIds.Count > 0)
                 {
                     var bookingsToDelete = await dbContext.Bookings
                         .Where(b => expiredGuideBookingIds.Contains(b.Id))
-                        .ToListAsync();
+                        .ToListAsync(stoppingToken); // Forwarding stoppingToken
 
                     dbContext.Bookings.RemoveRange(bookingsToDelete);
-                    await dbContext.SaveChangesAsync();
+                    await dbContext.SaveChangesAsync(stoppingToken); // Forwarding stoppingToken
                 }
 
-                // Run every 1 minute
-                await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
+                // Run every 1 hour
+                await Task.Delay(TimeSpan.FromHours(1), stoppingToken); // Forwarding stoppingToken
             }
         }
 

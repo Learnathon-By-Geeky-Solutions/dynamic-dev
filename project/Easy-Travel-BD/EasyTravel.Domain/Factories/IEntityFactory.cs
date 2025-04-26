@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Factories
 {
-    public interface IEntityFactory<TEntity>
+    public interface IEntityFactory<out TEntity>
     {
         TEntity CreateInstance();
     }

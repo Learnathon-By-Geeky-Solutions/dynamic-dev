@@ -63,7 +63,7 @@ namespace EasyTravel.Web
                         }
                         else
                         {
-                            logger.LogInformation($"Admin user '{adminEmail}' created and assigned role '{roleName}'.");
+                            logger.LogInformation($"Admin user created and assigned role '{roleName}'.");
                         }
                     }
                     else
@@ -74,7 +74,7 @@ namespace EasyTravel.Web
                 }
                 else
                 {
-                    logger.LogInformation($"Admin user '{adminEmail}' already exists.");
+                    logger.LogInformation($"Admin user already exists.");
                 }
             }
             catch (Exception ex)
