@@ -39,7 +39,7 @@ namespace EasyTravel.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("List", "Photographer");
+                return View();
             }
             _sessionService.SetString("PhotographerId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
@@ -72,14 +72,14 @@ namespace EasyTravel.Web.Controllers
                 _photographerBookingService.SaveBooking(pgBooking, booking);
                 return View("Success");
             }
-            return RedirectToAction("PhotographerBooking", "Review");
+            return View(model);
         }
         [HttpGet]
         public IActionResult Guide(Guid id)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("List", "Guide");
+                return View();
             }
             _sessionService.SetString("GuideId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
@@ -111,7 +111,7 @@ namespace EasyTravel.Web.Controllers
                 _guideBookingService.SaveBooking(guideBooking, booking);
                 return View("Success");
             }
-            return RedirectToAction("GuideBooking", "Review");
+            return View(model);
         }
 
         [HttpGet]
@@ -119,7 +119,7 @@ namespace EasyTravel.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("List", "Bus");
+                return View();
             }
             _sessionService.SetString("BusId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
@@ -156,14 +156,14 @@ namespace EasyTravel.Web.Controllers
                 _busService.SaveBooking(busbooking, model.SelectedSeatIds!, booking);
                 return View("Success");
             }
-            return RedirectToAction("BusBooking", "Review");
+            return View(model);
         }
 
         public IActionResult Car(Guid id)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("List", "Car");
+                return View();
             }
             _sessionService.SetString("BusId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
@@ -200,7 +200,7 @@ namespace EasyTravel.Web.Controllers
 
                 return View("Success");
             }
-            return RedirectToAction("CarBooking", "Review");
+            return View();
         }
     }
 }

@@ -42,6 +42,10 @@ namespace UnitTest.Entities
             };
 
             // Assert
+            Assert.Multiple(() =>
+            {
+                
+         
             Assert.That(photographer.Id, Is.Not.EqualTo(Guid.Empty));
             Assert.That(photographer.FirstName, Is.EqualTo("John"));
             Assert.That(photographer.LastName, Is.EqualTo("Doe"));
@@ -67,6 +71,7 @@ namespace UnitTest.Entities
             Assert.That(photographer.AgencyId, Is.Not.EqualTo(Guid.Empty));
             Assert.That(photographer.Agencies, Is.Empty);
             Assert.That(photographer.PhotographerBookings, Is.Empty);
+            });
         }
 
         [Test]

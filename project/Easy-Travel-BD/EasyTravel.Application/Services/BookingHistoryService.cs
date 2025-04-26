@@ -12,10 +12,10 @@ namespace EasyTravel.Application.Services
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
         private readonly ILogger<BookingHistoryService> _logger;
-
+        private const string UserIdCannotBeEmptyMessage = "User ID cannot be empty.";
         public BookingHistoryService(IApplicationUnitOfWork unitOfWork, ILogger<BookingHistoryService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -24,13 +24,13 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching bus bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try
             {
                 _logger.LogInformation("Fetching bus bookings for user with ID: {Id}", id);
-                return await _unitOfWork.BusBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.BusBookingRepository.GetAsync(e =>e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {
@@ -44,13 +44,13 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching car bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try
             {
                 _logger.LogInformation("Fetching car bookings for user with ID: {Id}", id);
-                return await _unitOfWork.CarBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.CarBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {
@@ -64,13 +64,13 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching guide bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try
             {
                 _logger.LogInformation("Fetching guide bookings for user with ID: {Id}", id);
-                return await _unitOfWork.GuideBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.GuideBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {
@@ -84,13 +84,13 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching hotel bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try
             {
                 _logger.LogInformation("Fetching hotel bookings for user with ID: {Id}", id);
-                return await _unitOfWork.HotelBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.HotelBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {
@@ -104,13 +104,13 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching photographer bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try
             {
                 _logger.LogInformation("Fetching photographer bookings for user with ID: {Id}", id);
-                return await _unitOfWork.PhotographerBookingRepository.GetAsync(e => e.Booking!.UserId == id);
+                return await _unitOfWork.PhotographerBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
             }
             catch (Exception ex)
             {
