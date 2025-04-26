@@ -12,6 +12,7 @@ namespace EasyTravel.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
     {
+
         private readonly string? _connectionString;
         private readonly string? _migrationAssembly;
         private const string DefaultSqlGetDate = "GETDATE()";
@@ -33,6 +34,7 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<CarBooking> CarBookings { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -488,7 +490,14 @@ namespace EasyTravel.Infrastructure.Data
             _connectionString = connectionString;
             _migrationAssembly = migrationAssembly;
         }
-
+        // New constructor for testing
+        /// <summary>
+        /// Constructor for configuring the DbContext using dependency injection.
+        /// This is essential for testing scenarios and production configurations.
+        /// </summary>
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
