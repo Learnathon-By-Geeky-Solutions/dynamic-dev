@@ -76,11 +76,11 @@ public void GetAllSeats_ShouldReturnAllSeats()
     var result = _repository.GetAll().ToList(); // Convert to a list for safe access
 
     // Assert
-    Assert.Multiple(() =>
-    {
-        Assert.That(result.Count, Is.EqualTo(2), "The count of seats is incorrect."); // Use Count property
-        Assert.That(result[0].SeatNumber, Is.EqualTo("A1"), "The first seat's number is incorrect.");
-    });
+Assert.Multiple(() =>
+{
+    Assert.That(result, Has.Count.EqualTo(2), "The count of seats is incorrect."); // Use Has.Count.EqualTo
+    Assert.That(result[0].SeatNumber, Is.EqualTo("A1"), "The first seat's number is incorrect.");
+});
 }
 }
 

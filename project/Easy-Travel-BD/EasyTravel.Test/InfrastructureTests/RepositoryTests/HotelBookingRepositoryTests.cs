@@ -81,10 +81,11 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
 
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(2), "The count of hotel bookings is incorrect.");
+                Assert.That(result, Has.Count.EqualTo(2), "The count of hotel bookings is incorrect."); // Updated
                 Assert.That(result[0].RoomIdsJson, Is.EqualTo("[\"Room1\", \"Room2\"]"), "The RoomIdsJson of the first booking is incorrect.");
             });
         }
+
         [Test]
         public void AddHotelBooking_ShouldAddHotelBooking()
         {
@@ -100,10 +101,14 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             _repository.Add(hotelBooking);
             _context.SaveChanges();
 
-            var result = _repository.GetAll();
-            Assert.That(result.Count, Is.EqualTo(3));
-            Assert.That(result.Any(hb => hb.RoomIdsJson == "[\"Room5\", \"Room6\"]"), Is.True);
+            var result = _repository.GetAll().ToList(); // Convert to a list for safe access
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(3), "The count of hotel bookings is incorrect after addition."); // Updated
+                Assert.That(result.Any(hb => hb.RoomIdsJson == "[\"Room5\", \"Room6\"]"), Is.True, "The added hotel booking is missing.");
+            });
         }
+        
     }
 
     [TestFixture]
@@ -164,25 +169,27 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             _context.Dispose();
         }
 
+       
         [Test]
-            public void GetHotels_ShouldReturnHotelsByLocation()
-            {
-                var result = _repository.GetHotels("City A", null).ToList(); // Convert to a list for safe access
+        public void GetHotels_ShouldReturnHotelsByLocation()
+        {
+            var result = _repository.GetHotels("City A", null).ToList(); // Convert to a list for safe access
 
-                Assert.Multiple(() =>
-                {
-                    Assert.That(result.Count, Is.EqualTo(1), "The count of hotels is incorrect.");
-                    Assert.That(result[0].Name, Is.EqualTo("Grand Hotel"), "The name of the hotel is incorrect.");
-                });
-            }
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(1), "The count of hotels is incorrect."); // Updated
+                Assert.That(result[0].Name, Is.EqualTo("Grand Hotel"), "The name of the hotel is incorrect.");
+            });
+        }
 
         [Test]
         public void GetTopRatedAsync_ShouldReturnTopRatedHotels()
         {
-            var result = _repository.GetTopRatedAsync().ToList();
+            var result = _repository.GetTopRatedAsync().ToList(); // Directly call the method and convert to list
+
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(2), "The count of top-rated hotels is incorrect.");
+                Assert.That(result, Has.Count.EqualTo(2), "The count of top-rated hotels is incorrect.");
                 Assert.That(result[0].Rating, Is.GreaterThanOrEqualTo(4), "The rating of the first hotel is incorrect.");
             });
         }
