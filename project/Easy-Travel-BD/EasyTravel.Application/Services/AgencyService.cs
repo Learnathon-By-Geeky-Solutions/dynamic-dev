@@ -31,11 +31,6 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogInformation("Fetching agency with ID: {Id}", id);
                 var agency = _unitOfWork.AgencyRepository.GetById(id);
-                if (agency == null)
-                {
-                    _logger.LogWarning("Agency with ID: {Id} not found.", id);
-                    throw new KeyNotFoundException($"Agency with ID: {id} not found.");
-                }
                 return agency;
             }
             catch (Exception ex)

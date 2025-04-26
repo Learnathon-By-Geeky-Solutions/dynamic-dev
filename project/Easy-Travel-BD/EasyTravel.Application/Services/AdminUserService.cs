@@ -20,7 +20,13 @@ namespace EasyTravel.Application.Services
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
+        private static string RedactEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+                return "REDACTED";
+            var parts = email.Split('@');
+            return $"{parts[0][0]}***@{parts[1]}";
+        }
         public User GetUserInstance()
         {
             _logger.LogInformation("Creating a new user instance.");
@@ -167,26 +173,28 @@ namespace EasyTravel.Application.Services
 
         public async Task<User?> GetByEmailAsync(string email)
         {
+            var redactedEmail = RedactEmail(email);
             if (string.IsNullOrWhiteSpace(email))
             {
-                _logger.LogWarning("Invalid email provided for retrieval.");
+                _logger.LogWarning("Invalid email provided for getting user.");
                 throw new ArgumentException("Email cannot be empty.", nameof(email));
             }
 
             try
             {
-                _logger.LogInformation("Fetching user with email: {Email}", email);
+                _logger.LogInformation("Fetching user with email: {Email}", redactedEmail);
                 return await _userManager.FindByEmailAsync(email);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching the user with email: {Email}", email);
-                throw new InvalidOperationException($"An error occurred while fetching the user with email: {email}.", ex);
+                _logger.LogError(ex, "An error occurred while fetching the user with email: {Email}", redactedEmail);
+                throw new InvalidOperationException($"An error occurred while fetching the user with email: {redactedEmail}.", ex);
             }
         }
 
         public async Task<bool> IsExist(string email)
         {
+            var redactedEmail = RedactEmail(email);
             if (string.IsNullOrWhiteSpace(email))
             {
                 _logger.LogWarning("Invalid email provided for existence check.");
@@ -195,13 +203,13 @@ namespace EasyTravel.Application.Services
 
             try
             {
-                _logger.LogInformation("Checking existence of user with email: {Email}", email);
+                _logger.LogInformation("Checking existence of user with email: {Email}", redactedEmail);
                 return await _userManager.FindByEmailAsync(email) != null;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while checking existence of user with email: {Email}", email);
-                throw new InvalidOperationException($"An error occurred while checking existence of user with email: {email}.", ex);
+                _logger.LogError(ex, "An error occurred while checking existence of user with email: {Email}", redactedEmail);
+                throw new InvalidOperationException($"An error occurred while checking existence of user with email: {redactedEmail}.", ex);
             }
         }
     }

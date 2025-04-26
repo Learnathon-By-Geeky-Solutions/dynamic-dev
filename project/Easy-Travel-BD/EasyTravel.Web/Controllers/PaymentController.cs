@@ -79,38 +79,38 @@ namespace EasyTravel.Web.Controllers
             }
             if(photographer != null)
             {
-                var pgBookingModel = JsonSerializer.Deserialize<PhotographerBookingViewModel>(_sessionService.GetString("photographerBookingObj"));
-                totalAmount = pgBookingModel?.TotalAmount.ToString();
-                bookingType = BookingTypes.Photographer.ToString();
-                _sessionService.SetString("BookingId", photographer.Id.ToString());
+                //var pgBookingModel = JsonSerializer.Deserialize<PhotographerBookingViewModel>(_sessionService.GetString("photographerBookingObj"));
+                //totalAmount = pgBookingModel?.TotalAmount.ToString();
+                //bookingType = BookingTypes.Photographer.ToString();
+                //_sessionService.SetString("BookingId", photographer.Id.ToString());
             }
             else if (guide != null)
             {
-                var guideBookingModel = JsonSerializer.Deserialize<GuideBookingViewModel>(_sessionService.GetString("guideBookingObj"));
-                totalAmount = guideBookingModel?.TotalAmount.ToString();
-                bookingType = BookingTypes.Guide.ToString();
-                _sessionService.SetString("BookingId", guide.Id.ToString());
+                //var guideBookingModel = JsonSerializer.Deserialize<GuideBookingViewModel>(_sessionService.GetString("guideBookingObj"));
+                //totalAmount = guideBookingModel?.TotalAmount.ToString();
+                //bookingType = BookingTypes.Guide.ToString();
+                //_sessionService.SetString("BookingId", guide.Id.ToString());
             }
             else if (bus != null)
             {
-                var busBookingModel = JsonSerializer.Deserialize<BusBookingViewModel>(_sessionService.GetString("busBookingObj"));
-                totalAmount = busBookingModel?.TotalAmount.ToString();
-                bookingType = BookingTypes.Bus.ToString();
-                _sessionService.SetString("BookingId", bus.Id.ToString());
+                //var busBookingModel = JsonSerializer.Deserialize<BusBookingViewModel>(_sessionService.GetString("busBookingObj"));
+                //totalAmount = busBookingModel?.TotalAmount.ToString();
+                //bookingType = BookingTypes.Bus.ToString();
+                //_sessionService.SetString("BookingId", bus.Id.ToString());
             }
             else if (car != null)
             {
-                var carBookingModel = JsonSerializer.Deserialize<CarBookingViewModel>(_sessionService.GetString("carBookingObj"));
-                totalAmount = carBookingModel?.BookingForm?.TotalAmount.ToString();
-                bookingType = BookingTypes.Car.ToString();
-                _sessionService.SetString("BookingId", car.Id.ToString());
+                //var carBookingModel = JsonSerializer.Deserialize<CarBookingViewModel>(_sessionService.GetString("carBookingObj"));
+                //totalAmount = carBookingModel?.BookingForm?.TotalAmount.ToString();
+                //bookingType = BookingTypes.Car.ToString();
+                //_sessionService.SetString("BookingId", car.Id.ToString());
             }
             else if (hotel != null)
             {
-                var hotelBookingModel = JsonSerializer.Deserialize<HotelBookingViewModel>(_sessionService.GetString("hotelBookingObj"));
-                //totalAmount = hotelBookingModel..ToString(); // Need to pass total amount from hotel booking view model
-                bookingType = BookingTypes.Hotel.ToString();
-                _sessionService.SetString("BookingId", hotel.Id.ToString());
+                //var hotelBookingModel = JsonSerializer.Deserialize<HotelBookingViewModel>(_sessionService.GetString("hotelBookingObj"));
+                ////totalAmount = hotelBookingModel..ToString(); // Need to pass total amount from hotel booking view model
+                //bookingType = BookingTypes.Hotel.ToString();
+                //_sessionService.SetString("BookingId", hotel.Id.ToString());
             }
             var user = await _userManager.GetUserAsync(User);
 
@@ -126,8 +126,8 @@ namespace EasyTravel.Web.Controllers
                 FailUrl = baseUrl + "/Payment/Fail",
                 CancelUrl = baseUrl + "/Payment/Cancel",
                 CusName = $"{user?.FirstName},{user?.LastName}",
-                CusEmail = $"{user.Email}",
-                CusPhone = $"{user.PhoneNumber}",
+                CusEmail = $"{user?.Email}",
+                CusPhone = $"{user?.PhoneNumber}",
                 CusAdd1 = "Dhaka",
                 CusCity = "Dhaka",
             };

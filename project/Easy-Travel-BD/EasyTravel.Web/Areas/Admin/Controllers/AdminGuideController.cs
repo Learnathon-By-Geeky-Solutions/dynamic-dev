@@ -46,7 +46,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             if (id == Guid.Empty)
             {
@@ -59,10 +59,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Update(Guide model)
         {
-            if (!ModelState.IsValid)
-            {
-                //
-            }
             if (ModelState.IsValid)
             {
                 model.UpdatedAt = DateTime.Now;
@@ -77,22 +73,23 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //
+                if (id == Guid.Empty)
+                {
+                    return RedirectToAction("Error", "Home", new { area = "Admin" });
+                }
+                var model = _guideService.Get(id);
+                model.Agencies = _agencyService.GetAll().ToList();
+                return View(model);
             }
-            if (id == Guid.Empty)
-            {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
-            }
-            var model = _guideService.Get(id);
-            model.Agencies = _agencyService.GetAll().ToList();
-            return View(model);
+            return View();
+            
         }
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Guide model)
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View(model);
             }
             if (model.Id == Guid.Empty)
             {
