@@ -16,7 +16,7 @@ namespace EasyTravel.Application.Services
 
         public PhotographerService(IApplicationUnitOfWork unitOfWork, ILogger<PhotographerService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -32,11 +32,6 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogInformation("Fetching photographer with ID: {Id}", id);
                 var photographer = _unitOfWork.PhotographerRepository.GetById(id);
-                if (photographer == null)
-                {
-                    _logger.LogWarning("Photographer with ID: {Id} not found.", id);
-                    throw new KeyNotFoundException($"Photographer with ID: {id} not found.");
-                }
                 return photographer;
             }
             catch (Exception ex)

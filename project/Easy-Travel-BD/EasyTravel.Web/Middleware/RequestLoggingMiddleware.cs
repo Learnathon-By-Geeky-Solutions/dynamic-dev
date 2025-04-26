@@ -13,8 +13,9 @@
 
         public async Task Invoke(HttpContext context)
         {
+            var sanitizedPath = context.Request.Path.Value?.Replace("\n", "").Replace("\r", "");
             _logger.LogInformation("Handling request: {Method} {Path}",
-                context.Request.Method, context.Request.Path);
+                context.Request.Method, sanitizedPath);
 
             await _next(context);
 

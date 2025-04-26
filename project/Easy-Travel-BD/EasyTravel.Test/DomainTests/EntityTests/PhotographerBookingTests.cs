@@ -2,7 +2,7 @@ using EasyTravel.Domain.Entites;
 using NUnit.Framework;
 using System;
 
-namespace UnitTest.Entities
+namespace EasyTravel.Test.DomainTests.EntityTests
 {
     [TestFixture]
     public class PhotographerBookingTests
@@ -27,6 +27,8 @@ namespace UnitTest.Entities
             };
 
             // Assert
+            Assert.Multiple(() =>
+            {
             Assert.That(booking.Id, Is.Not.EqualTo(Guid.Empty));
             Assert.That(booking.UserName, Is.EqualTo("John Doe"));
             Assert.That(booking.Email, Is.EqualTo("john.doe@example.com"));
@@ -38,6 +40,7 @@ namespace UnitTest.Entities
             Assert.That(booking.EndTime, Is.EqualTo(TimeSpan.FromHours(12)));
             Assert.That(booking.TimeInHour, Is.EqualTo(2));
             Assert.That(booking.PhotographerId, Is.Not.EqualTo(Guid.Empty));
-        }
+            }); 
+            }
     }
 }

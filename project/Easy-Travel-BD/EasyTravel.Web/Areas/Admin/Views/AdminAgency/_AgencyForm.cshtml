@@ -31,52 +31,49 @@
                 <div class="card-header">
                     <h3 class="card-title">@ViewData["Title"] Agency</h3>
                 </div>
-                <form method="post" asp-action="@action" asp-controller="AdminAgency">
+                <form asp-antiforgery=true method="post" asp-action="@action" asp-controller="AdminAgency">
                     <div class="card-body">
                         <!-- Name -->
                         <div class="form-group">
                             <label for="Name">Name</label>
-                            <input asp-for="Name" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <input type="text" asp-for="Name" id="Name" class="form-control" required="@(isDisabled ? null : "required")" readonly="@(isDisabled ? "readonly" : null)" />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
 
                         <!-- Address -->
                         <div class="form-group">
                             <label for="Address">Address</label>
-                            <input asp-for="Address" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <input type="text" asp-for="Address" id="Address" class="form-control" required="@(isDisabled ? null : "required")" readonly="@(isDisabled ? "readonly" : null)" />
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
 
                         <!-- Contact Number -->
                         <div class="form-group">
                             <label for="ContactNumber">Contact Number</label>
-                            <input asp-for="ContactNumber" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <input type="text" asp-for="ContactNumber" id="ContactNumber" class="form-control" required="@(isDisabled ? null : "required")" readonly="@(isDisabled ? "readonly" : null)" />
                             <span asp-validation-for="ContactNumber" class="text-danger"></span>
                         </div>
 
                         <!-- License Number -->
                         <div class="form-group">
                             <label for="LicenseNumber">License Number</label>
-                            <input asp-for="LicenseNumber" class="form-control" required="@(isDisabled ? null : "required")" disabled="@(isDisabled ? "disabled" : null)" />
+                            <input type="text" asp-for="LicenseNumber" id="LicenseNumber" class="form-control" required="@(isDisabled ? null : "required")" readonly="@(isDisabled ? "readonly" : null)" />
                             <span asp-validation-for="LicenseNumber" class="text-danger"></span>
                         </div>
 
-                        <!-- Website -->
                         <div class="form-group">
-                            <label for="Website">Website (Optional)</label>
-                            <input asp-for="Website" class="form-control" disabled="@(isDisabled ? "disabled" : null)" />
-                            <span asp-validation-for="Website" class="text-danger"></span>
+                            <label for="AddDate">Date</label>
+                            <input asp-for="AddDate" type="datetime-local" id="AddDate" class="form-control" required="@(isDisabled ? null : "required")"
+                                   readonly="@(isDisabled ? "readonly" : null)" />
+                            <span asp-validation-for="AddDate" class="text-danger"></span>
                         </div>
+                    </div>
 
-                        <!-- Add Date (Only for Update) -->
-                        @if ((string?)action == "Update")
-                        {
-                            <div class="form-group">
-                                <label for="AddDate">Add Date</label>
-                                <input asp-for="AddDate" class="form-control" type="datetime-local" required="@(isDisabled ? null : "required")" />
-                                <span asp-validation-for="AddDate" class="text-danger"></span>
-                            </div>
-                        }
+                    <!-- Website -->
+                    <div class="form-group">
+                        <label for="Website">Website</label>
+                        <input type="text" asp-for="Website" id="Website" class="form-control" readonly="@(isDisabled ? "readonly" : null)" />
+                        <span asp-validation-for="Website" class="text-danger"></span>
                     </div>
 
                     <div class="card-footer">

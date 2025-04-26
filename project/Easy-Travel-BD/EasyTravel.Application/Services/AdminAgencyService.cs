@@ -1,4 +1,5 @@
-﻿using EasyTravel.Domain;
+﻿using EasyTravel.Application.Utilities;
+using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using Microsoft.Extensions.Logging;
@@ -17,11 +18,9 @@ namespace EasyTravel.Application.Services
             _applicationUnitOfWork = applicationUnitOfWork;
             _logger = logger;
         }
-
         public void Create(Agency agency)
         {
-            if (agency == null)
-                throw new ArgumentNullException(nameof(agency));
+            ArgumentValidator.ThrowIfNull(agency, nameof(agency));
 
             try
             {
@@ -95,8 +94,7 @@ namespace EasyTravel.Application.Services
 
         public void Update(Agency agency)
         {
-            if (agency == null)
-                throw new ArgumentNullException(nameof(agency));
+            ArgumentValidator.ThrowIfNull(agency, nameof(agency));
 
             try
             {
