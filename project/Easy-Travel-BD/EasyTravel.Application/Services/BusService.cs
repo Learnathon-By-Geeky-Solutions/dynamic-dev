@@ -19,7 +19,7 @@ namespace EasyTravel.Application.Services
 
         public BusService(IApplicationUnitOfWork unitOfWork, ILogger<BusService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -91,13 +91,7 @@ namespace EasyTravel.Application.Services
                     .Include(b => b.Seats)
                     .FirstOrDefault(b => b.Id == busId);
 
-                if (bus == null)
-                {
-                    _logger.LogWarning("Bus with ID: {Id} not found.", busId);
-                    throw new KeyNotFoundException($"Bus with ID: {busId} not found.");
-                }
-
-                return bus;
+                return bus!;
             }
             catch (Exception ex)
             {
@@ -118,11 +112,6 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogInformation("Fetching bus with ID: {Id}", BusId);
                 var bus = _unitOfWork.BusRepository.GetById(BusId);
-                if (bus == null)
-                {
-                    _logger.LogWarning("Bus with ID: {Id} not found.", BusId);
-                    throw new KeyNotFoundException($"Bus with ID: {BusId} not found.");
-                }
                 return bus;
             }
             catch (Exception ex)
@@ -204,7 +193,7 @@ namespace EasyTravel.Application.Services
 
         public void SaveBooking(BusBooking model, List<Guid> seatIds, Booking booking, Payment? payment = null)
         {
-            if (model == null || booking == null || seatIds == null || !seatIds.Any())
+            if (model == null || booking == null || seatIds == null || seatIds.Count == 0)
             {
                 _logger.LogWarning("Invalid input provided for saving booking.");
                 throw new ArgumentException("Model, booking, and seat IDs cannot be null or empty.");

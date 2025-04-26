@@ -15,7 +15,7 @@ namespace EasyTravel.Application.Services
 
         public RecommendationService(IApplicationUnitOfWork unitOfWork, ILogger<RecommendationService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -35,9 +35,10 @@ namespace EasyTravel.Application.Services
 
             try
             {
-                _logger.LogInformation("Fetching {Count} recommendations of type: {Type}", count, type);
+                var sanitizedType = type.Replace(Environment.NewLine, "").Replace("\n", "").Replace("\r", "");
+                _logger.LogInformation("Fetching {Count} recommendations of type: {Type}", count, sanitizedType);
                 var recommendations = await _unitOfWork.RecommendationRepository.GetRecommendationsAsync(type, count);
-                _logger.LogInformation("Successfully fetched {Count} recommendations of type: {Type}", count, type);
+                _logger.LogInformation("Successfully fetched {Count} recommendations of type: {Type}", count, sanitizedType);
                 return recommendations;
             }
             catch (Exception ex)
@@ -63,9 +64,10 @@ namespace EasyTravel.Application.Services
 
             try
             {
-                _logger.LogInformation("Fetching {Count} recommendations of type: {Type}", count, type);
+                var sanitizedType = type.Replace(Environment.NewLine, "").Replace("\n", "").Replace("\r", "");
+                _logger.LogInformation("Fetching {Count} recommendations of type: {Type}", count, sanitizedType);
                 _unitOfWork.RecommendationRepository.GetRecommendationsAsync(type, count);
-                _logger.LogInformation("Successfully fetched {Count} recommendations of type: {Type}", count, type);
+                _logger.LogInformation("Successfully fetched {Count} recommendations of type: {Type}", count, sanitizedType);
             }
             catch (Exception ex)
             {

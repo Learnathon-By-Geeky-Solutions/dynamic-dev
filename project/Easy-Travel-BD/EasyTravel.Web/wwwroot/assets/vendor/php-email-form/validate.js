@@ -78,8 +78,14 @@
 
   function displayError(thisForm, error) {
     thisForm.querySelector('.loading').classList.remove('d-block');
-    thisForm.querySelector('.error-message').innerHTML = error;
+      thisForm.querySelector('.error-message').innerHTML = escapeHTML(error);
     thisForm.querySelector('.error-message').classList.add('d-block');
   }
-
+    function escapeHTML(str) {
+        return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
 })();
