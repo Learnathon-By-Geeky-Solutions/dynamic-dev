@@ -45,9 +45,8 @@ namespace EasyTravel.Application.Services
                     return (false, errorMessage);
                 }
 
-                _logger.LogInformation("Successfully registered user with email: {Email}. Assigning 'client' role.", user.Email);
+                _logger.LogInformation("Successfully registered user with email: {Email} and assigned 'client' role.", user.Email);
                 await _userManager.AddToRoleAsync(user, "client");
-                _logger.LogInformation("Successfully assigned 'client' role to user with email: {Email}", user.Email);
 
                 return (true, string.Empty);
             }

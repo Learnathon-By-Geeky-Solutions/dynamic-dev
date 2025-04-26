@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <label for="FirstName">First Name</label>
                             <input asp-for="FirstName" id="FirstName" class="form-control" required="@(isDisabled ? null : "required")"
-                                   disabled="@(isDisabled ? "disabled" : null)" />
+                                   readonly="@(isDisabled ? "readonly" : null)" />
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
 
@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <label for="LastName">Last Name</label>
                             <input asp-for="LastName" id="LastName" class="form-control" required="@(isDisabled ? null : "required")"
-                                   disabled="@(isDisabled ? "disabled" : null)" />
+                                   readonly="@(isDisabled ? "readonly" : null)" />
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
 
@@ -55,7 +55,7 @@
                         <div class="form-group">
                             <label for="Email">Email</label>
                             <input asp-for="Email" type="email" id="Email" class="form-control" required="@(isDisabled ? null : "required")"
-                                   disabled="@(isDisabled ? "disabled" : null)" />
+                                   readonly="@(isDisabled ? "readonly" : null)" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <label for="PhoneNumber">Phone Number</label>
                             <input asp-for="PhoneNumber" type="number" id="PhoneNumber" class="form-control" required="@(isDisabled ? null : "required")"
-                                   disabled="@(isDisabled ? "disabled" : null)" />
+                                   readonly="@(isDisabled ? "readonly" : null)" />
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
 
@@ -71,14 +71,14 @@
                         <div class="form-group">
                             <label for="DateOfBirth">Date of Birth</label>
                             <input asp-for="DateOfBirth" type="datetime-local" id="DateOfBirth" class="form-control" required="@(isDisabled ? null : "required")"
-                                   disabled="@(isDisabled ? "disabled" : null)" />
+                                   readonly="@(isDisabled ? "readonly" : null)" />
                             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
 
                         <!-- Gender -->
                         <div class="form-group">
-                            <label>Gender</label>
                             <div class="form-check">
+                                <label for="Gender">Gender</label>
                                 <input asp-for="Gender" type="radio" value="male" id="GenderMale" class="form-check-input" required="@(isDisabled ? null : "required")"
                                        disabled="@(isDisabled ? "disabled" : null)" />
                                 <label class="form-check-label" for="GenderMale">Male</label>
@@ -102,13 +102,13 @@
                             <div class="form-group">
                                 <label for="Password">Password</label>
                                 <input asp-for="Password" type="password" id="Password" class="form-control" required="@(isDisabled ? null : "required")"
-                                       disabled="@(isDisabled ? "disabled" : null)" />
+                                       readonly="@(isDisabled ? "readonly" : null)" />
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label for="ConfirmPassword">Confirm Password</label>
                                 <input asp-for="ConfirmPassword" type="password" id="ConfirmPassword" class="form-control" required="@(isDisabled ? null : "required")"
-                                       disabled="@(isDisabled ? "disabled" : null)" />
+                                       readonly="@(isDisabled ? "readonly" : null)" />
                                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                             </div>
                         }

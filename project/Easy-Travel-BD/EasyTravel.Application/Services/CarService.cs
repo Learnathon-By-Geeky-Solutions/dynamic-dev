@@ -16,7 +16,7 @@ namespace EasyTravel.Application.Services
 
         public CarService(IApplicationUnitOfWork unitOfWork, ILogger<CarService> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -68,11 +68,6 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogInformation("Fetching car with ID: {Id}", CarId);
                 var car = _unitOfWork.CarRepository.GetById(CarId);
-                if (car == null)
-                {
-                    _logger.LogWarning("Car with ID: {Id} not found.", CarId);
-                    throw new KeyNotFoundException($"Car with ID: {CarId} not found.");
-                }
                 return car;
             }
             catch (Exception ex)

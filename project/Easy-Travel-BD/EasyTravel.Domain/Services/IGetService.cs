@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IGetService<TEntity,Tkey>
+    public interface IGetService<out TEntity,Tkey>
     {
         TEntity Get(Tkey id);
         IEnumerable<TEntity> GetAll();
