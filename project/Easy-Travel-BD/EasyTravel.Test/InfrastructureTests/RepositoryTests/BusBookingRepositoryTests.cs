@@ -91,6 +91,7 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             _context.Dispose();
         }
 
+       
         [Test]
         public void GetAllBusBookings_ShouldReturnAllBusBookings()
         {
@@ -100,11 +101,12 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(2)); // 2 seeded bus bookings
-                Assert.That(result[0].PassengerName, Is.EqualTo("John Doe")); // Use indexing
-                Assert.That(result[0].Email, Is.EqualTo("john.doe@example.com"));
+                Assert.That(result, Has.Count.EqualTo(2), "The count of bus bookings is incorrect."); // Updated
+                Assert.That(result[0].PassengerName, Is.EqualTo("John Doe"), "The first passenger's name is incorrect.");
+                Assert.That(result[0].Email, Is.EqualTo("john.doe@example.com"), "The first passenger's email is incorrect.");
             });
         }
+
         [Test]
         public void DeleteBusBooking_ShouldRemoveBusBooking_WhenBusBookingExists()
         {
@@ -116,11 +118,11 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             _context.SaveChanges();
 
             // Assert
-            var result = _repository.GetAllBusBookings();
+            var result = _repository.GetAllBusBookings().ToList(); // Ensure result is a list
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(1)); // 1 remaining after deletion
-                Assert.That(result.Any(b => b.Id == busBookingToDelete.Id), Is.False);
+                Assert.That(result, Has.Count.EqualTo(1), "The count of bus bookings is incorrect after deletion."); // Corrected
+                Assert.That(result.Any(b => b.Id == busBookingToDelete.Id), Is.False, "The deleted bus booking still exists.");
             });
         }
     }

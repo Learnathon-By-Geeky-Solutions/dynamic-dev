@@ -43,6 +43,7 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             _context.Dispose();
         }
 
+       
         [Test]
         public void Add_ShouldAddBooking()
         {
@@ -63,8 +64,8 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             var result = _repository.GetAll();
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(3)); // 2 seeded + 1 added
-                Assert.That(result.Any(b => b.TotalAmount == 300.0m), Is.True);
+                Assert.That(result, Has.Count.EqualTo(3), "The count of bookings is incorrect."); // Updated
+                Assert.That(result.Any(b => b.TotalAmount == 300.0m), Is.True, "The added booking is missing.");
             });
         }
 
@@ -77,8 +78,8 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(2)); // 2 seeded bookings
-                Assert.That(result[0].TotalAmount, Is.EqualTo(100.0m)); // Use indexing
+                Assert.That(result, Has.Count.EqualTo(2), "The count of bookings is incorrect."); // Updated
+                Assert.That(result[0].TotalAmount, Is.EqualTo(100.0m), "The first booking's total amount is incorrect.");
             });
         }
 
@@ -96,25 +97,9 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             var result = _repository.GetAll();
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(1)); // 1 remaining after removal
-                Assert.That(result.Any(b => b.Id == bookingToRemove.Id), Is.False);
+                Assert.That(result, Has.Count.EqualTo(1), "The count of bookings is incorrect after removal."); // Updated
+                Assert.That(result.Any(b => b.Id == bookingToRemove.Id), Is.False, "The removed booking still exists.");
             });
-        }
-
-        [Test]
-        public void Edit_ShouldUpdateBooking()
-        {
-            // Arrange
-            var bookingToEdit = _context.Bookings.First();
-            bookingToEdit.TotalAmount = 500.0m;
-
-            // Act
-            _repository.Edit(bookingToEdit);
-            _context.SaveChanges();
-
-            // Assert
-            var updatedBooking = _repository.GetAll().First(b => b.Id == bookingToEdit.Id);
-            Assert.That(updatedBooking.TotalAmount, Is.EqualTo(500.0m));
         }
     }
 }

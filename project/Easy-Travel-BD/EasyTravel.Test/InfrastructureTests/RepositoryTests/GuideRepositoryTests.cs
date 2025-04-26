@@ -83,6 +83,7 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             _context.Dispose();
         }
 
+       
         [Test]
         public void GetAllGuides_ShouldReturnAllGuides()
         {
@@ -90,7 +91,7 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
 
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(2), "The count of guides is incorrect.");
+                Assert.That(result, Has.Count.EqualTo(2), "The count of guides is incorrect."); // Updated
                 Assert.That(result[0].FirstName, Is.EqualTo("John"), "The first guide's name is incorrect.");
             });
         }
@@ -127,7 +128,7 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
 
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(3), "The count of guides is incorrect.");
+                Assert.That(result, Has.Count.EqualTo(3), "The count of guides is incorrect."); // Updated
                 Assert.That(result.Any(g => g.FirstName == "Alice"), Is.True, "The guide 'Alice' was not found.");
             });
         }

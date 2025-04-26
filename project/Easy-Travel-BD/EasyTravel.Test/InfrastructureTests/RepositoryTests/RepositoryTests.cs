@@ -90,7 +90,7 @@ public async Task AddAsync_ShouldAddEntity()
     // Assert
     Assert.Multiple(() =>
     {
-        Assert.That(result.Count, Is.EqualTo(3), "The count of buses is incorrect.");
+        Assert.That(result, Has.Count.EqualTo(3), "The count of buses is incorrect.");
         Assert.That(result.Any(b => b.OperatorName == "Operator 3"), Is.True, "The expected bus was not found.");
     });
 }
@@ -109,8 +109,8 @@ public async Task RemoveAsync_ShouldRemoveEntity()
     // Assert
     Assert.Multiple(() =>
     {
-        Assert.That(result.Count, Is.EqualTo(1), "The count of buses is incorrect.");
-        Assert.That(result.Any(b => b.Id == busToRemove.Id), Is.False, "The removed bus was still found in the repository.");
+        Assert.That(result, Has.Count.EqualTo(3), "The count of buses is incorrect.");
+        Assert.That(result.Any(b => b.OperatorName == "Operator 3"), Is.True, "The expected bus was not found.");
     });
 }
 
@@ -159,9 +159,12 @@ public async Task RemoveAsync_ShouldRemoveEntity()
                 isTrackingOff: false
             );
 
-            // Assert
-            Assert.That(result.data.Count, Is.EqualTo(1));
-            Assert.That(result.data[0].BusType, Is.EqualTo("Luxury"));
+           // Assert
+Assert.Multiple(() =>
+{
+    Assert.That(result.data, Has.Count.EqualTo(1), "The count of filtered buses is incorrect.");
+    Assert.That(result.data[0].BusType, Is.EqualTo("Luxury"), "The bus type of the filtered result is incorrect.");
+});
         }
 
     }

@@ -99,19 +99,6 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             _context.Dispose();
         }
 
-       [Test]
-public void GetAllPhotographerBookings_ShouldReturnAllPhotographerBookings()
-{
-    // Act
-    var result = _repository.GetAll().ToList(); // Convert to a list for safe access
-
-    // Assert
-    Assert.Multiple(() =>
-    {
-        Assert.That(result.Count, Is.EqualTo(2), "The count of photographer bookings is incorrect."); // Use Count property
-        Assert.That(result[0].UserName, Is.EqualTo("User1"), "The first photographer booking's username is incorrect.");
-    });
-}
 
         [Test]
         public void AddPhotographerBooking_ShouldAddPhotographerBooking()
@@ -134,17 +121,32 @@ public void GetAllPhotographerBookings_ShouldReturnAllPhotographerBookings()
             };
 
             // Act
-            _repository.Add(photographerBooking);
-            _context.SaveChanges();
+            _repository.Add(photographerBooking); // Add the booking
+            _context.SaveChanges(); // Save changes to the database
+
+            var result = _repository.GetAll().ToList(); // Retrieve all bookings
 
             // Assert
-var result = _repository.GetAll().ToList(); // Convert to a list for safe access
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(3), "The count of photographer bookings is incorrect.");
+                Assert.That(result.Any(pb => pb.UserName == "User3"), Is.True, "The expected booking for 'User3' was not found.");
+            });
+        }
+        [Test]
+        public void GetAll_ShouldReturnAllPhotographerBookings()
+        {
+            // Act
+            var result = _repository.GetAll().ToList(); // Retrieve all bookings
 
-Assert.Multiple(() =>
-{
-    Assert.That(result.Count, Is.EqualTo(3), "The count of photographer bookings is incorrect."); // Use Count property
-    Assert.That(result.Any(pb => pb.UserName == "User3"), Is.True, "The expected booking for 'User3' was not found.");
-});
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(2), "The count of photographer bookings is incorrect.");
+                Assert.That(result.Any(pb => pb.UserName == "User1"), Is.True, "The booking for 'User1' was not found.");
+                Assert.That(result.Any(pb => pb.UserName == "User2"), Is.True, "The booking for 'User2' was not found.");
+            });
         }
     }
+
 }

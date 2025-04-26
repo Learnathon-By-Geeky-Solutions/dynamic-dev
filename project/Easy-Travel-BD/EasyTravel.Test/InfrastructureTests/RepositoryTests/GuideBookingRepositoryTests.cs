@@ -94,21 +94,25 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             _context.Dispose();
         }
 
+       
         [Test]
         public void GetAllGuideBookings_ShouldReturnAllGuideBookings()
         {
+            // Act
             var result = _repository.GetAll().ToList(); // Ensure result is a List
 
+            // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(2));
-                Assert.That(result[0].UserName, Is.EqualTo("User1"));
+                Assert.That(result, Has.Count.EqualTo(2), "The count of guide bookings is incorrect."); // Updated
+                Assert.That(result[0].UserName, Is.EqualTo("User1"), "The first user's name is incorrect.");
             });
         }
 
         [Test]
         public void AddGuideBooking_ShouldAddGuideBooking()
         {
+            // Arrange
             var guideBooking = new GuideBooking
             {
                 Id = Guid.NewGuid(),
@@ -125,14 +129,16 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
                 GuideId = _context.Guides.First().Id
             };
 
+            // Act
             _repository.Add(guideBooking);
             _context.SaveChanges();
 
-            var result = _repository.GetAll();
+            // Assert
+            var result = _repository.GetAll().ToList(); // Ensure result is a List
             Assert.Multiple(() =>
             {
-            Assert.That(result.Count, Is.EqualTo(3));
-            Assert.That(result.Any(gb => gb.UserName == "User3"), Is.True);
+                Assert.That(result, Has.Count.EqualTo(3), "The count of guide bookings is incorrect after addition."); // Updated
+                Assert.That(result.Any(gb => gb.UserName == "User3"), Is.True, "The added guide booking is missing.");
             });
         }
     }

@@ -75,12 +75,14 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
         [Test]
         public void GetAllCarBookings_ShouldReturnAllCarBookings()
         {
+            // Act
             var result = _repository.GetAll().ToList(); // Ensure result is a List
 
+            // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(result.Count, Is.EqualTo(2));
-                Assert.That(result[0].PassengerName, Is.EqualTo("John Doe"));
+                Assert.That(result, Has.Count.EqualTo(2), "The count of car bookings is incorrect."); // Updated
+                Assert.That(result[0].PassengerName, Is.EqualTo("John Doe"), "The first passenger's name is incorrect.");
             });
         }
     }
