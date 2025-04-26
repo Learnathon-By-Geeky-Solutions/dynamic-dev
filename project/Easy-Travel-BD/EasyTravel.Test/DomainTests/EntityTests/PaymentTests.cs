@@ -2,7 +2,7 @@ using EasyTravel.Domain.Entites;
 using NUnit.Framework;
 using System;
 
-namespace UnitTest.Entities
+namespace EasyTravel.Test.DomainTests.EntityTests
 {
     [TestFixture]
     public class PaymentTests
@@ -23,6 +23,8 @@ namespace UnitTest.Entities
             };
 
             // Assert
+            Assert.Multiple(() =>
+            {
             Assert.That(payment.Id, Is.Not.EqualTo(Guid.Empty));
             Assert.That(payment.PaymentMethod, Is.EqualTo(PaymentMethods.SSLCommerz));
             Assert.That(payment.Amount, Is.EqualTo(100.00m));
@@ -30,6 +32,8 @@ namespace UnitTest.Entities
             Assert.That(payment.PaymentStatus, Is.EqualTo(PaymentStatus.Completed));
             Assert.That(payment.BookingId, Is.Not.EqualTo(Guid.Empty));
             Assert.That(payment.TransactionId, Is.Not.EqualTo(Guid.Empty));
+            });
+            
         }
     }
 }

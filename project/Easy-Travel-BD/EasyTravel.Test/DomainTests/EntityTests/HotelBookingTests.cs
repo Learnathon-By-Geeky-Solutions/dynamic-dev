@@ -1,8 +1,8 @@
 using EasyTravel.Domain.Entites;
-using NUnit.Framework;
-using System;
+using NUnit.Framework;  
+using System;   
 
-namespace UnitTest.Entities
+namespace EasyTravel.Test.DomainTests.EntityTests
 {
     [TestFixture]
     public class HotelBookingTests
@@ -21,11 +21,15 @@ namespace UnitTest.Entities
             };
 
             // Assert
+            Assert.Multiple(() =>
+            {
             Assert.That(booking.Id, Is.Not.EqualTo(Guid.Empty));
             Assert.That(booking.HotelId, Is.Not.EqualTo(Guid.Empty));
             Assert.That(booking.CheckInDate, Is.Not.EqualTo(default(DateTime)));
             Assert.That(booking.CheckOutDate, Is.Not.EqualTo(default(DateTime)));
             Assert.That(booking.RoomIdsJson, Is.EqualTo("[\"101\", \"102\"]"));
+            });
+            
         }
     }
 }
