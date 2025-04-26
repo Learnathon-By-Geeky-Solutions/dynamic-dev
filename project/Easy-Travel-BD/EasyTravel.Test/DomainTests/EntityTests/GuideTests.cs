@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace UnitTest.Entities
+namespace EasyTravel.Test.DomainTests.EntityTests
 {
     [TestFixture]
     public class GuideTests
@@ -41,30 +41,33 @@ namespace UnitTest.Entities
             };
 
             // Assert
-            Assert.That(guide.Id, Is.Not.EqualTo(Guid.Empty));
-            Assert.That(guide.FirstName, Is.EqualTo("Alice"));
-            Assert.That(guide.LastName, Is.EqualTo("Smith"));
-            Assert.That(guide.Email, Is.EqualTo("alice.smith@example.com"));
-            Assert.That(guide.ContactNumber, Is.EqualTo("987-654-3210"));
-            Assert.That(guide.Address, Is.EqualTo("456 Elm St, Los Angeles, CA"));
-            Assert.That(guide.ProfilePicture, Is.EqualTo("profile.jpg"));
-            Assert.That(guide.Bio, Is.EqualTo("Experienced tour guide specializing in historical tours."));
-            Assert.That(guide.DateOfBirth, Is.EqualTo(new DateTime(1985, 5, 15)));
-            Assert.That(guide.LanguagesSpoken, Is.EqualTo("English, Spanish"));
-            Assert.That(guide.PreferredLocations, Is.EqualTo("Los Angeles, San Francisco"));
-            Assert.That(guide.PreferredEvents, Is.EqualTo("Historical Tours, City Tours"));
-            Assert.That(guide.Specialization, Is.EqualTo("Historical Tours"));
-            Assert.That(guide.YearsOfExperience, Is.EqualTo(15));
-            Assert.That(guide.LicenseNumber, Is.EqualTo("GUIDE12345"));
-            Assert.That(guide.Availability, Is.True);
-            Assert.That(guide.HourlyRate, Is.EqualTo(75.00m));
-            Assert.That(guide.Rating, Is.EqualTo(4.9m));
-            Assert.That(guide.HireDate, Is.Not.EqualTo(default(DateTime)));
-            Assert.That(guide.UpdatedAt, Is.Not.EqualTo(default(DateTime)));
-            Assert.That(guide.Status, Is.EqualTo("Active"));
-            Assert.That(guide.AgencyId, Is.Not.EqualTo(Guid.Empty));
-            Assert.That(guide.Agencies, Is.Empty);
-            Assert.That(guide.GuideBookings, Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(guide.Id, Is.Not.EqualTo(Guid.Empty));
+                Assert.That(guide.FirstName, Is.EqualTo("Alice"));
+                Assert.That(guide.LastName, Is.EqualTo("Smith"));
+                Assert.That(guide.Email, Is.EqualTo("alice.smith@example.com"));
+                Assert.That(guide.ContactNumber, Is.EqualTo("987-654-3210"));
+                Assert.That(guide.Address, Is.EqualTo("456 Elm St, Los Angeles, CA"));
+                Assert.That(guide.ProfilePicture, Is.EqualTo("profile.jpg"));
+                Assert.That(guide.Bio, Is.EqualTo("Experienced tour guide specializing in historical tours."));
+                Assert.That(guide.DateOfBirth, Is.EqualTo(new DateTime(1985, 5, 15)));
+                Assert.That(guide.LanguagesSpoken, Is.EqualTo("English, Spanish"));
+                Assert.That(guide.PreferredLocations, Is.EqualTo("Los Angeles, San Francisco"));
+                Assert.That(guide.PreferredEvents, Is.EqualTo("Historical Tours, City Tours"));
+                Assert.That(guide.Specialization, Is.EqualTo("Historical Tours"));
+                Assert.That(guide.YearsOfExperience, Is.EqualTo(15));
+                Assert.That(guide.LicenseNumber, Is.EqualTo("GUIDE12345"));
+                Assert.That(guide.Availability, Is.True);
+                Assert.That(guide.HourlyRate, Is.EqualTo(75.00m));
+                Assert.That(guide.Rating, Is.EqualTo(4.9m));
+                Assert.That(guide.HireDate, Is.Not.EqualTo(default(DateTime)));
+                Assert.That(guide.UpdatedAt, Is.Not.EqualTo(default(DateTime)));
+                Assert.That(guide.Status, Is.EqualTo("Active"));
+                Assert.That(guide.AgencyId, Is.Not.EqualTo(Guid.Empty));
+                Assert.That(guide.Agencies, Is.Empty);
+                Assert.That(guide.GuideBookings, Is.Empty);
+            });
         }
 
         [Test]

@@ -6,6 +6,8 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+namespace EasyTravel.Test.InfrastructureTests.RepositoryTests;
 [TestFixture]
 public class RecommendationRepositoryTests
 {
@@ -69,11 +71,29 @@ public class RecommendationRepositoryTests
     public async Task GetRecommendationsAsync_ShouldReturnTopRatedHotels()
     {
         // Act
-        var result = await _repository.GetRecommendationsAsync("hotels", 2);
+        var result = (await _repository.GetRecommendationsAsync("hotels", 2)).ToList(); // Convert to a list for safe access
 
         // Assert
-        Assert.That(result.Count(), Is.EqualTo(2));
-        Assert.That(result.First().Title, Is.EqualTo("Grand Hotel"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(result, Has.Count.EqualTo(2), "The count of recommendations is incorrect."); // Use Has.Count.EqualTo
+            Assert.That(result[0].Title, Is.EqualTo("Grand Hotel"), "The first recommendation's title is incorrect.");
+            Assert.That(result[1].Title, Is.EqualTo("Sunset Resort"), "The second recommendation's title is incorrect.");
+        });
     }
+    [Test]
+    public async Task GetRecommendationsAsync_ShouldReturnEmptyListWhenNoHotels()
+    {
+        // Arrange
+        _context.Hotels.RemoveRange(_context.Hotels); // Remove all hotels
+        _context.SaveChanges();
+
+        // Act
+        var result = (await _repository.GetRecommendationsAsync("hotels", 2)).ToList();
+
+        // Assert
+        Assert.That(result, Is.Empty, "The result is not empty when no hotels are available.");
+    }
+    
 }
 

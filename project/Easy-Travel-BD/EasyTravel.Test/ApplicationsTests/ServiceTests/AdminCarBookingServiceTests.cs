@@ -67,11 +67,14 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
             var ex = Assert.Throws<InvalidOperationException>(() => _adminCarBookingService.Get(carBookingId));
 
             // Assert
+            Assert.Multiple(() =>
+            {
+         
             Assert.That(ex, Is.Not.Null, "An exception should be thrown.");
             Assert.That(ex.Message, Is.EqualTo($"An error occurred while fetching the car booking with ID: {carBookingId}."));
             Assert.That(ex.InnerException, Is.TypeOf<KeyNotFoundException>(), "The inner exception should be a KeyNotFoundException.");
             Assert.That(ex.InnerException?.Message, Is.EqualTo($"Car booking with ID: {carBookingId} not found."));
-
+            });
             _loggerMock.Verify(
                 l => l.Log(
                     LogLevel.Warning,
