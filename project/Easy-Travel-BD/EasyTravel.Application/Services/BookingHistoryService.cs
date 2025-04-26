@@ -12,7 +12,7 @@ namespace EasyTravel.Application.Services
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
         private readonly ILogger<BookingHistoryService> _logger;
-
+        private const string UserIdCannotBeEmptyMessage = "User ID cannot be empty.";
         public BookingHistoryService(IApplicationUnitOfWork unitOfWork, ILogger<BookingHistoryService> logger)
         {
             _unitOfWork = unitOfWork ;
@@ -24,7 +24,7 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching bus bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try
@@ -44,7 +44,7 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching car bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try
@@ -64,7 +64,7 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching guide bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try
@@ -84,7 +84,7 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching hotel bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try
@@ -104,7 +104,7 @@ namespace EasyTravel.Application.Services
             if (id == Guid.Empty)
             {
                 _logger.LogWarning("Invalid user ID provided for fetching photographer bookings.");
-                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+                throw new ArgumentException(UserIdCannotBeEmptyMessage, nameof(id));
             }
 
             try

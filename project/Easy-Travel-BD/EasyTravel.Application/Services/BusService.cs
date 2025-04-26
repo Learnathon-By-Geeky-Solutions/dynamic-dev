@@ -193,7 +193,7 @@ namespace EasyTravel.Application.Services
 
         public void SaveBooking(BusBooking model, List<Guid> seatIds, Booking booking, Payment? payment = null)
         {
-            if (model == null || booking == null || seatIds == null || !seatIds.Any())
+            if (model == null || booking == null || seatIds == null || seatIds.Count == 0)
             {
                 _logger.LogWarning("Invalid input provided for saving booking.");
                 throw new ArgumentException("Model, booking, and seat IDs cannot be null or empty.");

@@ -141,8 +141,9 @@ namespace EasyTravel.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while searching hotels in location: {Location} with travel date: {Date}", location, value);
-                throw new InvalidOperationException($"An error occurred while searching hotels in location: {location} with travel date: {value}.", ex);
+                var sanitizedLocation = location.Replace(Environment.NewLine, "").Replace("\n", "").Replace("\r", "");
+                _logger.LogError(ex, "An error occurred while searching hotels in location: {Location} with travel date: {Date}", sanitizedLocation, value);
+                throw new InvalidOperationException($"An error occurred while searching hotels in location: {sanitizedLocation} with travel date: {value}.", ex);
             }
         }
     }

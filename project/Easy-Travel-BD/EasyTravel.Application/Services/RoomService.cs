@@ -81,11 +81,6 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogInformation("Fetching room with ID: {Id}", id);
                 var room = _unitOfWork.RoomRepository.GetById(id);
-                if (room == null)
-                {
-                    _logger.LogWarning("Room with ID: {Id} not found.", id);
-                    throw new KeyNotFoundException($"Room with ID: {id} not found.");
-                }
                 return room;
             }
             catch (Exception ex)
