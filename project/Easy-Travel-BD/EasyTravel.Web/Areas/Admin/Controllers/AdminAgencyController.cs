@@ -23,7 +23,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            
             return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -36,7 +35,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 TempData["success"] = "The agency has been created successfully";
                 return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
             }
-            return View();
+            return View(model);
         }
         [HttpGet]
         public IActionResult Update(Guid id)
@@ -62,7 +61,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
 
                 return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
             }
-            return View();
+            return View(model);
         }
         [HttpGet]
         public IActionResult Delete(Guid id)
@@ -85,12 +84,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-            if (model.Id == Guid.Empty)
-            {
-                TempData["error"] = "The agency not found";
-
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             _agencyService.Delete(model.Id);
             TempData["success"] = "The agency was deleted";

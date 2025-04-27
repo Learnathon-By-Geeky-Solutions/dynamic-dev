@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,26 @@ namespace EasyTravel.Application.Services
                 _logger.LogError(ex, "An error occurred while deleting the hotel booking with ID: {Id}", id);
                 throw new InvalidOperationException($"An error occurred while deleting the hotel booking with ID: {id}.", ex);
             }
-        } 
+        }
+
+        public async Task<PagedResult<HotelBooking>> GetPaginatedHotelBookingsAsync(int pageNumber, int pageSize)
+        {
+            var totalItems = await _unitOfWork.HotelBookingRepository.GetCountAsync();
+
+            var bookings = await _unitOfWork.HotelBookingRepository.GetAllAsync();
+            bookings = bookings.OrderBy(a => a.CheckInDate)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+            var result = new PagedResult<HotelBooking>
+            {
+                Items = bookings.ToList(),
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            return result;
+        }
     }
 }

@@ -2,6 +2,7 @@
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -61,12 +62,26 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public IEnumerable<Bus> GetAllBuses()
+        public async Task<PagedResult<Bus>> GetAllPagenatedBuses(int pageNumber,int pageSize)
         {
             try
             {
                 _logger.LogInformation("Fetching all buses.");
-                return _unitOfWork.BusRepository.GetAllBuses();
+                var totalItems = await _unitOfWork.BusRepository.GetCountAsync();
+                var buses = await _unitOfWork.BusRepository.GetAllAsync();
+                var paginatedBuses = buses.
+                    OrderBy(b => b.From).
+                    Skip((pageNumber - 1) * pageSize).
+                    Take(pageSize).
+                    ToList();
+                var result = new PagedResult<Bus>
+                {
+                    Items = paginatedBuses,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                return result;
             }
             catch (Exception ex)
             {
@@ -121,8 +136,12 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<IEnumerable<Bus>> GetAvailableBusesAsync(string from, string to, DateTime dateTime)
+        public async Task<PagedResult<Bus>> GetAvailableBusesAsync(string from, string to, DateTime dateTime,int pageNumber,int pageSize)
         {
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                throw new ArgumentException("Page number and page size must be greater than zero.");
+            }
             if (string.IsNullOrWhiteSpace(from) || string.IsNullOrWhiteSpace(to))
             {
                 _logger.LogWarning("Invalid 'from' or 'to' location provided for fetching available buses.");
@@ -137,8 +156,22 @@ namespace EasyTravel.Application.Services
                     bus.To == to &&
                     bus.DepartureTime.Date == dateTime.Date &&
                     bus.Seats!.Any(seat => seat.IsAvailable));
+                var totalItems = buses.Count();
+                var paginateBuses = buses.
+                    OrderBy(b => b.From).
+                    Skip((pageNumber - 1) * pageSize).
+                    Take(pageSize).
+                    ToList();
 
-                return buses;
+                var result = new PagedResult<Bus>
+                {
+                    Items = paginateBuses,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+
+                return result;
             }
             catch (Exception ex)
             {
@@ -241,6 +274,7 @@ namespace EasyTravel.Application.Services
                 }
             }
         }
+
     }
 }
 

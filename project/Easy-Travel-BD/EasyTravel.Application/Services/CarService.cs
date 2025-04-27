@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -39,20 +40,6 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogError(ex, "An error occurred while creating the car with ID: {Id}", car.Id);
                 throw new InvalidOperationException($"An error occurred while creating the car with ID: {car.Id}.", ex);
-            }
-        }
-
-        public IEnumerable<Car> GetAllCars()
-        {
-            try
-            {
-                _logger.LogInformation("Fetching all cars.");
-                return _unitOfWork.CarRepository.GetAllCars();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while fetching all cars.");
-                throw new InvalidOperationException("An error occurred while fetching all cars.", ex);
             }
         }
 
@@ -174,9 +161,41 @@ namespace EasyTravel.Application.Services
                 }
             }
         }
-
-        public async Task<IEnumerable<Car>> GetAvailableCarsAsync(string from, string to, DateTime dateTime)
+        public async Task<PagedResult<Car>> GetAllPaginatedCarsAsync(int pageNumber, int pageSize)
         {
+            try
+            {
+                _logger.LogInformation("Fetching all cars.");
+
+                var totalItems = await _unitOfWork.CarRepository.GetCountAsync();
+                var cars = await _unitOfWork.CarRepository.GetAllAsync();
+                var paginateCars = cars.
+                    OrderBy(c => c.From)
+                    .Skip((pageNumber - 1) * pageSize).
+                    Take(pageSize)
+                    .ToList();
+                var result = new PagedResult<Car>
+                {
+                    Items = paginateCars,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all cars.");
+                throw new InvalidOperationException("An error occurred while fetching all cars.", ex);
+            }
+        }
+        public async Task<PagedResult<Car>> GetAvailableCarsAsync(string from, string to, DateTime dateTime,int pageNumber,int pageSize)
+        {
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                throw new ArgumentException("Page number and page size must be greater than zero.");
+            }
             if (string.IsNullOrWhiteSpace(from) || string.IsNullOrWhiteSpace(to))
             {
                 _logger.LogWarning("Invalid 'from' or 'to' location provided for fetching available cars.");
@@ -191,13 +210,66 @@ namespace EasyTravel.Application.Services
                     car.To == to &&
                     car.DepartureTime.Date == dateTime.Date &&
                     car.IsAvailable);
+                var totalItems = cars.Count();
+                var paginateCars = cars.
+                    OrderBy(c => c.From)
+                    .Skip((pageNumber - 1) * pageSize).
+                    Take(pageSize)
+                    .ToList();
+                var result = new PagedResult<Car>
+                {
+                    Items = paginateCars,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
 
-                return cars;
+                return result;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while fetching available cars from {From} to {To} on {Date}", from, to, dateTime);
                 throw new InvalidOperationException($"An error occurred while fetching available cars from {from} to {to} on {dateTime}.", ex);
+            }
+        }
+
+        public async Task<PagedResult<Car>> GetPaginatedCarsAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                throw new ArgumentException("Page number and page size must be greater than zero.");
+            }
+
+            try
+            {
+                _logger.LogInformation("Fetching paginated cars for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
+
+                // Fetch total count of cars
+                var totalItems = await _unitOfWork.CarRepository.GetCountAsync();
+
+                // Fetch paginated cars
+                var cars = await _unitOfWork.CarRepository.GetAllAsync();
+                var paginatedCars = cars
+                    .OrderBy(c => c.OperatorName) // Sort by operator name
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                // Create the paginated result
+                var result = new PagedResult<Car>
+                {
+                    Items = paginatedCars,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching paginated cars.");
+                throw new InvalidOperationException("An error occurred while fetching paginated cars.", ex);
             }
         }
     }

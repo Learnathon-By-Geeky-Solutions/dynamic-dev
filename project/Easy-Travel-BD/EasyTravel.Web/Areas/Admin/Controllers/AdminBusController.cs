@@ -33,9 +33,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
-            var buses = _busService.GetAllBuses();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var buses = _busService.GetAllPagenatedBuses(pageNumber,pageSize);
             return View(buses);
         }
 
@@ -46,7 +50,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             var bus = _busService.GetBusById(BusId);
             if (bus == null)
@@ -65,15 +69,15 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _busService.UpdateBus(bus);
                 return RedirectToAction("Index", "AdminBus", new { area = "Admin" });
             }
-            return View();
+            return View(bus);
         }
 
         [HttpGet]
         public IActionResult Delete(Guid BusId)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             var bus = _busService.GetBusById(BusId);
             if (bus == null)
@@ -91,7 +95,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _busService.DeleteBus(bus);
                 return RedirectToAction("Index", "AdminBus", new { area = "Admin" });
             }
-            return View();
+            return View(bus);
         }
     }
 }

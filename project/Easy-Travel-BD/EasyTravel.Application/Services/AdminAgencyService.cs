@@ -38,6 +38,19 @@ namespace EasyTravel.Application.Services
             }
         }
 
+        public Agency CreateInstance()
+        {
+            return new Agency
+            {
+                Id = Guid.NewGuid(),
+                Name = string.Empty,
+                Address = string.Empty,
+                ContactNumber = string.Empty,
+                LicenseNumber = string.Empty,
+                AddDate = DateTime.UtcNow,
+            };
+        }
+
         public void Delete(Guid id)
         {
             if (id == Guid.Empty)

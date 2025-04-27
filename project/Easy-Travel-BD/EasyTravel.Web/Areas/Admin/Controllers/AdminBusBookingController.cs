@@ -14,9 +14,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _adminBusBookingService = adminBusBookingService;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
-            var list = _adminBusBookingService.GetAllBusBookings();
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+            var list = _adminBusBookingService.GetPaginatedBusBookingsAsync(pageNumber, pageSize);
             return View(list);
         }
         [HttpPost]
@@ -24,7 +28,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             _adminBusBookingService.DeleteBusBooking(Id);
 
