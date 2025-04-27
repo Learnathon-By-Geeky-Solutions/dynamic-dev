@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Agency>
+﻿@using EasyTravel.Domain.ValueObjects
+@model PagedResult<Agency>
 @{
     ViewData["Title"] = "Agency Management";
 }
@@ -30,7 +31,7 @@
                     </a>
                 </div>
                 <div class="card-body table-responsive p-0">
-                    @if (!Model.Any())
+                    @if (!Model.Items.Any())
                     {
                         <div class="alert alert-info m-3">No agencies found.</div>
                     }
@@ -49,7 +50,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var agency in Model)
+                                @foreach (var agency in Model.Items)
                                 {
                                     <tr>
                                         <td>@agency.Name</td>
@@ -70,10 +71,37 @@
                                 }
                             </tbody>
                         </table>
+                        <div>
+                            Page @(Model.PageNumber) of @(Model.TotalPages)
+
+                            <div>
+                                @if (Model.PageNumber > 1)
+                                {
+                                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)">Previous</a>
+                                }
+
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    if (i == Model.PageNumber)
+                                    {
+                                        <strong>@i</strong>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Index" asp-route-pageNumber="@i">@i</a>
+                                    }
+                                }
+
+                                @if (Model.PageNumber < Model.TotalPages)
+                                {
+                                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a>
+                                }
+                            </div>
+                        </div>
                     }
                 </div>
                 <div class="card-footer text-muted">
-                    Total Agencies: @Model.Count()
+                    Total Agencies: @Model.Items.Count
                 </div>
             </div>
         </div>

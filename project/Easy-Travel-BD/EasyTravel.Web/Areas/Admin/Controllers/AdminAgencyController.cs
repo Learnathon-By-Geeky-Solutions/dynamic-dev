@@ -14,10 +14,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _agencyService = agencyService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
             
-            var agencies = _agencyService.GetAll();
+            var agencies = await _agencyService.GetPaginatedAgenciesAsync(pageNumber,pageSize);
             return View(agencies);
         }
         [HttpGet]
