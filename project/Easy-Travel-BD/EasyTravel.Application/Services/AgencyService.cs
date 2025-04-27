@@ -2,29 +2,57 @@
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
 {
     public class AgencyService : IAgencyService
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
-        public AgencyService(IApplicationUnitOfWork applicationUnitOfWork)
+        private readonly ILogger<AgencyService> _logger;
+
+        public AgencyService(IApplicationUnitOfWork applicationUnitOfWork, ILogger<AgencyService> logger)
         {
-            _unitOfWork = applicationUnitOfWork;
+            _unitOfWork = applicationUnitOfWork ?? throw new ArgumentNullException(nameof(applicationUnitOfWork));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
         public Agency Get(Guid id)
         {
-            return _unitOfWork.AgencyRepository.GetById(id);
+            if (id == Guid.Empty)
+            {
+                _logger.LogWarning("Invalid agency ID provided for retrieval.");
+                throw new ArgumentException("Agency ID cannot be empty.", nameof(id));
+            }
+
+            try
+            {
+                _logger.LogInformation("Fetching agency with ID: {Id}", id);
+                var agency = _unitOfWork.AgencyRepository.GetById(id);
+                return agency;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching the agency with ID: {Id}", id);
+                throw new InvalidOperationException($"An error occurred while fetching the agency with ID: {id}.", ex);
+            }
         }
 
         public IEnumerable<Agency> GetAll()
         {
-            return _unitOfWork.AgencyRepository.GetAll();
+            try
+            {
+                _logger.LogInformation("Fetching all agencies.");
+                return _unitOfWork.AgencyRepository.GetAll();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all agencies.");
+                throw new InvalidOperationException("An error occurred while fetching all agencies.", ex);
+            }
         }
     }
 }
+

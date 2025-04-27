@@ -5,7 +5,7 @@ namespace EasyTravel.Web.Models
     public class SearchBusResultViewModel
     {
 
-        public BusSearchFormModel busSearchFormModel { get; set; }
-        public IEnumerable<Bus> Buses { get; set; }
+        public BusSearchFormModel? busSearchFormModel { get; set; }
+        public IEnumerable<Bus>? Buses { get; set; }
     }
 }

@@ -1,16 +1,11 @@
 using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
-using EasyTravel.Domain.Factories;
-using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.WebSockets;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
@@ -18,68 +13,206 @@ namespace EasyTravel.Application.Services
     public class AdminUserService : IAdminUserService
     {
         private readonly UserManager<User> _userManager;
-        public AdminUserService(UserManager<User> userManager)
-        {
-            _userManager = userManager;
-        }
-        public async Task<(bool Success,string ErrorMessage)> CreateAsync(User user,string password)
-        {
-            user.UserName = user.Email;
-            var result = await _userManager.CreateAsync(user, password);
+        private readonly ILogger<AdminUserService> _logger;
 
-            if (!result.Succeeded)
+        public AdminUserService(UserManager<User> userManager, ILogger<AdminUserService> logger)
+        {
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+        private static string RedactEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+                return "REDACTED";
+            var parts = email.Split('@');
+            return $"{parts[0][0]}***@{parts[1]}";
+        }
+        public User GetUserInstance()
+        {
+            _logger.LogInformation("Creating a new user instance.");
+            return new User();
+        }
+
+        public async Task<(bool Success, string ErrorMessage)> CreateAsync(User user, string password)
+        {
+            if (user == null)
             {
-                string errorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
-                return (false, errorMessage);
+                _logger.LogWarning("Attempted to create a null user entity.");
+                return (false, "User entity cannot be null.");
             }
-            return (true, string.Empty);
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                _logger.LogWarning("Attempted to create a user with an empty password.");
+                return (false, "Password cannot be empty.");
+            }
+
+            try
+            {
+                _logger.LogInformation("Creating a new user with email: {Email}", user.Email);
+                user.UserName = user.Email;
+                var result = await _userManager.CreateAsync(user, password);
+
+                if (!result.Succeeded)
+                {
+                    string errorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
+                    _logger.LogWarning("Failed to create user with email: {Email}. Errors: {Errors}", user.Email, errorMessage);
+                    return (false, errorMessage);
+                }
+
+                _logger.LogInformation("Successfully created user with email: {Email}", user.Email);
+                return (true, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating the user with email: {Email}", user.Email);
+                throw new InvalidOperationException($"An error occurred while creating the user with email: {user.Email}.", ex);
+            }
+        }
+
+        public async Task<(bool Success, string ErrorMessage)> UpdateAsync(User user)
+        {
+            if (user == null)
+            {
+                _logger.LogWarning("Attempted to update a null user entity.");
+                return (false, "User entity cannot be null.");
+            }
+
+            try
+            {
+                _logger.LogInformation("Updating user with ID: {Id}", user.Id);
+                user.UserName = user.Email;
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    string errorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
+                    _logger.LogWarning("Failed to update user with ID: {Id}. Errors: {Errors}", user.Id, errorMessage);
+                    return (false, errorMessage);
+                }
+
+                _logger.LogInformation("Successfully updated user with ID: {Id}", user.Id);
+                return (true, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating the user with ID: {Id}", user.Id);
+                throw new InvalidOperationException($"An error occurred while updating the user with ID: {user.Id}.", ex);
+            }
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-            if (user != null)
+            if (id == Guid.Empty)
             {
-               await _userManager.DeleteAsync(user);
+                _logger.LogWarning("Invalid user ID provided for deletion.");
+                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+            }
+
+            try
+            {
+                _logger.LogInformation("Attempting to delete user with ID: {Id}", id);
+                var user = await _userManager.FindByIdAsync(id.ToString());
+                if (user == null)
+                {
+                    _logger.LogWarning("User with ID: {Id} not found for deletion.", id);
+                    return;
+                }
+
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    string errorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
+                    _logger.LogWarning("Failed to delete user with ID: {Id}. Errors: {Errors}", id, errorMessage);
+                    throw new InvalidOperationException($"Failed to delete user with ID: {id}. Errors: {errorMessage}");
+                }
+
+                _logger.LogInformation("Successfully deleted user with ID: {Id}", id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the user with ID: {Id}", id);
+                throw new InvalidOperationException($"An error occurred while deleting the user with ID: {id}.", ex);
             }
         }
 
         public IEnumerable<User> GetAll()
         {
-            return _userManager.Users;
+            try
+            {
+                _logger.LogInformation("Fetching all users.");
+                return _userManager.Users;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching all users.");
+                throw new InvalidOperationException("An error occurred while fetching all users.", ex);
+            }
         }
 
         public async Task<User?> GetAsync(Guid id)
         {
-            return await _userManager.FindByIdAsync(id.ToString());
+            if (id == Guid.Empty)
+            {
+                _logger.LogWarning("Invalid user ID provided for retrieval.");
+                throw new ArgumentException("User ID cannot be empty.", nameof(id));
+            }
+
+            try
+            {
+                _logger.LogInformation("Fetching user with ID: {Id}", id);
+                var user = await _userManager.FindByIdAsync(id.ToString());
+                return user; 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching the user with ID: {Id}", id);
+                throw new InvalidOperationException($"An error occurred while fetching the user with ID: {id}.", ex);
+            }
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _userManager.FindByEmailAsync(email);
+            var redactedEmail = RedactEmail(email);
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                _logger.LogWarning("Invalid email provided for getting user.");
+                throw new ArgumentException("Email cannot be empty.", nameof(email));
+            }
+
+            try
+            {
+                _logger.LogInformation("Fetching user with email: {Email}", redactedEmail);
+                return await _userManager.FindByEmailAsync(email);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching the user with email: {Email}", redactedEmail);
+                throw new InvalidOperationException($"An error occurred while fetching the user with email: {redactedEmail}.", ex);
+            }
         }
 
         public async Task<bool> IsExist(string email)
         {
-            return await _userManager.FindByEmailAsync(email) != null;
-        }
-        public User GetUserInstance()
-        {
-            return new User();
-        }
-
-        public async Task<(bool Success, string ErrorMessage)> UpdateAsync(User user)
-        {
-            user.UserName = user.Email;
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded)
+            var redactedEmail = RedactEmail(email);
+            if (string.IsNullOrWhiteSpace(email))
             {
-                string errorMessage = string.Join(" ", result.Errors.Select(e => e.Description));
-                return (false, errorMessage);
+                _logger.LogWarning("Invalid email provided for existence check.");
+                throw new ArgumentException("Email cannot be empty.", nameof(email));
             }
 
-            return (true, string.Empty);
+            try
+            {
+                _logger.LogInformation("Checking existence of user with email: {Email}", redactedEmail);
+                return await _userManager.FindByEmailAsync(email) != null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking existence of user with email: {Email}", redactedEmail);
+                throw new InvalidOperationException($"An error occurred while checking existence of user with email: {redactedEmail}.", ex);
+            }
         }
     }
 }
+
+

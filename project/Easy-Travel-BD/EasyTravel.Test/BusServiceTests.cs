@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 
-namespace UnitTest
+namespace EasyTravel.Test
 {
     [TestFixture]
     public class BusServiceTests

@@ -9,6 +9,6 @@ namespace EasyTravel.Domain.Repositories
 {
     public interface IRecommendationRepository
     {
-        public Task<IEnumerable<RecommendationDto>> GetRecommendationsAsync(string type, int count);
+        public Task<IEnumerable<RecommendationDto>> GetRecommendationsAsync(string type, int count = 5);
     }
 }

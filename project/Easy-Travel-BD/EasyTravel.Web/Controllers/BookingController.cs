@@ -20,7 +20,7 @@ namespace EasyTravel.Web.Controllers
         private readonly IGuideBookingService _guideBookingService;
         private readonly IBusService _busService;
         private readonly ICarService _carService;
-        public BookingController(IMapper mapper,ISessionService sessionService,IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService,IBusService busService,ICarService carService)
+        public BookingController(IMapper mapper, ISessionService sessionService, IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService, IBusService busService, ICarService carService)
         {
             _mapper = mapper;
             _sessionService = sessionService;
@@ -35,14 +35,18 @@ namespace EasyTravel.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Photographer(Guid id)
+        public IActionResult Photographer(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             _sessionService.SetString("PhotographerId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
                 return RedirectToAction("Login", "Account", new { string.Empty });
             }
-            return RedirectToAction("PhotographerBooking", "Review",id);
+            return RedirectToAction("PhotographerBooking", "Review", id);
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
@@ -60,25 +64,29 @@ namespace EasyTravel.Web.Controllers
                 };
                 if (User?.Identity?.IsAuthenticated == true)
                 {
-                    booking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    booking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
                 }
                 pgBooking.Id = booking.Id;
                 pgBooking.PhotographerId = model.PhotographerId;
                 _sessionService.Remove("PhotographerId");
-                _photographerBookingService.SaveBooking(pgBooking,booking);
+                _photographerBookingService.SaveBooking(pgBooking, booking);
                 return View("Success");
             }
             return View(model);
         }
         [HttpGet]
-        public async Task<IActionResult> Guide(Guid id)
+        public IActionResult Guide(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             _sessionService.SetString("GuideId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
                 return RedirectToAction("Login", "Account", new { area = string.Empty });
             }
-            return RedirectToAction("GuideBooking", "Review",id);
+            return RedirectToAction("GuideBooking", "Review", id);
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
@@ -94,13 +102,13 @@ namespace EasyTravel.Web.Controllers
                     BookingTypes = BookingTypes.Guide,
                     BookingStatus = BookingStatus.Pending
                 };
-                if (User.Identity.IsAuthenticated == true)
+                if (User.Identity!.IsAuthenticated!)
                 {
-                    booking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    booking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
                 }
                 guideBooking.Id = booking.Id;
                 guideBooking.GuideId = model.GuideId;
-                _guideBookingService.SaveBooking(guideBooking,booking);
+                _guideBookingService.SaveBooking(guideBooking, booking);
                 return View("Success");
             }
             return View(model);
@@ -109,6 +117,10 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public IActionResult Bus(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             _sessionService.SetString("BusId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
@@ -121,30 +133,38 @@ namespace EasyTravel.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Bus(BusBookingViewModel model)
         {
-            var booking = new Booking
+            if (ModelState.IsValid)
             {
-                Id = Guid.NewGuid(),
-                TotalAmount = model.TotalAmount,
-                BookingTypes = BookingTypes.Bus,
-                BookingStatus = BookingStatus.Pending,
-            };
-            var busbooking = new BusBooking
-            {
-                Id = booking.Id,
-                BusId = model.BusId,
-                PassengerName = model.BookingForm.PassengerName,
-                Email = model.BookingForm.Email,
-                PhoneNumber = model.BookingForm.PhoneNumber,
-                BookingDate = DateTime.Now,
-                SelectedSeats = model.SelectedSeatNumbers,
-                SelectedSeatIds = model.SelectedSeatIds,
-            };
-            _busService.SaveBooking(busbooking, model.SelectedSeatIds!,booking);
-            return View("Success");
+                var booking = new Booking
+                {
+                    Id = Guid.NewGuid(),
+                    TotalAmount = model.TotalAmount,
+                    BookingTypes = BookingTypes.Bus,
+                    BookingStatus = BookingStatus.Pending,
+                };
+                var busbooking = new BusBooking
+                {
+                    Id = booking.Id,
+                    BusId = model.BusId,
+                    PassengerName = model.BookingForm?.PassengerName!,
+                    Email = model.BookingForm?.Email!,
+                    PhoneNumber = model.BookingForm?.PhoneNumber!,
+                    BookingDate = DateTime.Now,
+                    SelectedSeats = model.SelectedSeatNumbers,
+                    SelectedSeatIds = model.SelectedSeatIds,
+                };
+                _busService.SaveBooking(busbooking, model.SelectedSeatIds!, booking);
+                return View("Success");
+            }
+            return View(model);
         }
 
         public IActionResult Car(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             _sessionService.SetString("BusId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
@@ -158,25 +178,29 @@ namespace EasyTravel.Web.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Car(CarBookingViewModel model)
         {
-            var booking = new Booking
+            if (ModelState.IsValid)
             {
-                Id = Guid.NewGuid(),
-                TotalAmount = model.BookingForm.TotalAmount,
-                BookingTypes = BookingTypes.Bus,
-                BookingStatus = BookingStatus.Pending,
-            };
-            var carBooking = new CarBooking
-            {
-                Id = booking.Id,
-                CarId = model.CarId,
-                PassengerName = model.BookingForm.PassengerName,
-                Email = model.BookingForm.Email,
-                PhoneNumber = model.BookingForm.PhoneNumber,
-                BookingDate = DateTime.Now,
-            };
-            _carService.SaveBooking(carBooking,model.CarId,booking);
+                var booking = new Booking
+                {
+                    Id = Guid.NewGuid(),
+                    TotalAmount = model.BookingForm!.TotalAmount!,
+                    BookingTypes = BookingTypes.Bus,
+                    BookingStatus = BookingStatus.Pending,
+                };
+                var carBooking = new CarBooking
+                {
+                    Id = booking.Id,
+                    CarId = model.CarId,
+                    PassengerName = model.BookingForm.PassengerName!,
+                    Email = model.BookingForm.Email!,
+                    PhoneNumber = model.BookingForm.PhoneNumber!,
+                    BookingDate = DateTime.Now,
+                };
+                _carService.SaveBooking(carBooking, model.CarId, booking);
 
-            return View("Success");
+                return View("Success");
+            }
+            return View();
         }
     }
 }

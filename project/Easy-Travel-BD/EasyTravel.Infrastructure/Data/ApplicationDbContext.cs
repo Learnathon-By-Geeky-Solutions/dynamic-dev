@@ -12,8 +12,13 @@ namespace EasyTravel.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
     {
-        private readonly string _connectionString;
-        private readonly string _migrationAssembly;
+
+        private readonly string? _connectionString;
+        private readonly string? _migrationAssembly;
+        private const string DefaultSqlGetDate = "GETDATE()";
+        private const string SqlConlumnType = "decimal(18,2)";
+        private const string SqlDefaultIdValue = "NEWID()";
+        private const string SqlDefaultStatusValue = "Active";
         public DbSet<Bus> Buses { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Agency> Agencies { get; set; }
@@ -29,6 +34,7 @@ namespace EasyTravel.Infrastructure.Data
         public DbSet<CarBooking> CarBookings { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -54,12 +60,12 @@ namespace EasyTravel.Infrastructure.Data
                     .HasConversion<string>();
                 entity.Property(e => e.CreatedAt)
                    .ValueGeneratedOnAdd()
-                   .HasDefaultValueSql("GETDATE()");
+                   .HasDefaultValueSql(DefaultSqlGetDate);
                 entity.Property(e => e.UpdatedAt)
                    .ValueGeneratedOnAdd()
-                   .HasDefaultValueSql("GETDATE()");
+                   .HasDefaultValueSql(DefaultSqlGetDate);
                 entity.Property(b => b.TotalAmount)
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType(SqlConlumnType);
                 entity.HasOne(u => u.User)
                     .WithMany(b => b.Bookings)
                     .HasForeignKey(b => b.UserId)
@@ -85,7 +91,7 @@ namespace EasyTravel.Infrastructure.Data
             {
                 entity.Property(a => a.Id)
                    .ValueGeneratedOnAdd()
-                   .HasDefaultValueSql("NEWID()");
+                   .HasDefaultValueSql(SqlDefaultIdValue);
                 entity.HasOne(p => p.Booking)
                  .WithOne(b => b.GuideBooking)
                  .HasForeignKey<GuideBooking>(p => p.Id)
@@ -101,7 +107,7 @@ namespace EasyTravel.Infrastructure.Data
             {
                 entity.Property(a => a.Id)
                    .ValueGeneratedOnAdd()
-                   .HasDefaultValueSql("NEWID()");
+                   .HasDefaultValueSql(SqlDefaultIdValue);
                 entity.HasOne(p => p.Booking)
                     .WithOne(b => b.PhotographerBooking)
                     .HasForeignKey<PhotographerBooking>(p => p.Id)
@@ -141,7 +147,7 @@ namespace EasyTravel.Infrastructure.Data
                     .HasForeignKey(bb => bb.BusId)
                     .OnDelete(DeleteBehavior.Cascade);
                 entity.Property(b => b.Price)
-                    .HasColumnType("decimal(18,2)");
+                    .HasColumnType(SqlConlumnType);
             });
 
             // Agency
@@ -149,10 +155,10 @@ namespace EasyTravel.Infrastructure.Data
             {
                 entity.Property(a => a.AddDate)
                   .ValueGeneratedOnAdd()
-                  .HasDefaultValueSql("GETDATE()");
+                  .HasDefaultValueSql(DefaultSqlGetDate);
                 entity.Property(a => a.Id)
                     .ValueGeneratedOnAdd()
-                    .HasDefaultValueSql("NEWID()");
+                    .HasDefaultValueSql(SqlDefaultIdValue);
                 entity.HasMany(b => b.Photographers)
                     .WithOne(bb => bb.Agency)
                     .HasForeignKey(bb => bb.AgencyId)
@@ -165,16 +171,16 @@ namespace EasyTravel.Infrastructure.Data
                 entity.ToTable("Photographers");
                 entity.Property(a => a.HireDate)
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
+                .HasDefaultValueSql(DefaultSqlGetDate);
                 entity.Property(a => a.Id)
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("NEWID()");
+                .HasDefaultValueSql(SqlDefaultIdValue);
                 entity.Property(b => b.Rating)
               .HasColumnType("decimal(3,2)");
                 entity.Property(a => a.Status)
-               .HasDefaultValue("Active");
+               .HasDefaultValue(SqlDefaultStatusValue);
                 entity.Property(p => p.HourlyRate)
-              .HasColumnType("decimal(18,2)");
+              .HasColumnType(SqlConlumnType);
             });
 
             // Guide
@@ -183,16 +189,16 @@ namespace EasyTravel.Infrastructure.Data
                 entity.ToTable("Guides");
                 entity.Property(a => a.HireDate)
                    .ValueGeneratedOnAdd()
-                   .HasDefaultValueSql("GETDATE()");
+                   .HasDefaultValueSql(DefaultSqlGetDate);
                 entity.Property(a => a.Id)
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("NEWID()");
+                .HasDefaultValueSql(SqlDefaultIdValue);
                 entity.Property(b => b.Rating)
               .HasColumnType("decimal(3,2)");
                 entity.Property(a => a.Status)
-                .HasDefaultValue("Active");
+                .HasDefaultValue(SqlDefaultStatusValue);
                 entity.Property(g => g.HourlyRate)
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType(SqlConlumnType);
 
             });
                 
@@ -200,7 +206,7 @@ namespace EasyTravel.Infrastructure.Data
             {
                 entity.Property(a => a.CreatedAt)
                .ValueGeneratedOnAdd()
-               .HasDefaultValueSql("GETDATE()");
+               .HasDefaultValueSql(DefaultSqlGetDate);
             });
 
             // UserRole
@@ -280,7 +286,7 @@ namespace EasyTravel.Infrastructure.Data
                HourlyRate = 50.00m,
                PreferredEvents = "marriage",
                PreferredLocations = "dhaka,sylhet",
-               Status = "Active",
+               Status = SqlDefaultStatusValue,
                SocialMediaLinks = "https://twitter.com/johndoe",
                Skills = "Photography,Video Editing,Grahphics Design",
                Rating = 4.5m,
@@ -309,7 +315,7 @@ namespace EasyTravel.Infrastructure.Data
                Availability = true,
                HourlyRate = 50.00m,
                Rating = 4.5m,
-               Status = "Active",
+               Status = SqlDefaultStatusValue,
                AgencyId = new Guid("b8a1d0c5-3f2b-4f8a-9d87-1e4f2e6c1a5b")
            });
 
@@ -355,10 +361,10 @@ namespace EasyTravel.Infrastructure.Data
                       .HasMaxLength(200); // Assuming a max length for image URLs
 
                 entity.Property(e => e.CreatedAt)
-                      .HasDefaultValueSql("GETDATE()");
+                      .HasDefaultValueSql(DefaultSqlGetDate);
 
                 entity.Property(e => e.UpdatedAt)
-                      .HasDefaultValueSql("GETDATE()");
+                      .HasDefaultValueSql(DefaultSqlGetDate);
 
                 // Configure relationships
                 entity.HasMany(e => e.Rooms)
@@ -384,7 +390,7 @@ namespace EasyTravel.Infrastructure.Data
 
                 entity.Property(e => e.PricePerNight)
                       .IsRequired()
-                      .HasColumnType("decimal(18,2)");
+                      .HasColumnType(SqlConlumnType);
 
                 entity.Property(e => e.MaxOccupancy)
                       .IsRequired();
@@ -408,10 +414,10 @@ namespace EasyTravel.Infrastructure.Data
                       .HasDefaultValue(true);
 
                 entity.Property(e => e.CreatedAt)
-                      .HasDefaultValueSql("GETDATE()");
+                      .HasDefaultValueSql(DefaultSqlGetDate);
 
                 entity.Property(e => e.UpdatedAt)
-                      .HasDefaultValueSql("GETDATE()");
+                      .HasDefaultValueSql(DefaultSqlGetDate);
 
                 // Configure relationships
                 entity.HasOne(e => e.Hotel)
@@ -484,7 +490,14 @@ namespace EasyTravel.Infrastructure.Data
             _connectionString = connectionString;
             _migrationAssembly = migrationAssembly;
         }
-
+        // New constructor for testing
+        /// <summary>
+        /// Constructor for configuring the DbContext using dependency injection.
+        /// This is essential for testing scenarios and production configurations.
+        /// </summary>
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
