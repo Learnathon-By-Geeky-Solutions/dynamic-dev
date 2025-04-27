@@ -49,7 +49,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
+          path: myapp   # ✅ Add path to extract artifact properly
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -62,4 +63,4 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'easytravelbd'
-          package: ./.net-app
+          package: ./myapp   # ✅ Correct path now
