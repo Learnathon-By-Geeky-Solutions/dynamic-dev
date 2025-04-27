@@ -20,11 +20,14 @@ jobs:
         with:
           dotnet-version: '9.x'
 
+      - name: Restore dependencies
+        run: dotnet restore project/Easy-Travel-BD/Easy-Travel-BD.sln
+
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build project/Easy-Travel-BD/Easy-Travel-BD.sln --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ./myapp
+        run: dotnet publish project/Easy-Travel-BD/Easy-Travel-BD.sln -c Release -o ./myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
