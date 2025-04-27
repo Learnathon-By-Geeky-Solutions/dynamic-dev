@@ -2,6 +2,8 @@
 using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -90,6 +92,26 @@ namespace EasyTravel.Application.Services
                 _logger.LogError(ex, "An error occurred while fetching all agencies.");
                 throw new InvalidOperationException("An error occurred while fetching all agencies.", ex);
             }
+        }
+
+        public async Task<PagedResult<Agency>> GetPaginatedAgenciesAsync(int pageNumber, int pageSize)
+        {
+            var totalItems = await _applicationUnitOfWork.AgencyRepository.GetCountAsync();
+
+            var agencies = await _applicationUnitOfWork.AgencyRepository.GetAllAsync();
+                agencies = agencies.OrderBy(a => a.Name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var result = new PagedResult<Agency>
+            {
+                Items = agencies.ToList(),
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            return result;
         }
 
         public void Update(Agency agency)
