@@ -12,48 +12,26 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    DECLARE @SQL NVARCHAR(MAX);
+
+    SET @SQL = '
     WITH FilteredAgencies AS
     (
         SELECT *,
-               ROW_NUMBER() OVER (
-                   ORDER BY 
-                       CASE 
-                           WHEN @SortColumn = 'Name' AND @SortOrder = 'ASC' THEN Name 
-                       END ASC,
-                       CASE 
-                           WHEN @SortColumn = 'Name' AND @SortOrder = 'DESC' THEN Name 
-                       END DESC,
-					   CASE 
-                           WHEN @SortColumn = 'Address' AND @SortOrder = 'ASC' THEN Name 
-                       END ASC,
-                       CASE 
-                           WHEN @SortColumn = 'Address' AND @SortOrder = 'DESC' THEN Name 
-                       END DESC,
-                       CASE 
-                           WHEN @SortColumn = 'AddDate' AND @SortOrder = 'ASC' THEN AddDate 
-                       END ASC,
-                       CASE 
-                           WHEN @SortColumn = 'AddDate' AND @SortOrder = 'DESC' THEN AddDate 
-                       END DESC,
-					    CASE 
-                           WHEN @SortColumn = 'AddDate' AND @SortOrder = 'ASC' THEN AddDate 
-                       END ASC,
-                       CASE 
-                           WHEN @SortColumn = 'AddDate' AND @SortOrder = 'DESC' THEN AddDate 
-                       END DESC
-               ) AS RowNum
+               ROW_NUMBER() OVER (ORDER BY ' + QUOTENAME(@SortColumn) + ' ' + @SortOrder + ') AS RowNum
         FROM Agencies
         WHERE
             (@SearchTerm IS NULL OR
-             Name LIKE '%' + @SearchTerm + '%' OR
-             Address LIKE '%' + @SearchTerm + '%' OR
-             ContactNumber LIKE '%' + @SearchTerm + '%' OR
-             Website LIKE '%' + @SearchTerm + '%' OR
-             LicenseNumber LIKE '%' + @SearchTerm + '%')
+             Name LIKE ''%'' + @SearchTerm + ''%'' OR
+             Address LIKE ''%'' + @SearchTerm + ''%'' OR
+             ContactNumber LIKE ''%'' + @SearchTerm + ''%'' OR
+             Website LIKE ''%'' + @SearchTerm + ''%'' OR
+             LicenseNumber LIKE ''%'' + @SearchTerm + ''%'')
     )
     SELECT *
     FROM FilteredAgencies
-    WHERE RowNum BETWEEN ((@PageNumber - 1) * @PageSize + 1) AND (@PageNumber * @PageSize)
-    ORDER BY RowNum;
+    WHERE RowNum BETWEEN ((' + CAST(@PageNumber AS NVARCHAR) + ' - 1) * ' + CAST(@PageSize AS NVARCHAR) + ' + 1) AND (' + CAST(@PageNumber AS NVARCHAR) + ' * ' + CAST(@PageSize AS NVARCHAR) + ')
+    ORDER BY RowNum;';
+
+    EXEC sp_executesql @SQL, N'@SearchTerm NVARCHAR(100)', @SearchTerm;
 END
-GO
