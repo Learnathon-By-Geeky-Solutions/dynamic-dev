@@ -6,12 +6,9 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.InMemory; // Add this using directive
 
 namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
 {
-
-
     [TestFixture]
     public class AgencyRepositoryTests
     {
@@ -26,7 +23,7 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
 
-            // Use the new constructor for testing
+            // Initialize the DbContext and Repository
             _context = new ApplicationDbContext(options);
             _repository = new AgencyRepository(_context);
 
@@ -39,7 +36,8 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
                     Name = "Agency 1",
                     Address = "123 Main St, New York, NY",
                     ContactNumber = "123-456-7890",
-                    LicenseNumber = "LICENSE123"
+                    LicenseNumber = "LICENSE123",
+                    AddDate = DateTime.Now
                 },
                 new Agency
                 {
@@ -47,12 +45,13 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
                     Name = "Agency 2",
                     Address = "456 Elm St, Los Angeles, CA",
                     ContactNumber = "987-654-3210",
-                    LicenseNumber = "LICENSE456"
+                    LicenseNumber = "LICENSE456",
+                    AddDate = DateTime.Now
                 }
             });
             _context.SaveChanges();
         }
-        
+
         [TearDown]
         public void TearDown()
         {
@@ -71,7 +70,8 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
                 Name = "Test Agency",
                 Address = "789 Oak St, Chicago, IL",
                 ContactNumber = "654-321-0987",
-                LicenseNumber = "LICENSE789"
+                LicenseNumber = "LICENSE789",
+                AddDate = DateTime.Now
             };
 
             // Act
@@ -82,7 +82,7 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             var result = _repository.GetAll();
             Assert.Multiple(() =>
             {
-                Assert.That(result, Has.Count.EqualTo(3), "The count of agencies is incorrect."); // Updated
+                Assert.That(result, Has.Count.EqualTo(3), "The count of agencies is incorrect.");
                 Assert.That(result.Any(a => a.Name == "Test Agency"), Is.True, "The added agency is missing.");
             });
         }
@@ -96,8 +96,9 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(result, Has.Count.EqualTo(2), "The count of agencies is incorrect."); // Updated
+                Assert.That(result, Has.Count.EqualTo(2), "The count of agencies is incorrect.");
                 Assert.That(result[0].Name, Is.EqualTo("Agency 1"), "The first agency's name is incorrect.");
+                Assert.That(result[1].Name, Is.EqualTo("Agency 2"), "The second agency's name is incorrect.");
             });
         }
 
@@ -115,7 +116,7 @@ namespace EasyTravel.Test.InfrastructureTests.RepositoryTests
             var result = _repository.GetAll();
             Assert.Multiple(() =>
             {
-                Assert.That(result, Has.Count.EqualTo(1), "The count of agencies is incorrect after removal."); // Updated
+                Assert.That(result, Has.Count.EqualTo(1), "The count of agencies is incorrect after removal.");
                 Assert.That(result.Any(a => a.Id == agencyToRemove.Id), Is.False, "The removed agency still exists.");
             });
         }
