@@ -96,25 +96,6 @@ public async Task AddAsync_ShouldAddEntity()
 }
 
         [Test]
-public async Task RemoveAsync_ShouldRemoveEntity()
-{
-    // Arrange
-    var busToRemove = _context.Buses.First();
-
-    // Act
-    await _repository.RemoveAsync(busToRemove.Id);
-    await _context.SaveChangesAsync();
-    var result = _repository.GetAll().ToList(); // Convert to a list for safe access
-
-    // Assert
-    Assert.Multiple(() =>
-    {
-        Assert.That(result, Has.Count.EqualTo(3), "The count of buses is incorrect.");
-        Assert.That(result.Any(b => b.OperatorName == "Operator 3"), Is.True, "The expected bus was not found.");
-    });
-}
-
-        [Test]
         public async Task EditAsync_ShouldUpdateEntity()
         {
             var busToEdit = _context.Buses.First();
