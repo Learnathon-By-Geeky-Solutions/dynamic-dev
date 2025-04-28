@@ -1,6 +1,4 @@
-﻿
-
-# Easy Travel BD  
+﻿# Easy Travel BD  
 <img src="./docs/images/easytravelLogoNav.png">
 <br>
 
@@ -9,10 +7,31 @@
 **Easy Travel BD** is a comprehensive travel management platform designed to make traveling across Bangladesh convenient and enjoyable. From booking bus tickets to finding the best hotels, tour guides, and travel agencies, our platform provides a seamless experience for travelers. Additionally, Easy Travel BD enables users to explore tourist spots, read blogs, and share their travel experiences.
 
 ---
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Microsoft_.NET_logo.png" alt="ASP.NET Core" style="height: 60px;">
+      <p><b>ASP.NET Core</b></p>
+    </td>
+    <td align="center">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Csharp_Logo.png" alt="C#" style="height: 60px;">
+      <p><b>C#</b></p>
+    </td>
+    <td align="center">
+      <img src="https://schwabencode.com/contents/logos/mssql-server.png" alt="SQL Server" style="height: 60px;">
+      <p><b>Microsoft SQL Server</b></p>
+    </td>
+    <td align="center">
+      <img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" alt="Clean Architecture" style="height: 60px;">
+      <p><b>Clean Architecture</b></p>
+    </td>
+    <td align="center">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg" alt="Azure" style="height: 60px;">
+      <p><b>Microsoft Azure</b></p>
+    </td>
+  </tr>
+</table>
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;"> <div style="text-align: center;"> <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Microsoft_.NET_logo.png" alt="ASP.NET Core" style="height: 60px;"> <p><b>ASP.NET Core</b></p> </div> <div style="text-align: center;"> <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Csharp_Logo.png" alt="C#" style="height: 60px;"> <p><b>C#</b></p> </div> <div style="text-align: center;"> <img src="https://schwabencode.com/contents/logos/mssql-server.png" alt="SQL Server" style="height: 60px;"> <p><b>Microsoft SQL Server</b></p> </div> <div style="text-align: center;"> <img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" alt="Clean Architecture" style="height: 60px;"> <p><b>Clean Architecture</b></p> </div> <div style="text-align: center;"> <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg" alt="Azure" style="height: 60px;"> <p><b>Microsoft Azure</b></p>
- </div>
-</div>
 
 ---
 
@@ -65,7 +84,7 @@ A heartfelt appreciation to **[Maynul Islam Sohel](https://github.com/sohelatbs2
 
 ### **Home Page**  
 
-<img src="docs/images/home.png" alt="Home Page" width="400" />
+<img src="docs/images/home.png" alt="Home Page" width="800" align="center" />
 <br>
 The homepage provides a user-friendly interface with the following sections:  
 
@@ -83,7 +102,7 @@ The homepage provides a user-friendly interface with the following sections:
 
 ### **Hotel Page**  
 
-<img src="docs/images/hotelpage.png" alt="Hotel Page" width="400" />
+<img src="docs/images/hotelpage.png" alt="Hotel Page" width="800" align="center" />
 <br>
 Searchable and result of hotel.Responsive and beautiful ui.
 
