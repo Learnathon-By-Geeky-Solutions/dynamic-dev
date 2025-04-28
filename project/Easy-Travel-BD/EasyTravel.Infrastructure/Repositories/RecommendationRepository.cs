@@ -19,7 +19,7 @@ namespace EasyTravel.Infrastructure.Repositories
             _context = context;
         }
         
-        public async Task<IEnumerable<RecommendationDto>> GetRecommendationsAsync(string type, int count = 5)
+        public async Task<IEnumerable<RecommendationDto>> GetRecommendationsAsync(string type, int count)
         {
             switch (type.ToLower())
             {
