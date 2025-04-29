@@ -81,7 +81,7 @@ namespace EasyTravel.Application.Services
                     _logger.LogInformation("No guides available as the selected time is less than 6 hours from now.");
                     return (new List<Photographer>(),0);
                 }
-
+              
                 var photographers = await _unitOfWork.PhotographerRepository.GetAsync(
                     e => e.Availability &&
                         (!e.PhotographerBookings!.Any() ||
@@ -96,6 +96,7 @@ namespace EasyTravel.Application.Services
                                   )
                          ))
                 );
+               
                 var totalItems = photographers.Count();
                 var paginatedPhotographers = photographers.
                     OrderBy(p => p.FirstName).

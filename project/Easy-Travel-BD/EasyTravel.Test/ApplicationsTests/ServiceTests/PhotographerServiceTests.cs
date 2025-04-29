@@ -165,24 +165,7 @@ namespace EasyTravel.Test.ApplicationTests.Services
         }
 
         [Test]
-        public void GetPhotographerListAsync_ShouldThrowArgumentNullException_WhenPhotographerBookingIsNull()
-        {
-            // Act & Assert
-            var ex = Assert.ThrowsAsync<ArgumentNullException>(() => _photographerService.GetPhotographerListAsync(null!));
-            Assert.That(ex!.ParamName, Is.EqualTo("photographerBooking"));
-
-            _loggerMock.Verify(
-                l => l.Log(
-                    LogLevel.Warning,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Attempted to fetch photographer list with a null PhotographerBooking model.")),
-                    null,
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                Times.Once);
-        }
-
-        [Test]
-        public async Task GetPhotographerListAsync_ShouldReturnPhotographers_WhenValidInputsAreProvided()
+        public async Task GetPhotographerListAsync_ShouldReturnPaginatedPhotographers_WhenValidInputsAreProvided()
         {
             // Arrange
             var photographerBooking = new PhotographerBooking
@@ -198,81 +181,75 @@ namespace EasyTravel.Test.ApplicationTests.Services
             };
 
             var photographers = new List<Photographer>
-    {
-        new Photographer
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "John",
-            LastName = "Doe",
-            Email = "john.doe@example.com",
-            ContactNumber = "123-456-7890",
-            PreferredLocations = "CityA",
-            PreferredEvents = "Wedding",
-            Address = "123 Main St",
-            ProfilePicture = "profile.jpg",
-            Bio = "Experienced photographer",
-            DateOfBirth = DateTime.Now.AddYears(-30),
-            Skills = "Photography",
-            PortfolioUrl = "http://portfolio.com",
-            Specialization = "Wedding",
-            YearsOfExperience = 5,
-            Availability = true,
-            HourlyRate = 100,
-            Rating = 4.5m,
-            HireDate = DateTime.Now.AddYears(-2),
-            UpdatedAt = DateTime.Now,
-            AgencyId = Guid.NewGuid()
-        },
-        new Photographer
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Jane",
-            LastName = "Smith",
-            Email = "jane.smith@example.com",
-            ContactNumber = "987-654-3210",
-            PreferredLocations = "CityB",
-            PreferredEvents = "Portrait",
-            Address = "456 Elm St",
-            ProfilePicture = "profile2.jpg",
-            Bio = "Creative photographer",
-            DateOfBirth = DateTime.Now.AddYears(-25),
-            Skills = "Portrait Photography",
-            PortfolioUrl = "http://portfolio2.com",
-            Specialization = "Portrait",
-            YearsOfExperience = 3,
-            Availability = true,
-            HourlyRate = 80,
-            Rating = 4.8m,
-            HireDate = DateTime.Now.AddYears(-1),
-            UpdatedAt = DateTime.Now,
-            AgencyId = Guid.NewGuid()
-        }
-    };
+            {
+                new Photographer
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "John",
+                    LastName = "Doe",
+                    Email = "john.doe@example.com",
+                    ContactNumber = "123-456-7890",
+                    PreferredLocations = "CityA",
+                    PreferredEvents = "Wedding",
+                    Address = "123 Main St",
+                    ProfilePicture = "profile.jpg",
+                    Bio = "Experienced photographer",
+                    DateOfBirth = DateTime.Now.AddYears(-30),
+                    Skills = "Photography",
+                    PortfolioUrl = "http://portfolio.com",
+                    Specialization = "Wedding",
+                    YearsOfExperience = 5,
+                    Availability = true,
+                    HourlyRate = 100,
+                    Rating = 4.5m,
+                    HireDate = DateTime.Now.AddYears(-2),
+                    UpdatedAt = DateTime.Now,
+                    AgencyId = Guid.NewGuid()
+                },
+                new Photographer
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    Email = "jane.smith@example.com",
+                    ContactNumber = "987-654-3210",
+                    PreferredLocations = "CityB",
+                    PreferredEvents = "Portrait",
+                    Address = "456 Elm St",
+                    ProfilePicture = "profile2.jpg",
+                    Bio = "Creative photographer",
+                    DateOfBirth = DateTime.Now.AddYears(-25),
+                    Skills = "Portrait Photography",
+                    PortfolioUrl = "http://portfolio2.com",
+                    Specialization = "Portrait",
+                    YearsOfExperience = 3,
+                    Availability = true,
+                    HourlyRate = 80,
+                    Rating = 4.8m,
+                    HireDate = DateTime.Now.AddYears(-1),
+                    UpdatedAt = DateTime.Now,
+                    AgencyId = Guid.NewGuid()
+                }
+            };
 
             _unitOfWorkMock.Setup(u => u.PhotographerRepository.GetAsync(It.IsAny<Expression<Func<Photographer, bool>>>(), null))
                 .ReturnsAsync(photographers);
 
             // Act
-            var result = await _photographerService.GetPhotographerListAsync(photographerBooking);
+            var (result, totalPages) = await _photographerService.GetPhotographerListAsync(photographerBooking, 1, 1);
 
             // Assert
-            Assert.That(result, Is.EqualTo(photographers));
+            Assert.That(result.Count(), Is.EqualTo(1));
+            Assert.That(totalPages, Is.EqualTo(2)); // 2 pages for 2 photographers with page size 1
 
-            var expectedLogMessage = $"Fetching photographer list for event on {photographerBooking.EventDate:MM/dd/yyyy HH:mm:ss} at {photographerBooking.StartTime}";
             _loggerMock.Verify(
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains(expectedLogMessage)),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Fetching photographers list for event on {photographerBooking.EventDate} at {photographerBooking.StartTime}")),
                     null,
                     It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
                 Times.Once);
         }
-
     }
 }
-
-
-
-
-

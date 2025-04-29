@@ -1,6 +1,7 @@
 using EasyTravel.Application.Services;
 using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Enums;
 using EasyTravel.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
