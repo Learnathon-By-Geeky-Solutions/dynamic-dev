@@ -16,9 +16,9 @@ namespace EasyTravel.Tests.Services
     [TestFixture]
     public class BusServiceTests
     {
-        private Mock<IApplicationUnitOfWork> _unitOfWorkMock;
-        private Mock<ILogger<BusService>> _loggerMock;
-        private BusService _busService;
+        private Mock<IApplicationUnitOfWork> _unitOfWorkMock = null!;
+        private Mock<ILogger<BusService>> _loggerMock = null!;
+        private BusService _busService = null!;
 
         [SetUp]
         public void SetUp()
@@ -32,11 +32,12 @@ namespace EasyTravel.Tests.Services
         public void CreateBus_ShouldThrowArgumentNullException_WhenBusIsNull()
         {
             // Act & Assert
-            var ex = Assert.Throws<ArgumentNullException>(() => _busService.CreateBus(null));
+            var ex = Assert.Throws<ArgumentNullException>(() => _busService.CreateBus(null!));
 
             Assert.Multiple(() =>
             {
-                Assert.That(ex.ParamName, Is.EqualTo("bus"));
+                Assert.That(ex, Is.Not.Null);
+                Assert.That(ex!.ParamName, Is.EqualTo("bus"));
                 Assert.That(ex.Message, Does.Contain("Bus entity cannot be null."));
             });
         }
@@ -112,7 +113,7 @@ namespace EasyTravel.Tests.Services
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.Not.Null);
-                Assert.That(result.Count(), Is.EqualTo(2));
+                Assert.That(result.Count(), Is.EqualTo(2)); // Use Count() for IEnumerable
                 Assert.That(result.First().OperatorName, Is.EqualTo("Operator1"));
             });
         }
@@ -125,7 +126,8 @@ namespace EasyTravel.Tests.Services
 
             Assert.Multiple(() =>
             {
-                Assert.That(ex.ParamName, Is.EqualTo("BusId"));
+                Assert.That(ex, Is.Not.Null);
+                Assert.That(ex!.ParamName, Is.EqualTo("BusId"));
                 Assert.That(ex.Message, Does.Contain("Bus ID cannot be empty."));
             });
         }
@@ -170,36 +172,34 @@ namespace EasyTravel.Tests.Services
             var dateTime = DateTime.Now.Date;
 
             var buses = new List<Bus>
-    {
-        new Bus
-        {
-            Id = Guid.NewGuid(),
-            OperatorName = "Operator1",
-            From = from,
-            To = to,
-            DepartureTime = dateTime,
-            ArrivalTime = dateTime.AddHours(2),
-            Price = 100,
-            TotalSeats = 28,
-            Seats = new List<Seat>
             {
-                new Seat
+                new Bus
                 {
                     Id = Guid.NewGuid(),
-                    BusId = Guid.NewGuid(),
-                    SeatNumber = "A1",
-                    IsAvailable = true
+                    OperatorName = "Operator1",
+                    From = from,
+                    To = to,
+                    DepartureTime = dateTime,
+                    ArrivalTime = dateTime.AddHours(2),
+                    Price = 100,
+                    TotalSeats = 28,
+                    Seats = new List<Seat>
+                    {
+                        new Seat
+                        {
+                            Id = Guid.NewGuid(),
+                            BusId = Guid.NewGuid(),
+                            SeatNumber = "A1",
+                            IsAvailable = true
+                        }
+                    }
                 }
-            }
-        }
-    };
+            };
 
-            // Explicitly provide all arguments to the GetAsync method
             _unitOfWorkMock.Setup(u => u.BusRepository.GetAsync(
-     It.IsAny<Expression<Func<Bus, bool>>>(),
-     null // Include parameter
- )).ReturnsAsync(buses);
-
+                It.IsAny<Expression<Func<Bus, bool>>>(),
+                null // Include parameter
+            )).ReturnsAsync(buses);
 
             // Act
             var result = await _busService.GetAvailableBusesAsync(from, to, dateTime);
@@ -208,12 +208,11 @@ namespace EasyTravel.Tests.Services
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.Not.Null);
-                Assert.That(result.Count(), Is.EqualTo(1));
+                Assert.That(result.Count(), Is.EqualTo(1)); // Use Count() for IEnumerable
                 Assert.That(result.First().From, Is.EqualTo(from));
                 Assert.That(result.First().To, Is.EqualTo(to));
             });
         }
-
-
     }
 }
+

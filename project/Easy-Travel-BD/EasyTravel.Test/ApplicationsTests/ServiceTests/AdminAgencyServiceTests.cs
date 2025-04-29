@@ -11,13 +11,12 @@ using System.Collections.Generic;
 
 namespace EasyTravel.Test.ApplicationsTests.ServiceTests
 {
-
     [TestFixture]
     public class AdminAgencyServiceTests
     {
-        private Mock<IApplicationUnitOfWork> _unitOfWorkMock;
-        private Mock<ILogger<AdminAgencyService>> _loggerMock;
-        private AdminAgencyService _adminAgencyService;
+        private Mock<IApplicationUnitOfWork> _unitOfWorkMock = null!;
+        private Mock<ILogger<AdminAgencyService>> _loggerMock = null!;
+        private AdminAgencyService _adminAgencyService = null!;
 
         [SetUp]
         public void SetUp()
@@ -53,17 +52,17 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Creating a new agency.")),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Creating a new agency.")),
                     It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
             _loggerMock.Verify(
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Agency created successfully.")),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Agency created successfully.")),
                     It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
         }
 
@@ -91,13 +90,11 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains($"Fetching agency with ID: {agencyId}")),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Fetching agency with ID: {agencyId}")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
         }
-
-
 
         [Test]
         public void GetAll_ShouldReturnAllAgencies()
@@ -133,7 +130,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Fetching all agencies.")),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Fetching all agencies.")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
@@ -165,7 +162,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains($"Updating agency with ID: {agency.Id}")),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Updating agency with ID: {agency.Id}")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
@@ -173,12 +170,10 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Agency updated successfully.")),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Agency updated successfully.")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
         }
-
     }
-    
 }

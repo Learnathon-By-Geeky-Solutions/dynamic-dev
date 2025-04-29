@@ -19,7 +19,7 @@
         new { ImageUrl = "https://example.com/bus2.jpg", Title = "Green Line", Location = "Dhaka, Gabtoli", Rating = 4, Description = "Affordable and safe." },
     };
 }
-<div class="container">
+<div class="container mt-3">
     <h2 class="text-center mb-4">Bus Search</h2>
     <!--SearchBox -->
     <form method="post" asp-action="Bus">
@@ -64,37 +64,3 @@
 
 
 </div>
-
-@section Scripts {
-    <script>
-        var swiper = new Swiper(".mySwiper", {
-            loop: true,
-            grabCursor: true,
-            spaceBetween: 30,
-            centeredSlides: true,
-            autoplay: {
-                delay: 3500,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            breakpoints: {
-                768: {
-                    slidesPerView: 1,
-                },
-                992: {
-                    slidesPerView: 2,
-                },
-                1200: {
-                    slidesPerView: 3,
-                }
-            }
-        });
-    </script>
-}
