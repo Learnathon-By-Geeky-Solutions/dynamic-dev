@@ -2,6 +2,7 @@ using EasyTravel.Application.Services;
 using EasyTravel.Domain.Entites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -26,19 +27,19 @@ namespace EasyTravel.Test.ApplicationTests.Services
             _registerService = new RegisterService(_userManagerMock.Object, _loggerMock.Object);
         }
 
-        private Mock<UserManager<User>> MockUserManager()
+        private static Mock<UserManager<User>> MockUserManager()
         {
             var store = new Mock<IUserStore<User>>();
             return new Mock<UserManager<User>>(
                 store.Object,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
+                new Mock<IOptions<IdentityOptions>>().Object,
+                new Mock<IPasswordHasher<User>>().Object,
+                Array.Empty<IUserValidator<User>>(),
+                Array.Empty<IPasswordValidator<User>>(),
+                new Mock<ILookupNormalizer>().Object,
+                new Mock<IdentityErrorDescriber>().Object,
+                new Mock<IServiceProvider>().Object,
+                new Mock<ILogger<UserManager<User>>>().Object);
         }
 
         [Test]

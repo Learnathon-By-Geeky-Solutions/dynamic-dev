@@ -74,50 +74,6 @@ namespace EasyTravel.Tests.Services
             });
         }
 
-        //[Test]
-        //public void GetAllBuses_ShouldReturnAllBuses()
-        //{
-        //    // Arrange
-        //    var buses = new List<Bus>
-        //    {
-        //        new Bus
-        //        {
-        //            Id = Guid.NewGuid(),
-        //            OperatorName = "Operator1",
-        //            From = "CityA",
-        //            To = "CityB",
-        //            DepartureTime = DateTime.Now,
-        //            ArrivalTime = DateTime.Now.AddHours(2),
-        //            Price = 100,
-        //            TotalSeats = 28
-        //        },
-        //        new Bus
-        //        {
-        //            Id = Guid.NewGuid(),
-        //            OperatorName = "Operator2",
-        //            From = "CityC",
-        //            To = "CityD",
-        //            DepartureTime = DateTime.Now,
-        //            ArrivalTime = DateTime.Now.AddHours(3),
-        //            Price = 150,
-        //            TotalSeats = 30
-        //        }
-        //    };
-
-        //    _unitOfWorkMock.Setup(u => u.BusRepository.GetAllBuses()).Returns(buses);
-
-        //    // Act
-        //    var result = _busService.GetAllPagenatedBuses(pageNumber,);
-
-        //    // Assert
-        //    Assert.Multiple(() =>
-        //    {
-        //        Assert.That(result, Is.Not.Null);
-        //        Assert.That(result.Count(), Is.EqualTo(2)); // Use Count() for IEnumerable
-        //        Assert.That(result.First().OperatorName, Is.EqualTo("Operator1"));
-        //    });
-        //}
-
         [Test]
         public void GetBusById_ShouldThrowArgumentException_WhenBusIdIsEmpty()
         {
@@ -256,7 +212,7 @@ namespace EasyTravel.Tests.Services
                 Assert.That(result, Is.Not.Null);
                 Assert.That(result.Id, Is.EqualTo(busId));
                 Assert.That(result.Seats, Is.Not.Null);
-                Assert.That(result.Seats!.Count, Is.EqualTo(1));
+                Assert.That(result.Seats, Has.Count.EqualTo(1)); // Updated to use Has.Count.EqualTo
             });
         }
     }

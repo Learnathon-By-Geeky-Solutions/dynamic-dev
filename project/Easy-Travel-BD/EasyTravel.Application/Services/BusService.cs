@@ -127,7 +127,7 @@ namespace EasyTravel.Application.Services
                     bus.To == to &&
                     bus.DepartureTime.Date == dateTime.Date &&
                     bus.Seats!.Any(seat => seat.IsAvailable));
-                var totalItems = buses.Count();
+                var totalItems = buses.Count;
                 var paginateBuses = buses.
                     OrderBy(b => b.From).
                     Skip((pageNumber - 1) * pageSize).

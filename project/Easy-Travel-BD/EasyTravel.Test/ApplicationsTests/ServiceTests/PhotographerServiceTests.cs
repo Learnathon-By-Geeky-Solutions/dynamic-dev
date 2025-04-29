@@ -239,8 +239,11 @@ namespace EasyTravel.Test.ApplicationTests.Services
             var (result, totalPages) = await _photographerService.GetPhotographerListAsync(photographerBooking, 1, 1);
 
             // Assert
+            Assert.Multiple(() =>
+            {
             Assert.That(result.Count(), Is.EqualTo(1));
             Assert.That(totalPages, Is.EqualTo(2)); // 2 pages for 2 photographers with page size 1
+            });
 
             _loggerMock.Verify(
                 l => l.Log(
