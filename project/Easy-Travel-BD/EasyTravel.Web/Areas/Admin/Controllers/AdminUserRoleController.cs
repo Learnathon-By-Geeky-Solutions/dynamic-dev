@@ -21,11 +21,15 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _adminRoleService = adminRoleService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUserRole/Index");
-            var userRoles = await _adminUserRoleService.GetAllAsync();
-            return View(userRoles);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var roles = await _adminUserRoleService.GetPaginatedUserRolesAsync(pageNumber, pageSize);
+            return View(roles);
         }
         [HttpGet]
         public async Task<IActionResult> Create()

@@ -16,6 +16,6 @@ namespace EasyTravel.Domain.Services
         Task<IdentityResult> DeleteAsync(Guid UserId, Guid RoleId);
         Task<IEnumerable<(User, Role)>> GetAllAsync();
         Task<List<User>> GetUsersWithoutRole();
-        Task<PagedResult<(User,Role)>> GetPaginatedGuidesAsync(int pageNumber, int pageSize);
+        Task<PagedResult<(User,Role)>> GetPaginatedUserRolesAsync(int pageNumber, int pageSize);
     }
 }

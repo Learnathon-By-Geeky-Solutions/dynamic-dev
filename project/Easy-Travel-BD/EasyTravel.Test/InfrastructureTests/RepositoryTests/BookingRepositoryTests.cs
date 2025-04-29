@@ -1,4 +1,5 @@
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Enums;
 using EasyTravel.Infrastructure.Data;
 using EasyTravel.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;

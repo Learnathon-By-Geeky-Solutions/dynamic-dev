@@ -23,6 +23,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             var list = await _adminGuideBookingService.GetPaginatedGuideBookingAsync(pageNumber,pageSize);
             return View(list);
         }
+
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
@@ -30,14 +31,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return View();
             }
-            if (id == Guid.Empty)
-            {
-                TempData["error"] = "The guide booking not found";
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
-            }
             var agency = _adminGuideBookingService.Get(id);
             return View(agency);
         }
+
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(GuideBooking model)
         {

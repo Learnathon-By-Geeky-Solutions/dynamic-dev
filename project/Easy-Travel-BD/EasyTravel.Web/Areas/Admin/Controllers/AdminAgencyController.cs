@@ -16,7 +16,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             var agencies = await _agencyService.GetPaginatedAgenciesAsync(pageNumber,pageSize);
             return View(agencies);
         }
@@ -44,10 +47,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return View();
             }
-            if (id == Guid.Empty)
-            {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
-            }
             var agency = _agencyService.Get(id);
             return View(agency);
         }
@@ -66,17 +65,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View();
+                var agency = _agencyService.Get(id);
+                return View(agency);
             }
-            if (id == Guid.Empty)
-            {
-                TempData["error"] = "The agency not found";
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
-            }
-            var agency = _agencyService.Get(id);
-            return View(agency);
+            return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Agency model)

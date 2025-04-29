@@ -59,13 +59,21 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Deleting agency with ID: {Id}", id);
+
+                var agency = _applicationUnitOfWork.AgencyRepository.GetById(id);
+                if (agency == null)
+                {
+                    _logger.LogWarning("Agency with ID: {Id} not found.", id);
+                    throw new KeyNotFoundException($"Agency with ID: {id} not found.");
+                }
+
                 _applicationUnitOfWork.AgencyRepository.Remove(id);
                 _applicationUnitOfWork.Save();
-                _logger.LogInformation("Agency deleted successfully.");
+                _logger.LogInformation("Agency with ID: {Id} deleted successfully.", id);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while deleting the agency with ID: {Id}", id);
+                _logger.LogError(ex, "An error occurred while deleting the agency with ID: {Id}.", id);
                 throw new InvalidOperationException($"An error occurred while deleting the agency with ID: {id}.", ex);
             }
         }
@@ -88,7 +96,7 @@ namespace EasyTravel.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching the agency with ID: {Id}", id);
+                _logger.LogError(ex, "An error occurred while fetching the agency with ID: {Id}.", id);
                 throw new InvalidOperationException("An error occurred while fetching the agency.", ex);
             }
         }
@@ -109,22 +117,36 @@ namespace EasyTravel.Application.Services
 
         public async Task<PagedResult<Agency>> GetPaginatedAgenciesAsync(int pageNumber, int pageSize)
         {
-            var totalItems = await _applicationUnitOfWork.AgencyRepository.GetCountAsync();
+            if (pageNumber <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be greater than zero.");
+            if (pageSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be greater than zero.");
 
-            var agencies = await _applicationUnitOfWork.AgencyRepository.GetAllAsync();
-                agencies = agencies.OrderBy(a => a.Name)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-
-            var result = new PagedResult<Agency>
+            try
             {
-                Items = agencies.ToList(),
-                TotalItems = totalItems,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
-            return result;
+                _logger.LogInformation("Fetching paginated agencies for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
+
+                var totalItems = await _applicationUnitOfWork.AgencyRepository.GetCountAsync();
+                var agencies = await _applicationUnitOfWork.AgencyRepository.GetAllAsync();
+
+                agencies = agencies.OrderBy(a => a.Name)
+                                   .Skip((pageNumber - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToList();
+
+                return new PagedResult<Agency>
+                {
+                    Items = agencies.ToList(),
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching paginated agencies.");
+                throw new InvalidOperationException("An error occurred while fetching paginated agencies.", ex);
+            }
         }
 
         public void Update(Agency agency)

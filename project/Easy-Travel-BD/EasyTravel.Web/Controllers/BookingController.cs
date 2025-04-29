@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EasyTravel.Application.Services;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Enums;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;

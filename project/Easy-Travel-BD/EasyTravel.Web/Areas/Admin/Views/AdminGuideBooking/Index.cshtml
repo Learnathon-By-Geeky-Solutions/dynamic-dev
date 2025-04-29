@@ -1,31 +1,106 @@
-﻿@model IEnumerable<GuideBooking>
+﻿@model PagedResult<GuideBooking>
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="entity-list">
-    <h2>Guide booking List</h2>
-    <div class="entity-row">
-        <span class="name">Name</span>
-        <span>Date</span>
-        <span>Event Type</span>
-        <span>Event Location</span>
-
-        <!-- Buttons Section -->
-        <div class="actions">
-        </div>
-    </div>
-    @foreach (var guideBooking in Model)
-    {
-        <div class="entity-row">
-            <span class="name">@guideBooking.UserName</span>
-            <span>@guideBooking.EventDate</span>
-            <span>@guideBooking.EventType</span>
-            <span>@guideBooking.EventLocation</span>
-            <!-- Buttons Section -->
-            <div class="actions">
-                <a asp-area="Admin" asp-controller="AdminGuideBooking" asp-action="Delete" asp-route-id="@guideBooking.Id" class="delete-btn">Delete</a>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active">Guide Bookings</li>
+                    </ol>
+                </div>
             </div>
         </div>
-    }
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Guide Booking List</h3>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    @if (!Model.Items.Any())
+                    {
+                        <div class="alert alert-info m-3">No Guide bookings found.</div>
+                    }
+                    else
+                    {
+                        <table class="table table-bordered table-hover text-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var guideBooking in Model.Items)
+                                {
+                                    <tr>
+                                        <td>@guideBooking.UserName</td>
+                                        <td>@guideBooking.EventDate</td>
+                                        <td>@guideBooking.StartTime</td>
+                                        <td>@guideBooking.EndTime</td>
+                                        <td>
+                                            <form asp-area="Admin"
+                                                  asp-controller="AdminGuideBooking"
+                                                  asp-action="Delete"
+                                                  method="post"
+                                                  style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@guideBooking.Id" />
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div>
+                            Page @(Model.PageNumber) of @(Model.TotalPages)
+
+                            <div class="flex text-center items-center space-x-2 my4-">
+                                @if (Model.PageNumber > 1)
+                                {
+                                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+                                }
+
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    if (i == Model.PageNumber)
+                                    {
+                                        <strong class="px-3 py-1 bg-blue-500 rounded">@i</strong>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Index" asp-route-pageNumber="@i" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">@i</a>
+                                    }
+                                }
+
+                                @if (Model.PageNumber < Model.TotalPages)
+                                {
+                                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+                                }
+                            </div>
+
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-muted">
+                    Total Bookings: @Model.Items.Count
+                </div>
+            </div>
+        </div>
+    </section>
 </div>

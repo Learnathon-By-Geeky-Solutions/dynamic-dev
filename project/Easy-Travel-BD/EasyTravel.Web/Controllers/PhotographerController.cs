@@ -32,7 +32,7 @@ namespace EasyTravel.Web.Controllers
             return RedirectToAction("Photographer", "Search");
         }
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int )
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Photographer/List");
             var model = new SearchResultViewModel

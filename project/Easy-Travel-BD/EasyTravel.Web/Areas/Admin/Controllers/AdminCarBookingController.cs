@@ -14,6 +14,10 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index(int pageNumber = 1,int pageSize = 10)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             var list = await _adminCarBookingService.GetPaginatedCarBookingsAsync(pageNumber,pageSize);
             return View(list);
         }

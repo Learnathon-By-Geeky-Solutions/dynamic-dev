@@ -11,6 +11,6 @@ namespace EasyTravel.Domain.Services
     public interface IHotelService : IService<Hotel, Guid>
     {
         IEnumerable<Hotel> SearchHotels(string location, DateTime? value);
-        Task<PagedResult<Bus>> GetPaginatedGuidesAsync(int pageNumber, int pageSize);
+        Task<PagedResult<Hotel>> GetPaginatedHotelsAsync(int pageNumber, int pageSize);
     }
 }

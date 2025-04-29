@@ -16,6 +16,16 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _busService = busService;
         }
 
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var buses = await _busService.GetAllPagenatedBuses(pageNumber,pageSize);
+            return View(buses);
+        }
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -33,17 +43,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Index(int pageNumber = 1, int pageSize = 10)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-            var buses = _busService.GetAllPagenatedBuses(pageNumber,pageSize);
-            return View(buses);
-        }
-
-      
 
         [HttpGet]
         public IActionResult Update(Guid BusId)
@@ -75,16 +74,16 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(Guid BusId)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View();
+                var bus = _busService.GetBusById(BusId);
+                if (bus == null)
+                {
+                    return NotFound();
+                }
+                return View(bus);
             }
-            var bus = _busService.GetBusById(BusId);
-            if (bus == null)
-            {
-                return NotFound();
-            }
-            return View(bus);
+            return View();
         }
 
         [HttpPost]

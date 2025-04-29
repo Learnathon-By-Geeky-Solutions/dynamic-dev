@@ -10,7 +10,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IGuideService : IGetService<Guide, Guid>
     {
-        Task<IEnumerable<Guide>> GetGuideListAsync(GuideBooking guideBooking);
-        Task<PagedResult<Guide>> GetPaginatedGuidesAsync(int pageNumber, int pageSize);
+        Task<PagedResult<Guide>> GetGuideListAsync(GuideBooking guideBooking,int pageNumber,int paseSize);
     }
 }

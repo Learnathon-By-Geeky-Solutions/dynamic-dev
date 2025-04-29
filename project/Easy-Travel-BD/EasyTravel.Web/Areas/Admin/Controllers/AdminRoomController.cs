@@ -18,10 +18,15 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _roomService = roomService;
             _hotelService = hotelService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var rooms = _roomService.GetAll();
-            return View(rooms);
+            HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Index");
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var roles = await _roomService.GetPaginatedRoomsAsync(pageNumber, pageSize);
+            return View(roles);
         }
         [HttpGet]
         public IActionResult Create()
@@ -56,8 +61,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (id == Guid.Empty)
-                    return RedirectToAction("Error", "Home", new { area = "Admin" });
                 var room = _roomService.Get(id);
                 ViewBag.Hotels = new SelectList(_hotelService.GetAll(), "Id", "Name");
 
@@ -82,10 +85,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (id == Guid.Empty)
-                {
-                    return RedirectToAction("Error", "Home", new { area = "Admin" });
-                }
                 var room = _roomService.Get(id);
                 return View(room);
             }
@@ -96,10 +95,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.Id == Guid.Empty)
-                {
-                    return RedirectToAction("Error", "Home", new { area = "Admin" });
-                }
                 _roomService.Delete(model.Id);
                 TempData["success"] = "The room has been delete successfully";
 

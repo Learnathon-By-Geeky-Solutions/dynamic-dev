@@ -206,7 +206,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<PagedResult<(User, Role)>> GetPaginatedGuidesAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<(User, Role)>> GetPaginatedUserRolesAsync(int pageNumber, int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0)
             {

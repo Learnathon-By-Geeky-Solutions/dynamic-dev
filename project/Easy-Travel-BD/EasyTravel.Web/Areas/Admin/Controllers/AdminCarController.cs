@@ -15,25 +15,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _carService = carService;
         }
-        public IActionResult Create()
-        {
-            if(!ModelState.IsValid)
-            {
-                return View();
-            }
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Create(Car car)
-        {
-            if (ModelState.IsValid)
-            {
-                _carService.CreateCar(car);
-                return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
-
-            }
-            return View();
-        }
 
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
@@ -43,6 +24,21 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             }
             var cars = await _carService.GetAllPaginatedCarsAsync(pageNumber,pageSize);
             return View(cars);
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Car car)
+        {
+            if (ModelState.IsValid)
+            {
+                _carService.CreateCar(car);
+                return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
+            }
+            return View();
         }
 
         [HttpGet]
@@ -69,7 +65,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Admincar", new { area = "Admin" });
             }
             return View();
-
         }
 
         [HttpGet]
@@ -98,9 +93,5 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View(car);
 
         }
-
-
-
-
     }
 }

@@ -14,22 +14,21 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _adminPhotographerBookingService = adminPhotographerBookingService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var list = _adminPhotographerBookingService.GetAll();
-            return View(list);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var pgBookins = await _adminPhotographerBookingService.GetPaginatedPhotographerBookingAsync(pageNumber, pageSize);
+            return View(pgBookins);
         }
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
             if (!ModelState.IsValid)
             {
-                //
-            }
-            if (id == Guid.Empty)
-            {
-                TempData["error"] = "The photographer booking not found";
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
+                return View();
             }
             var agency = _adminPhotographerBookingService.Get(id);
             return View(agency);
@@ -37,20 +36,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(PhotographerBooking model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                //
-            }
-            if (model.Id == Guid.Empty)
-            {
-                TempData["error"] = "The photographer booking not found";
+                _adminPhotographerBookingService.Delete(model.Id);
+                TempData["success"] = "The photographer booking was deleted";
 
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminPhotographerBooking", new { area = "Admin" });
             }
-            _adminPhotographerBookingService.Delete(model.Id);
-            TempData["success"] = "The photographer booking was deleted";
-
-            return RedirectToAction("Index", "AdminPhotographerBooking", new { area = "Admin" });
+            return View();
         }
     }
 }
