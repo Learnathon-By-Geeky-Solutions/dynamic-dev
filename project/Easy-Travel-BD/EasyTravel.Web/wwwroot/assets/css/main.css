@@ -51,6 +51,11 @@
   --contrast-color: #ffffff;
 }
 
+.bg-theme {
+    background-color: #008374 !important; /* Your custom color */
+    color: #ffffff !important;
+}
+
 /* Smooth scroll */
 
 /*--------------------------------------------------------------
