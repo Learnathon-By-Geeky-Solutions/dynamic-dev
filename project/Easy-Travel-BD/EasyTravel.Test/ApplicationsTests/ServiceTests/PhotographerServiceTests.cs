@@ -181,56 +181,56 @@ namespace EasyTravel.Test.ApplicationTests.Services
             };
 
             var photographers = new List<Photographer>
-            {
-                new Photographer
-                {
-                    Id = Guid.NewGuid(),
-                    FirstName = "John",
-                    LastName = "Doe",
-                    Email = "john.doe@example.com",
-                    ContactNumber = "123-456-7890",
-                    PreferredLocations = "CityA",
-                    PreferredEvents = "Wedding",
-                    Address = "123 Main St",
-                    ProfilePicture = "profile.jpg",
-                    Bio = "Experienced photographer",
-                    DateOfBirth = DateTime.Now.AddYears(-30),
-                    Skills = "Photography",
-                    PortfolioUrl = "http://portfolio.com",
-                    Specialization = "Wedding",
-                    YearsOfExperience = 5,
-                    Availability = true,
-                    HourlyRate = 100,
-                    Rating = 4.5m,
-                    HireDate = DateTime.Now.AddYears(-2),
-                    UpdatedAt = DateTime.Now,
-                    AgencyId = Guid.NewGuid()
-                },
-                new Photographer
-                {
-                    Id = Guid.NewGuid(),
-                    FirstName = "Jane",
-                    LastName = "Smith",
-                    Email = "jane.smith@example.com",
-                    ContactNumber = "987-654-3210",
-                    PreferredLocations = "CityB",
-                    PreferredEvents = "Portrait",
-                    Address = "456 Elm St",
-                    ProfilePicture = "profile2.jpg",
-                    Bio = "Creative photographer",
-                    DateOfBirth = DateTime.Now.AddYears(-25),
-                    Skills = "Portrait Photography",
-                    PortfolioUrl = "http://portfolio2.com",
-                    Specialization = "Portrait",
-                    YearsOfExperience = 3,
-                    Availability = true,
-                    HourlyRate = 80,
-                    Rating = 4.8m,
-                    HireDate = DateTime.Now.AddYears(-1),
-                    UpdatedAt = DateTime.Now,
-                    AgencyId = Guid.NewGuid()
-                }
-            };
+    {
+        new Photographer
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "john.doe@example.com",
+            ContactNumber = "123-456-7890",
+            PreferredLocations = "CityA",
+            PreferredEvents = "Wedding",
+            Address = "123 Main St",
+            ProfilePicture = "profile.jpg",
+            Bio = "Experienced photographer",
+            DateOfBirth = DateTime.Now.AddYears(-30),
+            Skills = "Photography",
+            PortfolioUrl = "http://portfolio.com",
+            Specialization = "Wedding",
+            YearsOfExperience = 5,
+            Availability = true,
+            HourlyRate = 100,
+            Rating = 4.5m,
+            HireDate = DateTime.Now.AddYears(-2),
+            UpdatedAt = DateTime.Now,
+            AgencyId = Guid.NewGuid()
+        },
+        new Photographer
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Jane",
+            LastName = "Smith",
+            Email = "jane.smith@example.com",
+            ContactNumber = "987-654-3210",
+            PreferredLocations = "CityB",
+            PreferredEvents = "Portrait",
+            Address = "456 Elm St",
+            ProfilePicture = "profile2.jpg",
+            Bio = "Creative photographer",
+            DateOfBirth = DateTime.Now.AddYears(-25),
+            Skills = "Portrait Photography",
+            PortfolioUrl = "http://portfolio2.com",
+            Specialization = "Portrait",
+            YearsOfExperience = 3,
+            Availability = true,
+            HourlyRate = 80,
+            Rating = 4.8m,
+            HireDate = DateTime.Now.AddYears(-1),
+            UpdatedAt = DateTime.Now,
+            AgencyId = Guid.NewGuid()
+        }
+    };
 
             _unitOfWorkMock.Setup(u => u.PhotographerRepository.GetAsync(It.IsAny<Expression<Func<Photographer, bool>>>(), null))
                 .ReturnsAsync(photographers);
@@ -246,10 +246,12 @@ namespace EasyTravel.Test.ApplicationTests.Services
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Fetching photographers list for event on {photographerBooking.EventDate} at {photographerBooking.StartTime}")),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Fetching photographers list for event on {photographerBooking.EventDate:MM/dd/yyyy HH:mm:ss} at {photographerBooking.StartTime} for page 1 with size 1")),
                     null,
                     It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
                 Times.Once);
         }
+
+
     }
 }
