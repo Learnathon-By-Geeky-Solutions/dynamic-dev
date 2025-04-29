@@ -1,4 +1,5 @@
-﻿using EasyTravel.Domain.Services;
+﻿using EasyTravel.Application.Services;
+using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _adminHotelBookingService = adminHotelBookingService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var list = _adminHotelBookingService.GetAll();
-            return View(list);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var hotelBookings = await _adminHotelBookingService.GetPaginatedHotelBookingsAsync(pageNumber, pageSize);
+            return View(hotelBookings);
         }
     }
 }

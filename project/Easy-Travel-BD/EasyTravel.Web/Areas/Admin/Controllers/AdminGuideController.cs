@@ -19,9 +19,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _guideService = guideService;
             _agencyService = agencyService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var guides = _guideService.GetAll();
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+            var guides = await _guideService.GetPaginatedGuidesAsync(pageNumber,pageSize);
             return View(guides);
         }
         [HttpGet]
@@ -47,10 +51,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 return View();
-            }
-            if (id == Guid.Empty)
-            {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             var model = _guideService.Get(id);
             model.Agencies = _agencyService.GetAll().ToList();
@@ -90,10 +90,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-            if (model.Id == Guid.Empty)
-            {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             _guideService.Delete(model.Id);
             return RedirectToAction("Index", "AdminGuide", new { area = "Admin" });

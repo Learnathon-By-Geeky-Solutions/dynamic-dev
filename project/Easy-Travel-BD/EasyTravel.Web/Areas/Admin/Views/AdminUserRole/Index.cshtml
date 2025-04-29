@@ -1,5 +1,5 @@
 ﻿@using EasyTravel.Domain
-@model IEnumerable<(User, Role)>
+@model PagedResult<(User, Role)>
 @{
     ViewData["Title"] = "User Role Management";
 }
@@ -31,7 +31,7 @@
                     </a>
                 </div>
                 <div class="card-body table-responsive p-0">
-                    @if (!Model.Any())
+                    @if (!Model.Items.Any())
                     {
                         <div class="alert alert-info m-3">No user roles found.</div>
                     }
@@ -47,7 +47,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var ur in Model)
+                                @foreach (var ur in Model.Items)
                                 {
                                     <tr>
                                         <td>@ur.Item1.FirstName @ur.Item1.LastName</td>
@@ -68,10 +68,38 @@
                                 }
                             </tbody>
                         </table>
+                        <div>
+                            Page @(Model.PageNumber) of @(Model.TotalPages)
+
+                            <div class="flex text-center items-center space-x-2 my4-">
+                                @if (Model.PageNumber > 1)
+                                {
+                                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+                                }
+
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    if (i == Model.PageNumber)
+                                    {
+                                        <strong class="px-3 py-1 bg-blue-500 rounded">@i</strong>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Index" asp-route-pageNumber="@i" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">@i</a>
+                                    }
+                                }
+
+                                @if (Model.PageNumber < Model.TotalPages)
+                                {
+                                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+                                }
+                            </div>
+
+                        </div>
                     }
                 </div>
                 <div class="card-footer text-muted">
-                    Total User Roles: @Model.Count()
+                    Total User Roles: @Model.Items.Count
                 </div>
             </div>
         </div>

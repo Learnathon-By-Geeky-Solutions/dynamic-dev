@@ -14,16 +14,18 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _agencyService = agencyService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            
-            var agencies = _agencyService.GetAll();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var agencies = await _agencyService.GetPaginatedAgenciesAsync(pageNumber,pageSize);
             return View(agencies);
         }
         [HttpGet]
         public IActionResult Create()
         {
-            
             return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
@@ -36,7 +38,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 TempData["success"] = "The agency has been created successfully";
                 return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
             }
-            return View();
+            return View(model);
         }
         [HttpGet]
         public IActionResult Update(Guid id)
@@ -44,10 +46,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 return View();
-            }
-            if (id == Guid.Empty)
-            {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             var agency = _agencyService.Get(id);
             return View(agency);
@@ -62,22 +60,17 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
 
                 return RedirectToAction("Index", "AdminAgency", new { area = "Admin" });
             }
-            return View();
+            return View(model);
         }
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View();
+                var agency = _agencyService.Get(id);
+                return View(agency);
             }
-            if (id == Guid.Empty)
-            {
-                TempData["error"] = "The agency not found";
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
-            }
-            var agency = _agencyService.Get(id);
-            return View(agency);
+            return View();
         }
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Agency model)
@@ -85,12 +78,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-            if (model.Id == Guid.Empty)
-            {
-                TempData["error"] = "The agency not found";
-
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
             }
             _agencyService.Delete(model.Id);
             TempData["success"] = "The agency was deleted";

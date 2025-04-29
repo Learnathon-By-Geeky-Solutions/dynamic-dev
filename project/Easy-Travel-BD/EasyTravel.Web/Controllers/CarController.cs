@@ -33,7 +33,7 @@ namespace EasyTravel.Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int pageNumber = 1, int pageSize = 10)
         {
 
             // Retrieve search parameters from session
@@ -53,7 +53,10 @@ namespace EasyTravel.Web.Controllers
             };
 
             // Get the list of available buses using the BusService
-            model.Cars = await _carService.GetAvailableCarsAsync(from, to, dateTime);
+            var result = await _carService.GetAvailableCarsAsync(from, to, dateTime, pageNumber, pageSize);
+            model.Cars = result.Item1;
+            model.PageNumber = pageNumber;
+            model.TotalPages = result.Item2;
 
             return View(model);
         }

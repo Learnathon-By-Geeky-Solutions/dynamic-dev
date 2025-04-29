@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -145,6 +146,48 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogError(ex, "An error occurred while fetching rooms for hotel with ID: {HotelId}", id);
                 throw new InvalidOperationException($"An error occurred while fetching rooms for hotel with ID: {id}.", ex);
+            }
+        }
+
+        public async Task<PagedResult<Room>> GetPaginatedRoomsAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                _logger.LogWarning("Invalid pagination parameters. Page number: {PageNumber}, Page size: {PageSize}", pageNumber, pageSize);
+                throw new ArgumentException("Page number and page size must be greater than zero.");
+            }
+
+            try
+            {
+                _logger.LogInformation("Fetching paginated rooms for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
+
+                // Fetch total count of rooms
+                var totalItems = await _unitOfWork.RoomRepository.GetCountAsync();
+
+                // Fetch paginated rooms
+                var rooms = await _unitOfWork.RoomRepository.GetAllAsync();
+                var paginatedRooms = rooms
+                    .OrderBy(r => r.RoomNumber) // Sort by room number
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                // Create the paginated result
+                var result = new PagedResult<Room>
+                {
+                    Items = paginatedRooms,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                };
+
+                _logger.LogInformation("Successfully fetched {Count} rooms for page {PageNumber}.", paginatedRooms.Count, pageNumber);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching paginated rooms for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
+                throw new InvalidOperationException("An error occurred while fetching paginated rooms.", ex);
             }
         }
     }

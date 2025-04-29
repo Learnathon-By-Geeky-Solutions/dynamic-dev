@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,26 @@ namespace EasyTravel.Application.Services
                 _logger.LogError(ex, "An error occurred while fetching all guide bookings.");
                 throw new InvalidOperationException("An error occurred while fetching all guide bookings.", ex);
             }
+        }
+
+        public async Task<PagedResult<GuideBooking>> GetPaginatedGuideBookingAsync(int pageNumber, int pageSize)
+        {
+            var totalItems = await _unitOfWork.GuideBookingRepository.GetCountAsync();
+
+            var bookings = await _unitOfWork.GuideBookingRepository.GetAllAsync();
+            bookings = bookings.OrderBy(a => a.UserName)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+            var result = new PagedResult<GuideBooking>
+            {
+                Items = bookings.ToList(),
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            return result;
         }
     }
 }
