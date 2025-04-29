@@ -186,7 +186,7 @@
   content: "";
 }
 
-.text-bg-primary {
+.text-bg-theme {
   color: #fff !important;
   background-color: RGBA(var(--bs-primary-rgb), var(--bs-bg-opacity, 1)) !important;
 }
@@ -2140,7 +2140,7 @@
   --bs-link-underline-opacity: 1;
 }
 
-.bg-primary {
+.bg-theme {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
 }
@@ -2230,7 +2230,7 @@
   --bs-bg-opacity: 1;
 }
 
-.bg-primary-subtle {
+.bg-theme-subtle {
   background-color: var(--bs-primary-bg-subtle) !important;
 }
 
