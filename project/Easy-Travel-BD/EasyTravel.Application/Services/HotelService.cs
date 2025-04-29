@@ -91,12 +91,25 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public IEnumerable<Hotel> GetAll()
+        public PagedResult<Hotel> GetAllPaginatedHotels(int pageNumber,int pageSize)
         {
             try
             {
                 _logger.LogInformation("Fetching all hotels.");
-                return _unitOfWork.HotelRepository.GetAll();
+                var totalItems = _unitOfWork.HotelRepository.GetCount();
+                var paginateHotels = _unitOfWork.HotelRepository.GetAll().
+                    OrderBy(h => h.Name).
+                    Skip((pageNumber - 1) * pageSize).
+                    Take(pageSize).
+                    ToList();
+                var result = new PagedResult<Hotel>
+                {
+                    Items = paginateHotels,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                };
+                return result;
             }
             catch (Exception ex)
             {
@@ -127,18 +140,32 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public IEnumerable<Hotel> SearchHotels(string location, DateTime? value)
+        public PagedResult<Hotel> SearchHotels(string location, DateTime? value,int pageNumber,int pageSize)
         {
             if (string.IsNullOrWhiteSpace(location))
             {
                 _logger.LogWarning("Invalid location provided for searching hotels.");
                 throw new ArgumentException("Location cannot be empty.", nameof(location));
             }
-
             try
             {
                 _logger.LogInformation("Searching hotels in location: {Location} with travel date: {Date}", location, value);
-                return _unitOfWork.HotelRepository.GetHotels(location, value);
+                 var hotels = _unitOfWork.HotelRepository.GetHotels(location, value);
+                var totalItems = hotels.Count();
+                var paginateHotels = hotels.
+                    OrderBy(h => h.Name).
+                    Skip((pageNumber - 1) * pageSize).
+                    Take(pageSize).
+                    ToList();
+                var result = new PagedResult<Hotel>
+                {
+                    Items = paginateHotels,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                };
+                return result;
+
             }
             catch (Exception ex)
             {
@@ -188,6 +215,11 @@ namespace EasyTravel.Application.Services
                 _logger.LogError(ex, "An error occurred while fetching paginated hotels for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
                 throw new InvalidOperationException("An error occurred while fetching paginated hotels.", ex);
             }
+        }
+
+        public IEnumerable<Hotel> GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }
