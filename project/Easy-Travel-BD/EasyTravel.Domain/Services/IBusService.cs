@@ -10,6 +10,7 @@ namespace EasyTravel.Domain.Services
 {
     public interface IBusService
     {
+        Task<PagedResult<Bus>> GetAllPagenatedBuses(int pageNumber, int pageSize);
         void CreateBus(Bus bus);
         Bus GetBusById(Guid BusId);
         void UpdateBus(Bus bus);

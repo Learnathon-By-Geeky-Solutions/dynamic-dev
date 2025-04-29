@@ -21,6 +21,39 @@ namespace EasyTravel.Application.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public async Task<PagedResult<Car>> GetAllPaginatedCarsAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be greater than zero.");
+            if (pageSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be greater than zero.");
+
+            try
+            {
+                _logger.LogInformation("Fetching paginated agencies for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
+
+                var totalItems = await _unitOfWork.CarRepository.GetCountAsync();
+                var agencies = await _unitOfWork.CarRepository.GetAllAsync();
+
+                agencies = agencies.OrderBy(a => a.From)
+                                   .Skip((pageNumber - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToList();
+
+                return new PagedResult<Car>
+                {
+                    Items = agencies.ToList(),
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching paginated agencies.");
+                throw new InvalidOperationException("An error occurred while fetching paginated agencies.", ex);
+            }
+        }
         public void CreateCar(Car car)
         {
             if (car == null)

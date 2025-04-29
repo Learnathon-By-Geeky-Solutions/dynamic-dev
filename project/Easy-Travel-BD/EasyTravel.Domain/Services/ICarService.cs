@@ -10,7 +10,7 @@ namespace EasyTravel.Domain.Services
 {
     public interface ICarService
     {
-
+        Task<PagedResult<Car>> GetAllPaginatedCarsAsync(int pageNumber, int pageSize);
         void CreateCar(Car car);
         Car GetCarById(Guid CarId);
         void UpdateCar(Car car);
