@@ -6,6 +6,7 @@ using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace EasyTravel.Web.Controllers
@@ -32,13 +33,13 @@ namespace EasyTravel.Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int pageNumber = 1, int pageSize = 10)
         {
 
             // Retrieve search parameters from session
             var from = _sessionService.GetString("From");
             var to = _sessionService.GetString("To");
-            var dateTime = DateTime.Parse(_sessionService.GetString("DateTime"));
+            var dateTime = DateTime.Parse(_sessionService.GetString("DateTime"),CultureInfo.InvariantCulture);
 
             // Create the model to pass to the view
             var model = new SearchCarResultViewModel
@@ -52,13 +53,20 @@ namespace EasyTravel.Web.Controllers
             };
 
             // Get the list of available buses using the BusService
-            model.Cars = await _carService.GetAvailableCarsAsync(from, to, dateTime);
+            var result = await _carService.GetAvailableCarsAsync(from, to, dateTime, pageNumber, pageSize);
+            model.Cars = result.Item1;
+            model.PageNumber = pageNumber;
+            model.TotalPages = result.Item2;
 
             return View(model);
         }
         [HttpGet]
         public async Task<IActionResult> PassengerDetails(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("List", "Car");
+            }
             var user = await _userManager.GetUserAsync(User);
             var car = _carService.GetCarById(id);
             if (car == null) return NotFound();
@@ -69,9 +77,9 @@ namespace EasyTravel.Web.Controllers
                 CarId = id,
                 BookingForm = new BookingForm
                 {
-                    PassengerName = $"{user.FirstName},{user.LastName}",
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
+                    PassengerName = $"{user?.FirstName},{user?.LastName}",
+                    Email = user?.Email!,
+                    PhoneNumber = user?.PhoneNumber!,
                     TotalAmount = car.Price
                 }
             };

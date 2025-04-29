@@ -19,9 +19,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _adminPhotographerService = adminPhotographerService;
             _agencyService = agencyService;
         }
-        public IActionResult Index()
+         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var photographers = _adminPhotographerService.GetAll();
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+            var photographers = await _adminPhotographerService.GetPaginatedPhotographersAsync(pageNumber,pageSize);
             return View(photographers);
         }
         [HttpGet]
@@ -47,11 +51,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
-            }
-            if (id == Guid.Empty)
-            {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
+                return View();
             }
             var model = _adminPhotographerService.Get(id);
             model.Agencies = _agencyService.GetAll().ToList();
@@ -60,10 +60,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Update(Photographer model)
         {
-            if (!ModelState.IsValid)
-            {
-                //
-            }
             if (ModelState.IsValid)
             {
                 model.UpdatedAt = DateTime.Now;
@@ -78,11 +74,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //
-            }
-            if (id == Guid.Empty)
-            {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
+                return View();
             }
             var model = _adminPhotographerService.Get(id);
             model.Agencies = _agencyService.GetAll().ToList();
@@ -91,16 +83,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Photographer model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                //
+                _adminPhotographerService.Delete(model.Id);
+                return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
             }
-            if (model.Id == Guid.Empty)
-            {
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
-            }
-            _adminPhotographerService.Delete(model.Id);
-            return RedirectToAction("Index", "AdminPhotographer", new { area = "Admin" });
+            return View(model);
         }
     }
 }

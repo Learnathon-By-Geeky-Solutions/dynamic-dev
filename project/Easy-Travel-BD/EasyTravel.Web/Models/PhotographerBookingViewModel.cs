@@ -15,8 +15,8 @@ namespace EasyTravel.Web.Models
         public string? PhoneNumber { get; set; }
         public string?  Gender { get; set; }
         public DateTime EventDate { get; set; }
-        public string EventType { get; set; }
-        public string EventLocation { get; set; }
+        public string? EventType { get; set; }
+        public string? EventLocation { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public int TimeInHour { get; set; }

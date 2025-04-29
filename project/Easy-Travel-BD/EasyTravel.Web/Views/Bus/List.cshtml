@@ -31,7 +31,7 @@
         </div>
     </section>
     <section id="bus-section" class=" container mx-auto mt-1">       
-        @foreach (var bus in Model.Buses)
+        @foreach (var bus in Model.Buses!)
         {
             <div class="row mb-4 align-items-center bg-white p-3 rounded shadow-sm border result-card">
 
@@ -72,5 +72,33 @@
                 </div>
             </div>
         }
+        <div>
+            Page @(Model.PageNumber) of @(Model.TotalPages)
+
+            <div class="flex text-center items-center space-x-2 my4-">
+                @if (Model.PageNumber > 1)
+                {
+                    <a asp-action="List" asp-route-pageNumber="@(Model.PageNumber - 1)" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+                }
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (i == Model.PageNumber)
+                    {
+                        <strong class="px-3 py-1 bg-blue-500 rounded">@i</strong>
+                    }
+                    else
+                    {
+                        <a asp-action="List" asp-route-pageNumber="@i" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">@i</a>
+                    }
+                }
+
+                @if (Model.PageNumber < Model.TotalPages)
+                {
+                    <a asp-action="List" asp-route-pageNumber="@(Model.PageNumber + 1)" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+                }
+            </div>
+
+        </div>
     </section>
 </div>

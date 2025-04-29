@@ -21,7 +21,7 @@
     // Removed AdminSeat controller from the list
 
     var length = 10;
-    var bookingLength = controllers.Count();
+    var bookingLength = controllers.Count;
     int i = 0, j = 10;
 
     // Role-based customization of the list length
@@ -58,7 +58,7 @@
 <div class="list-group">
     @for (; i < length; i++)
     {
-        <a asp-area="Admin" asp-controller="@controllers[i]" asp-action="Index" class="list-group-item list-group-item-action list-group-item-primary">
+        <a asp-area="Admin" asp-controller="@controllers[i]" asp-action="Index" asp-route-pageNumber="1" asp-route-pageSize="10" class="list-group-item list-group-item-action list-group-item-primary">
             @controllers[i].Replace("Admin", "")
         </a>
         <br />

@@ -17,17 +17,13 @@ namespace EasyTravel.Web.Controllers
     public class PhotographerController : Controller
     {
         private readonly IPhotographerService _photographerService;
-        private readonly IAgencyService _agencyService;
-        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly ISessionService _sessionService;
-        public PhotographerController(IPhotographerService photographerService, UserManager<User> userManager, IMapper mapper, ISessionService sessionService, IAgencyService agencyService)
+        public PhotographerController(IPhotographerService photographerService, IMapper mapper, ISessionService sessionService)
         {
             _photographerService = photographerService;
-            _userManager = userManager;
             _mapper = mapper;
             _sessionService = sessionService;
-            _agencyService = agencyService;
         }
         [HttpGet]
         public IActionResult Index()
@@ -36,7 +32,7 @@ namespace EasyTravel.Web.Controllers
             return RedirectToAction("Photographer", "Search");
         }
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int pageNumber = 1,int pageSize = 10)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Photographer/List");
             var model = new SearchResultViewModel
@@ -50,7 +46,10 @@ namespace EasyTravel.Web.Controllers
                 },
             };
             var pgBookingModel = _mapper.Map<PhotographerBooking>(model.SearchFormModel);
-            model.Photographers = await _photographerService.GetPhotographerListAsync(pgBookingModel);
+            var result = await _photographerService.GetPhotographerListAsync(pgBookingModel,pageNumber,pageSize);
+            model.PageNumber = pageNumber;
+            model.Photographers = result.Item1;
+            model.TotalPages = result.Item2;
             return View(model);
         }
     }

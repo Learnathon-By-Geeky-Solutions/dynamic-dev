@@ -127,17 +127,7 @@ namespace EasyTravel.Web
              .InstancePerLifetimeScope();
             builder.RegisterType<PaymentOnlyService>().As<IPaymentOnlyService>()
              .InstancePerLifetimeScope();
-            builder.RegisterType<PhotographerPaymentService>().As<IPaymentBookingService<PhotographerBooking, Booking, Guid>>()
-             .InstancePerLifetimeScope();
             builder.RegisterType<BookingService>().As<IGetService<Booking, Guid>>()
-             .InstancePerLifetimeScope();
-            builder.RegisterType<GuidePaymentService>().As<IPaymentBookingService<GuideBooking, Booking, Guid>>()
-             .InstancePerLifetimeScope();
-            builder.RegisterType<CarPaymentService>().As<IPaymentBookingService<CarBooking, Booking, Guid>>()
-             .InstancePerLifetimeScope();
-            builder.RegisterType<BusPaymentService>().As<IPaymentBookingService<BusBooking, Booking, Guid>>()
-             .InstancePerLifetimeScope();
-            builder.RegisterType<HotelPaymentService>().As<IPaymentBookingService<HotelBooking, Booking, Guid>>()
              .InstancePerLifetimeScope();
             builder.RegisterType<RecommendationRepository>().As<IRecommendationRepository>()
 .InstancePerLifetimeScope();

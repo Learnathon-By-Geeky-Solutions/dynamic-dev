@@ -14,43 +14,38 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _adminGuideBookingService = adminGuideBookingService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var list = _adminGuideBookingService.GetAll();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var list = await _adminGuideBookingService.GetPaginatedGuideBookingAsync(pageNumber,pageSize);
             return View(list);
         }
+
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
             if (!ModelState.IsValid)
             {
-                //
-            }
-            if (id == Guid.Empty)
-            {
-                TempData["error"] = "The guide booking not found";
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
+                return View();
             }
             var agency = _adminGuideBookingService.Get(id);
             return View(agency);
         }
+
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(GuideBooking model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                //
-            }
-            if (model.Id == Guid.Empty)
-            {
-                TempData["error"] = "The guide booking  not found";
+                _adminGuideBookingService.Delete(model.Id);
+                TempData["success"] = "The guide booking was deleted";
 
-                return RedirectToAction("Error", "Home", new { area = "Admin" });
+                return RedirectToAction("Index", "AdminGuideBooking", new { area = "Admin" });
             }
-            _adminGuideBookingService.Delete(model.Id);
-            TempData["success"] = "The guide booking was deleted";
-
-            return RedirectToAction("Index", "AdminGuideBooking", new { area = "Admin" });
+            return View(model);
         }
     }
 }

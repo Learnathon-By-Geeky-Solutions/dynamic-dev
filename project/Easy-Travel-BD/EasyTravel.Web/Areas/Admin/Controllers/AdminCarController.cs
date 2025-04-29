@@ -15,6 +15,17 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _carService = carService;
         }
+
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var cars = await _carService.GetAllPaginatedCarsAsync(pageNumber,pageSize);
+            return View(cars);
+        }
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -26,15 +37,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 _carService.CreateCar(car);
                 return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
-
             }
             return View();
-        }
-
-        public IActionResult Index()
-        {
-            var cars = _carService.GetAllCars();
-            return View(cars);
         }
 
         [HttpGet]
@@ -42,7 +46,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             var bus = _carService.GetCarById(CarId);
             if (bus == null)
@@ -61,15 +65,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Admincar", new { area = "Admin" });
             }
             return View();
-
         }
 
         [HttpGet]
         public IActionResult Delete(Guid CarId)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             var bus = _carService.GetCarById(CarId);
             if (bus == null)
@@ -87,12 +90,8 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _carService.DeleteBus(car);
                 return RedirectToAction("Index", "Admincar", new { area = "Admin" });
             }
-            return View();
+            return View(car);
 
         }
-
-
-
-
     }
 }

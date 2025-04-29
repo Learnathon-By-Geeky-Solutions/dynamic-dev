@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EasyTravel.Application.Services;
 using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
@@ -19,10 +20,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public IActionResult Index()
+         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Index");
-            var roles =  _adminUserService.GetAll();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var roles = await _adminUserService.GetPaginatedUsersAsync(pageNumber, pageSize);
             return View(roles);
         }
         [HttpGet]
@@ -37,7 +42,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
-                var (success,errormessage) = await _adminUserService.CreateAsync(user,model.Password);
+                var (success,errormessage) = await _adminUserService.CreateAsync(user,model.Password!);
                 if (!success)
                 {
                     ModelState.AddModelError(string.Empty, errormessage);
@@ -52,7 +57,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Update");
             var user = await _adminUserService.GetAsync(id);
@@ -62,10 +67,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(AdminUserViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                //
-            }
             if (ModelState.IsValid)
             {
                 var user = await _adminUserService.GetAsync(model.Id);
@@ -90,7 +91,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminUser/Delete");
             var user = await _adminUserService.GetAsync(id);

@@ -1,10 +1,11 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyTravel.Application.Services
@@ -13,117 +14,250 @@ namespace EasyTravel.Application.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
-        public AdminUserRoleService(UserManager<User> userManager,RoleManager<Role> roleManager)
+        private readonly ILogger<AdminUserRoleService> _logger;
+
+        public AdminUserRoleService(UserManager<User> userManager, RoleManager<Role> roleManager, ILogger<AdminUserRoleService> logger)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public async Task<IdentityResult> DeleteAsync(Guid UserId, Guid RoleId)
+
+        public async Task<IdentityResult> CreateAsync(Guid UserId, Guid RoleId)
         {
-            var user = await _userManager.FindByIdAsync(UserId.ToString());
-            if (user == null)
-                return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+            if (UserId == Guid.Empty || RoleId == Guid.Empty)
+            {
+                _logger.LogWarning("Invalid user ID or role ID provided for role assignment.");
+                return IdentityResult.Failed(new IdentityError { Description = "User ID or Role ID cannot be empty." });
+            }
 
-            var role = await _roleManager.FindByIdAsync(RoleId.ToString());
-            if (role == null)
-                return IdentityResult.Failed(new IdentityError { Description = "Role not found." });
+            try
+            {
+                _logger.LogInformation("Assigning role with ID: {RoleId} to user with ID: {UserId}", RoleId, UserId);
+                var user = await _userManager.FindByIdAsync(UserId.ToString());
+                if (user == null)
+                {
+                    _logger.LogWarning("User with ID: {UserId} not found.", UserId);
+                    return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+                }
 
-            // Check if the user is in the role
-            if (!await _userManager.IsInRoleAsync(user, role.Name!))
-                return IdentityResult.Success; // No need to remove if not in role
+                var role = await _roleManager.FindByIdAsync(RoleId.ToString());
+                if (role == null)
+                {
+                    _logger.LogWarning("Role with ID: {RoleId} not found.", RoleId);
+                    return IdentityResult.Failed(new IdentityError { Description = "Role not found." });
+                }
 
-            return await _userManager.RemoveFromRoleAsync(user, role.Name!);
+                if (await _userManager.IsInRoleAsync(user, role.Name!))
+                {
+                    _logger.LogInformation("User with ID: {UserId} is already in role: {RoleName}", UserId, role.Name);
+                    return IdentityResult.Success;
+                }
+
+                var result = await _userManager.AddToRoleAsync(user, role.Name!);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Successfully assigned role with ID: {RoleId} to user with ID: {UserId}", RoleId, UserId);
+                }
+                else
+                {
+                    _logger.LogWarning("Failed to assign role with ID: {RoleId} to user with ID: {UserId}. Errors: {Errors}", RoleId, UserId, string.Join(", ", result.Errors.Select(e => e.Description)));
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while assigning role with ID: {RoleId} to user with ID: {UserId}", RoleId, UserId);
+                throw new InvalidOperationException($"An error occurred while creating the role with user Id:{UserId} or role Id: {RoleId}.", ex);
+            }
         }
 
         public async Task<IdentityResult> UpdateAsync(Guid UserId, Guid RoleId)
         {
-            var user = await _userManager.FindByIdAsync(UserId.ToString());
-            if (user == null)
-                return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+            if (UserId == Guid.Empty || RoleId == Guid.Empty)
+            {
+                _logger.LogWarning("Invalid user ID or role ID provided for role update.");
+                return IdentityResult.Failed(new IdentityError { Description = "User ID or Role ID cannot be empty." });
+            }
 
-            // Remove all existing roles
-            var currentRoles = await _userManager.GetRolesAsync(user);
-            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            try
+            {
+                _logger.LogInformation("Updating roles for user with ID: {UserId}", UserId);
+                var user = await _userManager.FindByIdAsync(UserId.ToString());
+                if (user == null)
+                {
+                    _logger.LogWarning("User with ID: {UserId} not found.", UserId);
+                    return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+                }
 
-            if (!removeResult.Succeeded)
-                return removeResult;
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                if (!removeResult.Succeeded)
+                {
+                    _logger.LogWarning("Failed to remove existing roles for user with ID: {UserId}. Errors: {Errors}", UserId, string.Join(", ", removeResult.Errors.Select(e => e.Description)));
+                    return removeResult;
+                }
 
-            return await CreateAsync(UserId, RoleId);
+                return await CreateAsync(UserId, RoleId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating roles for user with ID: {UserId}", UserId);
+                throw new InvalidOperationException($"An error occurred while creating the role with user Id:{UserId} or role Id: {RoleId}.", ex);
+            }
+        }
+
+        public async Task<IdentityResult> DeleteAsync(Guid UserId, Guid RoleId)
+        {
+            if (UserId == Guid.Empty || RoleId == Guid.Empty)
+            {
+                _logger.LogWarning("Invalid user ID or role ID provided for role removal.");
+                return IdentityResult.Failed(new IdentityError { Description = "User ID or Role ID cannot be empty." });
+            }
+
+            try
+            {
+                _logger.LogInformation("Removing role with ID: {RoleId} from user with ID: {UserId}", RoleId, UserId);
+                var user = await _userManager.FindByIdAsync(UserId.ToString());
+                if (user == null)
+                {
+                    _logger.LogWarning("User with ID: {UserId} not found.", UserId);
+                    return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+                }
+
+                var role = await _roleManager.FindByIdAsync(RoleId.ToString());
+                if (role == null)
+                {
+                    _logger.LogWarning("Role with ID: {RoleId} not found.", RoleId);
+                    return IdentityResult.Failed(new IdentityError { Description = "Role not found." });
+                }
+
+                if (!await _userManager.IsInRoleAsync(user, role.Name!))
+                {
+                    _logger.LogInformation("User with ID: {UserId} is not in role: {RoleName}", UserId, role.Name);
+                    return IdentityResult.Success;
+                }
+
+                var result = await _userManager.RemoveFromRoleAsync(user, role.Name!);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Successfully removed role with ID: {RoleId} from user with ID: {UserId}", RoleId, UserId);
+                }
+                else
+                {
+                    _logger.LogWarning("Failed to remove role with ID: {RoleId} from user with ID: {UserId}. Errors: {Errors}", RoleId, UserId, string.Join(", ", result.Errors.Select(e => e.Description)));
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while removing role with ID: {RoleId} from user with ID: {UserId}", RoleId, UserId);
+                throw new InvalidOperationException($"An error occurred while removing the role with role Id: {RoleId}.", ex);
+            }
         }
 
         public async Task<List<User>> GetUsersWithoutRole()
         {
-            var users = _userManager.Users.ToList();
-            var usersWithoutRole = new List<User>();
-            foreach (var user in users)
+            try
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Count == 0)
+                _logger.LogInformation("Fetching users without roles.");
+                var users = _userManager.Users.ToList();
+                var usersWithoutRole = new List<User>();
+                foreach (var user in users)
                 {
-                    usersWithoutRole.Add(user);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Count == 0)
+                    {
+                        usersWithoutRole.Add(user);
+                    }
                 }
+                return usersWithoutRole;
             }
-            return usersWithoutRole;
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching users without roles.");
+                throw new InvalidOperationException($"An error occurred while fetching users without roles", ex);
+            }
         }
-        public async Task<IdentityResult> CreateAsync(Guid UserId, Guid RoleId)
-        {
-            var user = await _userManager.FindByIdAsync(UserId.ToString());
-            if (user == null)
-                return IdentityResult.Failed(new IdentityError { Description = "User not found." });
-
-            var role = await _roleManager.FindByIdAsync(RoleId.ToString());
-            if (role == null)
-                return IdentityResult.Failed(new IdentityError { Description = "Role not found." });
-
-            // Check if already in role to avoid duplicate assignment
-            if (await _userManager.IsInRoleAsync(user, role.Name!))
-                return IdentityResult.Success;
-
-            return await _userManager.AddToRoleAsync(user, role.Name!);
-        }
-
-
 
         public async Task<IEnumerable<(User, Role)>> GetAllAsync()
         {
-            var userRoles = new List<(User, Role)>();
-            var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
-            var adminRole = await _roleManager.FindByNameAsync("admin");
-            foreach (var user in adminUsers)
+            try
             {
-                userRoles.Add((user, adminRole!));
+                _logger.LogInformation("Fetching all user-role mappings.");
+                var userRoles = new List<(User, Role)>();
+
+                var roles = _roleManager.Roles.ToList();
+                foreach (var role in roles)
+                {
+                    var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+                    foreach (var user in usersInRole)
+                    {
+                        userRoles.Add((user, role));
+                    }
+                }
+
+                return userRoles;
             }
-            var clientUsers = await _userManager.GetUsersInRoleAsync("client");
-            var clientRole = await _roleManager.FindByNameAsync("client");
-            foreach (var user in clientUsers)
+            catch (Exception ex)
             {
-                userRoles.Add((user, clientRole!));
+                _logger.LogError(ex, "An error occurred while fetching all user-role mappings.");
+                throw new InvalidOperationException($"An error occurred while fetching all user-role mappings.", ex);
             }
-            var agencyManager = await _userManager.GetUsersInRoleAsync("agencyManager");
-            var agencyRole = await _roleManager.FindByNameAsync("agencyManager");
-            foreach (var user in agencyManager)
+        }
+
+        public async Task<PagedResult<(User, Role)>> GetPaginatedUserRolesAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0 || pageSize <= 0)
             {
-                userRoles.Add((user, agencyRole!));
+                throw new ArgumentException("Page number and page size must be greater than zero.");
             }
-            var busManager = await _userManager.GetUsersInRoleAsync("busManager");
-            var busRole = await _roleManager.FindByNameAsync("busManager");
-            foreach (var user in busManager)
+
+            try
             {
-                userRoles.Add((user, busRole!));
+                _logger.LogInformation("Fetching paginated user-role mappings for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
+
+                // Fetch all roles
+                var roles = _roleManager.Roles.ToList();
+
+                // Fetch all user-role mappings
+                var userRoles = new List<(User, Role)>();
+                foreach (var role in roles)
+                {
+                    var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+                    foreach (var user in usersInRole)
+                    {
+                        userRoles.Add((user, role));
+                    }
+                }
+
+                // Calculate total items
+                var totalItems = userRoles.Count;
+
+                // Apply pagination
+                var paginatedItems = userRoles
+                    .OrderBy(ur => ur.Item1.UserName) // Sort by username
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                // Create the paginated result
+                var result = new PagedResult<(User, Role)>
+                {
+                    Items = paginatedItems,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                };
+
+                return result;
             }
-            var carManager = await _userManager.GetUsersInRoleAsync("carManager");
-            var carRole = await _roleManager.FindByNameAsync("carManager");
-            foreach (var user in carManager)
+            catch (Exception ex)
             {
-                userRoles.Add((user, carRole!));
+                _logger.LogError(ex, "An error occurred while fetching paginated user-role mappings.");
+                throw new InvalidOperationException("An error occurred while fetching paginated user-role mappings.", ex);
             }
-            var hotelManager = await _userManager.GetUsersInRoleAsync("hotelManager");
-            var hotelRole = await _roleManager.FindByNameAsync("hotelManager");
-            foreach (var user in hotelManager)
-            {
-                userRoles.Add((user, hotelRole!));
-            }
-            return userRoles;
         }
     }
 }
+

@@ -1,0 +1,41 @@
+﻿@model Agency
+
+<div class="modal fade" id="createEditModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="createEditForm" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">@((Model.Id == Guid.Empty) ? "Add Agency" : "Edit Agency")</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input name="Name" class="form-control" value="@Model.Name" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input name="Address" class="form-control" value="@Model.Address" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input name="ContactNumber" class="form-control" value="@Model.ContactNumber" required />
+                    </div>
+                    <div class="form-group">
+                        <label>License Number</label>
+                        <input name="LicenseNumber" class="form-control" value="@Model.LicenseNumber" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Website</label>
+                        <input name="Website" class="form-control" value="@Model.Website" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
