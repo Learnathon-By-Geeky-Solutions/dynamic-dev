@@ -1,6 +1,5 @@
 using EasyTravel.Infrastructure.Data;
 using EasyTravel.Domain.Entites;
-using EasyTravel.Infrastructure.Data;
 using EasyTravel.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;

@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,26 @@ namespace EasyTravel.Application.Services
                 _logger.LogError(ex, "An error occurred while fetching all bus bookings.");
                 throw new InvalidOperationException("An error occurred while fetching all bus bookings.", ex);
             }
+        }
+
+        public async Task<PagedResult<BusBooking>> GetPaginatedBusBookingsAsync(int pageNumber, int pageSize)
+        {
+            var totalItems = await _unitOfWork.BusBookingRepository.GetCountAsync();
+
+            var bookings = await _unitOfWork.BusBookingRepository.GetAllAsync();
+                bookings = bookings.OrderBy(a => a.PassengerName)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var result = new PagedResult<BusBooking>
+            {
+                Items = bookings.ToList(),
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            return result;
         }
     }
 }

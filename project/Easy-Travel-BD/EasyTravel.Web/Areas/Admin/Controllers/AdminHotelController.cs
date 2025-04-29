@@ -15,9 +15,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _hotelService = hotelService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var hotels = _hotelService.GetAll();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var hotels = await _hotelService.GetPaginatedHotelsAsync(pageNumber, pageSize);
             return View(hotels);
         }
 
@@ -42,8 +46,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (id == Guid.Empty)
-                    return RedirectToAction("Error", "Home", new { area = "Admin" });
                 var hotel = _hotelService.Get(id);
                 return View(hotel);
             }
@@ -66,12 +68,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (id == Guid.Empty)
-                {
-                    TempData["error"] = "The hotel not found";
-
-                    return RedirectToAction("Error", "Home", new { area = "Admin" });
-                }
                 var hotel = _hotelService.Get(id);
                 return View(hotel);
             }
@@ -82,11 +78,6 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.Id == Guid.Empty)
-                {
-                    TempData["error"] = "The hotel not found";
-                    return RedirectToAction("Error", "Home", new { area = "Admin" });
-                }
                 _hotelService.Delete(model.Id);
                 return RedirectToAction("Index", "AdminHotel", new { area = "Admin" });
             }

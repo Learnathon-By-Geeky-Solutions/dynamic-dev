@@ -4,7 +4,7 @@
     {
         public string StoreId { get; set; }
         public string StorePassword { get; set; }
-        public string TotalAmount { get; set; }
+        public int TotalAmount { get; set; }
         public string Currency { get; set; } = "BDT";
         public string TranId { get; set; }
         public string SuccessUrl { get; set; }

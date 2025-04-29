@@ -1,9 +1,12 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -142,6 +145,44 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogError(ex, "An error occurred while updating the role with ID: {Id}", entity.Id);
                 throw new InvalidOperationException($"An error occurred while updating the role with ID: {entity.Id}.", ex);
+            }
+        }
+
+        public async Task<PagedResult<Role>> GetPaginatedRolesAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than zero.", nameof(pageNumber));
+            }
+
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than zero.", nameof(pageSize));
+            }
+
+            try
+            {
+                _logger.LogInformation("Fetching paginated roles. PageNumber: {PageNumber}, PageSize: {PageSize}", pageNumber, pageSize);
+                
+                var totalItems = await _roleManager.Roles.CountAsync();
+                var roles = await _roleManager.Roles
+                    .OrderBy(r => r.Name)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return new PagedResult<Role>
+                {
+                    Items = roles,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching paginated roles.");
+                throw new InvalidOperationException("An error occurred while fetching paginated roles.", ex);
             }
         }
     }

@@ -66,8 +66,7 @@ namespace EasyTravel.Web.Controllers
             HotelBookingViewModel viewModel = new HotelBookingViewModel
             {
                 hotel = hotel,
-                room = room,
-               // hotelBooking = { }
+                room = room,               
             };
             return View(viewModel);
         }
