@@ -1,82 +1,86 @@
 ﻿@model GuideBookingViewModel
 @{
-
 }
-<div class="d-flex justify-content-center gap-lg-3">
-    <div>
-        <div>
-            <h3 class="text-danger">Guide details</h3>
-            <hr>
-            <div class="d-flex justify-content-between">
-                <div class="d-flex justify-content-start gap-lg-2">
-                    <div>
-                        <img src="" alt="Guide">
+<section class="container my-5" data-aos="fade-up" data-aos-delay="100">
+    <div class="d-flex flex-column gap-4">
+
+        <!-- Guide Details -->
+        <div class="card shadow border-0">
+            <div class="card-body">
+                <h3 class="text-danger mb-3">Guide Details</h3>
+                <hr />
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="@Model.Guide?.ProfilePicture" alt="Guide" class="rounded-circle border" style="width: 80px; height: 80px; object-fit: cover;">
+                        <div>
+                            <h5 class="mb-1">@Model.Guide?.FirstName @Model.Guide?.LastName</h5>
+                            <p class="mb-0 text-muted">⭐ @Model.Guide?.Rating</p>
+                            <p class="mb-0 text-muted">@Model.AgencyName</p>
+                        </div>
                     </div>
                     <div>
-                        <p>@Model.Guide?.FirstName @Model.Guide?.LastName</p>
-                        <p>@Model.Guide?.Rating</p>
-                        <p>@Model.AgencyName</p>
+                        <span class="badge bg-theme px-3 py-2 fs-6">@Model.EventType</span>
                     </div>
                 </div>
-                <div>
-                    <p>@Model.EventType</p>
+                <div class="mt-4 d-flex justify-content-between text-secondary">
+                    <p><strong>Starts from:</strong> @Model.StartTime</p>
+                    <p><strong>Ends at:</strong> @Model.EndTime</p>
                 </div>
-                <hr>
-            </div>
-            <div class="d-flex justify-content-between">
-                <p>Starts from : @Model.StartTime</p>
-                <p>Ends at : @Model.EndTime</p>
             </div>
         </div>
-        <div class="">
-            <h3 class="text-danger">User Details</h3>
-            <div class="row shadow-lg rounded-3 my-4 p-3">
-                <h3 class="m-1 py-1 bg-danger text-white rounded-2">User</h3>
-                <div class="d-flex justify-content-between px-3 my-3 text-secondary">
+
+        <!-- User Details -->
+        <div class="card shadow-lg border-0" data-aos="fade-up" data-aos-delay="200">
+            <div class="card-body">
+                <h3 class="text-danger mb-3">User Details</h3>
+                <div class="row row-cols-1 row-cols-md-2 text-secondary">
                     <div class="d-flex">
                         <div>
-                            <p>Name:</p>
-                            <p>Email:</p>
+                            <p class="mb-1 fw-semibold">Name:</p>
+                            <p class="mb-1 fw-semibold">Email:</p>
                         </div>
-                        <div class="mx-4">
-                            <p>@Model.FirstName @Model.LastName</p>
-                            <p>@Model.Email</p>
+                        <div class="ms-3">
+                            <p class="mb-1">@Model.FirstName @Model.LastName</p>
+                            <p class="mb-1">@Model.Email</p>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex">
                         <div>
-                            <p>Gender:</p>
-                            <p>Phone Number:</p>
+                            <p class="mb-1 fw-semibold">Gender:</p>
+                            <p class="mb-1 fw-semibold">Phone Number:</p>
                         </div>
-                        <div class="mx-4">
-                            <p>@Model.Gender</p>
-                            <p>@Model.PhoneNumber</p>
+                        <div class="ms-3">
+                            <p class="mb-1">@Model.Gender</p>
+                            <p class="mb-1">@Model.PhoneNumber</p>
                         </div>
                     </div>
                 </div>
             </div>
-           <div class="d-inline-flex">
-                <form asp-antiforgery=true method="post" asp-action="Book" asp-controller="Guide">
-                    <input asp-for="FirstName" hidden />
-                    <input asp-for="LastName" hidden />
-                    <input asp-for="Email" hidden />
-                    <input asp-for="PhoneNumber" hidden />
-                    <input asp-for="Gender" hidden />
-                    <input asp-for="EventDate" hidden />
-                    <input asp-for="EventType" hidden />
-                    <input asp-for="EventLocation" hidden />
-                    <input asp-for="StartTime" hidden />
-                    <input asp-for="EndTime" hidden />
-                    <input asp-for="TimeInHour" hidden />
-                    <input asp-for="TotalAmount" hidden />
-                    <input asp-for="GuideId" hidden />
-                    <button type="submit" class="btn btn-danger">Book</button>
-                </form>
-                <form asp-controller="Payment" asp-action="Pay" method="post">
-                    <button type="submit" name="Id" value="@Model.GuideId" class="btn btn-danger">Pay</button>
-                </form>
-           </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex gap-3 mt-3" data-aos="fade-up" data-aos-delay="300">
+            <form asp-antiforgery="true" method="post" asp-action="Book" asp-controller="Guide">
+                @* Hidden Inputs *@
+                <input asp-for="FirstName" hidden />
+                <input asp-for="LastName" hidden />
+                <input asp-for="Email" hidden />
+                <input asp-for="PhoneNumber" hidden />
+                <input asp-for="Gender" hidden />
+                <input asp-for="EventDate" hidden />
+                <input asp-for="EventType" hidden />
+                <input asp-for="EventLocation" hidden />
+                <input asp-for="StartTime" hidden />
+                <input asp-for="EndTime" hidden />
+                <input asp-for="TimeInHour" hidden />
+                <input asp-for="TotalAmount" hidden />
+                <input asp-for="GuideId" hidden />
+                <button type="submit" class="btn btn-theme px-4">Book</button>
+            </form>
+
+            <form asp-controller="Payment" asp-action="Pay" method="post">
+                <button type="submit" name="Id" value="@Model.GuideId" class="btn btn-success px-4">Pay</button>
+            </form>
         </div>
     </div>
-    <div></div>
-</div>
+</section>

@@ -14,7 +14,7 @@
                     <input type="datetime-local" class="form-control" name="travelDateTime" value="@ViewBag.TravelDateTime?.ToString("yyyy-MM-ddTHH:mm")">
                 </div>
                 <div class="col-md-2 d-grid">
-                    <button type="submit" class="btn btn-primary">Search <i class="bi bi-search"></i></button>
+                    <button type="submit" class="btn btn-theme">Search <i class="bi bi-search"></i></button>
                 </div>
             </form>
             </div>
@@ -23,7 +23,7 @@
         <div class="container mx-auto mt-4">
             @foreach (var hotel in Model)
             {
-                <div class="row mb-4 align-items-center bg-white p-3 rounded shadow-sm border result-card">
+            <div class="row mb-4 align-items-center bg-white p-3 rounded shadow-sm border result-card" data-aos="fade-up" data-aos-delay="100" data-aos-duration="600">
                     <!-- Image Section -->
                     <div class="col-md-3 d-flex justify-content-center">
                         <img src="@hotel.Image" alt="@hotel.Name" class="img-fluid rounded" style="height: 180px; object-fit: cover; width: 100%;">
@@ -45,8 +45,7 @@
 
                     <!-- Action Buttons -->
                     <div class="col-md-3 text-md-end text-center mt-3 mt-md-0">
-                        <a asp-controller="Hotel" asp-action="Details" asp-route-id="@hotel.Id" class="btn btn-success btn-sm fw-bold text-white mb-2 w-100">Details</a>
-                        @* <a asp-controller="Hotel" asp-action="Book" asp-route-HotelId="@hotel.Id" class="btn btn-warning btn-sm fw-bold text-dark w-100">Book</a> *@
+                        <a asp-controller="Hotel" asp-action="Details" asp-route-id="@hotel.Id" class="btn btn-theme btn-sm fw-bold text-white mb-2 w-100">Details</a>
                         <p class="text-muted">
                             <i class="bi bi-door-open"></i>Available Rooms: @hotel.Rooms.Count
                         </p>
@@ -55,4 +54,5 @@
                 </div>
             }
         </div>
+  
     </div>

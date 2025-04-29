@@ -1,82 +1,75 @@
 ﻿@model PhotographerBookingViewModel
-@{
 
-}
-<div class="d-flex justify-content-center gap-lg-3">
-    <div>
-        <div>
-            <h3 class="text-danger">Photographer details</h3>
-            <hr>
-            <div class="d-flex justify-content-between">
-                <div class="d-flex justify-content-start gap-lg-2">
-                    <div>
-                        <img src="" alt="Cameraman">
-                    </div>
-                    <div>
-                        <p>@Model.Photographer?.FirstName @Model.Photographer?.LastName</p>
-                        <p>@Model.Photographer?.Rating</p>
-                        <p>@Model.AgencyName</p>
-                    </div>
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Photographer Details -->
+            <div class="card mb-4 shadow-sm" data-aos="fade-up">
+                <div class="card-header text-whit bg-theme">
+                    <h4 class="mb-0">Photographer Details</h4>
                 </div>
-                <div>
-                    <p>@Model.EventType</p>
-                </div>
-                <hr>
-            </div>
-            <div class="d-flex justify-content-between">
-                <p>Starts from : @Model.StartTime</p>
-                <p>Ends at : @Model.EndTime</p>
-            </div>
-        </div>
-        <div class="">
-            <h3 class="text-danger">User Details</h3>
-            <div class="row shadow-lg rounded-3 my-4 p-3">
-                <h3 class="m-1 py-1 bg-danger text-white rounded-2">User</h3>
-                <div class="d-flex justify-content-between px-3 my-3 text-secondary">
-                    <div class="d-flex">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-4 mb-3" data-aos="zoom-in" data-aos-delay="100">
+                        <img src="@Model.Photographer?.ProfilePicture" alt="Photographer" class="rounded-circle" width="100" height="100" title="@Model.Photographer?.LastName" />
                         <div>
-                            <p>Name:</p>
-                            <p>Email:</p>
+                            <h5 class="mb-1">@Model.Photographer?.FirstName @Model.Photographer?.LastName</h5>
+                            <p class="mb-1">⭐ @Model.Photographer?.Rating</p>
+                            <p class="text-muted mb-0">@Model.AgencyName</p>
                         </div>
-                        <div class="mx-4">
-                            <p>@Model.FirstName @Model.LastName</p>
-                            <p>@Model.Email</p>
+                        <div class="ms-auto">
+                            <span class="badge bg-secondary">@Model.EventType</span>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p>Gender:</p>
-                            <p>Phone Number:</p>
+                    <div class="d-flex justify-content-between" data-aos="fade-left" data-aos-delay="200">
+                        <p class="text-muted mb-0"><strong>Starts:</strong> @Model.StartTime</p>
+                        <p class="text-muted mb-0"><strong>Ends:</strong> @Model.EndTime</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Details -->
+            <div class="card shadow-sm mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-header bg-theme">
+                    <h4 class="mb-0">User Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6" data-aos="fade-right" data-aos-delay="400">
+                            <p><strong>Name:</strong> @Model.FirstName @Model.LastName</p>
+                            <p><strong>Email:</strong> @Model.Email</p>
                         </div>
-                        <div class="mx-4">
-                            <p>@Model.Gender</p>
-                            <p>@Model.PhoneNumber</p>
+                        <div class="col-md-6" data-aos="fade-left" data-aos-delay="500">
+                            <p><strong>Gender:</strong> @Model.Gender</p>
+                            <p><strong>Phone:</strong> @Model.PhoneNumber</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="d-inline-flex">
-                <form asp-antiforgery=true asp-controller="Booking" asp-action="Photographer" method="post">
-                    <input asp-for="FirstName" hidden />
-                    <input asp-for="LastName" hidden />
-                    <input asp-for="Email" hidden />
-                    <input asp-for="PhoneNumber" hidden />
-                    <input asp-for="Gender" hidden />
-                    <input asp-for="EventDate" hidden />
-                    <input asp-for="EventType" hidden />
-                    <input asp-for="EventLocation" hidden />
-                    <input asp-for="StartTime" hidden />
-                    <input asp-for="EndTime" hidden />
-                    <input asp-for="TimeInHour" hidden />
-                    <input asp-for="TimeInHour" hidden />
-                    <input asp-for="PhotographerId" hidden />
-                    <button type="submit" class="btn btn-danger">Book</button>
+
+            <!-- Booking & Payment Buttons -->
+            <div class="d-flex gap-3 justify-content-center" data-aos="fade-up" data-aos-delay="600">
+                <form asp-antiforgery="true" asp-controller="Booking" asp-action="Photographer" method="post">
+                    @* Hidden Inputs *@
+                    <input asp-for="FirstName" type="hidden" />
+                    <input asp-for="LastName" type="hidden" />
+                    <input asp-for="Email" type="hidden" />
+                    <input asp-for="PhoneNumber" type="hidden" />
+                    <input asp-for="Gender" type="hidden" />
+                    <input asp-for="EventDate" type="hidden" />
+                    <input asp-for="EventType" type="hidden" />
+                    <input asp-for="EventLocation" type="hidden" />
+                    <input asp-for="StartTime" type="hidden" />
+                    <input asp-for="EndTime" type="hidden" />
+                    <input asp-for="TimeInHour" type="hidden" />
+                    <input asp-for="PhotographerId" type="hidden" />
+
+                    <button type="submit" class="btn btn-outline-danger px-4">📸 Book</button>
                 </form>
+
                 <form asp-controller="Payment" asp-action="Pay" method="post">
-                    <button type="submit" name="Id" value="@Model.PhotographerId" class="btn btn-danger">Pay</button>
+                    <button type="submit" name="Id" value="@Model.PhotographerId" class="btn btn-outline-success px-4">💳 Pay</button>
                 </form>
             </div>
         </div>
     </div>
-    <div></div>
-</div>
+</section>
