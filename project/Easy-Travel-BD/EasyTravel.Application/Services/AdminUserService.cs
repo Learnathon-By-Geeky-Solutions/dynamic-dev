@@ -1,6 +1,7 @@
 using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
@@ -210,6 +211,45 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogError(ex, "An error occurred while checking existence of user with email: {Email}", redactedEmail);
                 throw new InvalidOperationException($"An error occurred while checking existence of user with email: {redactedEmail}.", ex);
+            }
+        }
+
+        public async Task<PagedResult<User>> GetPaginatedUsersAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                throw new ArgumentException("Page number and page size must be greater than zero.");
+            }
+
+            try
+            {
+                _logger.LogInformation("Fetching paginated users for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
+
+                // Fetch all users
+                var totalItems = _userManager.Users.Count();
+
+                // Apply pagination
+                var users = _userManager.Users
+                    .OrderBy(u => u.UserName) // Sort by username
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                // Create the paginated result
+                var result = new PagedResult<User>
+                {
+                    Items = users,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                };
+
+                return await Task.FromResult(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching paginated users.");
+                throw new InvalidOperationException("An error occurred while fetching paginated users.", ex);
             }
         }
     }

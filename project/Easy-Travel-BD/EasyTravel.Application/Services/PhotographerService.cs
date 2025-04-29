@@ -1,6 +1,8 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Enums;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -55,45 +57,55 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<IEnumerable<Photographer>> GetPhotographerListAsync(PhotographerBooking photographerBooking)
+        public async Task<(IEnumerable<Photographer>,int)> GetPhotographerListAsync(PhotographerBooking photographerBooking,int pageNumber,int pageSize)
         {
             if (photographerBooking == null)
             {
                 _logger.LogWarning("Attempted to fetch photographer list with a null PhotographerBooking model.");
                 throw new ArgumentNullException(nameof(photographerBooking), "PhotographerBooking model cannot be null.");
             }
+            if (pageNumber <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be greater than zero.");
+            if (pageSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be greater than zero.");
 
             try
             {
-                _logger.LogInformation("Fetching photographer list for event on {EventDate} at {StartTime}", photographerBooking.EventDate, photographerBooking.StartTime);
-
+                _logger.LogInformation("Fetching photographers list for event on {EventDate} at {StartTime} for page {PageNumber} with size {PageSize}", photographerBooking.EventDate, photographerBooking.StartTime, pageNumber, pageSize);
                 DateTime now = DateTime.Now;
                 DateTime selectedDateTime = photographerBooking.EventDate.Add(photographerBooking.StartTime);
                 TimeSpan difference = selectedDateTime - now;
 
                 if (selectedDateTime < now || difference < TimeSpan.FromHours(6))
                 {
-                    _logger.LogInformation("No photographers available as the selected time is less than 6 hours from now.");
-                    return new List<Photographer>();
+                    _logger.LogInformation("No guides available as the selected time is less than 6 hours from now.");
+                    return (new List<Photographer>(),0);
                 }
-
+              
                 var photographers = await _unitOfWork.PhotographerRepository.GetAsync(
                     e => e.Availability &&
                         (!e.PhotographerBookings!.Any() ||
                          e.PhotographerBookings!.Any(
                              p => p.Booking!.BookingStatus != BookingStatus.Confirmed &&
                                   p.Booking.BookingStatus != BookingStatus.Pending &&
-                                  p.EventDate >= photographerBooking.EventDate &&
                                   p.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
+                                  p.EventDate >= photographerBooking.EventDate &&
                                   (
                                       (p.StartTime >= photographerBooking.StartTime && p.EventDate >= photographerBooking.EventDate) ||
                                       (p.EndTime >= photographerBooking.StartTime && p.EventDate >= photographerBooking.EventDate)
                                   )
                          ))
                 );
+               
+                var totalItems = photographers.Count();
+                var paginatedPhotographers = photographers.
+                    OrderBy(p => p.FirstName).
+                    Skip((pageNumber - 1) * pageSize).
+                    Take(pageSize).
+                    ToList();
 
                 _logger.LogInformation("Successfully fetched photographer list for event on {EventDate} at {StartTime}", photographerBooking.EventDate, photographerBooking.StartTime);
-                return photographers;
+                return (paginatedPhotographers, (int)Math.Ceiling(totalItems / (double)pageSize));
             }
             catch (Exception ex)
             {

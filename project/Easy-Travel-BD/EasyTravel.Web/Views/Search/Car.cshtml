@@ -1,6 +1,6 @@
 ﻿@model EasyTravel.Web.Models.CarSearchFormModel
 
-<div class="container">
+<div class="container mt-3">
     <h2 class="text-center mb-4">Bus Search</h2>
 
     <form method="post" asp-action="Car" asp-controller="Search">
@@ -32,4 +32,13 @@
             <button type="submit" class="btn btn-primary btn-lg">Search</button>
         </div>
     </form>
+
+
+    <h2>Best Bus Services</h2>
+    @await Component.InvokeAsync("RecommendationCarousel", new { type = "buses", count = 5 })
+
+    <h2>Best Hotels</h2>
+    @await Component.InvokeAsync("RecommendationCarousel", new { type = "hotels", count = 5 })
+
+
 </div>

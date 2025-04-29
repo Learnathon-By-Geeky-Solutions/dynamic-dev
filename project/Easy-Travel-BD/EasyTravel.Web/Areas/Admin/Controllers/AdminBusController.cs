@@ -16,6 +16,16 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _busService = busService;
         }
 
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var buses = await _busService.GetAllPagenatedBuses(pageNumber,pageSize);
+            return View(buses);
+        }
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -33,20 +43,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Index()
-        {
-            var buses = _busService.GetAllBuses();
-            return View(buses);
-        }
-
-      
 
         [HttpGet]
         public IActionResult Update(Guid BusId)
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             var bus = _busService.GetBusById(BusId);
             if (bus == null)
@@ -65,7 +68,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _busService.UpdateBus(bus);
                 return RedirectToAction("Index", "AdminBus", new { area = "Admin" });
             }
-            return View();
+            return View(bus);
         }
 
         [HttpGet]
@@ -73,14 +76,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //
+                var bus = _busService.GetBusById(BusId);
+                if (bus == null)
+                {
+                    return NotFound();
+                }
+                return View(bus);
             }
-            var bus = _busService.GetBusById(BusId);
-            if (bus == null)
-            {
-                return NotFound();
-            }
-            return View(bus);
+            return View();
         }
 
         [HttpPost]
@@ -91,7 +94,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
                 _busService.DeleteBus(bus);
                 return RedirectToAction("Index", "AdminBus", new { area = "Admin" });
             }
-            return View();
+            return View(bus);
         }
     }
 }

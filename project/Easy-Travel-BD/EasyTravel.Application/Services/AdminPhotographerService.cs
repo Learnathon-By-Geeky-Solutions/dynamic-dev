@@ -3,6 +3,7 @@ using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Factories;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -158,6 +159,26 @@ namespace EasyTravel.Application.Services
                 _logger.LogError(ex, "An error occurred while fetching all photographers.");
                 throw new InvalidOperationException("An error occurred while fetching all photographers.", ex);
             }
+        }
+
+        public async Task<PagedResult<Photographer>> GetPaginatedPhotographersAsync(int pageNumber, int pageSize)
+        {
+            var totalItems = await _unitOfWork.PhotographerRepository.GetCountAsync();
+
+            var bookings = await _unitOfWork.PhotographerRepository.GetAllAsync();
+            bookings = bookings.OrderBy(a => a.FirstName)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+            var result = new PagedResult<Photographer>
+            {
+                Items = bookings.ToList(),
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            return result;
         }
     }
 }

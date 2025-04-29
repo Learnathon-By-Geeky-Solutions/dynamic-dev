@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,6 @@ namespace EasyTravel.Domain.Services
         Task DeleteAsync(Guid id);
         Task<Role> GetAsync(Guid id);
         IEnumerable<Role> GetAll();
+        Task<PagedResult<Role>> GetPaginatedRolesAsync(int pageNumber, int pageSize);
     }
 }

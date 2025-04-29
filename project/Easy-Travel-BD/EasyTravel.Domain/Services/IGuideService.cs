@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IGuideService : IGetService<Guide, Guid>
     {
-        Task<IEnumerable<Guide>> GetGuideListAsync(GuideBooking guideBooking);
+        Task<(IEnumerable<Guide>,int)> GetGuideListAsync(GuideBooking guideBooking,int pageNumber,int pageSize);
     }
 }

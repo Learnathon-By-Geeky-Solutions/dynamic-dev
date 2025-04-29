@@ -38,9 +38,9 @@ namespace UnitTest.Entities
                 Assert.That(hotel.CreatedAt, Is.EqualTo(default(DateTime)));
                 Assert.That(hotel.UpdatedAt, Is.EqualTo(default(DateTime)));
                 Assert.That(hotel.Rooms, Is.Not.Null);
-                Assert.That(hotel.Rooms, Is.Empty);
+                Assert.That(hotel.Rooms, Has.Count.EqualTo(0));
                 Assert.That(hotel.HotelBookings, Is.Not.Null);
-                Assert.That(hotel.HotelBookings, Is.Empty);
+                Assert.That(hotel.HotelBookings, Has.Count.EqualTo(0));
             });
         }
 
@@ -118,7 +118,7 @@ namespace UnitTest.Entities
             Assert.Multiple(() =>
             {
                 Assert.That(hotel.Rooms, Is.Not.Empty);
-                Assert.That(hotel.Rooms.Count, Is.EqualTo(1));
+                Assert.That(hotel.Rooms, Has.Count.EqualTo(1));
                 Assert.That(hotel.Rooms, Does.Contain(room));
             });
         }
@@ -154,12 +154,10 @@ namespace UnitTest.Entities
             Assert.Multiple(() =>
             {
                 Assert.That(hotel.HotelBookings, Is.Not.Empty);
-                Assert.That(hotel.HotelBookings.Count, Is.EqualTo(1));
+                Assert.That(hotel.HotelBookings, Has.Count.EqualTo(1));
                 Assert.That(hotel.HotelBookings, Does.Contain(booking));
             });
         }
-
-       
     }
 }
 
