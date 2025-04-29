@@ -12,6 +12,6 @@ namespace EasyTravel.Domain.Services
     {
        void Delete(Guid id);
         Task<PagedResult<CarBooking>> GetPaginatedCarBookingsAsync(int pageNumber, int pageSize);
-
+        
     }
 }

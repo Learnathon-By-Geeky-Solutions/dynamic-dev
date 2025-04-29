@@ -11,6 +11,5 @@ namespace EasyTravel.Domain.Services
     public interface IAdminAgencyService : IService<Agency,Guid>
     {
         Task<PagedResult<Agency>> GetPaginatedAgenciesAsync(int pageNumber, int pageSize);
-        Agency CreateInstance();
     }
 }

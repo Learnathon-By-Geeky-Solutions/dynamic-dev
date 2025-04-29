@@ -26,7 +26,7 @@ namespace EasyTravel.Application.Services
 
             try
             {
-                _logger.LogInformation("Creating a new agency.");
+                _logger.LogInformation("Creating a new agency with Name: {Name}", agency.Name);
                 _applicationUnitOfWork.AgencyRepository.Add(agency);
                 _applicationUnitOfWork.Save();
                 _logger.LogInformation("Agency created successfully.");
@@ -38,24 +38,8 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public Agency CreateInstance()
-        {
-            return new Agency
-            {
-                Id = Guid.NewGuid(),
-                Name = string.Empty,
-                Address = string.Empty,
-                ContactNumber = string.Empty,
-                LicenseNumber = string.Empty,
-                AddDate = DateTime.UtcNow,
-            };
-        }
-
         public void Delete(Guid id)
         {
-            if (id == Guid.Empty)
-                throw new ArgumentException("Invalid agency ID.", nameof(id));
-
             try
             {
                 _logger.LogInformation("Deleting agency with ID: {Id}", id);
@@ -69,36 +53,18 @@ namespace EasyTravel.Application.Services
 
                 _applicationUnitOfWork.AgencyRepository.Remove(id);
                 _applicationUnitOfWork.Save();
-                _logger.LogInformation("Agency with ID: {Id} deleted successfully.", id);
+                _logger.LogInformation("Agency deleted successfully.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while deleting the agency with ID: {Id}.", id);
+                _logger.LogError(ex, "An error occurred while deleting the agency with ID: {Id}", id);
                 throw new InvalidOperationException($"An error occurred while deleting the agency with ID: {id}.", ex);
             }
         }
 
         public Agency Get(Guid id)
         {
-            if (id == Guid.Empty)
-                throw new ArgumentException("Invalid agency ID.", nameof(id));
-
-            try
-            {
-                _logger.LogInformation("Fetching agency with ID: {Id}", id);
-                var agency = _applicationUnitOfWork.AgencyRepository.GetById(id);
-                if (agency == null)
-                {
-                    _logger.LogWarning("Agency with ID: {Id} not found.", id);
-                    throw new KeyNotFoundException($"Agency with ID: {id} not found.");
-                }
-                return agency;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while fetching the agency with ID: {Id}.", id);
-                throw new InvalidOperationException("An error occurred while fetching the agency.", ex);
-            }
+            return _applicationUnitOfWork.AgencyRepository.GetById(id);
         }
 
         public IEnumerable<Agency> GetAll()
@@ -156,6 +122,14 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Updating agency with ID: {Id}", agency.Id);
+
+                var existingAgency = _applicationUnitOfWork.AgencyRepository.GetById(agency.Id);
+                if (existingAgency == null)
+                {
+                    _logger.LogWarning("Agency with ID: {Id} not found.", agency.Id);
+                    throw new KeyNotFoundException($"Agency with ID: {agency.Id} not found.");
+                }
+
                 _applicationUnitOfWork.AgencyRepository.Edit(agency);
                 _applicationUnitOfWork.Save();
                 _logger.LogInformation("Agency updated successfully.");

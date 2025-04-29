@@ -49,6 +49,24 @@ namespace EasyTravel.Application.Services
             }
         }
 
+            try
+            {
+                _logger.LogInformation("Creating a new role with name: {Name}", entity.Name);
+                var result = await _roleManager.CreateAsync(entity);
+                if (!result.Succeeded)
+                {
+                    _logger.LogWarning("Failed to create role: {Name}. Errors: {Errors}", entity.Name, string.Join(", ", result.Errors.Select(e => e.Description)));
+                    throw new InvalidOperationException($"Failed to create role: {entity.Name}. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                }
+                _logger.LogInformation("Successfully created role with name: {Name}", entity.Name);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating the role with name: {Name}", entity.Name);
+                throw new InvalidOperationException($"An error occurred while creating the role with name: {entity.Name}.", ex);
+            }
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             if (id == Guid.Empty)

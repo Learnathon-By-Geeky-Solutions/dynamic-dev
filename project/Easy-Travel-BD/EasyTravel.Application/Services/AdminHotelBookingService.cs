@@ -84,7 +84,7 @@ namespace EasyTravel.Application.Services
                 _logger.LogError(ex, "An error occurred while deleting the hotel booking with ID: {Id}", id);
                 throw new InvalidOperationException($"An error occurred while deleting the hotel booking with ID: {id}.", ex);
             }
-        }
+        } 
 
         public async Task<PagedResult<HotelBooking>> GetPaginatedHotelBookingsAsync(int pageNumber, int pageSize)
         {
