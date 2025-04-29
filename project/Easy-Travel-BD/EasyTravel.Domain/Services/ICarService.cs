@@ -12,11 +12,10 @@ namespace EasyTravel.Domain.Services
     {
 
         void CreateCar(Car car);
-        Task<PagedResult<Car>> GetAllPaginatedCarsAsync(int pageNumber, int pageSize);
         Car GetCarById(Guid CarId);
         void UpdateCar(Car car);
         void DeleteBus(Car car);
         void SaveBooking(CarBooking model,Guid CarId, Booking booking, Payment? payment = null);
-        Task<PagedResult<Car>> GetAvailableCarsAsync(string from, string to, DateTime dateTime, int pageNumber, int pageSize);
+        Task<(IEnumerable<Car>, int)> GetAvailableCarsAsync(string from, string to, DateTime dateTime, int pageNumber, int pageSize);
     }
 }

@@ -45,6 +45,7 @@ namespace EasyTravel.Web.Controllers
             _sessionService.SetString("PhotographerId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
+                _sessionService.SetString("LastVisitedPage", "/Review/PhotographerBooking");
                 return RedirectToAction("Login", "Account", new { string.Empty });
             }
             return RedirectToAction("PhotographerBooking", "Review", id);
@@ -85,6 +86,7 @@ namespace EasyTravel.Web.Controllers
             _sessionService.SetString("GuideId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
+                _sessionService.SetString("LastVisitedPage", "/Review/Guide");
                 return RedirectToAction("Login", "Account", new { area = string.Empty });
             }
             return RedirectToAction("GuideBooking", "Review", id);
@@ -125,6 +127,7 @@ namespace EasyTravel.Web.Controllers
             _sessionService.SetString("BusId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
+                _sessionService.SetString("LastVisitedPage", "/Review/Bus");
                 return RedirectToAction("Login", "Account", new { string.Empty });
             }
             return RedirectToAction("SelectSeats", "Bus", id);
@@ -169,6 +172,7 @@ namespace EasyTravel.Web.Controllers
             _sessionService.SetString("BusId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
+                _sessionService.SetString("LastVisitedPage", "/Review/Car");
                 return RedirectToAction("Login", "Account", new { string.Empty });
             }
             return RedirectToAction("PassengerDetails", "Car", new { id });

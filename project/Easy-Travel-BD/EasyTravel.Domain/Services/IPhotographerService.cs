@@ -10,6 +10,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IPhotographerService : IGetService<Photographer,Guid>
     {
-        Task<PagedResult<Photographer>> GetPhotographerListAsync(PhotographerBooking photographerBooking,int pageNumber,int pageSize);
+        Task<(IEnumerable<Photographer>, int)> GetPhotographerListAsync(PhotographerBooking photographerBooking,int pageNumber,int pageSize);
     }
 }

@@ -57,7 +57,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<PagedResult<Photographer>> GetPhotographerListAsync(PhotographerBooking photographerBooking,int pageNumber,int pageSize)
+        public async Task<(IEnumerable<Photographer>,int)> GetPhotographerListAsync(PhotographerBooking photographerBooking,int pageNumber,int pageSize)
         {
             if (photographerBooking == null)
             {
@@ -72,6 +72,15 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching photographers list for event on {EventDate} at {StartTime} for page {PageNumber} with size {PageSize}", photographerBooking.EventDate, photographerBooking.StartTime, pageNumber, pageSize);
+                DateTime now = DateTime.Now;
+                DateTime selectedDateTime = photographerBooking.EventDate.Add(photographerBooking.StartTime);
+                TimeSpan difference = selectedDateTime - now;
+
+                if (selectedDateTime < now || difference < TimeSpan.FromHours(6))
+                {
+                    _logger.LogInformation("No guides available as the selected time is less than 6 hours from now.");
+                    return (new List<Photographer>(),0);
+                }
 
                 var photographers = await _unitOfWork.PhotographerRepository.GetAsync(
                     e => e.Availability &&
@@ -79,6 +88,7 @@ namespace EasyTravel.Application.Services
                          e.PhotographerBookings!.Any(
                              p => p.Booking!.BookingStatus != BookingStatus.Confirmed &&
                                   p.Booking.BookingStatus != BookingStatus.Pending &&
+                                  p.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
                                   p.EventDate >= photographerBooking.EventDate &&
                                   (
                                       (p.StartTime >= photographerBooking.StartTime && p.EventDate >= photographerBooking.EventDate) ||
@@ -92,16 +102,9 @@ namespace EasyTravel.Application.Services
                     Skip((pageNumber - 1) * pageSize).
                     Take(pageSize).
                     ToList();
-                var result = new PagedResult<Photographer>
-                {
-                    Items = paginatedPhotographers,
-                    TotalItems = totalItems,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                };
 
                 _logger.LogInformation("Successfully fetched photographer list for event on {EventDate} at {StartTime}", photographerBooking.EventDate, photographerBooking.StartTime);
-                return result;
+                return (paginatedPhotographers, (int)Math.Ceiling(totalItems / (double)pageSize));
             }
             catch (Exception ex)
             {

@@ -58,7 +58,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<PagedResult<Guide>> GetGuideListAsync(GuideBooking guideBooking, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<Guide>,int)> GetGuideListAsync(GuideBooking guideBooking, int pageNumber, int pageSize)
         {
             if (guideBooking == null)
             {
@@ -73,13 +73,22 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogInformation("Fetching guide list for event on {EventDate} at {StartTime} for page {PageNumber} with size {PageSize}", guideBooking.EventDate, guideBooking.StartTime,pageNumber,pageSize);
 
+                DateTime now = DateTime.Now;
+                DateTime selectedDateTime = guideBooking.EventDate.Add(guideBooking.StartTime);
+                TimeSpan difference = selectedDateTime - now;
 
+                if (selectedDateTime < now || difference < TimeSpan.FromHours(6))
+                {
+                    _logger.LogInformation("No guides available as the selected time is less than 6 hours from now.");
+                    return (new List<Guide>(),0);
+                }
                 var guides = await _unitOfWork.GuideRepository.GetAsync(
                     e => e.Availability &&
                         (!e.GuideBookings!.Any() ||
                          e.GuideBookings!.Any(
                              p => p.Booking!.BookingStatus != BookingStatus.Confirmed &&
                                   p.Booking.BookingStatus != BookingStatus.Pending &&
+                                  p.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
                                   p.EventDate >= guideBooking.EventDate &&
                                   (
                                       (p.StartTime >= guideBooking.StartTime && p.EventDate >= guideBooking.EventDate) ||
@@ -93,15 +102,8 @@ namespace EasyTravel.Application.Services
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToList();
-                var result = new PagedResult<Guide>
-                {
-                    Items = paginatedGuides,
-                    TotalItems = totalItems,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                };
                 _logger.LogInformation("Successfully fetched guide list for event on {EventDate} at {StartTime}", guideBooking.EventDate, guideBooking.StartTime);
-                return result;
+                return (paginatedGuides, (int)Math.Ceiling(totalItems / (double)pageSize));
             }
             catch (Exception ex)
             {
@@ -110,45 +112,6 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<PagedResult<Guide>> GetPaginatedGuidesAsync(int pageNumber, int pageSize)
-        {
-            if (pageNumber <= 0 || pageSize <= 0)
-            {
-                throw new ArgumentException("Page number and page size must be greater than zero.");
-            }
-
-            try
-            {
-                _logger.LogInformation("Fetching paginated guides for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
-
-                // Fetch total count of guides
-                var totalItems = await _unitOfWork.GuideRepository.GetCountAsync();
-
-                // Fetch paginated guides
-                var guides = await _unitOfWork.GuideRepository.GetAllAsync();
-                var paginatedGuides = guides
-                    .OrderBy(g => g.FirstName) // Sort by first name
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-
-                // Create the paginated result
-                var result = new PagedResult<Guide>
-                {
-                    Items = paginatedGuides,
-                    TotalItems = totalItems,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                };
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while fetching paginated guides.");
-                throw new InvalidOperationException("An error occurred while fetching paginated guides.", ex);
-            }
-        }
     }
 }
 

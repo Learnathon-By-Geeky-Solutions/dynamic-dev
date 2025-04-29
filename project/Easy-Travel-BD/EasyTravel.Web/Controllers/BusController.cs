@@ -53,7 +53,10 @@ namespace EasyTravel.Web.Controllers
             };
 
             // Get the list of available buses using the BusService
-            //model.Buses = await _busService.GetAvailableBusesAsync(from, to, dateTime);
+            var result = await _busService.GetAvailableBusesAsync(from, to, dateTime, pageNumber, pageSize);
+            model.Buses = result.Item1;
+            model.PageNumber = pageNumber;
+            model.TotalPages = result.Item2;
 
             return View(model);
         }

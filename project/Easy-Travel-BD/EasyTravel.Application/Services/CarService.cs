@@ -161,8 +161,12 @@ namespace EasyTravel.Application.Services
                 }
             }
         }
-        public async Task<PagedResult<Car>> GetAllPaginatedCarsAsync(int pageNumber, int pageSize)
+        public async Task<(IEnumerable<Car>,int)> GetAllPaginatedCarsAsync(string from,string to,DateTime date,int pageNumber, int pageSize)
         {
+            if (pageNumber <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be greater than zero.");
+            if (pageSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be greater than zero.");
             try
             {
                 _logger.LogInformation("Fetching all cars.");
@@ -174,15 +178,8 @@ namespace EasyTravel.Application.Services
                     .Skip((pageNumber - 1) * pageSize).
                     Take(pageSize)
                     .ToList();
-                var result = new PagedResult<Car>
-                {
-                    Items = paginateCars,
-                    TotalItems = totalItems,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                };
 
-                return result;
+                return (paginateCars,(int)Math.Ceiling(totalItems/(double)pageSize));
             }
             catch (Exception ex)
             {
@@ -190,7 +187,7 @@ namespace EasyTravel.Application.Services
                 throw new InvalidOperationException("An error occurred while fetching all cars.", ex);
             }
         }
-        public async Task<PagedResult<Car>> GetAvailableCarsAsync(string from, string to, DateTime dateTime,int pageNumber,int pageSize)
+        public async Task<(IEnumerable<Car>,int)> GetAvailableCarsAsync(string from, string to, DateTime dateTime,int pageNumber,int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0)
             {
@@ -216,60 +213,13 @@ namespace EasyTravel.Application.Services
                     .Skip((pageNumber - 1) * pageSize).
                     Take(pageSize)
                     .ToList();
-                var result = new PagedResult<Car>
-                {
-                    Items = paginateCars,
-                    TotalItems = totalItems,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                };
 
-                return result;
+                return (paginateCars, (int)Math.Ceiling(totalItems / (double)pageSize)); 
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while fetching available cars from {From} to {To} on {Date}", from, to, dateTime);
                 throw new InvalidOperationException($"An error occurred while fetching available cars from {from} to {to} on {dateTime}.", ex);
-            }
-        }
-
-        public async Task<PagedResult<Car>> GetPaginatedCarsAsync(int pageNumber, int pageSize)
-        {
-            if (pageNumber <= 0 || pageSize <= 0)
-            {
-                throw new ArgumentException("Page number and page size must be greater than zero.");
-            }
-
-            try
-            {
-                _logger.LogInformation("Fetching paginated cars for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
-
-                // Fetch total count of cars
-                var totalItems = await _unitOfWork.CarRepository.GetCountAsync();
-
-                // Fetch paginated cars
-                var cars = await _unitOfWork.CarRepository.GetAllAsync();
-                var paginatedCars = cars
-                    .OrderBy(c => c.OperatorName) // Sort by operator name
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-
-                // Create the paginated result
-                var result = new PagedResult<Car>
-                {
-                    Items = paginatedCars,
-                    TotalItems = totalItems,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                };
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while fetching paginated cars.");
-                throw new InvalidOperationException("An error occurred while fetching paginated cars.", ex);
             }
         }
     }

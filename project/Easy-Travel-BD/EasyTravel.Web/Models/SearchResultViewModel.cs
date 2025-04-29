@@ -8,6 +8,8 @@ namespace EasyTravel.Web.Models
         public string? EventType { get; set; }
         public string? EventLocation { get; set; }
         public decimal TotalAmount { get; set; }
+        public int PageNumber { get; set; }
+        public int TotalPages { get; set; }
         public Photographer? Photographer { get; set; }
         public Guide? Guide { get; set; }
         public IEnumerable<Photographer>? Photographers { get; set; }

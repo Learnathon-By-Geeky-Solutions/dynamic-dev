@@ -61,35 +61,6 @@ namespace EasyTravel.Application.Services
                 throw new InvalidOperationException($"An error occurred while creating the bus with ID: {bus.Id}.", ex);
             }
         }
-
-        public async Task<PagedResult<Bus>> GetAllPagenatedBuses(int pageNumber,int pageSize)
-        {
-            try
-            {
-                _logger.LogInformation("Fetching all buses.");
-                var totalItems = await _unitOfWork.BusRepository.GetCountAsync();
-                var buses = await _unitOfWork.BusRepository.GetAllAsync();
-                var paginatedBuses = buses.
-                    OrderBy(b => b.From).
-                    Skip((pageNumber - 1) * pageSize).
-                    Take(pageSize).
-                    ToList();
-                var result = new PagedResult<Bus>
-                {
-                    Items = paginatedBuses,
-                    TotalItems = totalItems,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                };
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while fetching all buses.");
-                throw new InvalidOperationException("An error occurred while fetching all buses.", ex);
-            }
-        }
-
         public Bus GetseatBusById(Guid busId)
         {
             if (busId == Guid.Empty)
@@ -136,7 +107,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<PagedResult<Bus>> GetAvailableBusesAsync(string from, string to, DateTime dateTime,int pageNumber,int pageSize)
+        public async Task<(IEnumerable<Bus>,int)> GetAvailableBusesAsync(string from, string to, DateTime dateTime,int pageNumber,int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0)
             {
@@ -163,15 +134,7 @@ namespace EasyTravel.Application.Services
                     Take(pageSize).
                     ToList();
 
-                var result = new PagedResult<Bus>
-                {
-                    Items = paginateBuses,
-                    TotalItems = totalItems,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                };
-
-                return result;
+                return (paginateBuses, (int)Math.Ceiling(totalItems / (double)pageSize));
             }
             catch (Exception ex)
             {
