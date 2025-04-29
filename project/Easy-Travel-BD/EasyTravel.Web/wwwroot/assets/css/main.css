@@ -55,6 +55,30 @@
     background-color: #008374 !important; /* Your custom color */
     color: #ffffff !important;
 }
+.btn-theme {
+    background-color: #008374 !important; /* Matches bg-theme */
+    color: #ffffff !important; /* Text color */
+    border: none; /* Removes border */
+    font-family: var(--heading-font); /* Consistent font */
+    font-weight: 500; /* Slightly bold text */
+    font-size: 14px; /* Standard button font size */
+    padding: 10px 20px; /* Padding for a balanced look */
+    border-radius: 5px; /* Rounded corners */
+    transition: all 2s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth and impressive hover effect */
+}
+
+    .btn-theme:hover {
+        background-color: #006f5f !important; /* Darker shade for hover */
+        color: #ffffff !important; /* Ensures text remains readable */
+        transform: scale(1.05); /* Slight zoom effect */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Adds a more prominent shadow on hover */
+    }
+
+    .btn-theme:focus {
+        outline: none; /* Removes default focus outline */
+        box-shadow: 0 0 0 4px rgba(0, 131, 116, 0.5); /* Custom focus ring */
+    }
+
 
 /* Smooth scroll */
 

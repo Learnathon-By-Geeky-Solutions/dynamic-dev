@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div>
-                        <span class="badge bg-primary px-3 py-2 fs-6">@Model.EventType</span>
+                        <span class="badge bg-theme px-3 py-2 fs-6">@Model.EventType</span>
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-between text-secondary">
@@ -75,7 +75,7 @@
                 <input asp-for="TimeInHour" hidden />
                 <input asp-for="TotalAmount" hidden />
                 <input asp-for="GuideId" hidden />
-                <button type="submit" class="btn btn-primary px-4">Book</button>
+                <button type="submit" class="btn btn-theme px-4">Book</button>
             </form>
 
             <form asp-controller="Payment" asp-action="Pay" method="post">
