@@ -2,6 +2,7 @@
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -60,21 +61,6 @@ namespace EasyTravel.Application.Services
                 throw new InvalidOperationException($"An error occurred while creating the bus with ID: {bus.Id}.", ex);
             }
         }
-
-        public IEnumerable<Bus> GetAllBuses()
-        {
-            try
-            {
-                _logger.LogInformation("Fetching all buses.");
-                return _unitOfWork.BusRepository.GetAllBuses();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while fetching all buses.");
-                throw new InvalidOperationException("An error occurred while fetching all buses.", ex);
-            }
-        }
-
         public Bus GetseatBusById(Guid busId)
         {
             if (busId == Guid.Empty)
@@ -121,8 +107,12 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<IEnumerable<Bus>> GetAvailableBusesAsync(string from, string to, DateTime dateTime)
+        public async Task<(IEnumerable<Bus>,int)> GetAvailableBusesAsync(string from, string to, DateTime dateTime,int pageNumber,int pageSize)
         {
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                throw new ArgumentException("Page number and page size must be greater than zero.");
+            }
             if (string.IsNullOrWhiteSpace(from) || string.IsNullOrWhiteSpace(to))
             {
                 _logger.LogWarning("Invalid 'from' or 'to' location provided for fetching available buses.");
@@ -137,8 +127,14 @@ namespace EasyTravel.Application.Services
                     bus.To == to &&
                     bus.DepartureTime.Date == dateTime.Date &&
                     bus.Seats!.Any(seat => seat.IsAvailable));
+                var totalItems = buses.Count();
+                var paginateBuses = buses.
+                    OrderBy(b => b.From).
+                    Skip((pageNumber - 1) * pageSize).
+                    Take(pageSize).
+                    ToList();
 
-                return buses;
+                return (paginateBuses, (int)Math.Ceiling(totalItems / (double)pageSize));
             }
             catch (Exception ex)
             {
@@ -239,6 +235,40 @@ namespace EasyTravel.Application.Services
                     _logger.LogError(ex, "An error occurred while saving the booking for bus with ID: {BusId}", model.BusId);
                     throw new InvalidOperationException($"An error occurred while saving the booking for bus with ID: {model.BusId}.", ex);
                 }
+            }
+        }
+
+        public async Task<PagedResult<Bus>> GetAllPagenatedBuses(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be greater than zero.");
+            if (pageSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be greater than zero.");
+
+            try
+            {
+                _logger.LogInformation("Fetching paginated agencies for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
+
+                var totalItems = await _unitOfWork.BusRepository.GetCountAsync();
+                var agencies = await _unitOfWork.BusRepository.GetAllAsync();
+
+                agencies = agencies.OrderBy(a => a.From)
+                                   .Skip((pageNumber - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToList();
+
+                return new PagedResult<Bus>
+                {
+                    Items = agencies.ToList(),
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching paginated agencies.");
+                throw new InvalidOperationException("An error occurred while fetching paginated agencies.", ex);
             }
         }
     }

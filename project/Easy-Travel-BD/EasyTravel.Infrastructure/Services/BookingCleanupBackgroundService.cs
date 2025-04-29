@@ -1,4 +1,4 @@
-﻿using EasyTravel.Domain.Entites;
+﻿using EasyTravel.Domain.Enums;
 using EasyTravel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

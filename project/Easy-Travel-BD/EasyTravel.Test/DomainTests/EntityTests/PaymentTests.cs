@@ -1,4 +1,5 @@
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Enums;
 using NUnit.Framework;
 using System;
 

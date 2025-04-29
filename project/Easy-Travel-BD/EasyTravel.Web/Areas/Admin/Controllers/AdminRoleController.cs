@@ -1,4 +1,5 @@
-﻿using EasyTravel.Domain.Entites;
+﻿using EasyTravel.Application.Services;
+using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,14 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _adminRoleService = adminRoleService;
         }
-        [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Index");
-            var roles = _adminRoleService.GetAll();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var roles = await _adminRoleService.GetPaginatedRolesAsync(pageNumber, pageSize);
             return View(roles);
         }
         [HttpGet]
@@ -41,7 +45,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Update");
             var model = await _adminRoleService.GetAsync(id);
@@ -62,7 +66,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //
+                return View();
             }
             HttpContext.Session.SetString("LastVisitedPage", "/Admin/AdminRole/Delete");
             var model = await _adminRoleService.GetAsync(id);

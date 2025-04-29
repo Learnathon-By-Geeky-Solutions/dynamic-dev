@@ -65,8 +65,7 @@ namespace EasyTravel.Web.Controllers
             pgBooking.EventLocation = _sessionService.GetString("EventLocation");
             pgBooking.TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour;
             pgBooking.PhotographerId = photographer.Id;
-            var options = new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.Preserve };
-            _sessionService.SetString("photographerBookingObj", JsonSerializer.Serialize(pgBooking, options));
+            _sessionService.SetString("TotalAmount", pgBooking.TotalAmount.ToString());
 
             return View(pgBooking);
         }

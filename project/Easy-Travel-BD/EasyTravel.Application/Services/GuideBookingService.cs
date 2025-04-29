@@ -1,5 +1,6 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Enums;
 using EasyTravel.Domain.Services;
 using Microsoft.Extensions.Logging;
 using System;

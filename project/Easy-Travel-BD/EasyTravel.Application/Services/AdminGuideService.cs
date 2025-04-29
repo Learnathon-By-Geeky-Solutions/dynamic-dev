@@ -3,6 +3,7 @@ using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Factories;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -156,6 +157,26 @@ namespace EasyTravel.Application.Services
                 _logger.LogError(ex, "An error occurred while updating the guide with ID: {Id}", entity.Id);
                 throw new InvalidOperationException($"An error occurred while updating the guide with ID: {entity.Id}.", ex);
             }
+        }
+
+        public async Task<PagedResult<Guide>> GetPaginatedGuidesAsync(int pageNumber, int pageSize)
+        {
+            var totalItems = await _unitOfWork.GuideRepository.GetCountAsync();
+
+            var bookings = await _unitOfWork.GuideRepository.GetAllAsync();
+            bookings = bookings.OrderBy(a => a.FirstName)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+            var result = new PagedResult<Guide>
+            {
+                Items = bookings.ToList(),
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            return result;
         }
     }
 }

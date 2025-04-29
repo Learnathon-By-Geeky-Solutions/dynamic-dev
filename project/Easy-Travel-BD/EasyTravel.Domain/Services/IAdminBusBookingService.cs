@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace EasyTravel.Domain.Services
     {
         IEnumerable<BusBooking> GetAllBusBookings();
         void DeleteBusBooking(Guid Id);
+        Task<PagedResult<BusBooking>> GetPaginatedBusBookingsAsync(int pageNumber, int pageSize);
     }
 
 

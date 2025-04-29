@@ -32,7 +32,7 @@ namespace EasyTravel.Web.Controllers
             return RedirectToAction("Photographer", "Search");
         }
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int pageNumber = 1,int pageSize = 10)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Photographer/List");
             var model = new SearchResultViewModel
@@ -46,7 +46,10 @@ namespace EasyTravel.Web.Controllers
                 },
             };
             var pgBookingModel = _mapper.Map<PhotographerBooking>(model.SearchFormModel);
-            model.Photographers = await _photographerService.GetPhotographerListAsync(pgBookingModel);
+            var result = await _photographerService.GetPhotographerListAsync(pgBookingModel,pageNumber,pageSize);
+            model.PageNumber = pageNumber;
+            model.Photographers = result.Item1;
+            model.TotalPages = result.Item2;
             return View(model);
         }
     }

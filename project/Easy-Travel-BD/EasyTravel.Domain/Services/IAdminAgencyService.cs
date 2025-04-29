@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IAdminAgencyService : IService<Agency,Guid>
     {
+        Task<PagedResult<Agency>> GetPaginatedAgenciesAsync(int pageNumber, int pageSize);
     }
 }

@@ -2,6 +2,7 @@
 using EasyTravel.Application.Services;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ namespace EasyTravel.Web.Controllers
             return RedirectToAction("Guide", "Search");
         }
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int pageNumber = 1, int pageSize = 10)
         {
             HttpContext.Session.SetString("LastVisitedPage", "/Guide/List");
             var model = new SearchResultViewModel
@@ -44,7 +45,12 @@ namespace EasyTravel.Web.Controllers
                 },
             };
             var guideBookingModel = _mapper.Map<GuideBooking>(model.SearchFormModel);
-            model.Guides = await _guideService.GetGuideListAsync(guideBookingModel);
+
+            // Explicitly cast the result to the correct type
+            var result = await _guideService.GetGuideListAsync(guideBookingModel, pageNumber, pageSize);
+            model.PageNumber = pageNumber;
+            model.Guides = result.Item1;
+            model.TotalPages = result.Item2;
             return View(model);
         }
     }

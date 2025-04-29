@@ -1,5 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
-
+using EasyTravel.Domain.Enums;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using EasyTravel.Web.ViewModels;
@@ -79,10 +79,10 @@ namespace EasyTravel.Web.Controllers
             }
             if(photographer != null)
             {
-                //var pgBookingModel = JsonSerializer.Deserialize<PhotographerBookingViewModel>(_sessionService.GetString("photographerBookingObj"));
-                //totalAmount = pgBookingModel?.TotalAmount.ToString();
-                //bookingType = BookingTypes.Photographer.ToString();
-                //_sessionService.SetString("BookingId", photographer.Id.ToString());
+                var pgBookingModel = _photographerService.Get(id);
+                totalAmount = _sessionService.GetString("TotalAmount");
+                bookingType = BookingTypes.Photographer.ToString();
+                _sessionService.SetString("BookingId", photographer.Id.ToString());
             }
             else if (guide != null)
             {

@@ -1,5 +1,6 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
@@ -202,6 +203,59 @@ namespace EasyTravel.Application.Services
             {
                 _logger.LogError(ex, "An error occurred while fetching all user-role mappings.");
                 throw new InvalidOperationException($"An error occurred while fetching all user-role mappings.", ex);
+            }
+        }
+
+        public async Task<PagedResult<(User, Role)>> GetPaginatedUserRolesAsync(int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                throw new ArgumentException("Page number and page size must be greater than zero.");
+            }
+
+            try
+            {
+                _logger.LogInformation("Fetching paginated user-role mappings for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
+
+                // Fetch all roles
+                var roles = _roleManager.Roles.ToList();
+
+                // Fetch all user-role mappings
+                var userRoles = new List<(User, Role)>();
+                foreach (var role in roles)
+                {
+                    var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+                    foreach (var user in usersInRole)
+                    {
+                        userRoles.Add((user, role));
+                    }
+                }
+
+                // Calculate total items
+                var totalItems = userRoles.Count;
+
+                // Apply pagination
+                var paginatedItems = userRoles
+                    .OrderBy(ur => ur.Item1.UserName) // Sort by username
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                // Create the paginated result
+                var result = new PagedResult<(User, Role)>
+                {
+                    Items = paginatedItems,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching paginated user-role mappings.");
+                throw new InvalidOperationException("An error occurred while fetching paginated user-role mappings.", ex);
             }
         }
     }

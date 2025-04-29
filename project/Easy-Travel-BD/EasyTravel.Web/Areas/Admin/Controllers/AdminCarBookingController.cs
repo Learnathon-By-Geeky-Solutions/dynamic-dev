@@ -12,9 +12,13 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             _adminCarBookingService = adminCarBookingService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1,int pageSize = 10)
         {
-            var list = _adminCarBookingService.GetAll();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var list = await _adminCarBookingService.GetPaginatedCarBookingsAsync(pageNumber,pageSize);
             return View(list);
         }
     }

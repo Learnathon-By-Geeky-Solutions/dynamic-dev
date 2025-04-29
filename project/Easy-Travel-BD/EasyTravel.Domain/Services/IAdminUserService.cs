@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace EasyTravel.Domain.Services
         IEnumerable<User> GetAll();
         Task<User?> GetByEmailAsync(string email);
         Task<bool> IsExist(string email);
+        Task<PagedResult<User>> GetPaginatedUsersAsync(int pageNumber, int pageSize);
     }
 }
