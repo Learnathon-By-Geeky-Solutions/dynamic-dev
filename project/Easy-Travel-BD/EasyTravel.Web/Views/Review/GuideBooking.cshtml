@@ -1,4 +1,4 @@
-﻿@model GuideBookingViewModel
+﻿@model BookingModel
 @{
 
 }
@@ -13,19 +13,18 @@
                         <img src="" alt="Guide">
                     </div>
                     <div>
-                        <p>@Model.Guide?.FirstName @Model.Guide?.LastName</p>
-                        <p>@Model.Guide?.Rating</p>
-                        <p>@Model.AgencyName</p>
+                        <p>@Model.GuideBooking?.Guide?.FirstName @Model.GuideBooking?.Guide?.LastName</p>
+                        <p>@Model.GuideBooking?.Guide?.Rating</p>
                     </div>
                 </div>
                 <div>
-                    <p>@Model.EventType</p>
+                    <p>@Model.GuideBooking?.EventType</p>
                 </div>
                 <hr>
             </div>
             <div class="d-flex justify-content-between">
-                <p>Starts from : @Model.StartTime</p>
-                <p>Ends at : @Model.EndTime</p>
+                <p>Starts from : @Model.GuideBooking?.StartTime</p>
+                <p>Ends at : @Model.GuideBooking?.EndTime</p>
             </div>
         </div>
         <div class="">
@@ -39,8 +38,8 @@
                             <p>Email:</p>
                         </div>
                         <div class="mx-4">
-                            <p>@Model.FirstName @Model.LastName</p>
-                            <p>@Model.Email</p>
+                            <p>@Model.GuideBooking?.UserName</p>
+                            <p>@Model.GuideBooking?.Email</p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">
@@ -49,34 +48,43 @@
                             <p>Phone Number:</p>
                         </div>
                         <div class="mx-4">
-                            <p>@Model.Gender</p>
-                            <p>@Model.PhoneNumber</p>
+                            <p>@Model.GuideBooking?.Gender</p>
+                            <p>@Model.GuideBooking?.PhoneNumber</p>
                         </div>
                     </div>
                 </div>
             </div>
            <div class="d-inline-flex">
-                <form asp-antiforgery=true method="post" asp-action="Book" asp-controller="Guide">
-                    <input asp-for="FirstName" hidden />
-                    <input asp-for="LastName" hidden />
-                    <input asp-for="Email" hidden />
-                    <input asp-for="PhoneNumber" hidden />
-                    <input asp-for="Gender" hidden />
-                    <input asp-for="EventDate" hidden />
-                    <input asp-for="EventType" hidden />
-                    <input asp-for="EventLocation" hidden />
-                    <input asp-for="StartTime" hidden />
-                    <input asp-for="EndTime" hidden />
-                    <input asp-for="TimeInHour" hidden />
-                    <input asp-for="TotalAmount" hidden />
-                    <input asp-for="GuideId" hidden />
-                    <button type="submit" class="btn btn-danger">Book</button>
-                </form>
-                <form asp-controller="Payment" asp-action="Pay" method="post">
-                    <button type="submit" name="Id" value="@Model.GuideId" class="btn btn-danger">Pay</button>
+                <form asp-antiforgery=true method="post" id="bookingForm">
+                    <input asp-for="Id" hidden />
+                    <input asp-for="@Model.GuideBooking!.UserName" hidden />
+                    <input asp-for="@Model.GuideBooking!.Email" hidden />
+                    <input asp-for="@Model.GuideBooking!.PhoneNumber" hidden />
+                    <input asp-for="@Model.GuideBooking!.Gender" hidden />
+                    <input asp-for="@Model.GuideBooking!.EventDate" hidden />
+                    <input asp-for="@Model.GuideBooking!.EventType" hidden />
+                    <input asp-for="@Model.GuideBooking!.EventLocation" hidden />
+                    <input asp-for="@Model.GuideBooking!.StartTime" hidden />
+                    <input asp-for="@Model.GuideBooking!.EndTime" hidden />
+                    <input asp-for="@Model.GuideBooking!.TimeInHour" hidden />
+                    <input asp-for="@Model.GuideBooking!.GuideId" hidden />
+                    <input asp-for="@Model.Booking!.TotalAmount" hidden />
+                    <div class="d-inline-flex gap-2">
+                        <button type="button" class="btn btn-danger" onclick="submitForm('/Booking/Guide')">Book</button>
+                        <button type="button" class="btn btn-danger" onclick="submitForm('/Payment/Pay')">Pay</button>
+                    </div>
                 </form>
            </div>
         </div>
     </div>
     <div></div>
 </div>
+
+<script>
+    function submitForm(actionUrl) {
+        const form = document.getElementById("bookingForm");
+        form.action = actionUrl; // Set the form action dynamically
+        form.method = "post"; // Ensure the method is POST
+        form.submit(); // Submit the form programmatically
+    }
+</script>

@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace EasyTravel.Domain.Services
 {
-    public interface IBookingService<TEntity>
+    public interface IBookingService : IGetService<Booking,Guid>
     {
-        bool CancelBooking();
-        Task<bool> IsBooked(TEntity model);
-        public Task<IEnumerable<TEntity>> GetBookingListByFormDataAsync(TEntity model);
+        void AddBooking(Booking booking);
+        void RemoveBooking(Guid id);
     }
 }

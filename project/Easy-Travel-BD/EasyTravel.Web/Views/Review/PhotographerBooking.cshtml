@@ -1,4 +1,4 @@
-﻿@model PhotographerBookingViewModel
+﻿@model BookingModel
 @{
 
 }
@@ -13,19 +13,18 @@
                         <img src="" alt="Cameraman">
                     </div>
                     <div>
-                        <p>@Model.Photographer?.FirstName @Model.Photographer?.LastName</p>
-                        <p>@Model.Photographer?.Rating</p>
-                        <p>@Model.AgencyName</p>
+                        <p>@Model.PhotographerBooking?.Photographer?.FirstName @Model.PhotographerBooking?.Photographer?.LastName</p>
+                        <p>@Model.PhotographerBooking?.Photographer?.Rating</p>
                     </div>
                 </div>
                 <div>
-                    <p>@Model.EventType</p>
+                    <p>@Model.PhotographerBooking?.EventType</p>
                 </div>
                 <hr>
             </div>
             <div class="d-flex justify-content-between">
-                <p>Starts from : @Model.StartTime</p>
-                <p>Ends at : @Model.EndTime</p>
+                <p>Starts from : @Model.PhotographerBooking?.StartTime</p>
+                <p>Ends at : @Model.PhotographerBooking?.EndTime</p>
             </div>
         </div>
         <div class="">
@@ -39,8 +38,8 @@
                             <p>Email:</p>
                         </div>
                         <div class="mx-4">
-                            <p>@Model.FirstName @Model.LastName</p>
-                            <p>@Model.Email</p>
+                            <p>@Model.PhotographerBooking?.UserName</p>
+                            <p>@Model.PhotographerBooking?.Email</p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between">
@@ -49,34 +48,42 @@
                             <p>Phone Number:</p>
                         </div>
                         <div class="mx-4">
-                            <p>@Model.Gender</p>
-                            <p>@Model.PhoneNumber</p>
+                            <p>@Model.PhotographerBooking?.Gender</p>
+                            <p>@Model.PhotographerBooking?.PhoneNumber</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="d-inline-flex">
-                <form asp-antiforgery=true asp-controller="Booking" asp-action="Photographer" method="post">
-                    <input asp-for="FirstName" hidden />
-                    <input asp-for="LastName" hidden />
-                    <input asp-for="Email" hidden />
-                    <input asp-for="PhoneNumber" hidden />
-                    <input asp-for="Gender" hidden />
-                    <input asp-for="EventDate" hidden />
-                    <input asp-for="EventType" hidden />
-                    <input asp-for="EventLocation" hidden />
-                    <input asp-for="StartTime" hidden />
-                    <input asp-for="EndTime" hidden />
-                    <input asp-for="TimeInHour" hidden />
-                    <input asp-for="TimeInHour" hidden />
-                    <input asp-for="PhotographerId" hidden />
-                    <button type="submit" class="btn btn-danger">Book</button>
-                </form>
-                <form asp-controller="Payment" asp-action="Pay" method="post">
-                    <button type="submit" name="Id" value="@Model.PhotographerId" class="btn btn-danger">Pay</button>
+            <div class="">
+                <form asp-antiforgery="true" method="post" id="bookingForm">
+                    <input asp-for="Id" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.UserName" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.Email" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.PhoneNumber" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.Gender" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.EventDate" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.EventType" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.EventLocation" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.StartTime" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.EndTime" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.TimeInHour" hidden />
+                    <input asp-for="@Model.PhotographerBooking!.PhotographerId" hidden />
+                    <input asp-for="@Model.Booking!.TotalAmount" hidden />
+                    <div class="d-inline-flex gap-2">
+                        <button type="button" class="btn btn-danger" onclick="submitForm('/Booking/Photographer')">Book</button>
+                        <button type="button" class="btn btn-danger" onclick="submitForm('/Payment/Pay')">Pay</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
     <div></div>
 </div>
+<script>
+    function submitForm(actionUrl) {
+        const form = document.getElementById("bookingForm");
+        form.action = actionUrl; // Set the form action dynamically
+        form.method = "post"; // Ensure the method is POST
+        form.submit(); // Submit the form programmatically
+    }
+</script>

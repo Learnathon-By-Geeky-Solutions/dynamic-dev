@@ -14,11 +14,9 @@ namespace EasyTravel.Web.Controllers;
 [Authorize]
 public class PaymentController : Controller
 {
-    private readonly IGetService<Booking, Guid> _bookingService;
+    private readonly IBookingService _bookingService;
     private readonly UserManager<User> _userManager;
     private readonly ISessionService _sessionService;
-    private readonly IPhotographerService _photographerService;
-    private readonly IGuideService _guideService;
     private readonly IBusService _busService;
     private readonly ICarService _carService;
     private readonly IHotelService _hotelService;
@@ -28,14 +26,12 @@ public class PaymentController : Controller
     private readonly IPaymentOnlyService _paymentOnlyService;
     private readonly IConfiguration _config;
     private readonly IWebHostEnvironment _env;
-
-    public PaymentController(IGetService<Booking, Guid> bookingService, UserManager<User> userManager, ISessionService sessionService, IPhotographerService photographerService, IGuideService guideService, IBusService busService, ICarService carService, IHotelService hotelService, ILogger<PaymentController> logger, IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService, IPaymentOnlyService paymentOnlyService, IConfiguration config, IWebHostEnvironment env)
+    public PaymentController(IBookingService bookingService, UserManager<User> userManager, ISessionService sessionService,  IBusService busService, ICarService carService, IHotelService hotelService, ILogger<PaymentController> logger, IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService, IPaymentOnlyService paymentOnlyService, IConfiguration config, IWebHostEnvironment env)
     {
+        
         _bookingService = bookingService;
         _userManager = userManager;
         _sessionService = sessionService;
-        _photographerService = photographerService;
-        _guideService = guideService;
         _busService = busService;
         _carService = carService;
         _hotelService = hotelService;
@@ -48,72 +44,23 @@ public class PaymentController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Pay(Guid id)
+    public async Task<IActionResult> Pay(BookingModel bookingModel,Guid id1)
     {
-        int.TryParse(_sessionService.GetString("TotalAmount"), out var totalAmount);
-        totalAmount = 50;
-        var bookingType = _sessionService.GetString("BookingType");
-        var bookingmodel = _bookingService.Get(id);
-
-        if (bookingmodel != null)
+        if (!ModelState.IsValid)
         {
-            var booking = await _paymentOnlyService.IsExist(bookingmodel.Id);
-            if (booking)
-            {
-                _logger.LogError($"PaymentController:Pay: Booking already exists. Redirecting to Expired action");
-                return RedirectToAction("Expired", "Payment");
-            }
-            _sessionService.SetString("BookingId", bookingmodel.Id.ToString());
-            totalAmount = Convert.ToInt32(bookingmodel.TotalAmount);
-            bookingType = bookingmodel.BookingTypes.ToString();
+            _logger.LogError("PaymentController:Pay: Invalid model state.");
+            return Redirect(_sessionService.GetString("LastVisitedPage"));
         }
-        var photographer = _photographerService.Get(id);
-        var guide = _guideService.Get(id);
-        var hotel = _hotelService.Get(id);
-        var bus = _busService.GetBusById(id);
-        var car = _carService.GetCarById(id);
-        if (photographer == null && guide == null && hotel == null && bus == null && car == null)
+        var booking = _bookingService.Get(bookingModel.Id);
+        if (booking == null)
         {
-            _logger.LogError($"PaymentController:Pay: BookingType is null. Redirecting to Expired action");
-            return RedirectToAction("Expired", "Payment");
+            _logger.LogError($"PaymentController:Pay: Booking with ID {bookingModel.Id} not found.");
+            return Redirect("/Pay/Expired");
         }
-        if (photographer != null)
-        {
-            //var pgBookingModel = JsonSerializer.Deserialize<PhotographerBookingViewModel>(_sessionService.GetString("photographerBookingObj"));
-            //totalAmount = pgBookingModel?.TotalAmount.ToString();
-            //bookingType = BookingTypes.Photographer.ToString();
-            //_sessionService.SetString("BookingId", photographer.Id.ToString());
-        }
-        else if (guide != null)
-        {
-            //var guideBookingModel = JsonSerializer.Deserialize<GuideBookingViewModel>(_sessionService.GetString("guideBookingObj"));
-            //totalAmount = guideBookingModel?.TotalAmount.ToString();
-            //bookingType = BookingTypes.Guide.ToString();
-            //_sessionService.SetString("BookingId", guide.Id.ToString());
-        }
-        else if (bus != null)
-        {
-            //var busBookingModel = JsonSerializer.Deserialize<BusBookingViewModel>(_sessionService.GetString("busBookingObj"));
-            //totalAmount = busBookingModel?.TotalAmount.ToString();
-            //bookingType = BookingTypes.Bus.ToString();
-            //_sessionService.SetString("BookingId", bus.Id.ToString());
-        }
-        else if (car != null)
-        {
-            //var carBookingModel = JsonSerializer.Deserialize<CarBookingViewModel>(_sessionService.GetString("carBookingObj"));
-            //totalAmount = carBookingModel?.BookingForm?.TotalAmount.ToString();
-            //bookingType = BookingTypes.Car.ToString();
-            //_sessionService.SetString("BookingId", car.Id.ToString());
-        }
-        else if (hotel != null)
-        {
-            //var hotelBookingModel = JsonSerializer.Deserialize<HotelBookingViewModel>(_sessionService.GetString("hotelBookingObj"));
-            ////totalAmount = hotelBookingModel..ToString(); // Need to pass total amount from hotel booking view model
-            //bookingType = BookingTypes.Hotel.ToString();
-            //_sessionService.SetString("BookingId", hotel.Id.ToString());
-        }
+        var totalAmount = (int)Math.Floor(booking.TotalAmount);
         var user = await _userManager.GetUserAsync(User);
-
+        var phonenumber = user?.PhoneNumber == null ? "01326759812" : user?.PhoneNumber;
+        _sessionService.SetString("BookingId", booking.Id.ToString());
         var configSection = _config.GetSection("SSLCommerz");
         var baseUrl = Request.Scheme + "://" + Request.Host;
         var request = new SSLCommerzRequest
@@ -127,7 +74,7 @@ public class PaymentController : Controller
             CancelUrl = baseUrl + "/Payment/Cancel",
             CusName = $"{user?.FirstName},{user?.LastName}",
             CusEmail = $"{user?.Email}",
-            CusPhone = $"{user?.PhoneNumber}",
+            CusPhone = $"{phonenumber}",
             CusAdd1 = "Dhaka",
             CusCity = "Dhaka",
         };
@@ -158,7 +105,7 @@ public class PaymentController : Controller
             { "product_name", "Test Product" },
             { "product_category", "Electronic"/*$"{bookingType}"*/ },
             { "product_profile", "general" },
-            { "value_a", $"{photographer?.Id}" },
+            { "value_a", $"{booking.Id}" },
         });
 
         var response = await client.PostAsync(gatewayUrl, content);
@@ -170,6 +117,30 @@ public class PaymentController : Controller
 
             if (result != null && result.TryGetValue("GatewayPageURL", out var url) && !string.IsNullOrWhiteSpace($"{url}"))
             {
+                if (bookingModel != null)
+                {
+                    booking.BookingStatus = BookingStatus.Confirmed;
+                    if (booking.BookingTypes == BookingTypes.Photographer)
+                    {
+                        _photographerBookingService.SaveBooking(bookingModel.PhotographerBooking!, booking);
+                    }
+                    else if (booking.BookingTypes == BookingTypes.Guide)
+                    {
+                        _guideBookingService.SaveBooking(bookingModel.GuideBooking!, booking);
+                    }
+                    else if (booking.BookingTypes == BookingTypes.Bus)
+                    {
+                        _busService.SaveBooking(bookingModel.BusBooking!, bookingModel.BusBooking!.SelectedSeatIds!, booking);
+                    }
+                    else if (booking.BookingTypes == BookingTypes.Car)
+                    {
+                        _carService.SaveBooking(bookingModel.CarBooking!, bookingModel.CarBooking!.CarId, booking);
+                    }
+                    //else if (bookingmodel.BookingTypes == BookingTypes.Hotel)
+                    //{
+                    //    _hotelService.SaveBooking(bookingmodel.HotelBooking!, bookingmodel.CarBooking!.CarId, bookingmodel, payment);
+                    //}
+                }
                 return Redirect($"{url}");
             }
 
@@ -206,72 +177,69 @@ public class PaymentController : Controller
             ViewBag.SuccessInfo = "No booking ID found";
             return View();
         }
-
-        var user = _userManager.GetUserAsync(User).Result;
         var transactionId = Request.Form["tran_id"];
         var bookingmodel = _bookingService.Get(id);
+        if (bookingmodel == null)
+        {
+            _logger.LogError($"PaymentController:Success: Booking already exists. Redirecting to Expired action");
+            return RedirectToAction("Expired", "Payment");
+        }
         var payment = new Payment
         {
             Id = Guid.NewGuid(),
             TransactionId = Guid.Parse(transactionId!),
             PaymentStatus = PaymentStatus.Completed,
             PaymentMethod = PaymentMethods.SSLCommerz,
+            PaymentDate = DateTime.UtcNow,
+            Amount = bookingmodel.TotalAmount,
+            BookingId = bookingmodel.Id,
         };
-        if (bookingmodel != null)
-        {
-            var booking = _paymentOnlyService.IsExist(bookingmodel.Id).Result;
-            if (booking)
-            {
-                _logger.LogError($"PaymentController:Success: Booking already exists. Redirecting to Expired action");
-                return RedirectToAction("Expired", "Payment");
-            }
-            AddPayment(bookingmodel, payment);
-            return View();
-        }
-        var photographer = _photographerService.Get(id);
-        var guide = _guideService.Get(id);
-        var hotel = _hotelService.Get(id);
-        var bus = _busService.GetBusById(id);
-        var car = _carService.GetCarById(id);
-        if (photographer != null && user != null)
-        {
-            BookPhotographer(user, payment);
-        }
-        else if (guide != null && user != null)
-        {
-            BookGuide(user, payment);
-        }
-        else if (hotel != null && user != null)
-        {
-            BookHotel(user, payment);
-        }
-        else if (bus != null && user != null)
-        {
-            BookBus(user, payment);
-        }
-        else if (car != null && user != null)
-        {
-            BookCar(user, payment);
-        }
-
+        _paymentOnlyService.AddPaymentOnly(payment);
         ViewBag.SuccessInfo = "Your payment was successful. Thank you for your booking!";
         return View();
     }
 
     [AllowAnonymous]
-    public IActionResult Fail(Guid id)
+    public IActionResult Fail()
     {
         if (!ModelState.IsValid)
         {
             ViewBag.SuccessInfo = "Invalid request data";
             return View();
         }
+
+        string bookingIdStr = Request.Form["value_a"];
+
+        Guid.TryParse(bookingIdStr, out var id);
+
+        if (string.IsNullOrEmpty(bookingIdStr))
+        {
+            bookingIdStr = _sessionService.GetString("BookingId");
+            _logger.LogInformation($"Using booking ID from session: {bookingIdStr}");
+        }
+
+        if (id == Guid.Empty)
+        {
+            _logger.LogError("No booking ID found in request or session");
+            ViewBag.SuccessInfo = "No booking ID found";
+            return View();
+        }
+        var bookingmodel = _bookingService.Get(id);
+        if (bookingmodel == null)
+        {
+            _logger.LogError($"PaymentController:Success: Booking already exists. Redirecting to Expired action");
+            return RedirectToAction("Expired", "Payment");
+        }
+        if (bookingmodel.BookingStatus == BookingStatus.Confirmed)
+        {
+            _bookingService.RemoveBooking(id);
+        }
         ViewBag.FailInfo = "Your payment was not successful. Please try again.";
         return View();
     }
 
     [AllowAnonymous]
-    public IActionResult Cancel(Guid id)
+    public IActionResult Cancel()
     {
         if (!ModelState.IsValid)
         {
@@ -286,128 +254,5 @@ public class PaymentController : Controller
     {
         ViewBag.ExpireInfo = "Your payment session has expired";
         return View();
-    }
-
-    public void AddPayment(Booking booking, Payment payment)
-    {
-        booking.BookingStatus = BookingStatus.Confirmed;
-        payment.Amount = booking.TotalAmount;
-        payment.BookingId = booking.Id;
-        _paymentOnlyService.AddPaymentOnly(payment);
-    }
-
-    public void BookPhotographer(User user, Payment payment)
-    {
-        var pgBookingModel = JsonSerializer.Deserialize<PhotographerBookingViewModel>(_sessionService.GetString("photographerBookingObj"));
-        var booking = new Booking
-        {
-            Id = Guid.NewGuid(),
-            BookingStatus = BookingStatus.Confirmed,
-            BookingTypes = BookingTypes.Photographer,
-            TotalAmount = pgBookingModel.TotalAmount,
-            UserId = user.Id,
-        };
-        var pgBooking = new PhotographerBooking
-        {
-            Id = booking.Id,
-            UserName = $"{pgBookingModel.FirstName} {pgBookingModel.LastName}",
-            Email = pgBookingModel.Email,
-            PhoneNumber = pgBookingModel.PhoneNumber,
-            Gender = pgBookingModel.Gender,
-            EventDate = pgBookingModel.EventDate,
-            StartTime = pgBookingModel.StartTime!,
-            EndTime = pgBookingModel.EndTime,
-            TimeInHour = pgBookingModel.TimeInHour,
-            PhotographerId = pgBookingModel.PhotographerId,
-        };
-        payment.Amount = pgBookingModel.TotalAmount;
-        payment.BookingId = booking.Id;
-        _photographerBookingService.SaveBooking(pgBooking, booking, payment);
-    }
-
-    public void BookGuide(User user, Payment payment)
-    {
-        var guideBookingModel = JsonSerializer.Deserialize<GuideBookingViewModel>(_sessionService.GetString("guideBookingObj"));
-        var booking = new Booking
-        {
-            Id = Guid.NewGuid(),
-            BookingStatus = BookingStatus.Confirmed,
-            BookingTypes = BookingTypes.Photographer,
-            TotalAmount = guideBookingModel!.TotalAmount,
-            UserId = user.Id,
-        };
-        var gdBooking = new GuideBooking
-        {
-            Id = booking.Id,
-            UserName = $"{guideBookingModel.FirstName} {guideBookingModel.LastName}",
-            Email = guideBookingModel.Email,
-            PhoneNumber = guideBookingModel.PhoneNumber,
-            Gender = guideBookingModel.Gender,
-            EventDate = guideBookingModel.EventDate,
-            StartTime = guideBookingModel.StartTime!,
-            EndTime = guideBookingModel.EndTime,
-            TimeInHour = guideBookingModel.TimeInHour,
-            GuideId = guideBookingModel.GuideId,
-        };
-        payment.Amount = guideBookingModel.TotalAmount;
-        payment.BookingId = booking.Id;
-        _guideBookingService.SaveBooking(gdBooking, booking, payment);
-    }
-
-    public void BookBus(User user, Payment payment)
-    {
-        var busBookingModel = JsonSerializer.Deserialize<BusBookingViewModel>(_sessionService.GetString("busBookingObj"));
-        var booking = new Booking
-        {
-            Id = Guid.NewGuid(),
-            BookingStatus = BookingStatus.Confirmed,
-            BookingTypes = BookingTypes.Photographer,
-            TotalAmount = busBookingModel!.TotalAmount,
-            UserId = user.Id,
-        };
-        var busBooking = new BusBooking
-        {
-            Id = booking.Id,
-            BusId = busBookingModel.BusId,
-            PassengerName = busBookingModel.BookingForm.PassengerName,
-            Email = busBookingModel.BookingForm.Email,
-            PhoneNumber = busBookingModel.BookingForm.PhoneNumber,
-            BookingDate = DateTime.Now,
-            SelectedSeatIds = busBookingModel.SelectedSeatIds,
-            SelectedSeats = busBookingModel.SelectedSeatNumbers,
-        };
-        payment.Amount = busBookingModel.TotalAmount;
-        payment.BookingId = booking.Id;
-        _busService.SaveBooking(busBooking, busBooking.SelectedSeatIds!, booking, payment);
-    }
-
-    public void BookCar(User user, Payment payment)
-    {
-        var carBookingModel = JsonSerializer.Deserialize<CarBookingViewModel>(_sessionService.GetString("carBookingObj"));
-        var booking = new Booking
-        {
-            Id = Guid.NewGuid(),
-            BookingStatus = BookingStatus.Confirmed,
-            BookingTypes = BookingTypes.Photographer,
-            TotalAmount = carBookingModel!.BookingForm!.TotalAmount,
-            UserId = user.Id,
-        };
-        var carBooking = new CarBooking
-        {
-            Id = booking.Id,
-            CarId = carBookingModel.CarId,
-            PassengerName = carBookingModel.BookingForm.PassengerName,
-            Email = carBookingModel.BookingForm.Email,
-            PhoneNumber = carBookingModel.BookingForm.PhoneNumber,
-            BookingDate = DateTime.Now,
-        };
-        payment.Amount = booking.TotalAmount;
-        payment.BookingId = booking.Id;
-        _carService.SaveBooking(carBooking, carBooking.CarId, booking, payment);
-    }
-
-    public void BookHotel(User user, Payment payment)
-    {
-
     }
 }

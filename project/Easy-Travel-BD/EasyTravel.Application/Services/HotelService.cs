@@ -175,48 +175,6 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<PagedResult<Hotel>> GetPaginatedHotelsAsync(int pageNumber, int pageSize)
-        {
-            if (pageNumber <= 0 || pageSize <= 0)
-            {
-                _logger.LogWarning("Invalid pagination parameters. Page number: {PageNumber}, Page size: {PageSize}", pageNumber, pageSize);
-                throw new ArgumentException("Page number and page size must be greater than zero.");
-            }
-
-            try
-            {
-                _logger.LogInformation("Fetching paginated hotels for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
-
-                // Fetch total count of hotels
-                var totalItems = await _unitOfWork.HotelRepository.GetCountAsync();
-
-                // Fetch paginated hotels
-                var hotels = await _unitOfWork.HotelRepository.GetAllAsync();
-                var paginatedHotels = hotels
-                    .OrderBy(h => h.Name) // Sort by hotel name
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-
-                // Create the paginated result
-                var result = new PagedResult<Hotel>
-                {
-                    Items = paginatedHotels,
-                    TotalItems = totalItems,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                };
-
-                _logger.LogInformation("Successfully fetched {Count} hotels for page {PageNumber}.", paginatedHotels.Count, pageNumber);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while fetching paginated hotels for page {PageNumber} with size {PageSize}.", pageNumber, pageSize);
-                throw new InvalidOperationException("An error occurred while fetching paginated hotels.", ex);
-            }
-        }
-
         public IEnumerable<Hotel> GetAll()
         {
             throw new NotImplementedException();
