@@ -1,24 +1,20 @@
-﻿using EasyTravel.Domain.Entites;
+﻿using EasyTravel.Application.Services;
+using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace EasyTravel.Web.Views.Shared.Components.RecommendationCarousel
 {
     public class RecommendationCarouselViewComponent : ViewComponent
-    {
-        private readonly HttpClient _httpClient;
-
-        public RecommendationCarouselViewComponent(IHttpClientFactory httpClientFactory)
+    { 
+        private readonly IRecommendationService _recommendationService;
+        public RecommendationCarouselViewComponent(IRecommendationService recommendationService)
         {
-            _httpClient = httpClientFactory.CreateClient();
+            _recommendationService = recommendationService;
         }
-
         public async Task<IViewComponentResult> InvokeAsync(string type, int count = 5)
         {
-            var endpoint = $"https://localhost:44336/api/recommendation/{type}?count={count}";
-            var response = await _httpClient.GetStringAsync(endpoint);
-            var recommendations = JsonConvert.DeserializeObject<List<RecommendationDto>>(response);
-
+             var recommendations = await _recommendationService.GetRecommendationsAsync(type, count);
             return View("_CarouselPartial", recommendations);
         }
     }
