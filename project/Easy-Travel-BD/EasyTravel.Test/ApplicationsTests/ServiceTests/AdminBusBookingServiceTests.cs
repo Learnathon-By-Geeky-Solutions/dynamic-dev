@@ -44,7 +44,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains($"Attempting to delete bus booking with Id: {busBookingId}")),
+                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains($"Attempting to delete bus booking with Id: {busBookingId}")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
@@ -52,7 +52,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains($"Successfully deleted bus booking with Id: {busBookingId}")),
+                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains($"Successfully deleted bus booking with Id: {busBookingId}")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
@@ -100,7 +100,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains("Fetching all bus bookings.")),
+                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains("Fetching all bus bookings.")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);

@@ -12,18 +12,18 @@
                 <h2 class="fw-bold">Search Buses</h2>
                 <p class="text-muted">Plan your travel by selecting departure and arrival locations with date.</p>
             </div>
-            <form asp-controller="Bus" asp-action="Search" method="get" class="row g-3 justify-content-center">
+            <form asp-controller="Bus" asp-action="List" method="get" class="row g-3 justify-content-center">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="from" placeholder="From" required />
+                    <input type="text" class="form-control" name="from" placeholder="From" value="@Model.busSearchFormModel.From" required />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="to" placeholder="To" required />
+                    <input type="text" class="form-control" name="to" placeholder="To" value="@Model.busSearchFormModel.To" required />
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" name="date" required />
+                    <input type="date" class="form-control" name="date" value="@Model.busSearchFormModel.DepartureTime.ToString("yyyy-MM-dd")" required />
                 </div>
                 <div class="col-md-2 d-grid">
-                    <button type="submit" class="btn btn-primary fw-bold">
+                    <button type="submit" class="btn btn-theme fw-bold">
                         Search <i class="bi bi-search ms-1"></i>
                     </button>
                 </div>

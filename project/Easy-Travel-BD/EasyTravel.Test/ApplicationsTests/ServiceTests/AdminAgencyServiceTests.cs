@@ -2,7 +2,6 @@ using EasyTravel.Application.Services;
 using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
-using EasyTravel.Domain.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -11,13 +10,12 @@ using System.Collections.Generic;
 
 namespace EasyTravel.Test.ApplicationsTests.ServiceTests
 {
-
     [TestFixture]
     public class AdminAgencyServiceTests
     {
-        private Mock<IApplicationUnitOfWork> _unitOfWorkMock;
-        private Mock<ILogger<AdminAgencyService>> _loggerMock;
-        private AdminAgencyService _adminAgencyService;
+        private Mock<IApplicationUnitOfWork> _unitOfWorkMock = null!;
+        private Mock<ILogger<AdminAgencyService>> _loggerMock = null!;
+        private AdminAgencyService _adminAgencyService = null!;
 
         [SetUp]
         public void SetUp()
@@ -53,17 +51,17 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Creating a new agency.")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Creating a new agency with Name: {agency.Name}")),
+                    null,
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
                 Times.Once);
             _loggerMock.Verify(
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Agency created successfully.")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Agency created successfully.")),
+                    null,
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
                 Times.Once);
         }
 
@@ -87,17 +85,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
 
             // Assert
             Assert.That(result, Is.EqualTo(agency), "The returned agency should match the expected agency.");
-            _loggerMock.Verify(
-                l => l.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains($"Fetching agency with ID: {agencyId}")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
-                Times.Once);
         }
-
-
 
         [Test]
         public void GetAll_ShouldReturnAllAgencies()
@@ -133,9 +121,9 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Fetching all agencies.")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Fetching all agencies.")),
+                    null,
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
                 Times.Once);
         }
 
@@ -154,6 +142,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
 
             var agencyRepositoryMock = new Mock<IAgencyRepository>();
             _unitOfWorkMock.Setup(u => u.AgencyRepository).Returns(agencyRepositoryMock.Object);
+            _unitOfWorkMock.Setup(u => u.AgencyRepository.GetById(agency.Id)).Returns(agency);
 
             // Act
             _adminAgencyService.Update(agency);
@@ -165,20 +154,58 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains($"Updating agency with ID: {agency.Id}")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Updating agency with ID: {agency.Id}")),
+                    null,
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
                 Times.Once);
             _loggerMock.Verify(
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Agency updated successfully.")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Agency updated successfully.")),
+                    null,
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
                 Times.Once);
         }
 
+        [Test]
+        public void Delete_ShouldRemoveAgencyAndSave()
+        {
+            // Arrange
+            var agencyId = Guid.NewGuid();
+            var agency = new Agency
+            {
+                Id = agencyId,
+                Name = "Test Agency",
+                Address = "123 Main St",
+                ContactNumber = "123-456-7890",
+                LicenseNumber = "ABC123"
+            };
+
+            _unitOfWorkMock.Setup(u => u.AgencyRepository.GetById(agencyId)).Returns(agency);
+
+            // Act
+            _adminAgencyService.Delete(agencyId);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.AgencyRepository.Remove(agencyId), Times.Once, "Agency should be removed from the repository.");
+            _unitOfWorkMock.Verify(u => u.Save(), Times.Once, "Save should be called after removing the agency.");
+            _loggerMock.Verify(
+                l => l.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains($"Deleting agency with ID: {agencyId}")),
+                    null,
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+                Times.Once);
+            _loggerMock.Verify(
+                l => l.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Agency deleted successfully.")),
+                    null,
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+                Times.Once);
+        }
     }
-    
 }

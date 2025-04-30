@@ -17,6 +17,7 @@ public class PaymentController : Controller
     private readonly IBookingService _bookingService;
     private readonly UserManager<User> _userManager;
     private readonly ISessionService _sessionService;
+
     private readonly IBusService _busService;
     private readonly ICarService _carService;
     private readonly IHotelService _hotelService;
@@ -169,6 +170,7 @@ public class PaymentController : Controller
         {
             bookingIdStr = _sessionService.GetString("BookingId");
             _logger.LogInformation($"Using booking ID from session: {bookingIdStr}");
+
         }
 
         if (id == Guid.Empty)
@@ -239,6 +241,7 @@ public class PaymentController : Controller
     }
 
     [AllowAnonymous]
+
     public IActionResult Cancel()
     {
         if (!ModelState.IsValid)
@@ -254,5 +257,6 @@ public class PaymentController : Controller
     {
         ViewBag.ExpireInfo = "Your payment session has expired";
         return View();
+
     }
 }

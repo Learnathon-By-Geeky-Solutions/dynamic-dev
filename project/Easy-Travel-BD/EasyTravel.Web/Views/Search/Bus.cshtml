@@ -19,7 +19,7 @@
         new { ImageUrl = "https://example.com/bus2.jpg", Title = "Green Line", Location = "Dhaka, Gabtoli", Rating = 4, Description = "Affordable and safe." },
     };
 }
-<div class="container">
+<div class="container mt-3">
     <h2 class="text-center mb-4">Bus Search</h2>
     <!--SearchBox -->
     <form method="post" asp-action="Bus">
@@ -41,14 +41,14 @@
             <!-- Date Field -->
             <div class="col-md-4 form-group">
                 <label for="DateTime" class="form-label">Date</label>
-                <input asp-for="DepartureTime" class="form-control" type="date" required />
+                <input asp-for="DepartureTime" class="form-control" type="date" required value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="DepartureTime" class="text-danger"></span>
             </div>
         </div>
 
         <!-- Submit Button -->
         <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary btn-lg">Search</button>
+            <button type="submit" class="btn btn-theme btn-lg">Search</button>
         </div>
     </form>
     <!--Carosol -->
@@ -64,37 +64,3 @@
 
 
 </div>
-
-@section Scripts {
-    <script>
-        var swiper = new Swiper(".mySwiper", {
-            loop: true,
-            grabCursor: true,
-            spaceBetween: 30,
-            centeredSlides: true,
-            autoplay: {
-                delay: 3500,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            breakpoints: {
-                768: {
-                    slidesPerView: 1,
-                },
-                992: {
-                    slidesPerView: 2,
-                },
-                1200: {
-                    slidesPerView: 3,
-                }
-            }
-        });
-    </script>
-}

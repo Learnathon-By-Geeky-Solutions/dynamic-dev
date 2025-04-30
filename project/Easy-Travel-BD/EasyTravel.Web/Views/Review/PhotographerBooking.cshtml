@@ -1,3 +1,4 @@
+
 ﻿@model BookingModel
 @{
 
@@ -33,27 +34,47 @@
                 <h3 class="m-1 py-1 bg-danger text-white rounded-2">User</h3>
                 <div class="d-flex justify-content-between px-3 my-3 text-secondary">
                     <div class="d-flex">
+
                         <div>
-                            <p>Name:</p>
-                            <p>Email:</p>
+                            <h5 class="mb-1">@Model.Photographer?.FirstName @Model.Photographer?.LastName</h5>
+                            <p class="mb-1">⭐ @Model.Photographer?.Rating</p>
+                            <p class="text-muted mb-0">@Model.AgencyName</p>
                         </div>
+
                         <div class="mx-4">
                             <p>@Model.PhotographerBooking?.UserName</p>
                             <p>@Model.PhotographerBooking?.Email</p>
+
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p>Gender:</p>
-                            <p>Phone Number:</p>
+                    <div class="d-flex justify-content-between" data-aos="fade-left" data-aos-delay="200">
+                        <p class="text-muted mb-0"><strong>Starts:</strong> @Model.StartTime</p>
+                        <p class="text-muted mb-0"><strong>Ends:</strong> @Model.EndTime</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Details -->
+            <div class="card shadow-sm mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-header bg-theme">
+                    <h4 class="mb-0">User Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6" data-aos="fade-right" data-aos-delay="400">
+                            <p><strong>Name:</strong> @Model.FirstName @Model.LastName</p>
+                            <p><strong>Email:</strong> @Model.Email</p>
                         </div>
+
                         <div class="mx-4">
                             <p>@Model.PhotographerBooking?.Gender</p>
                             <p>@Model.PhotographerBooking?.PhoneNumber</p>
+
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="">
                 <form asp-antiforgery="true" method="post" id="bookingForm">
                     <input asp-for="Id" hidden />
@@ -73,6 +94,7 @@
                         <button type="button" class="btn btn-danger" onclick="submitForm('/Booking/Photographer')">Book</button>
                         <button type="button" class="btn btn-danger" onclick="submitForm('/Payment/Pay')">Pay</button>
                     </div>
+
                 </form>
             </div>
         </div>

@@ -36,6 +36,8 @@ namespace EasyTravel.Test.DomainTests.EntityTests
             };
 
             // Assert
+            Assert.Multiple(() =>
+            {  
             Assert.That(user.Id, Is.EqualTo(userId));
             Assert.That(user.FirstName, Is.EqualTo(firstName));
             Assert.That(user.LastName, Is.EqualTo(lastName));
@@ -45,6 +47,7 @@ namespace EasyTravel.Test.DomainTests.EntityTests
             Assert.That(user.CreatedAt, Is.EqualTo(createdAt));
             Assert.That(user.PhotographerBookings, Is.Empty);
             Assert.That(user.Bookings, Is.Empty);
+            });
         }
 
         [Test]

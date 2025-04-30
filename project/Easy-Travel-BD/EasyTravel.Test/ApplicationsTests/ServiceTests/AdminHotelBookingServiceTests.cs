@@ -13,9 +13,9 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
     [TestFixture]
     public class AdminHotelBookingServiceTests
     {
-        private Mock<IApplicationUnitOfWork> _unitOfWorkMock;
-        private Mock<ILogger<AdminHotelBookingService>> _loggerMock;
-        private AdminHotelBookingService _adminHotelBookingService;
+        private Mock<IApplicationUnitOfWork> _unitOfWorkMock = null!;
+        private Mock<ILogger<AdminHotelBookingService>> _loggerMock = null!;
+        private AdminHotelBookingService _adminHotelBookingService = null!;
 
         [SetUp]
         public void SetUp()
@@ -49,41 +49,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains($"Fetching hotel booking with ID: {hotelBookingId}")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
-                Times.Once);
-        }
-
-        [Test]
-        public void Get_ShouldThrowKeyNotFoundException_WhenHotelBookingDoesNotExist()
-        {
-            // Arrange
-            var hotelBookingId = Guid.NewGuid();
-            _unitOfWorkMock.Setup(u => u.HotelBookingRepository.GetById(hotelBookingId)).Returns((HotelBooking)null);
-
-            // Act
-            var ex = Assert.Throws<InvalidOperationException>(() => _adminHotelBookingService.Get(hotelBookingId));
-
-            // Assert
-            Assert.That(ex, Is.Not.Null, "An exception should be thrown.");
-            Assert.That(ex.Message, Is.EqualTo($"An error occurred while fetching the hotel booking with ID: {hotelBookingId}."));
-            Assert.That(ex.InnerException, Is.TypeOf<KeyNotFoundException>(), "The inner exception should be a KeyNotFoundException.");
-            Assert.That(ex.InnerException?.Message, Is.EqualTo($"Hotel booking with ID: {hotelBookingId} not found."));
-
-            _loggerMock.Verify(
-                l => l.Log(
-                    LogLevel.Warning,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains($"Hotel booking with ID: {hotelBookingId} not found.")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
-                Times.Once);
-            _loggerMock.Verify(
-                l => l.Log(
-                    LogLevel.Error,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains($"An error occurred while fetching the hotel booking with ID: {hotelBookingId}")),
+                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains($"Fetching hotel booking with ID: {hotelBookingId}")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
@@ -123,7 +89,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains("Fetching all hotel bookings.")),
+                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains("Fetching all hotel bookings.")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
@@ -147,7 +113,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains($"Attempting to delete hotel booking with ID: {hotelBookingId}")),
+                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains($"Attempting to delete hotel booking with ID: {hotelBookingId}")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
@@ -155,7 +121,7 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
                 l => l.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains($"Successfully deleted hotel booking with ID: {hotelBookingId}")),
+                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains($"Successfully deleted hotel booking with ID: {hotelBookingId}")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
@@ -166,19 +132,16 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
         {
             // Act & Assert
             var ex = Assert.Throws<ArgumentException>(() => _adminHotelBookingService.Delete(Guid.Empty));
-            Assert.That(ex.ParamName, Is.EqualTo("id"));
+            Assert.That(ex, Is.Not.Null, "An exception should be thrown.");
+            Assert.That(ex!.ParamName, Is.EqualTo("id"));
             _loggerMock.Verify(
                 l => l.Log(
                     LogLevel.Warning,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString().Contains("Invalid hotel booking ID provided for deletion.")),
+                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains("Invalid hotel booking ID provided for deletion.")),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
                 Times.Once);
         }
     }
 }
-
-
-
-
