@@ -120,7 +120,7 @@ namespace EasyTravel.Tests.Services
         }
 
         [Test]
-        public async Task GetAvailableBusesAsync_ShouldReturnPaginatedAvailableBuses()
+        public async Task GetAvailableBusesAsync_ShouldReturnAvailableBuses()
         {
             // Arrange
             var from = "CityA";

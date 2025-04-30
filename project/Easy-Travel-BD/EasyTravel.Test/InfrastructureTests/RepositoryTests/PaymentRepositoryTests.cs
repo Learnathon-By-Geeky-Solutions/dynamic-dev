@@ -65,14 +65,14 @@ public async Task GetAllPayments_ShouldReturnAllPayments()
 {
     var result = (await _repository.GetAllAsync()).ToList(); // Await async method and convert to list
 
-    Assert.Multiple(() =>
-    {
-        Assert.That(result.Count, Is.EqualTo(2), "The count of payments is incorrect.");
-        Assert.That(result[0].PaymentMethod, Is.EqualTo(PaymentMethods.SSLCommerz), "The payment method is incorrect.");
-    });
-}
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(2), "The count of payments is incorrect.");
+                Assert.That(result[0].PaymentMethod, Is.EqualTo(PaymentMethods.SSLCommerz), "The payment method is incorrect.");
+            });
+        }
 
-[Test]
+        [Test]
 public async Task AddPayment_ShouldAddPayment()
 {
     var payment = new Payment
@@ -91,11 +91,11 @@ public async Task AddPayment_ShouldAddPayment()
 
     var result = (await _repository.GetAllAsync()).ToList(); // Await async method and convert to list
 
-    Assert.Multiple(() =>
-    {
-        Assert.That(result.Count, Is.EqualTo(3), "The count of payments is incorrect.");
-        Assert.That(result.Any(p => p.PaymentMethod == PaymentMethods.SSLCommerz), Is.True, "The expected payment method was not found.");
-    });
-}
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(3), "The count of payments is incorrect.");
+                Assert.That(result, Has.Some.Matches<Payment>(p => p.PaymentMethod == PaymentMethods.SSLCommerz), "The expected payment method was not found.");
+            });
+        }
     }
 }
