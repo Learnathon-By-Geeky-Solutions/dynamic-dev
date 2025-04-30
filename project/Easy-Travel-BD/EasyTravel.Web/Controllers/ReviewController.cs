@@ -20,86 +20,89 @@ namespace EasyTravel.Web.Controllers
         private readonly ISessionService _sessionService;
         private readonly IMapper _mapper;
         private readonly IPhotographerService _photographerService;
-        private readonly IAgencyService _agencyService;
         private readonly IGuideService _guideService;
         private readonly ICarService _carService;
+        private readonly IBookingService _bookingService;
         public ReviewController(ISessionService sessionService, IPhotographerService photographerService,
-            UserManager<User> userManager,IMapper mapper, IAgencyService agencyService, IGuideService guideService, ICarService carService)
+            UserManager<User> userManager,IMapper mapper, IGuideService guideService, ICarService carService, IBookingService bookingService)
         {
             _sessionService = sessionService;
             _photographerService = photographerService;
             _userManager = userManager;
             _mapper = mapper;
-            _agencyService = agencyService;
             _guideService = guideService;
             _carService = carService;
+            _bookingService = bookingService;
         }
         public IActionResult Index()
         {
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> PhotographerBooking(Guid id)
+        public async Task<IActionResult> PhotographerBooking(Guid id1,Guid id2)
         {
-            if (!ModelState.IsValid)
-            {
-                return Redirect("/Guide/List");
-            }
-            var pgId = _sessionService.GetString("PhotographerId");
-            if (string.IsNullOrEmpty(pgId))
+            if (!ModelState.IsValid || Guid.Empty == id1 || Guid.Empty == id2)
             {
                 return Redirect("/Photographer/List");
             }
             _sessionService.SetString("LastVisitedPage", "/Review/PhotographerBooking");
             var user = await _userManager.GetUserAsync(User);
-            var pgBooking = _mapper.Map<PhotographerBookingViewModel>(user);
-            var photographer = _photographerService.Get(Guid.Parse(pgId));
+            var pgBooking = _mapper.Map<PhotographerBooking>(user);
+            var photographer = _photographerService.Get(id2);
             pgBooking.Photographer = photographer;
-            var agency = _agencyService.Get(photographer.AgencyId);
-            pgBooking.AgencyName = agency.Name;
             pgBooking.EventDate = DateTime.Parse(_sessionService.GetString("EventDate"), CultureInfo.InvariantCulture);
             pgBooking.StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"), CultureInfo.InvariantCulture);
             pgBooking.EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"), CultureInfo.InvariantCulture);
             pgBooking.TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"), CultureInfo.InvariantCulture);
             pgBooking.EventType = _sessionService.GetString("EventType");
             pgBooking.EventLocation = _sessionService.GetString("EventLocation");
-            pgBooking.TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour;
             pgBooking.PhotographerId = photographer.Id;
-            _sessionService.SetString("TotalAmount", pgBooking.TotalAmount.ToString());
-
-            return View(pgBooking);
+            pgBooking.Id = id1;
+            pgBooking.Booking = _bookingService.Get(id1);
+            var bookingmodel = new BookingModel
+            {
+                Id = id1,
+                PhotographerBooking = pgBooking,
+                Booking = new Booking
+                {
+                    TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour,
+                }
+            };
+            return View(bookingmodel);
         }
         [HttpGet]
-        public async Task<IActionResult> GuideBooking(Guid id)
+        public async Task<IActionResult> GuideBooking(Guid id1, Guid id2)
         {
-            if (!ModelState.IsValid)
-            {
-                return Redirect("/Guide/List");
-            }
-            var guideId = _sessionService.GetString("GuideId");
-            if (string.IsNullOrEmpty(guideId))
+            if (!ModelState.IsValid || Guid.Empty == id1 || Guid.Empty == id2)
             {
                 return Redirect("/Guide/List");
             }
             _sessionService.SetString("LastVisitedPage", "/Review/GuideBooking");
             var user = await _userManager.GetUserAsync(User);
-            var guideBooking = _mapper.Map<GuideBookingViewModel>(user);
-            var guide = _guideService.Get(Guid.Parse(guideId));
+            var guideBooking = _mapper.Map<GuideBooking>(user);
+            var guide = _guideService.Get(id2);
             guideBooking.Guide = guide;
-            var agency = _agencyService.Get(guide.AgencyId);
-            guideBooking.AgencyName = agency.Name;
             guideBooking.EventDate = DateTime.Parse(_sessionService.GetString("EventDate"),CultureInfo.InvariantCulture);
             guideBooking.StartTime = TimeSpan.Parse(_sessionService.GetString("StartTime"), CultureInfo.InvariantCulture);
             guideBooking.EndTime = TimeSpan.Parse(_sessionService.GetString("EndTime"), CultureInfo.InvariantCulture);
             guideBooking.TimeInHour = int.Parse(_sessionService.GetString("TimeInHour"));
             guideBooking.EventType = _sessionService.GetString("EventType");
             guideBooking.EventLocation = _sessionService.GetString("EventLocation");
-            guideBooking.TotalAmount = guide.HourlyRate * guideBooking.TimeInHour;
             guideBooking.GuideId = guide.Id;
-            _sessionService.SetString("guideBookingObj", JsonSerializer.Serialize(guideBooking));
-            return View(guideBooking);
+            guideBooking.Id = id1;
+            guideBooking.Booking = _bookingService.Get(id1);
+            var bookingmodel = new BookingModel
+            {
+                Id = id1,
+                GuideBooking = guideBooking,
+                Booking = new Booking
+                {
+                    TotalAmount = guide.HourlyRate * guideBooking.TimeInHour,
+                }
+            };
+            return View(bookingmodel);
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult BusBooking(BusBookingViewModel model)
         {
             if (ModelState.IsValid)

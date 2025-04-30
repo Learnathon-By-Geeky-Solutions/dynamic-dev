@@ -41,7 +41,7 @@
             <!-- Date Field -->
             <div class="col-md-4 form-group">
                 <label for="DateTime" class="form-label">Date</label>
-                <input asp-for="DepartureTime" class="form-control" type="date" required />
+                <input asp-for="DepartureTime" class="form-control" type="date" required value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="DepartureTime" class="text-danger"></span>
             </div>
         </div>

@@ -2,6 +2,7 @@
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using EasyTravel.Domain.ValueObjects;
 
 namespace EasyTravel.Web.Controllers
 {
@@ -17,17 +18,17 @@ namespace EasyTravel.Web.Controllers
             _hotelBookingService = hotelBooking;
         }
 
-        public IActionResult Index(string location, DateTime? travelDateTime)
+        public IActionResult Index(string location, DateTime? travelDateTime,int pageNumber = 1,int pageSize =10)
         {
-            IEnumerable<Hotel> hotels;
+            PagedResult<Hotel> hotels;
 
             if (!string.IsNullOrEmpty(location))
             {
-                hotels = _hotelService.SearchHotels(location, travelDateTime);
+                hotels = _hotelService.SearchHotels(location, travelDateTime, pageNumber, pageSize);
             }
             else
             {
-                hotels = _hotelService.GetAll();
+                hotels = _hotelService.GetAllPaginatedHotels(pageNumber,pageSize);
             }
 
             ViewBag.Location = location;

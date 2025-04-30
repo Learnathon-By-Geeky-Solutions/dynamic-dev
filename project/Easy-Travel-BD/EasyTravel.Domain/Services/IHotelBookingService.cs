@@ -9,5 +9,6 @@ namespace EasyTravel.Domain.Services
 {
     public interface IHotelBookingService:IService<HotelBooking,Guid>
     {
+        void SaveBooking(HotelBooking model, Booking booking, Payment? payment = null);
     }
 }

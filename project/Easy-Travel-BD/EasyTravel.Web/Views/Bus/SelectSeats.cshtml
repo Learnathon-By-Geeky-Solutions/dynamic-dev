@@ -81,6 +81,7 @@
 </div>
 
 <form id="bookingForm" asp-controller="Bus" asp-action="PassengerDetails" method="post">
+    <input type="hidden" id="BookingId" value="@Model.BookingId" name="BookingId" />
     <input type="hidden" id="selectedSeatsInput" name="selectedSeats" />
     <input type="hidden" id="selectedSeatIdsInput" name="selectedSeatIds" />
     <input type="hidden" id="totalAmountInput" name="totalAmount" />
@@ -287,7 +288,7 @@
                 alert('Please select at least one seat before proceeding.');
                 return;
             }
-
+            const bookingId = document.getElementById('BookingId').value
             const selectedSeatsString = Array.from(selectedSeats).join(',');
             const selectedSeatIdsString = Array.from(selectedSeatIds).join(',');
             const totalAmount = (selectedSeats.size * pricePerSeat).toFixed(2);
@@ -296,6 +297,7 @@
             document.getElementById('selectedSeatsInput').value = selectedSeatsString;
             document.getElementById('selectedSeatIdsInput').value = selectedSeatIdsString;
             document.getElementById('totalAmountInput').value = totalAmount;
+            document.getElementById('BookingId').value = bookingId;
 
             // Submit the form
             document.getElementById('bookingForm').submit();

@@ -9,6 +9,7 @@ namespace EasyTravel.Web.Models
 {
     public class GuideBookingViewModel
     {
+        public Guid Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }

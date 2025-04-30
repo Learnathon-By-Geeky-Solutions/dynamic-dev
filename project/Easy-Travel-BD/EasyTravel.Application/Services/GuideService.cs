@@ -84,9 +84,9 @@ namespace EasyTravel.Application.Services
                 }
                 var guides = await _unitOfWork.GuideRepository.GetAsync(
                     e => e.Availability &&
-                        (!e.GuideBookings!.Any() ||
-                         e.GuideBookings!.Any(
-                             p => p.Booking!.BookingStatus != BookingStatus.Confirmed &&
+                        e.GuideBookings != null && (!e.GuideBookings.Any() ||
+                         e.GuideBookings.Any(
+                             p => p.Booking != null && p.Booking.BookingStatus != BookingStatus.Confirmed &&
                                   p.Booking.BookingStatus != BookingStatus.Pending &&
                                   p.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
                                   p.EventDate >= guideBooking.EventDate &&

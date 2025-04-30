@@ -29,10 +29,17 @@ namespace EasyTravel.Web.Mappings
             CreateMap<User, GuideBookingViewModel>().ReverseMap();
             CreateMap<User, PhotographerBookingViewModel>().ReverseMap();
             CreateMap<BookingFormViewModel, GuideBookingViewModel>().ReverseMap();
-            CreateMap<GuideBookingViewModel, GuideBooking>()
+            CreateMap<User, GuideBooking>()
               .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
           //.ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
           .ForMember(dest => dest.GuideId, opt => opt.Ignore())
+          //.ForMember(dest => dest.UserId, opt => opt.Ignore())
+          .ForMember(dest => dest.Id, opt => opt.Ignore())
+          .ReverseMap();
+            CreateMap<User, PhotographerBooking>()
+              .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
+          //.ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+          .ForMember(dest => dest.PhotographerId, opt => opt.Ignore())
           //.ForMember(dest => dest.UserId, opt => opt.Ignore())
           .ForMember(dest => dest.Id, opt => opt.Ignore())
           .ReverseMap();

@@ -17,11 +17,13 @@ namespace EasyTravel.Application.Services
     {
         private readonly ILogger<BusService> _logger;
         private readonly IApplicationUnitOfWork _unitOfWork;
+        private readonly IBookingService _bookingService;
 
-        public BusService(IApplicationUnitOfWork unitOfWork, ILogger<BusService> logger)
+        public BusService(IApplicationUnitOfWork unitOfWork, ILogger<BusService> logger, IBookingService bookingService)
         {
             _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _bookingService = bookingService ?? throw new ArgumentNullException(nameof(bookingService));
         }
 
         public void CreateBus(Bus bus)
@@ -107,7 +109,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<(IEnumerable<Bus>,int)> GetAvailableBusesAsync(string from, string to, DateTime dateTime,int pageNumber,int pageSize)
+        public async Task<(IEnumerable<Bus>, int)> GetAvailableBusesAsync(string from, string to, DateTime dateTime, int pageNumber, int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0)
             {
@@ -125,11 +127,11 @@ namespace EasyTravel.Application.Services
                 var buses = await _unitOfWork.BusRepository.GetAsync(bus =>
                     bus.From == from &&
                     bus.To == to &&
-                    bus.DepartureTime.Date == dateTime.Date &&
+                    bus.DepartureTime > DateTime.Now &&
                     bus.Seats!.Any(seat => seat.IsAvailable));
                 var totalItems = buses.Count;
                 var paginateBuses = buses.
-                    OrderBy(b => b.From).
+                    OrderBy(b => b.DepartureTime).
                     Skip((pageNumber - 1) * pageSize).
                     Take(pageSize).
                     ToList();
@@ -142,7 +144,6 @@ namespace EasyTravel.Application.Services
                 throw new InvalidOperationException($"An error occurred while fetching available buses from {from} to {to} on {dateTime}.", ex);
             }
         }
-
         public void UpdateBus(Bus bus)
         {
             if (bus == null)
@@ -202,8 +203,12 @@ namespace EasyTravel.Application.Services
                     _logger.LogInformation("Saving booking for bus with ID: {BusId}", model.BusId);
 
                     // Save the booking
-                    _unitOfWork.BookingRepository.Add(booking);
-                    _unitOfWork.Save();
+                    if (_bookingService.Get(booking.Id) != null)
+                    {
+                        _unitOfWork.BookingRepository.Edit(booking);
+                        _unitOfWork.Save();
+                    }
+                    model.Id = booking.Id;
                     _unitOfWork.BusBookingRepository.Add(model);
                     _unitOfWork.Save();
 

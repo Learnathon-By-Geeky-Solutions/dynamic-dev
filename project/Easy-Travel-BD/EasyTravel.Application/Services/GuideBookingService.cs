@@ -15,13 +15,35 @@ namespace EasyTravel.Application.Services
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
         private readonly ILogger<GuideBookingService> _logger;
-
-        public GuideBookingService(IApplicationUnitOfWork unitOfWork, ILogger<GuideBookingService> logger)
+        private readonly IBookingService _bookingService;
+        public GuideBookingService(IApplicationUnitOfWork unitOfWork, ILogger<GuideBookingService> logger, IBookingService bookingService)
         {
             _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _bookingService = bookingService;   
         }
+        public GuideBooking Get(Guid id)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching GuideBooking with ID: {Id}", id);
+                var guideBooking = _unitOfWork.GuideBookingRepository.GetById(id);
 
+                if (guideBooking == null)
+                {
+                    _logger.LogWarning("GuideBooking with ID: {Id} not found.", id);
+                    throw new KeyNotFoundException($"GuideBooking with ID: {id} not found.");
+                }
+
+                _logger.LogInformation("Successfully fetched GuideBooking with ID: {Id}", id);
+                return guideBooking;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching PhotographerBooking with ID: {Id}", id);
+                throw new InvalidOperationException($"An error occurred while fetching PhotographerBooking with ID: {id}.", ex);
+            }
+        }
         public void SaveBooking(GuideBooking model, Booking booking, Payment? payment = null)
         {
             if (model == null)
@@ -41,12 +63,13 @@ namespace EasyTravel.Application.Services
                 try
                 {
                     _logger.LogInformation("Saving booking for guide with ID: {GuideId}", model.GuideId);
-
-                    // Save the booking
-                    _unitOfWork.BookingRepository.Add(booking);
-                    _unitOfWork.Save();
-
-                    // Save the guide booking
+                    if (_bookingService.Get(booking.Id) != null)
+                    {                     // Save the booking
+                        _unitOfWork.BookingRepository.Edit(booking);
+                        _unitOfWork.Save();
+                    }
+                    model.Id = booking.Id; // Set the booking ID to the photographer booking model
+                                           // Save the photographer booking
                     _unitOfWork.GuideBookingRepository.Add(model);
                     _unitOfWork.Save();
 

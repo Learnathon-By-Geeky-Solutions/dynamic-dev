@@ -133,6 +133,8 @@ namespace EasyTravel.Web
 .InstancePerLifetimeScope();
             builder.RegisterType<PaymentRepository>().As<IPaymentRepository>()
             .InstancePerLifetimeScope();
+            builder.RegisterType<BookingService>().As<IBookingService>()
+            .InstancePerLifetimeScope();
             base.Load(builder);
         }
 

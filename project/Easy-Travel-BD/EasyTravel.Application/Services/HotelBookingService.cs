@@ -4,6 +4,7 @@ using EasyTravel.Domain.Services;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Transactions;
 
 namespace EasyTravel.Application.Services
 {
@@ -11,11 +12,59 @@ namespace EasyTravel.Application.Services
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
         private readonly ILogger<HotelBookingService> _logger;
-
-        public HotelBookingService(IApplicationUnitOfWork unitOfWork, ILogger<HotelBookingService> logger)
+        private readonly IBookingService _bookingService;
+        public HotelBookingService(IApplicationUnitOfWork unitOfWork, ILogger<HotelBookingService> logger,IBookingService bookingService)
         {
             _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _bookingService = bookingService;
+        }
+        public void SaveBooking(HotelBooking model, Booking booking, Payment? payment = null)
+        {
+            if (model == null)
+            {
+                _logger.LogWarning("Attempted to save a null HotelBooking entity.");
+                throw new ArgumentNullException(nameof(model), "HotelBooking entity cannot be null.");
+            }
+
+            if (booking == null)
+            {
+                _logger.LogWarning("Attempted to save a null Booking entity.");
+                throw new ArgumentNullException(nameof(booking), "Booking entity cannot be null.");
+            }
+
+            using (var transaction = new TransactionScope())
+            {
+                try
+                {
+                    _logger.LogInformation("Saving booking for guide with ID: {HotelId}", model.HotelId);
+                    if (_bookingService.Get(booking.Id) != null)
+                    {                     // Save the booking
+                        _unitOfWork.BookingRepository.Edit(booking);
+                        _unitOfWork.Save();
+                    }
+                    model.Id = booking.Id; // Set the booking ID to the photographer booking model
+                                           // Save the photographer booking
+                    _unitOfWork.HotelBookingRepository.Add(model);
+                    _unitOfWork.Save();
+
+                    // Save payment if provided
+                    if (payment != null)
+                    {
+                        _unitOfWork.PaymentRepository.Add(payment);
+                        _unitOfWork.Save();
+                    }
+
+                    // Commit the transaction
+                    transaction.Complete();
+                    _logger.LogInformation("Saving booking for guide with ID: {HotelId}", model.HotelId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while saving the booking for guide with ID: {GuideId}", model.HotelId);
+                    throw new InvalidOperationException($"An error occurred while saving the booking for guide with ID: {model.HotelId}.", ex);
+                }
+            }
         }
 
         public void Create(HotelBooking entity)

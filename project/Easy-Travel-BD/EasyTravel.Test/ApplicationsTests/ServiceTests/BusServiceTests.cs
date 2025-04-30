@@ -171,6 +171,7 @@ namespace EasyTravel.Tests.Services
                 Assert.That(result.First().To, Is.EqualTo(to));
                 Assert.That(totalPages, Is.EqualTo(1)); // Only one page of results
             });
+
         }
 
         [Test]
