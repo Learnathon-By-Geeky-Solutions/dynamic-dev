@@ -79,12 +79,16 @@ A heartfelt appreciation to **[Maynul Islam Sohel](https://github.com/sohelatbs2
 | **Agency Manager**         | - Add and manage travel agencies<br>- Manage agency tours and related services                |
 | **Super Admin**         | -  Distribute money to service provider <br> - Create,Update,Delete Service provider and User and all other permited task|
 
-*Strictly we handed the authorization for security*
+*Strictly we handed the authentication authorization for security*
 
 
 ### **Home Page**  
 
 <img src="docs/images/home.png" alt="Home Page" width="800" align="center" />
+<br>
+<img src="docs/images/home2.png" alt="Home Page" width="800" align="center" />
+<br>
+<img src="docs/images/home3.png" alt="Home Page" width="800" align="center" />
 <br>
 The homepage provides a user-friendly interface with the following sections:  
 
@@ -104,15 +108,22 @@ The homepage provides a user-friendly interface with the following sections:
 
 <img src="docs/images/hotelpage.png" alt="Hotel Page" width="800" align="center" />
 <br>
+<img src="docs/images/hotelpage.png" alt="Hotel Page" width="800" align="center" />
+<br>
 Searchable and result of hotel.Responsive and beautiful ui.
 
 ### **Buy Ticket Page**  
 A dedicated page for booking bus tickets. Features include:  
 
+<img src="docs/images/bus-search.png" alt="Home Page" width="800" align="center" />
+<br>
+
 - **Ticket Search**:  
   - Input fields for **From**, **To**, and **Date**.  
   - A search button to show available buses.  
 
+<img src="docs/images/bussit-select.png" alt="Home Page" width="800" align="center" />
+<br>
 - **Bus Selection**:  
   - View a list of available buses.  
   - Option to select a seat (if possible).  
@@ -127,46 +138,90 @@ A dedicated page for booking bus tickets. Features include:
 
 ---
 
-### **Tour Booking Page**  
-A page to book hotels and plan tours. Features include:  
-
-- Display a list of hotels with photos, descriptions, and prices.  
-- Click on a hotel for detailed information, additional photos, and booking options.  
-- Receive booking documents as a printable copy.  
-- **Location Selector**: Easily filter hotels by location.  
-
----
-
-### **Travel Agency Page**  
-Find and hire travel agencies with ease:  
-
-- View a list of trusted travel agencies.  
-- Click on an agency for detailed information and hiring options.  
+### **Tour Guide Page**  
+Easily explore and book professional tour guides:
+<img src="docs/images/guide-search.png" alt="Home Page" width="800" align="center" />
+<br>
+<img src="docs/images/guide-result.png" alt="Home Page" width="800" align="center" />
+<br>
+- Browse a list of available tour guides with ratings and experience.  
+- Filter guides based on preferred location, language, and availability.  
+- View detailed guide profiles and book directly with customized timing.
 
 ---
 
-### **Blog Page**  
-A space to share and explore travel stories and tips:  
+### **Photographer Page**  
+Capture your moments with skilled photographers:
 
-- **Admin** (and optionally users) can post blogs about:  
-  - Tourist spots in Bangladesh.  
-  - Travel tips and experiences.  
-  - Recommendations for tour guides and agencies.  
+<img src="docs/images/photographer-search.png" alt="Home Page" width="800" align="center" />
+<br>
+<img src="docs/images/photographer-result.png" alt="Home Page" width="800" align="center" />
+<br>
+- Discover photographers by experience, rating, and availability.  
+- Access social media links and sample portfolios.  
+- Instantly calculate price based on event duration and book with ease.
+
+---
+---
+
+### **🔐 Payment Integration with SSLCommerz**  
+Ensure secure and seamless transactions for all bookings:
+<img src="docs/images/payment1.jpeg" alt="SSLCommerz Payment" width="800" align="center" />
+<br>
+<img src="docs/images/payment2.jpeg" alt="SSLCommerz Payment" width="800" align="center" />
+<br>
+<img src="docs/images/payment3.jpeg" alt="SSLCommerz Payment" width="800" align="center" />
+<br>
+- Integrated **SSLCommerz** for reliable payment processing.  
+- Supports multiple local payment methods (Nagad, Bkash, Visa, Mastercard).  
+- Ensures encrypted and safe checkout for users.  
+- Payment status and history tracked in user profile.  
+- Admin dashboard shows confirmed transactions and payment logs.
 
 ---
 
-### **Admin Page**  
-A robust backend for managing platform data:  
+---
+### **Registration and Login Page**  
+Secure access and personalized experience for every user:  
+<img src="docs/images/registration.png" alt="Registration and Login" width="800" align="center" />
+<br>
+<img src="docs/images/login.png" alt="Registration and Login" width="800" align="center" />
+<br>
+- User-friendly registration with email and password authentication.  
+- Secure login using industry-standard hashing and validation.  
+- Role-based redirection for Admin and General Users.  
+- Option to reset forgotten password and verify via email.  
 
-- Add or remove:  
-  - Buses  
-  - Hotels  
-  - Travel Agencies  
-- Post about tourist spots. 
-- Manage user accounts.
-- View and respond to user feedback.
-- Monitor platform analytics.
-- assign roles to users.
+---
+
+### **User Profile and History Page**  
+Manage your bookings and preferences with a personalized experience:
+<img src="docs/images/user-profile.png" alt="User Profile" width="800" align="center" />
+<br>
+- Update personal details including contact info and profile picture.  
+- View booking history across guides, photographers, hotels, and transports.  
+- Track current bookings and cancel or modify as needed.  
+
+---
+
+### **Admin Panel**  
+Complete control and monitoring of the platform:
+<img src="docs/images/admin-1.png" alt="Admin Panel" width="800" align="center" />
+<br>
+<img src="docs/images/admin-2.png" alt="Admin Panel" width="800" align="center" />
+<br>
+<img src="docs/images/admin-3.png" alt="Admin Panel" width="800" align="center" />
+<br>
+<img src="docs/images/admin-4.png" alt="Admin Panel" width="800" align="center" />
+<br>
+
+- Manage users, guides, photographers, agencies, hotels, and transport services.  
+- Approve or decline service provider applications.  
+- Monitor bookings, reviews, and payments in real time.  
+- View detailed analytics and system reports.
+
+---
+
 
 ---
 
@@ -192,6 +247,8 @@ Below is a detailed overview:
 | **NUnit & Moq** | Robust unit testing and mocking dependencies for reliability and stability. | ![NUnit Logo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ45_spvKf26w0ZJUMyHk_9mQoIR3pNG8u02A&s) |
 | **Docker** | Containerization to ensure smooth deployment and environment consistency across development, testing, and production. | ![Docker Logo](https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png) |
 | **GitHub** | Version control, collaboration, code reviews, CI/CD integration, and issue tracking using GitHub. | ![GitHub Logo](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png) |
+| **Bootstrap** | Responsive UI design, pre-built components, and utility classes for faster frontend development. | ![Bootstrap Logo](https://upload.wikimedia.org/wikipedia/commons/b/b2/Bootstrap_logo.svg) |
+| **jQuery** | Simplifies DOM manipulation, AJAX calls, and event handling for dynamic user interactions. | ![jQuery Logo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ6EfllRAnZTSZNKgwhvaPKsv1s1X5C62sxg&s) |
 
 ---
 
@@ -285,11 +342,48 @@ EasyTravel
 
 ```
 
+## 📈 Future Plans
+
+- 🗺️ **Real-time guide/vehicle tracking** using GPS and Maps API  
+  Enable users to track tour guides or hired vehicles in real-time using Google Maps or OpenStreetMap integration.
+
+- 🧾 **Integration with hotel chains for real-time availability**  
+  Partner with hotel APIs or chains to fetch live room availability, offers, and pricing for seamless booking experiences.
+
+- 🤖 **AI-based smart suggestions for complete travel packages**  
+  Use machine learning to recommend optimized travel plans based on user's interests, search history, location, and budget.
+
+- 📱 **Cross-platform mobile app using .NET MAUI or React Native**  
+  Launch fully functional mobile apps supporting both Android and iOS for broader user accessibility and convenience.
+
+
+### 🔗 Useful Links
+
+| Resource      | Link                                |
+|---------------|-------------------------------------|
+| 🌐 Live Site  | [Visit Website](https://easytravelbd-enc3h9ehc9hng9da.eastasia-01.azurewebsites.net/) |
+| 🐙 GitHub     | [GitHub Repo](https://github.com/Learnathon-By-Geeky-Solutions/dynamic-dev) |
+| 🐳 Docker Hub | [Docker Image](https://hub.docker.com/r/csenaeem/easytravelbd) |
+
+
+
 
 ## Vision  
 Easy Travel BD aims to revolutionize the travel experience in Bangladesh by offering a one-stop platform for all travel needs. Whether you're a solo traveler, a family, or a tour group, our application is designed to make your journey smooth, secure, and memorable.
 
 ---
+### 🚀 Getting Started  
+Follow the steps below to clone, set up, and run the project locally:
 
+#### 1️⃣ Clone the Repository  
+```bash
+git clone https://github.com/Learnathon-By-Geeky-Solutions/dynamic-dev
+cd dynamic-dev/projet/easy-travel-bd
 
-
+```
+Change Connection string
+```bash
+"ConnectionStrings": {
+  "DefaultConnection": "Server=YOUR_SERVER;Database=YOUR_DB Trusted_Connection=True;MultipleActiveResultSets=true"
+}
+```
