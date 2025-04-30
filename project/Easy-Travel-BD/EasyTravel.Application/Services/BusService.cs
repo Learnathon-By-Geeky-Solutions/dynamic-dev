@@ -125,11 +125,11 @@ namespace EasyTravel.Application.Services
                 var buses = await _unitOfWork.BusRepository.GetAsync(bus =>
                     bus.From == from &&
                     bus.To == to &&
-                    bus.DepartureTime.Date == dateTime.Date &&
+                    bus.DepartureTime > DateTime.Now &&
                     bus.Seats!.Any(seat => seat.IsAvailable));
                 var totalItems = buses.Count;
                 var paginateBuses = buses.
-                    OrderBy(b => b.From).
+                    OrderBy(b => b.DepartureTime).
                     Skip((pageNumber - 1) * pageSize).
                     Take(pageSize).
                     ToList();
