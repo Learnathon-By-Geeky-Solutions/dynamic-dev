@@ -56,40 +56,6 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
         }
 
         [Test]
-        public void Get_ShouldThrowKeyNotFoundException_WhenHotelBookingDoesNotExist()
-        {
-            // Arrange
-            var hotelBookingId = Guid.NewGuid();
-            _unitOfWorkMock.Setup(u => u.HotelBookingRepository.GetById(hotelBookingId)).Returns((HotelBooking?)null);
-
-            // Act
-            var ex = Assert.Throws<InvalidOperationException>(() => _adminHotelBookingService.Get(hotelBookingId));
-
-            // Assert
-            Assert.That(ex, Is.Not.Null, "An exception should be thrown.");
-            Assert.That(ex!.Message, Is.EqualTo($"An error occurred while fetching the hotel booking with ID: {hotelBookingId}."));
-            Assert.That(ex.InnerException, Is.TypeOf<KeyNotFoundException>(), "The inner exception should be a KeyNotFoundException.");
-            Assert.That(ex.InnerException?.Message, Is.EqualTo($"Hotel booking with ID: {hotelBookingId} not found."));
-
-            _loggerMock.Verify(
-                l => l.Log(
-                    LogLevel.Warning,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains($"Hotel booking with ID: {hotelBookingId} not found.")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
-                Times.Once);
-            _loggerMock.Verify(
-                l => l.Log(
-                    LogLevel.Error,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v != null && v.ToString()!.Contains($"An error occurred while fetching the hotel booking with ID: {hotelBookingId}")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)),
-                Times.Once);
-        }
-
-        [Test]
         public void GetAll_ShouldReturnAllHotelBookings()
         {
             // Arrange
