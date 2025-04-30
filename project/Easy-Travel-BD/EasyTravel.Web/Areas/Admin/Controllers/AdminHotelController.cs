@@ -21,7 +21,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             {
                 return View();
             }
-            var hotels = await _hotelService.GetPaginatedHotelsAsync(pageNumber, pageSize);
+            var hotels = _hotelService.GetAllPaginatedHotels(pageNumber, pageSize);
             return View(hotels);
         }
 

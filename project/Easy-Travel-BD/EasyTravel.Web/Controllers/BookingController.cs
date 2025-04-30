@@ -21,7 +21,8 @@ namespace EasyTravel.Web.Controllers
         private readonly IGuideBookingService _guideBookingService;
         private readonly IBusService _busService;
         private readonly ICarService _carService;
-        public BookingController(IMapper mapper, ISessionService sessionService, IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService, IBusService busService, ICarService carService)
+        private readonly IBookingService _bookingService;
+        public BookingController(IMapper mapper, ISessionService sessionService, IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService, IBusService busService, ICarService carService, IBookingService bookingService)
         {
             _mapper = mapper;
             _sessionService = sessionService;
@@ -29,6 +30,20 @@ namespace EasyTravel.Web.Controllers
             _guideBookingService = guideBookingService;
             _busService = busService;
             _carService = carService;
+            _bookingService = bookingService;
+        }
+        private Booking GetTemporaryBooking()
+        {
+            var booking = new Booking
+            {
+                Id = Guid.NewGuid(),
+                TotalAmount = 0,
+                BookingStatus = BookingStatus.Pending,
+                UserId = User?.Identity?.IsAuthenticated == true ? Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!) : Guid.Empty,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+            return booking;
         }
         public IActionResult Index()
         {
@@ -42,36 +57,24 @@ namespace EasyTravel.Web.Controllers
             {
                 return View();
             }
-            _sessionService.SetString("PhotographerId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
                 _sessionService.SetString("LastVisitedPage", "/Review/PhotographerBooking");
                 return RedirectToAction("Login", "Account", new { string.Empty });
             }
-            return RedirectToAction("PhotographerBooking", "Review", id);
+            var tempBooking = GetTemporaryBooking();
+            tempBooking.BookingTypes = BookingTypes.Photographer;
+            _bookingService.AddBooking(tempBooking);
+            return RedirectToAction("PhotographerBooking", "Review", new {id1 = tempBooking.Id,id2 = id});
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Photographer(PhotographerBookingViewModel model)
+        public IActionResult Photographer(BookingModel model)
         {
             if (ModelState.IsValid)
             {
-                var pgBooking = _mapper.Map<PhotographerBooking>(model);
-                var booking = new Booking
-                {
-                    Id = Guid.NewGuid(),
-                    TotalAmount = model.TotalAmount,
-                    BookingTypes = BookingTypes.Photographer,
-                    BookingStatus = BookingStatus.Pending,
-                };
-                if (User?.Identity?.IsAuthenticated == true)
-                {
-                    booking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
-                }
-                pgBooking.Id = booking.Id;
-                pgBooking.PhotographerId = model.PhotographerId;
-                _sessionService.Remove("PhotographerId");
-                _photographerBookingService.SaveBooking(pgBooking, booking);
+                var booking = _bookingService.Get(model.Id);
+                _photographerBookingService.SaveBooking(model.PhotographerBooking!, booking);
                 return View("Success");
             }
             return View(model);
@@ -83,35 +86,24 @@ namespace EasyTravel.Web.Controllers
             {
                 return View();
             }
-            _sessionService.SetString("GuideId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
-                _sessionService.SetString("LastVisitedPage", "/Review/Guide");
+                _sessionService.SetString("LastVisitedPage", "/Review/GuideBooking");
                 return RedirectToAction("Login", "Account", new { area = string.Empty });
             }
-            return RedirectToAction("GuideBooking", "Review", id);
+            var tempBooking = GetTemporaryBooking();
+            tempBooking.BookingTypes = BookingTypes.Guide;
+            _bookingService.AddBooking(tempBooking);
+            return RedirectToAction("GuideBooking", "Review", new { id1 = tempBooking.Id, id2 = id });
         }
         [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Guide(GuideBookingViewModel model)
+        public IActionResult Guide(BookingModel model)
         {
             if (ModelState.IsValid)
             {
-                var guideBooking = _mapper.Map<GuideBooking>(model);
-                var booking = new Booking
-                {
-                    Id = Guid.NewGuid(),
-                    TotalAmount = model.TotalAmount,
-                    BookingTypes = BookingTypes.Guide,
-                    BookingStatus = BookingStatus.Pending
-                };
-                if (User.Identity!.IsAuthenticated!)
-                {
-                    booking.UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
-                }
-                guideBooking.Id = booking.Id;
-                guideBooking.GuideId = model.GuideId;
-                _guideBookingService.SaveBooking(guideBooking, booking);
+                var booking = _bookingService.Get(model.Id);
+                _guideBookingService.SaveBooking(model.GuideBooking!, booking);
                 return View("Success");
             }
             return View(model);
@@ -127,10 +119,13 @@ namespace EasyTravel.Web.Controllers
             _sessionService.SetString("BusId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
-                _sessionService.SetString("LastVisitedPage", "/Review/Bus");
+                _sessionService.SetString("LastVisitedPage", "/Review/BusBooking");
                 return RedirectToAction("Login", "Account", new { string.Empty });
             }
-            return RedirectToAction("SelectSeats", "Bus", id);
+            var tempBooking = GetTemporaryBooking();
+            tempBooking.BookingTypes = BookingTypes.Bus;
+            _bookingService.AddBooking(tempBooking);
+            return RedirectToAction("SelectSeats", "Bus", new { id1 = tempBooking.Id, id2 = id });
         }
 
         [Authorize]
@@ -169,13 +164,15 @@ namespace EasyTravel.Web.Controllers
             {
                 return View();
             }
-            _sessionService.SetString("BusId", id.ToString());
             if (User.Identity?.IsAuthenticated == false)
             {
                 _sessionService.SetString("LastVisitedPage", "/Review/Car");
                 return RedirectToAction("Login", "Account", new { string.Empty });
             }
-            return RedirectToAction("PassengerDetails", "Car", new { id });
+            var tempBooking = GetTemporaryBooking();
+            tempBooking.BookingTypes = BookingTypes.Car;
+            _bookingService.AddBooking(tempBooking);
+            return RedirectToAction("PassengerDetails", "Car", new { id1 = tempBooking.Id, id2 = id });
         }
 
 

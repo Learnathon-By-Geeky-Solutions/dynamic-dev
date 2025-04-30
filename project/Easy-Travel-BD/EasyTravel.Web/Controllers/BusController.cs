@@ -72,11 +72,11 @@ namespace EasyTravel.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult SelectSeats(Guid busId)
+        public IActionResult SelectSeats(Guid id1,Guid id2)
         {
             if(!ModelState.IsValid)
                 return View();
-            var bus = _busService.GetseatBusById(busId);
+            var bus = _busService.GetseatBusById(id2);
             if (bus == null)
                 return NotFound();
 
@@ -84,13 +84,14 @@ namespace EasyTravel.Web.Controllers
             var model = new BusSeatsViewModel
             {
                 Bus = bus,
-                Seats = bus.Seats
+                Seats = bus.Seats,
+                BookingId = id1
             };
 
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> PassengerDetails(Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
+        public async Task<IActionResult> PassengerDetails(Guid BookingId,Guid busId, string selectedSeats, string selectedSeatIds, decimal totalAmount)
         {
             if (!ModelState.IsValid)
                 return View();
@@ -98,26 +99,31 @@ namespace EasyTravel.Web.Controllers
             var bus = _busService.GetseatBusById(busId);
             if (bus == null) return NotFound();
 
-            var viewModel = new BusBookingViewModel
+            var viewModel = new BusBooking
             {
+                Id = BookingId,
                 BusId = busId,
                 Bus = bus,
-                BookingForm = new BookingForm
-                {
-                    PassengerName = $"{user?.FirstName},{user?.LastName}",
-                    Email = user?.Email!,
-                    PhoneNumber = user?.PhoneNumber!,
-                    TotalAmount = bus.Price
-                },
-                SelectedSeatNumbers = string.IsNullOrEmpty(selectedSeats)
+                PassengerName = $"{user?.FirstName},{user?.LastName}",
+                Email = user?.Email!,
+                PhoneNumber = user?.PhoneNumber == null ? "0175621465" : user?.PhoneNumber!,
+                SelectedSeats = string.IsNullOrEmpty(selectedSeats)
                     ? new List<string>()
                     : selectedSeats.Split(',').ToList(),
                 SelectedSeatIds = string.IsNullOrEmpty(selectedSeatIds)
                     ? new List<Guid>()
                     : selectedSeatIds.Split(',').Select(id => Guid.Parse(id)).ToList(),
-                TotalAmount = totalAmount
             };
-            return View(viewModel);
+            var booking = new BookingModel
+            {
+                Id = BookingId,
+                BusBooking = viewModel,
+                Booking = new Booking
+                {
+                    TotalAmount = totalAmount,
+                }
+            };
+            return View(booking);
         }
 
 

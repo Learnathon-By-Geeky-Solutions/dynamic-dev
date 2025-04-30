@@ -68,7 +68,7 @@
                 <!-- Actions -->
                 <div class="col-md-3 text-md-end text-center mt-3 mt-md-0">
                     <p class="text-primary fw-bold fs-5">৳@bus.Price</p>
-                    <a asp-controller="Bus" asp-action="SelectSeats" asp-route-BusId="@bus.Id" class="btn btn-warning btn-sm fw-bold text-dark w-100">Book Now</a>
+                    <a asp-controller="Booking" asp-action="Bus" asp-route-id="@bus.Id" class="btn btn-warning btn-sm fw-bold text-dark w-100">Book Now</a>
                 </div>
             </div>
         }

@@ -14,11 +14,12 @@ namespace EasyTravel.Application.Services
     {
         private readonly ILogger<CarService> _logger;
         private readonly IApplicationUnitOfWork _unitOfWork;
-
-        public CarService(IApplicationUnitOfWork unitOfWork, ILogger<CarService> logger)
+        private readonly IBookingService _bookingService;
+        public CarService(IApplicationUnitOfWork unitOfWork, ILogger<CarService> logger,IBookingService booking)
         {
             _unitOfWork = unitOfWork ;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _bookingService = booking ?? throw new ArgumentNullException(nameof(booking));
         }
 
         public async Task<PagedResult<Car>> GetAllPaginatedCarsAsync(int pageNumber, int pageSize)
@@ -161,9 +162,12 @@ namespace EasyTravel.Application.Services
                 {
                     _logger.LogInformation("Saving booking for car with ID: {CarId}", CarId);
 
-                    // Save the booking
-                    _unitOfWork.BookingRepository.Add(booking);
-                    _unitOfWork.Save();
+                    if (_bookingService.Get(booking.Id) != null)
+                    {
+                        _unitOfWork.BookingRepository.Edit(booking);
+                        _unitOfWork.Save();
+                    }
+                    model.Id = booking.Id; // Set the booking ID to the car booking model
                     _unitOfWork.CarBookingRepository.Add(model);
                     _unitOfWork.Save();
 
@@ -207,7 +211,7 @@ namespace EasyTravel.Application.Services
                 var totalItems = await _unitOfWork.CarRepository.GetCountAsync();
                 var cars = await _unitOfWork.CarRepository.GetAllAsync();
                 var paginateCars = cars.
-                    OrderBy(c => c.From)
+                    OrderBy(c => c.OperatorName)
                     .Skip((pageNumber - 1) * pageSize).
                     Take(pageSize)
                     .ToList();

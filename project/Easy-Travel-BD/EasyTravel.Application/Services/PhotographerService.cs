@@ -84,9 +84,9 @@ namespace EasyTravel.Application.Services
               
                 var photographers = await _unitOfWork.PhotographerRepository.GetAsync(
                     e => e.Availability &&
-                        (!e.PhotographerBookings!.Any() ||
-                         e.PhotographerBookings!.Any(
-                             p => p.Booking!.BookingStatus != BookingStatus.Confirmed &&
+                        e.PhotographerBookings != null && (!e.PhotographerBookings.Any() ||
+                         e.PhotographerBookings.Any(
+                             p => p.Booking != null && p.Booking.BookingStatus != BookingStatus.Confirmed &&
                                   p.Booking.BookingStatus != BookingStatus.Pending &&
                                   p.StartTime > DateTime.Now.AddHours(6).TimeOfDay &&
                                   p.EventDate >= photographerBooking.EventDate &&

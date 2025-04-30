@@ -1,4 +1,4 @@
-﻿@model GuideBookingViewModel
+﻿@model BookingModel
 @{
 }
 <section class="container my-5" data-aos="fade-up" data-aos-delay="100">
@@ -19,6 +19,7 @@
                         </div>
                     </div>
                     <div>
+
                         <span class="badge bg-theme px-3 py-2 fs-6">@Model.EventType</span>
                     </div>
                 </div>
@@ -26,6 +27,7 @@
                     <p><strong>Starts from:</strong> @Model.StartTime</p>
                     <p><strong>Ends at:</strong> @Model.EndTime</p>
                 </div>
+
             </div>
         </div>
 
@@ -39,9 +41,11 @@
                             <p class="mb-1 fw-semibold">Name:</p>
                             <p class="mb-1 fw-semibold">Email:</p>
                         </div>
+
                         <div class="ms-3">
                             <p class="mb-1">@Model.FirstName @Model.LastName</p>
                             <p class="mb-1">@Model.Email</p>
+
                         </div>
                     </div>
                     <div class="d-flex">
@@ -49,38 +53,47 @@
                             <p class="mb-1 fw-semibold">Gender:</p>
                             <p class="mb-1 fw-semibold">Phone Number:</p>
                         </div>
+
                         <div class="ms-3">
                             <p class="mb-1">@Model.Gender</p>
                             <p class="mb-1">@Model.PhoneNumber</p>
+
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Actions -->
-        <div class="d-flex gap-3 mt-3" data-aos="fade-up" data-aos-delay="300">
-            <form asp-antiforgery="true" method="post" asp-action="Book" asp-controller="Guide">
-                @* Hidden Inputs *@
-                <input asp-for="FirstName" hidden />
-                <input asp-for="LastName" hidden />
-                <input asp-for="Email" hidden />
-                <input asp-for="PhoneNumber" hidden />
-                <input asp-for="Gender" hidden />
-                <input asp-for="EventDate" hidden />
-                <input asp-for="EventType" hidden />
-                <input asp-for="EventLocation" hidden />
-                <input asp-for="StartTime" hidden />
-                <input asp-for="EndTime" hidden />
-                <input asp-for="TimeInHour" hidden />
-                <input asp-for="TotalAmount" hidden />
-                <input asp-for="GuideId" hidden />
-                <button type="submit" class="btn btn-theme px-4">Book</button>
-            </form>
-
-            <form asp-controller="Payment" asp-action="Pay" method="post">
-                <button type="submit" name="Id" value="@Model.GuideId" class="btn btn-success px-4">Pay</button>
-            </form>
+           <div class="d-inline-flex">
+                <form asp-antiforgery=true method="post" id="bookingForm">
+                    <input asp-for="Id" hidden />
+                    <input asp-for="@Model.GuideBooking!.UserName" hidden />
+                    <input asp-for="@Model.GuideBooking!.Email" hidden />
+                    <input asp-for="@Model.GuideBooking!.PhoneNumber" hidden />
+                    <input asp-for="@Model.GuideBooking!.Gender" hidden />
+                    <input asp-for="@Model.GuideBooking!.EventDate" hidden />
+                    <input asp-for="@Model.GuideBooking!.EventType" hidden />
+                    <input asp-for="@Model.GuideBooking!.EventLocation" hidden />
+                    <input asp-for="@Model.GuideBooking!.StartTime" hidden />
+                    <input asp-for="@Model.GuideBooking!.EndTime" hidden />
+                    <input asp-for="@Model.GuideBooking!.TimeInHour" hidden />
+                    <input asp-for="@Model.GuideBooking!.GuideId" hidden />
+                    <input asp-for="@Model.Booking!.TotalAmount" hidden />
+                    <div class="d-inline-flex gap-2">
+                        <button type="button" class="btn btn-danger" onclick="submitForm('/Booking/Guide')">Book</button>
+                        <button type="button" class="btn btn-danger" onclick="submitForm('/Payment/Pay')">Pay</button>
+                    </div>
+                </form>
+           </div>
         </div>
     </div>
-</section>
+    <div></div>
+</div>
+
+<script>
+    function submitForm(actionUrl) {
+        const form = document.getElementById("bookingForm");
+        form.action = actionUrl; // Set the form action dynamically
+        form.method = "post"; // Ensure the method is POST
+        form.submit(); // Submit the form programmatically
+    }
+</script>
+

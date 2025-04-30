@@ -15,11 +15,12 @@ namespace EasyTravel.Application.Services
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
         private readonly ILogger<PhotographerBookingService> _logger;
-
-        public PhotographerBookingService(IApplicationUnitOfWork unitOfWork, ILogger<PhotographerBookingService> logger)
+        private readonly IBookingService _bookingService;
+        public PhotographerBookingService(IApplicationUnitOfWork unitOfWork, ILogger<PhotographerBookingService> logger, IBookingService bookingService)
         {
-            _unitOfWork = unitOfWork ;
+            _unitOfWork = unitOfWork;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _bookingService = bookingService;
         }
 
         public void SaveBooking(PhotographerBooking model, Booking booking, Payment? payment = null)
@@ -41,14 +42,16 @@ namespace EasyTravel.Application.Services
                 try
                 {
                     _logger.LogInformation("Saving booking for photographer with ID: {PhotographerId}", model.PhotographerId);
-
-                    // Save the booking
-                    _unitOfWork.BookingRepository.Add(booking);
-                    _unitOfWork.Save();
-
-                    // Save the photographer booking
+                    if(_bookingService.Get(booking.Id) != null)
+                    {                     // Save the booking
+                        _unitOfWork.BookingRepository.Edit(booking);
+                        _unitOfWork.Save();
+                    }
+                    model.Id = booking.Id; // Set the booking ID to the photographer booking model
+                                           // Save the photographer booking
                     _unitOfWork.PhotographerBookingRepository.Add(model);
                     _unitOfWork.Save();
+
 
                     // Save payment if provided
                     if (payment != null)
@@ -113,7 +116,28 @@ namespace EasyTravel.Application.Services
                 throw new InvalidOperationException($"An error occurred while fetching the booking list for photographer with ID: {model.PhotographerId}.", ex);
             }
         }
+        public PhotographerBooking Get(Guid id)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching PhotographerBooking with ID: {Id}", id);
+                var photographerBooking = _unitOfWork.PhotographerBookingRepository.GetById(id);
 
+                if (photographerBooking == null)
+                {
+                    _logger.LogWarning("PhotographerBooking with ID: {Id} not found.", id);
+                    throw new KeyNotFoundException($"PhotographerBooking with ID: {id} not found.");
+                }
+
+                _logger.LogInformation("Successfully fetched PhotographerBooking with ID: {Id}", id);
+                return photographerBooking;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching PhotographerBooking with ID: {Id}", id);
+                throw new InvalidOperationException($"An error occurred while fetching PhotographerBooking with ID: {id}.", ex);
+            }
+        }
         public async Task<bool> IsBooked(PhotographerBooking model)
         {
             if (model == null)
