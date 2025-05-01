@@ -11,21 +11,20 @@
                 <hr />
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                     <div class="d-flex align-items-center gap-3">
-                        <img src="@Model.Guide?.ProfilePicture" alt="Guide" class="rounded-circle border" style="width: 80px; height: 80px; object-fit: cover;">
+                        <img src="@Model.GuideBooking?.Guide?.ProfilePicture" alt="Guide" class="rounded-circle border" style="width: 80px; height: 80px; object-fit: cover;">
                         <div>
-                            <h5 class="mb-1">@Model.Guide?.FirstName @Model.Guide?.LastName</h5>
-                            <p class="mb-0 text-muted">⭐ @Model.Guide?.Rating</p>
-                            <p class="mb-0 text-muted">@Model.AgencyName</p>
+                            <h5 class="mb-1">@Model.GuideBooking?.Guide?.FirstName @Model.GuideBooking?.Guide?.LastName</h5>
+                            <p class="mb-0 text-muted">⭐ @Model.GuideBooking?.Guide?.Rating</p>
                         </div>
                     </div>
                     <div>
 
-                        <span class="badge bg-theme px-3 py-2 fs-6">@Model.EventType</span>
+                        <span class="badge bg-theme px-3 py-2 fs-6">@Model.GuideBooking?.EventType</span>
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-between text-secondary">
-                    <p><strong>Starts from:</strong> @Model.StartTime</p>
-                    <p><strong>Ends at:</strong> @Model.EndTime</p>
+                    <p><strong>Starts from:</strong> @Model.GuideBooking?.StartTime</p>
+                    <p><strong>Ends at:</strong> @Model.GuideBooking?.EndTime</p>
                 </div>
 
             </div>
@@ -43,8 +42,8 @@
                         </div>
 
                         <div class="ms-3">
-                            <p class="mb-1">@Model.FirstName @Model.LastName</p>
-                            <p class="mb-1">@Model.Email</p>
+                            <p class="mb-1">@Model.GuideBooking?.UserName</p>
+                            <p class="mb-1">@Model.GuideBooking?.Email</p>
 
                         </div>
                     </div>
@@ -55,8 +54,8 @@
                         </div>
 
                         <div class="ms-3">
-                            <p class="mb-1">@Model.Gender</p>
-                            <p class="mb-1">@Model.PhoneNumber</p>
+                            <p class="mb-1">@Model.GuideBooking.Gender</p>
+                            <p class="mb-1">@Model.GuideBooking.PhoneNumber</p>
 
                         </div>
                     </div>

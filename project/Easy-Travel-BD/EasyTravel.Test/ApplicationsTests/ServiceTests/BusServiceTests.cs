@@ -2,6 +2,7 @@ using EasyTravel.Application.Services;
 using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Repositories;
+using EasyTravel.Domain.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -18,6 +19,7 @@ namespace EasyTravel.Tests.Services
     {
         private Mock<IApplicationUnitOfWork> _unitOfWorkMock = null!;
         private Mock<ILogger<BusService>> _loggerMock = null!;
+        private Mock<IBookingService> _bookingServiceMock = null;
         private BusService _busService = null!;
 
         [SetUp]
@@ -25,7 +27,8 @@ namespace EasyTravel.Tests.Services
         {
             _unitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             _loggerMock = new Mock<ILogger<BusService>>();
-            _busService = new BusService(_unitOfWorkMock.Object, _loggerMock.Object);
+            _bookingServiceMock = new Mock<IBookingService>();
+            _busService = new BusService(_unitOfWorkMock.Object, _loggerMock.Object,_bookingServiceMock.Object);
         }
 
         [Test]

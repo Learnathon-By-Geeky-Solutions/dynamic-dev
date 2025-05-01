@@ -1,6 +1,7 @@
 using EasyTravel.Application.Services;
 using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -23,7 +24,16 @@ namespace EasyTravel.Test.ApplicationTests.Services
         {
             _unitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             _loggerMock = new Mock<ILogger<PhotographerBookingService>>();
-            _photographerBookingService = new PhotographerBookingService(_unitOfWorkMock.Object, _loggerMock.Object);
+
+            // Add a mock for IBookingService
+            var bookingServiceMock = new Mock<IBookingService>();
+
+            // Pass the bookingServiceMock.Object to the PhotographerBookingService constructor
+            _photographerBookingService = new PhotographerBookingService(
+                _unitOfWorkMock.Object,
+                _loggerMock.Object,
+                bookingServiceMock.Object
+            );
         }
 
         [Test]

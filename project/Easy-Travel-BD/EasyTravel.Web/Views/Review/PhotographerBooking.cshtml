@@ -1,5 +1,4 @@
-
-﻿@model BookingModel
+@model BookingModel
 @{
 
 }
@@ -36,9 +35,8 @@
                     <div class="d-flex">
 
                         <div>
-                            <h5 class="mb-1">@Model.Photographer?.FirstName @Model.Photographer?.LastName</h5>
-                            <p class="mb-1">⭐ @Model.Photographer?.Rating</p>
-                            <p class="text-muted mb-0">@Model.AgencyName</p>
+                            <h5 class="mb-1">@Model.PhotographerBooking.Photographer?.FirstName @Model.PhotographerBooking.Photographer?.LastName</h5>
+                            <p class="mb-1">⭐ @Model.PhotographerBooking.Photographer?.Rating</p>
                         </div>
 
                         <div class="mx-4">
@@ -48,8 +46,8 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-between" data-aos="fade-left" data-aos-delay="200">
-                        <p class="text-muted mb-0"><strong>Starts:</strong> @Model.StartTime</p>
-                        <p class="text-muted mb-0"><strong>Ends:</strong> @Model.EndTime</p>
+                        <p class="text-muted mb-0"><strong>Starts:</strong> @Model.PhotographerBooking?.StartTime</p>
+                        <p class="text-muted mb-0"><strong>Ends:</strong> @Model.PhotographerBooking?.EndTime</p>
                     </div>
                 </div>
             </div>
@@ -62,8 +60,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6" data-aos="fade-right" data-aos-delay="400">
-                            <p><strong>Name:</strong> @Model.FirstName @Model.LastName</p>
-                            <p><strong>Email:</strong> @Model.Email</p>
+                            <p><strong>Name:</strong> @Model.PhotographerBooking.UserName</p>
+                            <p><strong>Email:</strong> @Model.PhotographerBooking.Email</p>
                         </div>
 
                         <div class="mx-4">
