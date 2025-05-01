@@ -61,7 +61,8 @@ namespace EasyTravel.Test.ApplicationsTests.ServiceTests
         {
             // Arrange
             var carBookingId = Guid.NewGuid();
-            _unitOfWorkMock.Setup(u => u.CarBookingRepository.GetById(carBookingId)).Returns((CarBooking?)null);
+            _unitOfWorkMock.Setup(u => u.CarBookingRepository.GetById(carBookingId)).Returns((CarBooking?)null!);
+
             // Act
             var ex = Assert.Throws<InvalidOperationException>(() => _adminCarBookingService.Get(carBookingId));
 

@@ -1,20 +1,20 @@
 ﻿namespace EasyTravel.Web
 {
-    public class SSLCommerzRequest
+    public class SslCommerzRequest
     {
-        public string StoreId { get; set; }
-        public string StorePassword { get; set; }
-        public int TotalAmount { get; set; }
+        public required string StoreId { get; set; }
+        public required string StorePassword { get; set; }
+        public required int TotalAmount { get; set; }
         public string Currency { get; set; } = "BDT";
-        public string TranId { get; set; }
-        public string SuccessUrl { get; set; }
-        public string FailUrl { get; set; }
-        public string CancelUrl { get; set; }
-        public string CusName { get; set; }
-        public string CusEmail { get; set; }
-        public string CusPhone { get; set; }
-        public string CusAdd1 { get; set; }
-        public string CusCity { get; set; }
+        public required string TranId { get; set; }
+        public required string SuccessUrl { get; set; }
+        public required string FailUrl { get; set; }
+        public required string CancelUrl { get; set; }
+        public required string CusName { get; set; }
+        public required string CusEmail { get; set; }
+        public required string CusPhone { get; set; }
+        public required string CusAdd1 { get; set; }
+        public required string CusCity { get; set; }
         public string CusCountry { get; set; } = "Bangladesh";
     }
 }

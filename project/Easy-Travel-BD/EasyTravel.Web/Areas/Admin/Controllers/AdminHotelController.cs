@@ -15,7 +15,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
             _hotelService = hotelService;
         }
 
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        public IActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
             if (!ModelState.IsValid)
             {
@@ -30,7 +30,7 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         {
             return View();
         }
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(Hotel model)
         {
             if (ModelState.IsValid)
@@ -66,12 +66,12 @@ namespace EasyTravel.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var hotel = _hotelService.Get(id);
-                return View(hotel);
+                return View();
             }
-            return View();
+            var hotel = _hotelService.Get(id);
+            return View(hotel);
         }
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(Hotel model)

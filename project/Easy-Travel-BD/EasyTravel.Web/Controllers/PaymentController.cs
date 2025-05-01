@@ -2,7 +2,6 @@
 using EasyTravel.Domain.Enums;
 using EasyTravel.Domain.Services;
 using EasyTravel.Web.Models;
-using EasyTravel.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,17 +16,14 @@ public class PaymentController : Controller
     private readonly IBookingService _bookingService;
     private readonly UserManager<User> _userManager;
     private readonly ISessionService _sessionService;
-
     private readonly IBusService _busService;
     private readonly ICarService _carService;
-    private readonly IHotelService _hotelService;
     private readonly IPhotographerBookingService _photographerBookingService;
     private readonly IGuideBookingService _guideBookingService;
     private readonly ILogger<PaymentController> _logger;
     private readonly IPaymentOnlyService _paymentOnlyService;
     private readonly IConfiguration _config;
-    private readonly IWebHostEnvironment _env;
-    public PaymentController(IBookingService bookingService, UserManager<User> userManager, ISessionService sessionService,  IBusService busService, ICarService carService, IHotelService hotelService, ILogger<PaymentController> logger, IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService, IPaymentOnlyService paymentOnlyService, IConfiguration config, IWebHostEnvironment env)
+    public PaymentController(IBookingService bookingService, UserManager<User> userManager, ISessionService sessionService,  IBusService busService, ICarService carService,  ILogger<PaymentController> logger, IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService, IPaymentOnlyService paymentOnlyService, IConfiguration config)
     {
         
         _bookingService = bookingService;
@@ -35,13 +31,11 @@ public class PaymentController : Controller
         _sessionService = sessionService;
         _busService = busService;
         _carService = carService;
-        _hotelService = hotelService;
         _logger = logger;
         _photographerBookingService = photographerBookingService;
         _guideBookingService = guideBookingService;
         _paymentOnlyService = paymentOnlyService;
         _config = config;
-        _env = env;
     }
 
     [HttpPost]
@@ -64,7 +58,7 @@ public class PaymentController : Controller
         _sessionService.SetString("BookingId", booking.Id.ToString());
         var configSection = _config.GetSection("SSLCommerz");
         var baseUrl = Request.Scheme + "://" + Request.Host;
-        var request = new SSLCommerzRequest
+        var request = new SslCommerzRequest
         {
             StoreId = configSection["StoreId"]!,
             StorePassword = configSection["StorePassword"]!,
@@ -137,10 +131,6 @@ public class PaymentController : Controller
                     {
                         _carService.SaveBooking(bookingModel.CarBooking!, bookingModel.CarBooking!.CarId, booking);
                     }
-                    //else if (bookingmodel.BookingTypes == BookingTypes.Hotel)
-                    //{
-                    //    _hotelService.SaveBooking(bookingmodel.HotelBooking!, bookingmodel.CarBooking!.CarId, bookingmodel, payment);
-                    //}
                 }
                 return Redirect($"{url}");
             }
@@ -162,7 +152,7 @@ public class PaymentController : Controller
             return View();
         }
 
-        string bookingIdStr = Request.Form["value_a"];
+        string? bookingIdStr = Request.Form["value_a"];
 
         Guid.TryParse(bookingIdStr, out var id);
 
@@ -210,7 +200,7 @@ public class PaymentController : Controller
             return View();
         }
 
-        string bookingIdStr = Request.Form["value_a"];
+        string? bookingIdStr = Request.Form["value_a"];
 
         Guid.TryParse(bookingIdStr, out var id);
 

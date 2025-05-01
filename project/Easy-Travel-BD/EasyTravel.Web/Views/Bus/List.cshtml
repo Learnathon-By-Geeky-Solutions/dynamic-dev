@@ -14,13 +14,13 @@
             </div>
             <form asp-controller="Bus" asp-action="List" method="get" class="row g-3 justify-content-center">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="from" placeholder="From" value="@Model.busSearchFormModel.From" required />
+                    <input type="text" class="form-control" name="from" placeholder="From" value="@Model.busSearchFormModel?.From" required />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="to" placeholder="To" value="@Model.busSearchFormModel.To" required />
+                    <input type="text" class="form-control" name="to" placeholder="To" value="@Model.busSearchFormModel?.To" required />
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" name="date" value="@Model.busSearchFormModel.DepartureTime.ToString("yyyy-MM-dd")" required />
+                    <input type="date" class="form-control" name="date" value="@Model.busSearchFormModel?.DepartureTime.ToString("yyyy-MM-dd")" required />
                 </div>
                 <div class="col-md-2 d-grid">
                     <button type="submit" class="btn btn-theme fw-bold">

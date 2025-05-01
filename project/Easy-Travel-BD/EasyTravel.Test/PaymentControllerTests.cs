@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using EasyTravel.Domain.Enums;
+using EasyTravel.Web.Models;
 
 namespace EasyTravel.Test
 {
@@ -19,56 +20,18 @@ namespace EasyTravel.Test
     public class PaymentControllerTests
     {
         private Mock<IGetService<Booking, Guid>> _mockBookingService;
-        private Mock<UserManager<User>> _mockUserManager;
         private Mock<ISessionService> _mockSessionService;
-        private Mock<IPhotographerService> _mockPhotographerService;
-        private Mock<IGuideService> _mockGuideService;
-        private Mock<IBusService> _mockBusService;
-        private Mock<ICarService> _mockCarService;
-        private Mock<IHotelService> _mockHotelService;
-        private Mock<IPhotographerBookingService> _mockPhotographerBookingService;
-        private Mock<IGuideBookingService> _mockGuideBookingService;
-        private Mock<ILogger<PaymentController>> _mockLogger;
         private Mock<IPaymentOnlyService> _mockPaymentOnlyService;
         private Mock<IConfiguration> _mockConfig;
-        private Mock<IWebHostEnvironment> _mockEnv;
         private PaymentController _controller;
 
         [SetUp]
         public void SetUp()
         {
             _mockBookingService = new Mock<IGetService<Booking, Guid>>();
-            _mockUserManager = new Mock<UserManager<User>>(
-                Mock.Of<IUserStore<User>>(), null!, null!, null!, null!, null!, null!, null!, null!);
             _mockSessionService = new Mock<ISessionService>();
-            _mockPhotographerService = new Mock<IPhotographerService>();
-            _mockGuideService = new Mock<IGuideService>();
-            _mockBusService = new Mock<IBusService>();
-            _mockCarService = new Mock<ICarService>();
-            _mockHotelService = new Mock<IHotelService>();
-            _mockPhotographerBookingService = new Mock<IPhotographerBookingService>();
-            _mockGuideBookingService = new Mock<IGuideBookingService>();
-            _mockLogger = new Mock<ILogger<PaymentController>>();
             _mockPaymentOnlyService = new Mock<IPaymentOnlyService>();
             _mockConfig = new Mock<IConfiguration>();
-            _mockEnv = new Mock<IWebHostEnvironment>();
-
-            //_controller = new PaymentController(
-            //    _mockBookingService.Object,
-            //    _mockUserManager.Object,
-            //    _mockSessionService.Object,
-            //    _mockPhotographerService.Object,
-            //    _mockGuideService.Object,
-            //    _mockBusService.Object,
-            //    _mockCarService.Object,
-            //    _mockHotelService.Object,
-            //    _mockLogger.Object,
-            //    _mockPhotographerBookingService.Object,
-            //    _mockGuideBookingService.Object,
-            //    _mockPaymentOnlyService.Object,
-            //    _mockConfig.Object,
-            //    _mockEnv.Object
-            //);
         }
         [TearDown]
         public void TearDown()
@@ -86,14 +49,6 @@ namespace EasyTravel.Test
             var booking = new Booking { Id = bookingId, TotalAmount = 100, BookingTypes = BookingTypes.Bus };
             _mockBookingService.Setup(s => s.Get(bookingId)).Returns(booking);
             _mockPaymentOnlyService.Setup(s => s.IsExist(bookingId)).ReturnsAsync(true);
-
-            // Act
-            //var result = await _controller.Pay(bookingId);
-
-            //// Assert
-            //Assert.That(result, Is.InstanceOf<RedirectToActionResult>());
-            //var redirectResult = result as RedirectToActionResult;
-            //Assert.That(redirectResult?.ActionName, Is.EqualTo("Expired"));
         }
 
 
@@ -102,8 +57,18 @@ namespace EasyTravel.Test
         {
             // Arrange
             var bookingId = Guid.NewGuid();
-            var booking = new Booking { Id = bookingId, TotalAmount = 100, BookingTypes = BookingTypes.Bus };
-            _mockBookingService.Setup(s => s.Get(bookingId)).Returns(booking);
+            var booking = new BookingModel() ;
+            var hotelBooking = new Booking 
+            {
+                Id = bookingId,
+                TotalAmount = 100,
+                BookingStatus = BookingStatus.Confirmed,
+                BookingTypes = BookingTypes.Hotel,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                UserId = Guid.NewGuid(),
+            };
+            _mockBookingService.Setup(s => s.Get(bookingId)).Returns(hotelBooking);
             _mockPaymentOnlyService.Setup(s => s.IsExist(bookingId)).ReturnsAsync(false);
             _mockSessionService.Setup(s => s.GetString("TotalAmount")).Returns("100");
             _mockSessionService.Setup(s => s.GetString("BookingType")).Returns("Bus");
@@ -115,11 +80,11 @@ namespace EasyTravel.Test
 
             _mockConfig.Setup(c => c.GetSection("SSLCommerz")).Returns(mockConfigSection.Object);
 
-            // Act
-            //var result = await _controller.Pay(bookingId);
+            //Act
+           var result = await _controller.Pay(booking,bookingId);
 
-            //// Assert
-            //Assert.That(result, Is.InstanceOf<RedirectToActionResult>());
+            // Assert
+            Assert.That(result, Is.InstanceOf<RedirectToActionResult>());
         }
      
 

@@ -97,7 +97,7 @@ namespace EasyTravel.Application.Services
                          ))
                 );
                
-                var totalItems = photographers.Count();
+                var totalItems = photographers.Count;
                 var paginatedPhotographers = photographers.
                     OrderBy(p => p.FirstName).
                     Skip((pageNumber - 1) * pageSize).

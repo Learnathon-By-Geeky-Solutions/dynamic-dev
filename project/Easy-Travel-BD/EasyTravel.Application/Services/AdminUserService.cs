@@ -23,7 +23,7 @@ namespace EasyTravel.Application.Services
         }
         private static string RedactEmail(string email)
         {
-            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+            if (string.IsNullOrWhiteSpace(email) || !email.Contains('@'))
                 return "REDACTED";
             var parts = email.Split('@');
             return $"{parts[0][0]}***@{parts[1]}";

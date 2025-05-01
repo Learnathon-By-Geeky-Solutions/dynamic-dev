@@ -35,8 +35,8 @@
                     <div class="d-flex">
 
                         <div>
-                            <h5 class="mb-1">@Model.PhotographerBooking.Photographer?.FirstName @Model.PhotographerBooking.Photographer?.LastName</h5>
-                            <p class="mb-1">⭐ @Model.PhotographerBooking.Photographer?.Rating</p>
+                            <h5 class="mb-1">@Model.PhotographerBooking?.Photographer?.FirstName @Model.PhotographerBooking?.Photographer?.LastName</h5>
+                            <p class="mb-1">⭐ @Model.PhotographerBooking?.Photographer?.Rating</p>
                         </div>
 
                         <div class="mx-4">
@@ -60,8 +60,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6" data-aos="fade-right" data-aos-delay="400">
-                            <p><strong>Name:</strong> @Model.PhotographerBooking.UserName</p>
-                            <p><strong>Email:</strong> @Model.PhotographerBooking.Email</p>
+                            <p><strong>Name:</strong> @Model.PhotographerBooking?.UserName</p>
+                            <p><strong>Email:</strong> @Model.PhotographerBooking?.Email</p>
                         </div>
 
                         <div class="mx-4">
