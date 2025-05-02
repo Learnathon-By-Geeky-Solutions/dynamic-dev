@@ -6,6 +6,6 @@ namespace EasyTravel.Web.Models
     {
         public required Hotel? hotel { get; set; }
         public required Room? room { get; set; }
-        public  HotelBooking ? hotelBooking { get; set; }
+        public HotelBooking? hotelBooking { get; set; }
     }
 }

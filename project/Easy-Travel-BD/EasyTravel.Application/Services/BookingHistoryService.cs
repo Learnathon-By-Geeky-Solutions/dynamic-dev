@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Services;
+using EasyTravel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace EasyTravel.Application.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<IEnumerable<BusBooking>> GetBusBookingsAsync(Guid id)
+        public async Task<PagedResult<BusBooking>> GetBusBookingsAsync(Guid id, int pageNumber, int pageSize)
         {
             if (id == Guid.Empty)
             {
@@ -30,7 +31,18 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching bus bookings for user with ID: {Id}", id);
-                return await _unitOfWork.BusBookingRepository.GetAsync(e =>e.Booking != null && e.Booking.UserId == id);
+                var bookings = await _unitOfWork.BusBookingRepository.GetAsync(e =>e.Booking != null && e.Booking.UserId == id);
+                var totalItems = bookings.Count();
+                var pagedBookings = bookings.OrderBy(e => e.BookingDate).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                var pagedResult = new PagedResult<BusBooking>
+                {
+                    Items = pagedBookings,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                return pagedResult;
+
             }
             catch (Exception ex)
             {
@@ -39,7 +51,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<IEnumerable<CarBooking>> GetCarBookingsAsync(Guid id)
+        public async Task<PagedResult<CarBooking>> GetCarBookingsAsync(Guid id, int pageNumber, int pageSize)
         {
             if (id == Guid.Empty)
             {
@@ -50,7 +62,17 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching car bookings for user with ID: {Id}", id);
-                return await _unitOfWork.CarBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
+                var bookings = await _unitOfWork.CarBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
+                var totalItems = bookings.Count();
+                var pagedBookings = bookings.OrderBy(e => e.BookingDate).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                var pagedResult = new PagedResult<CarBooking>
+                {
+                    Items = pagedBookings,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                return pagedResult;
             }
             catch (Exception ex)
             {
@@ -59,7 +81,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<IEnumerable<GuideBooking>> GetGuideBookingsAsync(Guid id)
+        public async Task<PagedResult<GuideBooking>> GetGuideBookingsAsync(Guid id, int pageNumber, int pageSize)
         {
             if (id == Guid.Empty)
             {
@@ -70,7 +92,17 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching guide bookings for user with ID: {Id}", id);
-                return await _unitOfWork.GuideBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
+                var bookings = await _unitOfWork.GuideBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
+                var totalItems = bookings.Count();
+                var pagedBookings = bookings.OrderBy(e => e.Email).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                var pagedResult = new PagedResult<GuideBooking>
+                {
+                    Items = pagedBookings,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                return pagedResult;
             }
             catch (Exception ex)
             {
@@ -79,7 +111,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<IEnumerable<HotelBooking>> GetHotelBookingsAsync(Guid id)
+        public async Task<PagedResult<HotelBooking>> GetHotelBookingsAsync(Guid id, int pageNumber, int pageSize)
         {
             if (id == Guid.Empty)
             {
@@ -90,7 +122,17 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching hotel bookings for user with ID: {Id}", id);
-                return await _unitOfWork.HotelBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
+                var bookings = await _unitOfWork.HotelBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
+                var totalItems = bookings.Count();
+                var pagedBookings = bookings.OrderBy(e => e.CheckInDate).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                var pagedResult = new PagedResult<HotelBooking>
+                {
+                    Items = pagedBookings,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                return pagedResult;
             }
             catch (Exception ex)
             {
@@ -99,7 +141,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public async Task<IEnumerable<PhotographerBooking>> GetPhotographerBookingsAsync(Guid id)
+        public async Task<PagedResult<PhotographerBooking>> GetPhotographerBookingsAsync(Guid id, int pageNumber, int pageSize)
         {
             if (id == Guid.Empty)
             {
@@ -110,7 +152,17 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching photographer bookings for user with ID: {Id}", id);
-                return await _unitOfWork.PhotographerBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
+                var bookings = await _unitOfWork.PhotographerBookingRepository.GetAsync(e => e.Booking != null && e.Booking.UserId == id);
+                var totalItems = bookings.Count();
+                var pagedBookings = bookings.OrderBy(e => e.EventDate).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                var pagedResult = new PagedResult<PhotographerBooking>
+                {
+                    Items = pagedBookings,
+                    TotalItems = totalItems,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                return pagedResult;
             }
             catch (Exception ex)
             {

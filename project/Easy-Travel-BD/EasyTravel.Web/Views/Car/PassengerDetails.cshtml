@@ -1,4 +1,4 @@
-﻿@model EasyTravel.Web.ViewModels.CarBookingViewModel
+﻿@model BookingModel
 
 @{
     ViewData["Title"] = "Car Booking";
@@ -15,7 +15,7 @@
                             <i class="fas fa-car text-success me-2"></i>
                             <div>
                                 <h5 class="mb-0">Car Details</h5>
-                                <small class="text-muted">@Model.Car?.OperatorName - @Model.Car?.CarType</small>
+                                <small class="text-muted">@Model.CarBooking?.Car?.OperatorName - @Model.CarBooking?.Car?.CarType</small>
                             </div>
                         </div>
                     </div>
@@ -23,21 +23,21 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <small class="text-muted">From</small>
-                                <h6>@Model.Car?.From</h6>
+                                <h6>@Model.CarBooking?.Car?.From</h6>
                             </div>
                             <div class="col-md-6">
                                 <small class="text-muted">To</small>
-                                <h6>@Model.Car?.To</h6>
+                                <h6>@Model.CarBooking?.Car?.To</h6>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <small class="text-muted">Departure</small>
-                                <h6>@Model.Car?.DepartureTime.ToString("dd MMM yyyy hh:mm tt")</h6>
+                                <h6>@Model.CarBooking?.Car?.DepartureTime.ToString("dd MMM yyyy hh:mm tt")</h6>
                             </div>
                             <div class="col-md-6">
                                 <small class="text-muted">Arrival</small>
-                                <h6>@Model.Car?.ArrivalTime.ToString("dd MMM yyyy hh:mm tt")</h6>
+                                <h6>@Model.CarBooking?.Car?.ArrivalTime.ToString("dd MMM yyyy hh:mm tt")</h6>
                             </div>
                         </div>
                     </div>
@@ -54,42 +54,43 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label asp-for="BookingForm.PassengerName">
+                                <label asp-for="@Model.CarBooking!.PassengerName">
                                     Passenger Name
-                                    <input asp-for="BookingForm.PassengerName" class="form-control" />
+                                    <input asp-for="@Model.CarBooking!.PassengerName" class="form-control" />
                                 </label>
 
-                                <span asp-validation-for="BookingForm.PassengerName" class="text-danger"></span>
+                                <span asp-validation-for="@Model.CarBooking!.PassengerName" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="BookingForm.Email">
+                                <label asp-for="@Model.CarBooking!.Email">
                                     Email
 
-                                    <input asp-for="BookingForm.Email" class="form-control" />
+                                    <input asp-for="@Model.CarBooking!.Email" class="form-control" />
                                 </label>
 
-                                <span asp-validation-for="BookingForm.Email" class="text-danger"></span>
+                                <span asp-validation-for="@Model.CarBooking!.Email" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="BookingForm.PhoneNumber">
+                                <label asp-for="@Model.CarBooking!.PhoneNumber">
                                     Phone Number
-                                    <input asp-for="BookingForm.PhoneNumber" class="form-control" />
+                                    <input asp-for="@Model.CarBooking!.PhoneNumber" class="form-control" />
 
                                 </label>
 
-                                <span asp-validation-for="BookingForm.PhoneNumber" class="text-danger"></span>
+                                <span asp-validation-for="@Model.CarBooking!.PhoneNumber" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <input type="hidden" asp-for="BookingForm.TotalAmount" id="totalAmount" value="@Model.Car?.Price" />
-                <input type="hidden" name="CarId" value="@Model.CarId" />
+                <input asp-for="Id" hidden />
+                <input asp-for="TotalAmount" hidden />
+                <input type="hidden" asp-for="@Model.Booking!.TotalAmount" id="totalAmount" />
+                <input type="hidden" asp-for="@Model.CarBooking!.CarId" />
                 <button type="submit" onclick="formSubmit('/Booking/Car')" class="btn btn-success w-100">
                     Confirm Booking
                 </button>
 
-                <button type="submit" onclick="formSubmit('/Review/CarBooking')" class="btn btn-theme w-100">
+                <button type="submit" onclick="formSubmit('/Payment/Pay')" class="btn btn-theme w-100">
                     Continue To Pay
                 </button>
 
@@ -104,15 +105,15 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <small class="text-muted">Car Type</small>
-                        <h6>@Model.Car?.CarType</h6>
+                        <h6>@Model.CarBooking?.Car?.CarType</h6>
                     </div>
                     <div class="mb-3">
                         <small class="text-muted">Journey</small>
-                        <h6>@Model.Car?.From to @Model.Car?.To</h6>
+                        <h6>@Model.CarBooking?.Car?.From to @Model.CarBooking?.Car?.To</h6>
                     </div>
                     <div class="total-section">
                         <small class="text-muted">Total Amount</small>
-                        <h4 class="text-success">৳@Model.Car?.Price</h4>
+                        <h4 class="text-success">৳@Model.CarBooking?.Car?.Price</h4>
                     </div>
                 </div>
             </div>

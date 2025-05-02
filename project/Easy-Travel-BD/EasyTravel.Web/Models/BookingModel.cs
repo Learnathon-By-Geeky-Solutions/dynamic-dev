@@ -5,6 +5,7 @@ namespace EasyTravel.Web.Models
     public class BookingModel
     {
         public Guid Id { get; set; }
+        public decimal TotalAmount { get; set; }
         public PhotographerBooking? PhotographerBooking { get; set; }
         public GuideBooking? GuideBooking { get; set; }
         public CarBooking? CarBooking { get; set; }

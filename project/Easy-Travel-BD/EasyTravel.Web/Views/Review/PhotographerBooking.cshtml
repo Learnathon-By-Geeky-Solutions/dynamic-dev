@@ -87,7 +87,7 @@
                     <input asp-for="@Model.PhotographerBooking!.EndTime" hidden />
                     <input asp-for="@Model.PhotographerBooking!.TimeInHour" hidden />
                     <input asp-for="@Model.PhotographerBooking!.PhotographerId" hidden />
-                    <input asp-for="@Model.Booking!.TotalAmount" hidden />
+                    <input asp-for="@Model.TotalAmount" hidden />
                     <div class="d-inline-flex gap-2">
                         <button type="button" class="btn btn-danger" onclick="submitForm('/Booking/Photographer')">Book</button>
                         <button type="button" class="btn btn-danger" onclick="submitForm('/Payment/Pay')">Pay</button>

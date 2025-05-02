@@ -5,6 +5,7 @@ using EasyTravel.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System;
 using System.Collections.Generic;
 
@@ -359,7 +360,7 @@ namespace EasyTravel.Test.ApplicationTests.Services
             var result = _roomService.GetRoomByHotel(hotelId);
 
             // Assert
-            Assert.That(result, Is.EqualTo(rooms));
+            Assert.That(result, Is.EquivalentTo(rooms));
             _loggerMock.Verify(
                 l => l.Log(
                     LogLevel.Information,

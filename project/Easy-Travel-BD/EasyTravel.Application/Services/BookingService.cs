@@ -110,6 +110,31 @@ namespace EasyTravel.Application.Services
                 throw new InvalidOperationException($"An error occurred while adding the booking with ID: {booking.Id}.", ex);
             }
         }
+
+        public void EditBooking(Booking booking)
+        {
+            if (booking == null)
+            {
+                _logger.LogWarning("Null booking object provided for addition.");
+                throw new ArgumentNullException(nameof(booking), "Booking cannot be null.");
+            }
+
+            try
+            {
+                _logger.LogInformation("Editing a booking with ID: {Id}", booking.Id);
+
+                // Add the booking to the repository
+                _unitOfWork.BookingRepository.Edit(booking);
+                _unitOfWork.Save();
+
+                _logger.LogInformation("Booking with ID: {Id} successfully edited.", booking.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while editing the booking with ID: {Id}", booking.Id);
+                throw new InvalidOperationException($"An error occurred while editing the booking with ID: {booking.Id}.", ex);
+            }
+        }
     }
 }
 

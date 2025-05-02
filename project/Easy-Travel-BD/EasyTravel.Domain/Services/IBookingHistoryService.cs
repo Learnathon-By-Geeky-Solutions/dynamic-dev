@@ -1,4 +1,5 @@
 ﻿using EasyTravel.Domain.Entites;
+using EasyTravel.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace EasyTravel.Domain.Services
 {
     public interface IBookingHistoryService
     {
-        Task<IEnumerable<BusBooking>> GetBusBookingsAsync(Guid id);
-        Task<IEnumerable<CarBooking>> GetCarBookingsAsync(Guid id);
-        Task<IEnumerable<HotelBooking>> GetHotelBookingsAsync(Guid id);
-        Task<IEnumerable<PhotographerBooking>> GetPhotographerBookingsAsync(Guid id);
-        Task<IEnumerable<GuideBooking>> GetGuideBookingsAsync(Guid id);
+        Task<PagedResult<BusBooking>> GetBusBookingsAsync(Guid id, int pageNumber, int pageSize);
+        Task<PagedResult<CarBooking>> GetCarBookingsAsync(Guid id, int pageNumber, int pageSize);
+        Task<PagedResult<HotelBooking>> GetHotelBookingsAsync(Guid id, int pageNumber, int pageSize);
+        Task<PagedResult<PhotographerBooking>> GetPhotographerBookingsAsync(Guid id, int pageNumber, int pageSize);
+        Task<PagedResult<GuideBooking>> GetGuideBookingsAsync(Guid id, int pageNumber, int pageSize);
     }
 }

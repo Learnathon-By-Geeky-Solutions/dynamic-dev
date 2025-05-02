@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using EasyTravel.Domain.Entites;
 using EasyTravel.Web.Middleware;
 using Autofac.Core;
+using EasyTravel.Infrastructure.BackgroundServices;
 
 
 var configuration = new ConfigurationBuilder()
@@ -104,6 +105,7 @@ try
         options.Cookie.HttpOnly = true;                // Make cookies accessible only through HTTP
         options.Cookie.IsEssential = true;             // Essential for GDPR compliance
     });
+    builder.Services.AddHostedService<DatabaseCleanUpService>();
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddSignalR();
     // Register HttpClient in the default DI container

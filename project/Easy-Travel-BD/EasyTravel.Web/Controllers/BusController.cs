@@ -98,7 +98,7 @@ namespace EasyTravel.Web.Controllers
             var user = await _userManager.GetUserAsync(User);
             var bus = _busService.GetseatBusById(busId);
             if (bus == null) return NotFound();
-
+            _sessionService.SetString("SelectedSeatIds", selectedSeatIds);
             var viewModel = new BusBooking
             {
                 Id = BookingId,
@@ -117,11 +117,8 @@ namespace EasyTravel.Web.Controllers
             var booking = new BookingModel
             {
                 Id = BookingId,
+                TotalAmount = totalAmount,
                 BusBooking = viewModel,
-                Booking = new Booking
-                {
-                    TotalAmount = totalAmount,
-                }
             };
             return View(booking);
         }

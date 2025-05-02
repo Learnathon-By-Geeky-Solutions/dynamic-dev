@@ -110,11 +110,12 @@
                 }
 
                 
-                <input asp-for="@Model.Id" hidden/>
-                <input type="hidden" asp-for="@Model.BusBooking.BusId" />
-                <input type="hidden"  asp-for="@Model.Booking!.TotalAmount" />
-                <input type="hidden" asp-for="@Model.BusBooking!.SelectedSeatIds" />
-                <input type="hidden" asp-for="@Model.BusBooking!.SelectedSeats" />
+                <input asp-for="Id" hidden/>
+                <input asp-for="TotalAmount" hidden />
+                <input type="hidden" asp-for="BusBooking.BusId" />
+                <input type="hidden"  asp-for="Booking.TotalAmount" />
+                <input type="hidden" asp-for="BusBooking.SelectedSeatIds" />
+                <input type="hidden" asp-for="BusBooking.SelectedSeats" />
 
                 <button type="submit" onclick="formSubmit('/Booking/Bus')" class="btn btn-success w-100">
                     Confirm Booking

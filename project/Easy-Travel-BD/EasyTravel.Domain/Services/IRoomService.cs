@@ -10,7 +10,7 @@ namespace EasyTravel.Domain.Services
 {
     public interface IRoomService:IService<Room,Guid>
     {
-        public IEnumerable<Room> GetRoomByHotel(Guid id);
+        Task<IEnumerable<Room>> GetRoomByHotel(Guid id);
         Task<PagedResult<Room>> GetPaginatedRoomsAsync(int pageNumber, int pageSize);
     }
 }

@@ -127,7 +127,7 @@ namespace EasyTravel.Application.Services
             }
         }
 
-        public IEnumerable<Room> GetRoomByHotel(Guid id)
+        public async Task<IEnumerable<Room>> GetRoomByHotel(Guid id)
         {
             if (id == Guid.Empty)
             {
@@ -138,7 +138,7 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Fetching rooms for hotel with ID: {HotelId}", id);
-                var rooms = _unitOfWork.RoomRepository.GetRooms(id);
+                var rooms = await _unitOfWork.RoomRepository.GetAsync(e => e.HotelId == id);
                 _logger.LogInformation("Successfully fetched rooms for hotel with ID: {HotelId}", id);
                 return rooms;
             }

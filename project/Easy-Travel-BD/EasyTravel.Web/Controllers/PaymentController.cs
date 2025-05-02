@@ -1,6 +1,7 @@
 ﻿using EasyTravel.Domain.Entites;
 using EasyTravel.Domain.Enums;
 using EasyTravel.Domain.Services;
+using EasyTravel.Web.Filters;
 using EasyTravel.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,9 +24,10 @@ public class PaymentController : Controller
     private readonly ILogger<PaymentController> _logger;
     private readonly IPaymentOnlyService _paymentOnlyService;
     private readonly IConfiguration _config;
-    public PaymentController(IBookingService bookingService, UserManager<User> userManager, ISessionService sessionService,  IBusService busService, ICarService carService,  ILogger<PaymentController> logger, IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService, IPaymentOnlyService paymentOnlyService, IConfiguration config)
+    private readonly IHotelBookingService _hotelService;
+    public PaymentController(IBookingService bookingService, UserManager<User> userManager, ISessionService sessionService,  IBusService busService, ICarService carService,  ILogger<PaymentController> logger, IPhotographerBookingService photographerBookingService, IGuideBookingService guideBookingService, IPaymentOnlyService paymentOnlyService, IConfiguration config,IHotelBookingService hotelService)
     {
-        
+        _hotelService = hotelService;
         _bookingService = bookingService;
         _userManager = userManager;
         _sessionService = sessionService;
@@ -37,21 +39,17 @@ public class PaymentController : Controller
         _paymentOnlyService = paymentOnlyService;
         _config = config;
     }
-
+    [ServiceFilter(typeof(ValidatePaymentFilter))]
     [HttpPost]
     public async Task<IActionResult> Pay(BookingModel bookingModel,Guid id1)
     {
-        if (!ModelState.IsValid)
-        {
-            _logger.LogError("PaymentController:Pay: Invalid model state.");
-            return Redirect(_sessionService.GetString("LastVisitedPage"));
-        }
         var booking = _bookingService.Get(bookingModel.Id);
         if (booking == null)
         {
             _logger.LogError($"PaymentController:Pay: Booking with ID {bookingModel.Id} not found.");
             return Redirect("/Pay/Expired");
         }
+        booking.TotalAmount = bookingModel.TotalAmount;
         var totalAmount = (int)Math.Floor(booking.TotalAmount);
         var user = await _userManager.GetUserAsync(User);
         var phonenumber = user?.PhoneNumber == null ? "01326759812" : user?.PhoneNumber;
@@ -117,20 +115,32 @@ public class PaymentController : Controller
                     booking.BookingStatus = BookingStatus.Confirmed;
                     if (booking.BookingTypes == BookingTypes.Photographer)
                     {
+                        booking.BookingTypes = BookingTypes.Photographer;
                         _photographerBookingService.SaveBooking(bookingModel.PhotographerBooking!, booking);
                     }
                     else if (booking.BookingTypes == BookingTypes.Guide)
                     {
+                        booking.BookingTypes = BookingTypes.Guide;
                         _guideBookingService.SaveBooking(bookingModel.GuideBooking!, booking);
                     }
                     else if (booking.BookingTypes == BookingTypes.Bus)
                     {
+                        var selectedSeatIds = _sessionService.GetString("SelectedSeatIds").Split(',').Select(id => Guid.Parse(id)).ToList();
+                        booking.BookingTypes = BookingTypes.Bus;
+                        bookingModel.BusBooking!.SelectedSeatIds = selectedSeatIds;
                         _busService.SaveBooking(bookingModel.BusBooking!, bookingModel.BusBooking!.SelectedSeatIds!, booking);
                     }
                     else if (booking.BookingTypes == BookingTypes.Car)
                     {
+                        booking.BookingTypes = BookingTypes.Car;
                         _carService.SaveBooking(bookingModel.CarBooking!, bookingModel.CarBooking!.CarId, booking);
                     }
+                    else if (booking.BookingTypes == BookingTypes.Hotel)
+                    {
+                        booking.BookingTypes = BookingTypes.Hotel;
+                        _hotelService.SaveBooking(bookingModel.HotelBooking!,booking);
+                    }
+
                 }
                 return Redirect($"{url}");
             }
@@ -186,6 +196,8 @@ public class PaymentController : Controller
             Amount = bookingmodel.TotalAmount,
             BookingId = bookingmodel.Id,
         };
+        bookingmodel.BookingStatus = BookingStatus.Confirmed;
+        _bookingService.EditBooking(bookingmodel);
         _paymentOnlyService.AddPaymentOnly(payment);
         ViewBag.SuccessInfo = "Your payment was successful. Thank you for your booking!";
         return View();
@@ -238,6 +250,32 @@ public class PaymentController : Controller
         {
             ViewBag.SuccessInfo = "Invalid request data";
             return View();
+        }
+        string? bookingIdStr = Request.Form["value_a"];
+
+        Guid.TryParse(bookingIdStr, out var id);
+
+        if (string.IsNullOrEmpty(bookingIdStr))
+        {
+            bookingIdStr = _sessionService.GetString("BookingId");
+            _logger.LogInformation($"Using booking ID from session: {bookingIdStr}");
+        }
+
+        if (id == Guid.Empty)
+        {
+            _logger.LogError("No booking ID found in request or session");
+            ViewBag.SuccessInfo = "No booking ID found";
+            return View();
+        }
+        var bookingmodel = _bookingService.Get(id);
+        if (bookingmodel == null)
+        {
+            _logger.LogError($"PaymentController:Success: Booking already exists. Redirecting to Expired action");
+            return RedirectToAction("Expired", "Payment");
+        }
+        if (bookingmodel.BookingStatus == BookingStatus.Confirmed)
+        {
+            _bookingService.RemoveBooking(id);
         }
         ViewBag.CancelInfo = "Your payment was cancelled. Please try again.";
         return View();

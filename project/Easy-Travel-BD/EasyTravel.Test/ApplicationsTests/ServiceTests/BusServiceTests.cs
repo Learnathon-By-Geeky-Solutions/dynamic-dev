@@ -19,7 +19,7 @@ namespace EasyTravel.Tests.Services
     {
         private Mock<IApplicationUnitOfWork> _unitOfWorkMock = null!;
         private Mock<ILogger<BusService>> _loggerMock = null!;
-        private Mock<IBookingService> _bookingServiceMock = null;
+        private Mock<IBookingService> _bookingServiceMock = null!;
         private BusService _busService = null!;
 
         [SetUp]

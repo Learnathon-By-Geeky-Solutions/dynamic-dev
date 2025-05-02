@@ -1,38 +1,34 @@
-﻿@model HotelBookingViewModel
-
-@{
-   ViewData["Title"] = "HotelBooking";
-}
+﻿@model BookingModel
 
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <form method="post" asp-controller="Hotel" asp-action="HotelBooking" id="bookingForm">
+            <form method="post" asp-controller="Payment" asp-action="Pay" id="bookingForm">
                 <div class="card mb-4 p-2">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-bus text-success me-2"></i>
                             <div>
                                 <h5 class="mb-0">Hotel Details</h5>
-                                <small class="text-muted">@Model.hotel?.Name</small>
+                                <small class="text-muted">@Model.HotelBooking?.Hotel?.Name</small>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="cover-photo"> <img src="@Model.hotel?.Image" class="rounded-2" alt="@Model.hotel?.Name" title="@Model.hotel?.Name"> </div>
-                            <p class="mt-2"><i class="bi bi-geo-alt-fill"></i> @Model.hotel?.Address </p>
-                            <p><i class="bi bi-telephone"></i> @Model.hotel?.Phone</p>
+                            <div class="cover-photo"> <img src="@Model.HotelBooking?.Hotel?.Image" class="rounded-2" alt="@Model.HotelBooking?.Hotel?.Name" title="@Model.HotelBooking?.Hotel?.Name"> </div>
+                            <p class="mt-2"><i class="bi bi-geo-alt-fill"></i> @Model.HotelBooking?.Hotel?.Address </p>
+                            <p><i class="bi bi-telephone"></i> @Model.HotelBooking?.Hotel?.Phone</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <small class="text-muted">Check-In Date</small>
-                            <input asp-for="@Model.hotelBooking!.CheckInDate" class="form-control" />
+                            <input asp-for="@Model.HotelBooking!.CheckInDate" class="form-control" />
                         </div>
                         <div class="col-md-6">
                             <small class="text-muted">Check-Out Date</small>
-                            <input asp-for="@Model.hotelBooking!.CheckOutDate" class="form-control" />
+                            <input asp-for="@Model.HotelBooking!.CheckOutDate" class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -46,34 +42,27 @@
                     </div>
                     <div class="mb-3">
                         <small class="text-muted">Selected Rooms</small>
-                        @* <div id="selectedRoomsDisplay" class="selected-rooms-tags"> *@
-                        @*     @foreach (var room in Model.HotelRoom.SelectedRoomNumbers) *@
-                        @*     { *@
-                        @*         <span class="room-tag">@room</span> *@
-                        @*     } *@
-                        @* </div> *@
-
                         <div class="container mx-auto mt-4">
                             <div class="row">
                                
                                     <div class="col-md-4">
                                         <div class="card" style="width: 18rem;">
-                                            <img src="@Model.room?.Image1" class="card-img-top" alt="@Model.room?.RoomType" title="@Model.hotel?.Name">
+                                        <img src="@Model.HotelBooking?.Hotel?.Room?.Image1" class="card-img-top" alt="Model.HotelBooking?.Hotel.Room?.RoomType" title="@Model.HotelBooking.Hotel?.Name">
                                             <div class="card-body">
                                                 <h5 class="card-title">
-                                                @Model.room?.RoomType
+                                                @Model.HotelBooking.Hotel?.Room?.RoomType
                                                 </h5>
                                                 <h6 class="card-subtitle mb-2 text-muted">
-                                                @(Model.room!.IsAvailable ? "Available" : "Not Available")
+                                                @Model.HotelBooking.Hotel?.Room?.IsAvailable ? "Available" : "Not Available")
                                                 </h6>
                                                 <div>
-                                                <span>Price Per Night: @Model.room?.PricePerNight </span>
+                                                <span>Price Per Night: @Model.HotelBooking.Hotel?.Room?.PricePerNight </span>
 
                                                 </div>
                                                 <p class="card-text">
-                                                    @Model.room?.Description
+                                                @Model.HotelBooking.Hotel?.Room?.Description
                                                 </p>
-                                            <a asp-controller="Hotel" asp-action="HotelBookingRoomDetails" asp-route-hotelId="@Model.hotel?.Id" asp-route-roomId="@Model.room?.Id" class="btn  btn-success btn-sm fw-bold text-dark">Details</a>
+                                            <a asp-controller="Hotel" asp-action="HotelBookingRoomDetails" asp-route-hotelId="@Model.HotelBooking.Hotel?.Id" asp-route-roomId= "@Model.HotelBooking.Hotel.Room?.Id" class="btn  btn-success btn-sm fw-bold text-dark">Details</a>
                                             </div>
                                         </div>
                                     </div>
@@ -83,10 +72,25 @@
                         </div>
 
                     </div>
-                </div>              
-                <input type="hidden" asp-for="@Model.hotelBooking!.HotelId" value="@Model.hotel?.Id" />
-                <input type="hidden" asp-for="@Model.hotelBooking!.RoomIdsJson" value="@Model.room?.Id" />
-                @* <input type="hidden" asp-for="@Model.hotelBooking.UserId" value="D56560DB-3290-4C91-BE5F-08DD59579E67" /> *@
+                </div> 
+                <input type="hidden" asp-for="@Model.Id" />
+                <input type="hidden" asp-for="@Model.TotalAmount" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Id" />
+                <input type="hidden" asp-for="@Model.HotelBooking.HotelId" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.Name" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.Email" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.Address" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.Description" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.City" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.Image" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.Rating" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.Id" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.HotelBookings" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.Phone" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.CreatedAt" />
+                <input type="hidden" asp-for="@Model.HotelBooking.Hotel.UpdatedAt" />
+                
+                <input type="hidden" asp-for="@Model.HotelBooking!.RoomIdsJson!" value="@Model.HotelBooking?.Hotel?.Room?.Id" />
                 <button type="submit" class="btn btn-success w-100" id="submitButton">
                     PROCEED TO PAYMENT || Confirm Booking
                 </button>
@@ -102,37 +106,14 @@
                 <div id="selectedRoomsDisplay" class="selected-rooms-tags m-4">
                     <div class="mb-3">
                         <small class="text-muted">Price per Room</small>
-                        <h6>৳@Model.room?.PricePerNight</h6>
+                        <h6>৳@Model.HotelBooking.Hotel.Room?.PricePerNight</h6>
                     </div>
                     
                 </div>
                 <div class="total-section card-body">
                     <small class="text-muted">Total Amount</small>
-                    <h4 class="text-success">৳<span id="totalAmountDisplay">@(Model.room?.PricePerNight * (Model.hotelBooking!.CheckOutDate - Model.hotelBooking.CheckInDate).Days)</span></h4>
+                    <h4 class="text-success">৳<span id="totalAmountDisplay">@(Model.HotelBooking?.Hotel?.Room?.PricePerNight * (Model.HotelBooking!.CheckOutDate - Model.HotelBooking.CheckInDate).Days)</span></h4>
                 </div>
-
-
-
-              @*   <div class="card-body">
-                    <div class="mb-3">
-                        <small class="text-muted">Selected Rooms</small>
-                        <div id="selectedRoomsDisplay" class="selected-rooms-tags">
-                            @foreach (var room in Model.HotelRoom.SelectedRoomNumbers)
-                            {
-                                <span class="room-tag">@room</span>
-                            }
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <small class="text-muted">Price per Room</small>
-                        <h6>৳@Model.HotelRoom.Rooms.</h6>
-                    </div>
-                    <div class="total-section">
-                        <small class="text-muted">Total Amount</small>
-                        <h4 class="text-success">৳<span id="totalAmountDisplay">@Model.HotelRoom.TotalAmount</span></h4>
-                    </div>
-                </div> *@
-
                
 
             </div>

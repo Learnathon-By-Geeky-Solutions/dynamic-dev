@@ -19,33 +19,53 @@ namespace EasyTravel.Web.Areas.Profile.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Guide()
+        public async Task<IActionResult> Guide(int pageNumber = 1, int pageSize = 10)
         {
-            var list = await _bookingHistoryService.GetGuideBookingsAsync(GetId());
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var list = await _bookingHistoryService.GetGuideBookingsAsync(GetId(), pageNumber, pageSize);
             return View(list);
         }
         [HttpGet]
-        public async Task<IActionResult> Photographer()
+        public async Task<IActionResult> Photographer(int pageNumber = 1, int pageSize = 10)
         {
-            var list = await _bookingHistoryService.GetPhotographerBookingsAsync(GetId());
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var list = await _bookingHistoryService.GetPhotographerBookingsAsync(GetId(), pageNumber, pageSize);
             return View(list);
         }
         [HttpGet]
-        public async Task<IActionResult> Bus()
+        public async Task<IActionResult> Bus(int pageNumber = 1, int pageSize = 10)
         {
-            var list = await _bookingHistoryService.GetBusBookingsAsync(GetId());
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var list = await _bookingHistoryService.GetBusBookingsAsync(GetId(), pageNumber, pageSize);
             return View(list);
         }
         [HttpGet]
-        public async Task<IActionResult> Car()
+        public async Task<IActionResult> Car(int pageNumber = 1, int pageSize = 10)
         {
-            var list = await _bookingHistoryService.GetCarBookingsAsync(GetId());
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var list = await _bookingHistoryService.GetCarBookingsAsync(GetId(), pageNumber, pageSize);
             return View(list);
         }
         [HttpGet]
-        public async Task<IActionResult> Hotel()
+        public async Task<IActionResult> Hotel(int pageNumber = 1, int pageSize = 10)
         {
-            var list = await _bookingHistoryService.GetHotelBookingsAsync(GetId());
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var list = await _bookingHistoryService.GetHotelBookingsAsync(GetId(),pageNumber,pageSize);
             return View(list);
         }
         private Guid GetId()

@@ -2,45 +2,82 @@
     Layout = "~/Areas/Profile/Views/Shared/_ProfileLayout.cshtml"; // Specify the child layout
 }
 @using EasyTravel.Domain.Entites
-@model IEnumerable<BusBooking>
+@using EasyTravel.Domain.Enums
+@using EasyTravel.Domain.ValueObjects
+@model PagedResult<BusBooking>
 @{
     ViewData["Title"] = "Guide";
     TempData["Header"] = "Booking History";
 }
 
 <div class="entity-list">
-    @if (Model.Count() == 0)
+    @if (Model.Items.Count == 0)
     {
         <h1>No history</h1>
     }
     else
     {
         <div class="entity-row">
-            <span class="name"></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+            <span class="name">Passenger Name</span>
+            <span>Booking Date</span>
+            <span>Phone Number</span>
+            <span>Selected Seat</span>
+            <span>Depart Time</span>
+            <span>Totam Amount</span>
 
             <!-- Buttons Section -->
             <div class="actions">
             </div>
         </div>
-        @foreach (var bus in Model)
+        @foreach (var bus in Model.Items)
         {
             <div class="entity-row">
-                <span class="name"></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+                <span class="name">@bus.PassengerName</span>
+                <span>@bus.BookingDate</span>
+                <span>@bus.PhoneNumber</span>
+                <span>@bus.SelectedSeats</span>
+                <span>@bus.Bus?.DepartureTime</span>
+                <span>@bus.Booking.TotalAmount</span>
 
                 <!-- Buttons Section -->
                 <div class="actions">
-                    <a asp-area="Profile" asp-controller="" asp-action="" asp-route-id="" class="update-btn">Pay</a>
-                    <a asp-area="Profile" asp-controller="" asp-action="" asp-route-id="" class="delete-btn">Cancle</a>
+                    @if (bus.Booking?.BookingStatus == BookingStatus.Pending)
+                    {
+                        <form asp-area="" asp-controller="Payment" asp-action="Pay" method="post">
+                            <button type="submit" name="Id" value="@bus.Id" class="btn btn-danger">Pay</button>
+                        </form>
+                    }
+                    @* <a asp-area="Profile" asp-controller="" asp-action="" asp-route-id="" class="delete-btn">Cancle</a> *@
                 </div>
             </div>
         }
+        <div>
+            Page @(Model.PageNumber) of @(Model.TotalPages)
+
+            <div class="flex text-center items-center space-x-2 my4-">
+                @if (Model.PageNumber > 1)
+                {
+                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+                }
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (i == Model.PageNumber)
+                    {
+                        <strong class="px-3 py-1 bg-blue-500 rounded">@i</strong>
+                    }
+                    else
+                    {
+                        <a asp-action="Index" asp-route-pageNumber="@i" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">@i</a>
+                    }
+                }
+
+                @if (Model.PageNumber < Model.TotalPages)
+                {
+                    <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+                }
+            </div>
+
+        </div>
     }
 </div>

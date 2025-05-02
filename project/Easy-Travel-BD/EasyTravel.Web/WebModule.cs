@@ -9,6 +9,8 @@ using EasyTravel.Domain.Services;
 using EasyTravel.Infrastructure;
 using EasyTravel.Infrastructure.Data;
 using EasyTravel.Infrastructure.Repositories;
+using EasyTravel.Web.Filters;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.ComponentModel;
 
 namespace EasyTravel.Web
@@ -135,6 +137,10 @@ namespace EasyTravel.Web
             .InstancePerLifetimeScope();
             builder.RegisterType<BookingService>().As<IBookingService>()
             .InstancePerLifetimeScope();
+
+            // Register the CheckIdExistsFilter
+            builder.RegisterType<ValidatePaymentFilter>()
+                .InstancePerLifetimeScope();
             base.Load(builder);
         }
 

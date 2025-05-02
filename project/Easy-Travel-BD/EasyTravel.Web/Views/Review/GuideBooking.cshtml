@@ -54,15 +54,15 @@
                         </div>
 
                         <div class="ms-3">
-                            <p class="mb-1">@Model.GuideBooking.Gender</p>
-                            <p class="mb-1">@Model.GuideBooking.PhoneNumber</p>
+                            <p class="mb-1">@Model.GuideBooking?.Gender</p>
+                            <p class="mb-1">@Model.GuideBooking?.PhoneNumber</p>
 
                         </div>
                     </div>
                 </div>
             </div>
            <div class="d-inline-flex">
-                <form asp-antiforgery=true method="post" id="bookingForm">
+                <form asp-antiforgery="true" method="post" id="bookingForm">
                     <input asp-for="Id" hidden />
                     <input asp-for="@Model.GuideBooking!.UserName" hidden />
                     <input asp-for="@Model.GuideBooking!.Email" hidden />
@@ -75,7 +75,7 @@
                     <input asp-for="@Model.GuideBooking!.EndTime" hidden />
                     <input asp-for="@Model.GuideBooking!.TimeInHour" hidden />
                     <input asp-for="@Model.GuideBooking!.GuideId" hidden />
-                    <input asp-for="@Model.Booking!.TotalAmount" hidden />
+                    <input asp-for="@Model.TotalAmount" hidden />
                     <div class="d-inline-flex gap-2">
                         <button type="button" class="btn btn-danger" onclick="submitForm('/Booking/Guide')">Book</button>
                         <button type="button" class="btn btn-danger" onclick="submitForm('/Payment/Pay')">Pay</button>

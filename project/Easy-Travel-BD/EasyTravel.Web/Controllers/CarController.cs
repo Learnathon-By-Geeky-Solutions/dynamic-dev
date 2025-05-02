@@ -35,7 +35,10 @@ namespace EasyTravel.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> List(int pageNumber = 1, int pageSize = 10)
         {
-
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             // Retrieve search parameters from session
             var from = _sessionService.GetString("From");
             var to = _sessionService.GetString("To");
@@ -61,29 +64,33 @@ namespace EasyTravel.Web.Controllers
             return View(model);
         }
         [HttpGet]
-        public async Task<IActionResult> PassengerDetails(Guid id)
+        public async Task<IActionResult> PassengerDetails(Guid id1,Guid id2)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("List", "Car");
             }
             var user = await _userManager.GetUserAsync(User);
-            var car = _carService.GetCarById(id);
+            var car = _carService.GetCarById(id2);
             if (car == null) return NotFound();
 
-            var viewModel = new CarBookingViewModel
+            var viewModel = new CarBooking
             {
+                PassengerName = $"{user?.FirstName} {user?.LastName}",
+                Email = user?.Email!,
+                PhoneNumber = user?.PhoneNumber!,
+                Id = id1,
                 Car = car,
-                CarId = id,
-                BookingForm = new BookingForm
-                {
-                    PassengerName = $"{user?.FirstName},{user?.LastName}",
-                    Email = user?.Email!,
-                    PhoneNumber = user?.PhoneNumber!,
-                    TotalAmount = car.Price
-                }
+                CarId = id2,
+                BookingDate = DateTime.Now,
             };
-            return View(viewModel);
+            var booking = new BookingModel
+            {
+                Id = id1,
+                TotalAmount = car.Price,
+                CarBooking = viewModel,
+            };
+            return View(booking);
         }
     }
 }

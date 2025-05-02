@@ -59,14 +59,12 @@ namespace EasyTravel.Web.Controllers
             pgBooking.PhotographerId = photographer.Id;
             pgBooking.Id = id1;
             pgBooking.Booking = _bookingService.Get(id1);
+
             var bookingmodel = new BookingModel
             {
                 Id = id1,
+                TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour,
                 PhotographerBooking = pgBooking,
-                Booking = new Booking
-                {
-                    TotalAmount = photographer.HourlyRate * pgBooking.TimeInHour,
-                }
             };
             return View(bookingmodel);
         }
@@ -94,11 +92,8 @@ namespace EasyTravel.Web.Controllers
             var bookingmodel = new BookingModel
             {
                 Id = id1,
+                TotalAmount = guide.HourlyRate * guideBooking.TimeInHour,
                 GuideBooking = guideBooking,
-                Booking = new Booking
-                {
-                    TotalAmount = guide.HourlyRate * guideBooking.TimeInHour,
-                }
             };
             return View(bookingmodel);
         }

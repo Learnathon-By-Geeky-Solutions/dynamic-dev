@@ -51,9 +51,9 @@ namespace EasyTravel.Application.Services
             try
             {
                 _logger.LogInformation("Checking existence of payment for booking ID: {BookingId}", bookingId);
-                var paymentExists = await _unitOfWork.PaymentRepository.GetAsync(d => d.BookingId == bookingId) != null;
+                var paymentExists = await _unitOfWork.PaymentRepository.GetAsync(p => p.BookingId == bookingId);
                 _logger.LogInformation("Payment existence check for booking ID: {BookingId} returned: {Exists}", bookingId, paymentExists);
-                return paymentExists;
+                return paymentExists.Count != 0;
             }
             catch (Exception ex)
             {
