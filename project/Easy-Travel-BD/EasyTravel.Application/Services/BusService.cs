@@ -127,7 +127,7 @@ namespace EasyTravel.Application.Services
                 var buses = await _unitOfWork.BusRepository.GetAsync(bus =>
                     bus.From == from &&
                     bus.To == to &&
-                    bus.DepartureTime > DateTime.Now &&
+                   // bus.DepartureTime > DateTime.Now &&
                     bus.Seats!.Any(seat => seat.IsAvailable));
                 var totalItems = buses.Count;
                 var paginateBuses = buses.
